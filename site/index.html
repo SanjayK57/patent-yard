@@ -1,0 +1,1574 @@
+<title>Patent Yard</title>
+<meta name="description" content="Patent Yard: a free register of US patents whose protection has ended, verified daily against USPTO records, with full dossiers, reservations and tools to reinvent them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@500;600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* ======================================================================
+   Tokens. Light is the default; dark is redefined below for both the
+   system setting and an explicit data-theme choice.
+   ====================================================================== */
+:root{
+  --bg:#F6F6F4; --surface:#FFFFFF; --surface-2:#F9F9F7; --sunken:#F1F1EE;
+  --line:#E4E3DF; --line-strong:#CFCDC7;
+  --ink:#16181D; --ink-2:#4B5160; --ink-3:#6E7482;
+  --accent:#0F6B4F; --accent-hover:#0B573F; --accent-ink:#FFFFFF; --accent-soft:#E7F2ED;
+  --lapsed:#B42318; --lapsed-soft:#FEF1EF;
+  --aband:#9A4B06; --aband-soft:#FFF6E5;
+  --expired:#3F4A5C; --expired-soft:#EEF1F5;
+  --reserved:#1D5FD1; --reserved-soft:#EAF1FE;
+  --warn:#9A4B06;
+  --focus:#0F6B4F;
+  --fig-blend:multiply; --fig-filter:none;
+  --shadow-sm:0 1px 2px rgba(16,24,40,.05);
+  --shadow:0 1px 2px rgba(16,24,40,.05),0 8px 24px -12px rgba(16,24,40,.16);
+  --shadow-lg:0 24px 64px -20px rgba(16,24,40,.35);
+  --radius:10px; --radius-sm:6px;
+  --display:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --body:"Public Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  --ease:cubic-bezier(.2,.8,.2,1);
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E0F11; --surface:#16181C; --surface-2:#1B1E23; --sunken:#121417;
+  --line:#2A2E35; --line-strong:#3A3F48;
+  --ink:#EDEEF0; --ink-2:#B3B8C2; --ink-3:#8A909C;
+  --accent:#3DBE8B; --accent-hover:#5BCB9D; --accent-ink:#0B1F17; --accent-soft:#16291F;
+  --lapsed:#F97066; --lapsed-soft:#2A1614; --aband:#FDB022; --aband-soft:#2A2010; --expired:#B9C3D2; --expired-soft:#1E232B;
+  --reserved:#84ADFF; --reserved-soft:#172238; --warn:#FDB022; --focus:#3DBE8B;
+  --fig-blend:screen; --fig-filter:invert(1);
+  --shadow-sm:none; --shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -14px rgba(0,0,0,.7); --shadow-lg:0 30px 80px -20px rgba(0,0,0,.8);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0E0F11; --surface:#16181C; --surface-2:#1B1E23; --sunken:#121417;
+  --line:#2A2E35; --line-strong:#3A3F48;
+  --ink:#EDEEF0; --ink-2:#B3B8C2; --ink-3:#8A909C;
+  --accent:#3DBE8B; --accent-hover:#5BCB9D; --accent-ink:#0B1F17; --accent-soft:#16291F;
+  --lapsed:#F97066; --lapsed-soft:#2A1614; --aband:#FDB022; --aband-soft:#2A2010; --expired:#B9C3D2; --expired-soft:#1E232B;
+  --reserved:#84ADFF; --reserved-soft:#172238; --warn:#FDB022; --focus:#3DBE8B;
+  --fig-blend:screen; --fig-filter:invert(1);
+  --shadow-sm:none; --shadow:0 1px 0 rgba(255,255,255,.03),0 10px 30px -14px rgba(0,0,0,.7); --shadow-lg:0 30px 80px -20px rgba(0,0,0,.8);
+  color-scheme:dark;
+}
+
+/* ======================================================================
+   Base
+   ====================================================================== */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.6 var(--body);padding-inline:16px}
+.wrap{max-width:1280px;margin-inline:auto}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--accent);text-underline-offset:2px}
+a:hover{color:var(--accent-hover)}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+h1,h2,h3,h4{font-family:var(--display);text-wrap:balance;margin:0;letter-spacing:-.01em}
+p{margin:0}
+.muted{color:var(--ink-2)}
+.num{font-variant-numeric:tabular-nums}
+.mono{font-family:var(--mono)}
+.kicker{font:600 12px/1.2 var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:16px;top:-60px;z-index:80;background:var(--ink);color:var(--surface);padding:8px 12px;border-radius:var(--radius-sm);font-weight:600;text-decoration:none}
+.skip:focus{top:calc(8px + env(safe-area-inset-top,0px))}
+main:focus{outline:none}
+svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* ======================================================================
+   Controls
+   ====================================================================== */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:8px 14px;border-radius:var(--radius-sm);border:1px solid transparent;font:600 14px/1 var(--body);cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .15s,border-color .15s,color .15s,transform .15s var(--ease)}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{background:var(--accent-hover);color:var(--accent-ink)}
+.btn.secondary{background:var(--surface);border-color:var(--line-strong);color:var(--ink)}
+.btn.secondary:hover{background:var(--surface-2);border-color:var(--ink-3)}
+.btn.quiet{background:transparent;color:var(--ink-2)}
+.btn.quiet:hover{background:var(--sunken);color:var(--ink)}
+.btn.sm{min-height:32px;padding:6px 10px;font-size:13px}
+.btn.lg{min-height:46px;padding:12px 20px;font-size:15px}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.chip{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink-2);font:500 13px/1 var(--body);white-space:nowrap}
+button.chip{cursor:pointer;transition:background .15s,color .15s,border-color .15s}
+button.chip:hover{border-color:var(--ink-3);color:var(--ink)}
+button.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--surface)}
+.badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 8px;border-radius:6px;font:600 12px/1 var(--body);white-space:nowrap}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.badge.lapsed{color:var(--lapsed);background:var(--lapsed-soft)}
+.badge.abandoned{color:var(--aband);background:var(--aband-soft)}
+.badge.expired{color:var(--expired);background:var(--expired-soft)}
+.badge.reserved{color:var(--reserved);background:var(--reserved-soft)}
+.badge.ok{color:var(--accent);background:var(--accent-soft)}
+.badge.plain{color:var(--ink-2);background:var(--sunken)}
+.badge.plain::before,.badge.ok::before{display:none}
+input.field,select.field,textarea.field{width:100%;min-height:40px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--surface);line-height:1.5}
+input.field:focus,select.field:focus,textarea.field:focus{outline:2px solid var(--focus);outline-offset:0;border-color:transparent}
+
+/* ======================================================================
+   Motion
+   ====================================================================== */
+@keyframes rise{from{opacity:.2;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}70%{transform:scale(1.06);opacity:1}100%{transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{to{background-position:-200% 0}}
+.rise{animation:rise .6s var(--ease) both;animation-delay:calc(var(--d,0) * 80ms)}
+main{view-transition-name:main}
+::view-transition-old(root),::view-transition-new(root){animation:none}
+::view-transition-old(main){animation:vtOut .16s ease both}
+::view-transition-new(main){animation:vtIn .3s var(--ease) both}
+@keyframes vtOut{to{opacity:0}}
+@keyframes vtIn{from{opacity:0;transform:translateY(8px)}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+
+/* ======================================================================
+   Header and footer
+   ====================================================================== */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;margin-inline:-16px;padding:0 16px;background:color-mix(in srgb,var(--surface) 92%,transparent);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:20px;min-height:64px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;border:0;background:none;padding:0;cursor:pointer;color:var(--ink)}
+.brand .mark{width:30px;height:30px;border-radius:7px;background:var(--ink);color:var(--surface);display:grid;place-items:center}
+.brand .mark svg{width:20px;height:20px}
+.brand b{font:800 19px/1 var(--display);letter-spacing:-.02em}
+nav.tabs{display:flex;gap:2px;flex:1;min-width:0}
+.tab{position:relative;border:0;background:none;padding:10px 12px;border-radius:var(--radius-sm);font:500 14px/1 var(--body);color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.tab:hover{color:var(--ink);background:var(--sunken)}
+.tab[aria-current="page"]{color:var(--ink);font-weight:600}
+.tab[aria-current="page"]::after{content:"";position:absolute;left:12px;right:12px;bottom:-12px;height:2px;border-radius:2px;background:var(--accent)}
+.hsearch{display:flex;align-items:center;gap:8px;height:36px;padding:0 10px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--surface);color:var(--ink-3)}
+.hsearch input{border:0;background:none;outline:none;width:200px;font-size:14px;color:var(--ink)}
+.vpill{display:inline-flex;align-items:center;gap:8px;font:500 12.5px/1 var(--body);color:var(--ink-2);white-space:nowrap}
+.vpill i{width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.who img{width:30px;height:30px;border-radius:50%;display:block;border:1px solid var(--line)}
+@media (max-width:1120px){.hsearch{display:none}}
+@media (max-width:820px){nav.tabs{order:3;flex-basis:100%;overflow-x:auto;padding-bottom:6px}.tab[aria-current="page"]::after{bottom:-4px}.vpill span{display:none}}
+footer.foot{margin-top:72px;padding:36px 0 44px;border-top:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(0,1fr));gap:28px;font-size:14px;color:var(--ink-3)}
+@media (max-width:820px){footer.foot{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){footer.foot{grid-template-columns:1fr}}
+footer.foot b{font:800 17px/1 var(--display);color:var(--ink)}
+footer.foot nav{display:grid;gap:8px;align-content:start}
+footer.foot .kicker{margin-bottom:4px}
+footer.foot button,footer.foot a{all:unset;cursor:pointer;color:var(--ink-2)}
+footer.foot button:hover,footer.foot a:hover{color:var(--ink);text-decoration:underline}
+footer.foot button:focus-visible,footer.foot a:focus-visible{outline:2px solid var(--focus)}
+
+/* ======================================================================
+   Home
+   ====================================================================== */
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:56px;align-items:center;padding-block:56px 40px}
+@media (max-width:940px){.hero{grid-template-columns:1fr;gap:32px;padding-block:32px 24px}}
+.hero h1{font:800 clamp(38px,5.4vw,64px)/1.04 var(--display);letter-spacing:-.03em;margin:14px 0 18px}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.lede{font-size:18px;line-height:1.6;color:var(--ink-2);max-width:56ch}
+.ctas{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:26px;font-size:13px;color:var(--ink-3)}
+.trust span{display:inline-flex;align-items:center;gap:6px}
+.trust svg{color:var(--accent)}
+.plotter{background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.plotter .phead{display:flex;justify-content:space-between;gap:8px;padding:12px 16px;border-bottom:1px solid var(--line);font:500 12.5px/1.2 var(--mono);color:var(--ink-3)}
+@media (max-width:520px){.plotter .phead span+span{display:none}}
+.plotbox{position:relative;aspect-ratio:1/.92;max-height:480px;width:100%;background:var(--surface);transition:opacity .45s}
+.plotbox canvas{position:absolute;inset:0;width:100%;height:100%}
+.plotter figcaption{padding:14px 16px 16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.plotter figcaption b{display:block;font:700 17px/1.25 var(--display)}
+.plotter figcaption small{color:var(--ink-3);font-size:13px}
+.statband{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-block:8px 36px}
+.statband>div{padding:20px 22px;border-right:1px solid var(--line)}
+.statband>div:last-child{border-right:0}
+.statband b{display:block;font:800 30px/1.1 var(--display);letter-spacing:-.02em}
+.statband span{font-size:13.5px;color:var(--ink-3)}
+@media (max-width:820px){.statband{grid-template-columns:1fr 1fr}.statband>div:nth-child(2){border-right:0}.statband>div:nth-child(-n+2){border-bottom:1px solid var(--line)}}
+.steps3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-bottom:44px}
+.steps3>div{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px}
+.steps3 .n{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font:700 13px/1 var(--display);margin-bottom:12px}
+.steps3 h3{font-size:18px;margin-bottom:6px}
+.steps3 p{font-size:14.5px;color:var(--ink-2)}
+@media (max-width:820px){.steps3{grid-template-columns:1fr}}
+.sechead{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 20px;margin-bottom:18px}
+.sechead h2{font:800 clamp(26px,3.2vw,34px)/1.1 var(--display);letter-spacing:-.02em}
+.sechead p{color:var(--ink-2);margin-top:6px;max-width:68ch}
+.fieldbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:18px}
+.fieldbar .fields{display:flex;flex-wrap:wrap;gap:6px;flex:1;align-items:center}
+.clock{font-size:13px;color:var(--ink-3)}
+.clock b{color:var(--ink);font-weight:600}
+.picker{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:14px;background:var(--surface);border:1px dashed var(--line-strong);border-radius:12px;margin:-6px 0 18px;animation:rise .3s var(--ease) both}
+.picker p{flex-basis:100%;font-size:14px;color:var(--ink-2);margin-bottom:4px}
+
+/* ======================================================================
+   Patent cards
+   ====================================================================== */
+.wall{display:grid;gap:18px;grid-template-columns:1fr}
+@media (min-width:640px){.wall{grid-template-columns:repeat(2,minmax(0,1fr))}.wall .feat{grid-column:span 2}}
+@media (min-width:1000px){.wall{grid-template-columns:repeat(3,minmax(0,1fr))}.wall .feat{grid-column:span 3}}
+@media (min-width:1260px){.wall{grid-template-columns:repeat(4,minmax(0,1fr))}.wall .feat{grid-column:span 2}}
+.card{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden;min-width:0;transition:box-shadow .2s,transform .2s var(--ease),border-color .2s;animation:rise .55s var(--ease) both;animation-delay:calc(var(--i,0) * 35ms)}
+.card:hover{box-shadow:var(--shadow);transform:translateY(-2px);border-color:var(--line-strong)}
+.card .fig{position:relative;display:block;width:100%;aspect-ratio:4/3;min-height:0;overflow:hidden;padding:14px;border:0;margin:0;background:var(--surface-2);border-bottom:1px solid var(--line);cursor:pointer}
+.fig img{width:100%;height:100%;object-fit:contain;mix-blend-mode:var(--fig-blend);filter:var(--fig-filter);display:block}
+.fig.load{background:linear-gradient(100deg,var(--surface-2) 30%,var(--sunken) 50%,var(--surface-2) 70%) 0 0/200% 100%;animation:shimmer 1.3s linear infinite}
+.fig img.ink{animation:ink .9s var(--ease) both}
+@keyframes ink{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
+.fig .nofig{position:absolute;inset:14px;display:grid;place-items:center;text-align:center;font-size:13px;color:var(--ink-3);border:1px dashed var(--line-strong);border-radius:8px;padding:10px}
+.fig .over{position:absolute;left:10px;top:10px;display:flex;gap:6px;flex-wrap:wrap}
+.fig .sheets{position:absolute;right:10px;bottom:10px;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 8px;border-radius:6px;background:color-mix(in srgb,var(--surface) 88%,transparent);border:1px solid var(--line);font:500 12px/1 var(--body);color:var(--ink-2)}
+.cbody{padding:14px 16px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cbody .fieldname{font-size:12.5px;color:var(--ink-3)}
+.cbody h3{font:700 18px/1.25 var(--display)}
+.cbody h3 button{all:unset;cursor:pointer}
+.cbody h3 button:hover{color:var(--accent)}
+.cbody h3 button:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:2px}
+.cbody p{font-size:14px;color:var(--ink-2)}
+.cmeta{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:10px 16px;border-top:1px solid var(--line);font-size:12.5px}
+.cmeta small{display:block;color:var(--ink-3);font-size:11.5px;margin-bottom:2px}
+.cmeta span{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meter{display:inline-flex;gap:2px;margin-right:5px;vertical-align:1px}
+.meter i{width:6px;height:6px;border-radius:2px;background:var(--line-strong)}
+.meter i.on{background:var(--accent)}
+.cacts{display:flex;gap:8px;padding:0 16px 16px}
+.cacts .btn{flex:1}
+.card .num-id{font:500 12px/1 var(--mono);color:var(--ink-3)}
+.feat{flex-direction:row}
+.feat .fig{flex:1.05;aspect-ratio:auto;height:auto;min-height:420px;align-self:stretch;border-bottom:0;border-right:1px solid var(--line)}
+.feat .fig img{position:absolute;inset:18px;width:calc(100% - 36px);height:calc(100% - 36px)}
+.feat .side{flex:1;display:flex;flex-direction:column;min-width:0}
+.feat .cbody{padding:22px 24px 14px;gap:10px}
+.feat .cbody h3{font-size:28px;letter-spacing:-.02em}
+.feat .cbody p{font-size:15px}
+.feat .angle{margin-top:6px;padding:12px 14px;border-radius:8px;background:var(--accent-soft);font-size:14px;color:var(--ink)}
+.feat .angle b{display:block;font:600 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.feat .cmeta,.feat .cacts{padding-inline:24px}
+@media (max-width:639px){.feat{flex-direction:column}.feat .fig{min-height:0;aspect-ratio:4/3;border-right:0;border-bottom:1px solid var(--line)}.feat .cbody h3{font-size:22px}}
+.resmark{position:absolute;right:10px;top:10px;z-index:2;display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border-radius:999px;background:var(--reserved);color:#fff;font:600 12.5px/1 var(--body);box-shadow:var(--shadow);pointer-events:none}
+.resmark.mine{background:var(--accent);color:var(--accent-ink)}
+.resmark.fresh{animation:pop .45s var(--ease) both}
+.skel{min-height:380px;background:linear-gradient(100deg,var(--surface) 30%,var(--surface-2) 50%,var(--surface) 70%) 0 0/200% 100%;animation:shimmer 1.3s linear infinite}
+
+/* ======================================================================
+   Browse
+   ====================================================================== */
+.filters{display:grid;gap:12px;padding:16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
+.frow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.frow .lab{font-size:13px;font-weight:600;color:var(--ink-3);min-width:64px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))}
+.grid .cbody h3{font-size:16.5px}
+.grid .cbody p{font-size:13.5px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.count{font-size:13.5px;color:var(--ink-3);margin-bottom:12px}
+.more{display:flex;justify-content:center;padding-block:24px}
+.empty{padding:28px 18px;text-align:center;color:var(--ink-3);font-size:14.5px}
+
+/* ======================================================================
+   Dialogs
+   ====================================================================== */
+dialog{overflow:auto;border:0;border-radius:14px;background:var(--surface);color:var(--ink);padding:0;width:min(1180px,calc(100% - 32px));max-height:calc(100% - 40px);box-shadow:var(--shadow-lg)}
+dialog[open]{animation:dlgIn .28s var(--ease)}
+dialog::backdrop{background:rgba(12,14,18,.55);backdrop-filter:blur(2px)}
+dialog[open]::backdrop{animation:fade .25s ease}
+@keyframes dlgIn{from{opacity:0;transform:translateY(14px) scale(.99)}}
+@media (max-width:720px){dialog{width:100%;max-width:100%;height:100%;max-height:100%;margin:0;border-radius:0}}
+.dbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--surface)}
+.dbar .num-id{font:500 13px/1 var(--mono);color:var(--ink-3)}
+.x{display:grid;place-items:center;width:34px;height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);cursor:pointer;color:var(--ink-2)}
+.x:hover{background:var(--sunken);color:var(--ink)}
+.dtop{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;padding:22px 24px 4px;align-items:start}
+@media (max-width:760px){.dtop{grid-template-columns:1fr;padding-inline:16px}}
+.dtop h2{font:800 clamp(24px,3vw,32px)/1.15 var(--display);letter-spacing:-.02em;margin-top:10px}
+.asfiled{font-size:13.5px;color:var(--ink-3);margin-top:6px}
+.dacts{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:flex-end}
+@media (max-width:760px){.dacts{justify-content:flex-start}}
+.dtabs{position:sticky;top:55px;z-index:4;display:flex;gap:2px;padding:10px 24px 0;border-bottom:1px solid var(--line);background:var(--surface);overflow-x:auto}
+@media (max-width:760px){.dtabs{padding-inline:12px}}
+.dtab{position:relative;border:0;background:none;padding:10px 12px 12px;cursor:pointer;font:500 14px/1 var(--body);color:var(--ink-3);white-space:nowrap}
+.dtab small{margin-left:4px;font:500 12px var(--body);color:var(--ink-3)}
+.dtab:hover{color:var(--ink)}
+.dtab[aria-selected="true"]{color:var(--ink);font-weight:600}
+.dtab[aria-selected="true"]::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;border-radius:2px;background:var(--accent);animation:grow .25s var(--ease)}
+@keyframes grow{from{transform:scaleX(.2);opacity:0}}
+.dpanel{padding:24px;animation:rise .3s var(--ease) both}
+@media (max-width:760px){.dpanel{padding:18px 16px}}
+.ov{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:28px;align-items:start}
+.ov.claimsov{grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr)}
+@media (max-width:900px){.ov,.ov.claimsov{grid-template-columns:1fr}}
+.ovfig{position:sticky;top:118px}
+@media (max-width:900px){.ovfig{position:static}}
+.ovfig .fig{position:relative;display:block;width:100%;min-height:320px;padding:12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-2);cursor:zoom-in}
+.ovfig .fig img{max-height:62vh}
+.strip{display:flex;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px}
+.strip button{flex:none;width:72px;height:72px;padding:4px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);cursor:pointer}
+.strip button:hover{border-color:var(--ink-3)}
+.strip img{width:100%;height:100%;object-fit:contain;mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}
+.cap{font-size:12.5px;color:var(--ink-3);margin-top:8px}
+.stack{display:grid;grid-template-columns:minmax(0,1fr);gap:20px}
+.block h4{font:600 12.5px/1.2 var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.block h4 .src{font:500 11.5px/1 var(--body);letter-spacing:0;text-transform:none;padding:3px 6px;border-radius:4px;background:var(--sunken);color:var(--ink-3)}
+.panel{border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;background:var(--surface)}
+.panel.soft{background:var(--surface-2)}
+.lead{font-size:16.5px;line-height:1.55}
+.prose{font-size:15px;line-height:1.7;color:var(--ink-2)}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:10px;font-size:14.5px}
+.checks li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:start}
+.checks li::before{content:"";width:18px;height:18px;margin-top:2px;border-radius:50%;background:var(--accent-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.5 2.5L12 5.5' fill='none' stroke='%230F6B4F' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat}
+.checks li.warn::before{background:var(--aband-soft) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M8 4v5M8 11.5v.5' fill='none' stroke='%239A4B06' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center/12px no-repeat}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}
+.facts div{background:var(--surface);padding:10px 12px;min-width:0}
+.facts small{display:block;font-size:12px;color:var(--ink-3)}
+.facts b{font:600 14px/1.4 var(--body);overflow-wrap:anywhere}
+.angle{padding:14px 16px;border-radius:var(--radius);background:var(--accent-soft);font-size:14.5px}
+.angle b{display:block;font:600 12px/1 var(--body);letter-spacing:.04em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.claimlist{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.claimlist li{display:grid;grid-template-columns:44px 1fr;gap:10px;font-size:15px;line-height:1.7;color:var(--ink-2);scroll-margin-top:130px}
+.claimlist li>span{font:600 13px/1.7 var(--mono);color:var(--ink-3);text-align:right}
+.claimlist li.ind{color:var(--ink)}
+.claimlist li.ind>span{color:var(--accent)}
+.claimlist li.hl{background:var(--accent-soft);border-radius:8px;outline:6px solid var(--accent-soft)}
+.claimlist em{display:block;font:600 11.5px/1 var(--body);letter-spacing:.05em;text-transform:uppercase;color:var(--accent);font-style:normal;margin-bottom:6px}
+.tree{list-style:none;margin:0;padding:0;font-size:13.5px}
+.tree ul{list-style:none;margin:0;padding-left:22px;border-left:1px solid var(--line-strong);margin-left:10px}
+.tree li{position:relative;padding:3px 0}
+.tree ul>li::before{content:"";position:absolute;left:-22px;top:15px;width:16px;border-top:1px solid var(--line-strong)}
+.tree button{all:unset;cursor:pointer;display:inline-flex;gap:8px;align-items:baseline;padding:3px 8px;border-radius:6px}
+.tree button:hover{background:var(--sunken)}
+.tree button:focus-visible{outline:2px solid var(--focus)}
+.tree b{font:600 12.5px var(--mono);color:var(--ink-3)}
+.tree .root>button b{color:var(--accent)}
+.desc{max-width:80ch;display:grid;gap:14px}
+.desc h4{font:700 15px/1.3 var(--display);margin-top:12px}
+.desc p{font-size:15px;line-height:1.75;color:var(--ink-2)}
+.gallery{display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.gallery figure{margin:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+.gallery .fig{display:block;width:100%;aspect-ratio:3/4;padding:10px;border:0;background:var(--surface-2);cursor:zoom-in}
+.gallery figcaption{display:flex;justify-content:space-between;padding:10px 12px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-3)}
+.gen{display:grid;gap:12px;justify-items:start;padding:20px;border:1px dashed var(--line-strong);border-radius:var(--radius);background:var(--surface-2)}
+.gen img{width:100%;max-width:560px;background:#fff;border-radius:8px;border:1px solid var(--line)}
+.aiflag{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--body);color:var(--warn);background:var(--aband-soft);padding:5px 8px;border-radius:6px}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.chart text{font:500 12px var(--body);fill:var(--ink-2)}
+.chart .axis{stroke:var(--line-strong)}
+.chart .tick{stroke:var(--line)}
+.chart .muted{fill:var(--ink-3)}
+.chartbox{overflow-x:auto;padding:4px 0}
+.chartbox .chart{min-width:600px}
+.fees{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.fee{border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px}
+.fee b{display:block;font:700 15px/1.3 var(--display)}
+.fee small{display:block;font-size:12.5px;color:var(--ink-3);margin-top:2px}
+.fee .badge{margin-top:10px}
+@media (max-width:640px){.fees{grid-template-columns:1fr}}
+.famlane{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px}
+.famnode{flex:none;width:220px;border:1px solid var(--line);border-radius:var(--radius);padding:12px;background:var(--surface);position:relative}
+.famnode.me{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.famnode b{display:block;font:600 13px/1.3 var(--mono)}
+.famnode p{font-size:13px;color:var(--ink-2);margin:6px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.famnode small{font-size:12px;color:var(--ink-3)}
+.famnode a{font-size:12.5px}
+.cites{display:flex;flex-wrap:wrap;gap:6px}
+.cites a{text-decoration:none}
+.linkgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.lcard{display:grid;gap:4px;padding:14px 16px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);text-decoration:none;color:var(--ink);transition:border-color .15s,box-shadow .15s,transform .15s var(--ease)}
+.lcard:hover{border-color:var(--line-strong);box-shadow:var(--shadow);transform:translateY(-1px);color:var(--ink)}
+.lcard b{display:flex;align-items:center;justify-content:space-between;gap:8px;font:600 14.5px/1.3 var(--body)}
+.lcard span{font-size:13px;color:var(--ink-2)}
+.lcard small{font:500 12px var(--mono);color:var(--ink-3)}
+.lcard.src{border-color:var(--accent);background:var(--accent-soft)}
+.holder{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--ink-2)}
+.holder img{width:22px;height:22px;border-radius:50%}
+.resform{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-2);flex-basis:100%;animation:rise .25s var(--ease) both}
+.resform input{flex:1;min-width:220px}
+.resform p{flex-basis:100%;font-size:13px;color:var(--ink-3)}
+.think{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-2)}
+.think::before{content:"";width:14px;height:14px;border:2px solid var(--line-strong);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
+
+/* lightbox */
+#viewer{width:100%;max-width:100%;height:100%;max-height:100%;margin:0;border-radius:0;background:rgba(10,11,13,.94);color:#fff;box-shadow:none}
+#viewer[open]{display:grid;grid-template-rows:auto 1fr auto}
+#viewer .vbar{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 16px;font-size:14px}
+#viewer .vbar .x{background:transparent;border-color:rgba(255,255,255,.25);color:#fff}
+#viewer .stage{position:relative;overflow:auto;display:grid;place-items:center;padding:12px}
+#viewer .stage img{max-width:100%;max-height:100%;background:#fff;border-radius:6px;cursor:zoom-in}
+#viewer .stage.zoom{place-items:start center}
+#viewer .stage.zoom img{max-width:none;max-height:none;width:min(1400px,180%);cursor:zoom-out}
+#viewer .vnav{display:flex;justify-content:center;gap:10px;padding:12px}
+#viewer .vnav .btn{background:rgba(255,255,255,.1);color:#fff;border-color:rgba(255,255,255,.2)}
+#viewer .vnav .btn:hover{background:rgba(255,255,255,.2)}
+
+/* ======================================================================
+   Studio
+   ====================================================================== */
+.stepper{display:flex;border-bottom:1px solid var(--line);overflow-x:auto}
+.step{flex:1;min-width:150px;display:flex;gap:10px;align-items:center;border:0;background:none;padding:14px 18px;text-align:left;cursor:pointer;color:var(--ink-3);position:relative}
+.step .dot{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1px solid var(--line-strong);font:700 12px/1 var(--display);flex:none}
+.step b{font:600 14px/1.2 var(--body)}
+.step[aria-current="step"]{color:var(--ink)}
+.step[aria-current="step"] .dot{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.step[aria-current="step"]::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--accent)}
+.step.done .dot{background:var(--accent-soft);border-color:var(--accent-soft);color:var(--accent)}
+.step:disabled{cursor:not-allowed;opacity:.5}
+.spane{padding:22px 24px 28px;display:grid;gap:18px;animation:rise .3s var(--ease) both}
+@media (max-width:760px){.spane{padding:18px 16px}}
+.srcline{display:flex;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-2);font-size:13.5px}
+.srcline img{width:64px;height:48px;object-fit:contain;mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}
+.dirs{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.dir{display:flex;flex-direction:column;gap:8px;text-align:left;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);padding:16px;cursor:pointer;transition:border-color .15s,box-shadow .15s;animation:rise .4s var(--ease) both;animation-delay:calc(var(--i,0) * 70ms)}
+.dir:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
+.dir[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.dir b{font:700 17px/1.25 var(--display)}
+.dir dl{margin:0;display:grid;gap:6px;font-size:13.5px}
+.dir dt{font-size:12px;font-weight:600;color:var(--ink-3)}
+.dir dd{margin:0;color:var(--ink-2)}
+.fgroup{display:grid;gap:6px}
+.fgroup label{font-size:13.5px;font-weight:600;color:var(--ink-2)}
+.fgroup textarea{min-height:140px;resize:vertical}
+textarea.draft{min-height:420px;font:13px/1.65 var(--mono)}
+.rowbtns{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.status{font-size:13.5px;color:var(--ink-3)}
+.status.err{color:var(--lapsed)}
+.verdict{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center}
+.gauge{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;font:800 28px/1 var(--display);border:3px solid currentColor;animation:pop .45s var(--ease) both}
+.cols2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:720px){.cols2{grid-template-columns:1fr}}
+.cols2 ul{margin:0;padding-left:18px;font-size:14.5px;color:var(--ink-2);display:grid;gap:6px}
+.feegrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;text-align:center}
+.feegrid div{padding:12px;border-right:1px solid var(--line)}
+.feegrid div:last-child{border-right:0}
+.feegrid b{display:block;font:800 24px/1 var(--display)}
+.feegrid small{font-size:12.5px;color:var(--ink-3)}
+.note{font-size:13px;color:var(--ink-3)}
+
+/* ======================================================================
+   Bench, how it works, legal
+   ====================================================================== */
+.explain{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin-bottom:18px}
+.explain p{font-size:14.5px;color:var(--ink-2);max-width:92ch}
+.bench{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:20px}
+@media (max-width:940px){.bench{grid-template-columns:1fr}}
+.list{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.list>header{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.list>header h3{font-size:17px}
+.rowi{display:grid;grid-template-columns:72px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line);animation:rise .35s var(--ease) both;animation-delay:calc(var(--i,0) * 35ms)}
+.rowi:last-child{border-bottom:0}
+.rowi .th{width:72px;height:54px;border:1px solid var(--line);border-radius:8px;background:var(--surface-2);display:grid;place-items:center;overflow:hidden;font-size:11px;color:var(--ink-3)}
+.rowi .th img{width:100%;height:100%;object-fit:contain;mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}
+.rowi b{display:block;font:700 15px/1.3 var(--display)}
+.rowi small{font-size:12.5px;color:var(--ink-3)}
+.rowi .ra{display:flex;gap:6px;flex-wrap:wrap;justify-content:end}
+@media (max-width:560px){.rowi{grid-template-columns:56px minmax(0,1fr)}.rowi .th{width:56px;height:44px}.rowi .ra{grid-column:1/-1;justify-content:start}}
+.pipe{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:0;padding:0;list-style:none}
+@media (max-width:900px){.pipe{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.pipe{grid-template-columns:1fr}}
+.pipe li{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px;animation:rise .45s var(--ease) both;animation-delay:calc(var(--i,0) * 60ms)}
+.pipe .n{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--accent-soft);color:var(--accent);font:700 12px/1 var(--display);margin-bottom:10px}
+.pipe b{display:block;font:700 16px/1.3 var(--display);margin-bottom:6px}
+.pipe p{font-size:14px;color:var(--ink-2)}
+.pipe a{font-size:13px}
+.law{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:18px}
+.law .panel h3{font-size:17px;margin-bottom:10px}
+.law ul{margin:0;padding-left:18px;display:grid;gap:8px;font-size:14.5px;color:var(--ink-2)}
+.faq{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.faq details{border-bottom:1px solid var(--line);padding:16px 20px}
+.faq details:last-child{border-bottom:0}
+.faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:12px;font:600 15.5px/1.4 var(--body)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font:400 20px/1 var(--body);color:var(--ink-3);transition:transform .2s}
+.faq details[open] summary::after{transform:rotate(45deg)}
+.faq details p{margin-top:10px;font-size:14.5px;line-height:1.65;color:var(--ink-2);max-width:82ch}
+.legal{display:grid;gap:14px;max-width:88ch}
+.legal section{padding:20px 22px;border:1px solid var(--line);border-radius:12px;background:var(--surface);scroll-margin-top:90px}
+.legal h3{font-size:19px;margin-bottom:10px}
+.legal p,.legal li{font-size:14.5px;line-height:1.65;color:var(--ink-2)}
+.legal ul{padding-left:18px;margin:0;display:grid;gap:6px}
+.page{padding-top:40px}
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;background:var(--ink);color:var(--surface);padding:11px 16px;border-radius:10px;font:500 14px/1.4 var(--body);max-width:calc(100% - 32px);box-shadow:var(--shadow-lg);transition:opacity .25s,transform .25s;overflow-wrap:anywhere}
+#toast:empty{opacity:0;transform:translate(-50%,12px);pointer-events:none}
+</style>
+
+<!-- Icons: one sprite, referenced by <svg class="i"><use href="#i-..."/></svg> -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-sheet" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+  <symbol id="i-db" viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3"/></symbol>
+</svg>
+
+<a class="skip" href="#main">Skip to content</a>
+<header class="top">
+  <div class="wrap">
+    <button class="brand" data-go="today" aria-label="Patent Yard home">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg></span>
+      <b>Patent Yard</b>
+    </button>
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab" data-go="today" aria-current="page">Today</button>
+      <button class="tab" data-go="browse">Browse</button>
+      <button class="tab" data-go="bench">My bench</button>
+      <button class="tab" data-go="how">How it works</button>
+    </nav>
+    <label class="hsearch"><svg class="i"><use href="#i-search"/></svg><span class="sr">Search patents</span><input id="hq" type="search" placeholder="Search patents"></label>
+    <span class="vpill" id="vpill" title="Every listing is rechecked against USPTO records daily"><i></i><span>Checking USPTO records…</span></span>
+    <span class="who" id="who"></span>
+  </div>
+</header>
+
+<main class="wrap" id="main" tabindex="-1">
+  <!-- ================================================================ TODAY -->
+  <section data-view="today">
+    <div class="hero">
+      <div>
+        <div class="kicker rise" style="--d:0">Free public register · sourced from the USPTO</div>
+        <h1 class="rise" style="--d:1">Build on inventions <em>nobody owns</em> anymore.</h1>
+        <p class="lede rise" style="--d:2">Every week the USPTO records thousands of patents whose protection has ended. Patent Yard finds the ones a small team could build, checks them against official records every day, and helps you turn one into your own invention and provisional filing.</p>
+        <div class="ctas rise" style="--d:3"><button class="btn primary lg" data-scroll="wallTop">See today's patents</button><button class="btn secondary lg" data-go="how">How it works</button></div>
+        <div class="trust rise" style="--d:4"><span><svg class="i"><use href="#i-shield"/></svg>USPTO Official Gazette</span><span><svg class="i"><use href="#i-db"/></svg>USPTO Patent Public Search</span><span><svg class="i"><use href="#i-clock"/></svg>Rechecked daily</span></div>
+      </div>
+      <figure class="plotter rise" style="--d:2;margin:0">
+        <div class="phead"><span id="plotNo">US —</span><span>Original drawing, plotted live</span></div>
+        <div class="plotbox" id="plotbox"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas></div>
+        <figcaption><div><b id="plotName">Loading today's first drawing…</b><small id="plotMeta">From the patent's own drawing sheets</small></div><button class="btn secondary sm" id="plotOpen" hidden>Open patent</button></figcaption>
+      </figure>
+    </div>
+
+    <div class="statband" aria-label="Register totals">
+      <div><b class="num" id="stPool">—</b><span>patents listed, each with its full file</span></div>
+      <div><b class="num" id="stLapsed">—</b><span>US patents lapsed in the past year (Official Gazette)</span></div>
+      <div><b class="num" id="stSources">3</b><span>kinds of ended protection tracked: lapsed, full term, abandoned</span></div>
+      <div><b class="num" id="stRes">0</b><span>currently reserved by builders</span></div>
+    </div>
+
+    <div class="steps3" aria-label="How Patent Yard works">
+      <div><span class="n">1</span><h3>Discover</h3><p>A fresh set of 15 patents every day, matched to the fields you pick. Each shows its source, drawings and full text.</p></div>
+      <div><span class="n">2</span><h3>Reinvent</h3><p>Claude proposes modern directions. Pick one, shape it into your own idea, and screen it for novelty.</p></div>
+      <div><span class="n">3</span><h3>Protect</h3><p>Get an editable provisional-patent draft and a checklist for filing it yourself with the USPTO.</p></div>
+    </div>
+
+    <div class="sechead" id="wallTop"><div><h2>Today's patents</h2><p>Fifteen picks for today, drawn from the fields you choose. They change at midnight.</p></div><span class="clock">New set in <b class="num" id="clock">--:--:--</b></span></div>
+    <div class="fieldbar">
+      <span class="kicker">Your fields</span>
+      <div class="fields" id="myFields"></div>
+      <button class="btn secondary sm" id="editFields">Choose fields</button>
+    </div>
+    <div class="picker" id="picker" hidden>
+      <p>Pick the fields you care about. Your daily set draws from these.</p>
+      <div id="pickerChips" style="display:contents"></div>
+      <button class="btn primary sm" id="savePicker" style="margin-left:auto">Save fields</button>
+    </div>
+    <div class="wall" id="wall" aria-live="polite">
+      <div class="card skel feat"></div><div class="card skel"></div><div class="card skel"></div><div class="card skel"></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ BROWSE -->
+  <section data-view="browse" class="page" hidden>
+    <div class="sechead"><div><h2>Browse the register</h2><p>Every patent here passed the same checks: officially lapsed, past its full term, or long abandoned, with no live relative in its US family. Each is rechecked daily.</p></div></div>
+    <div class="filters" role="search">
+      <div class="frow"><input class="field" id="q" type="search" placeholder="Search names, summaries, titles, owners or patent numbers" aria-label="Search the register"></div>
+      <div class="frow" id="fInd"><span class="lab">Field</span></div>
+      <div class="frow"><span class="lab">Status</span>
+        <button class="chip" data-st="" aria-pressed="true">All</button>
+        <button class="chip" data-st="lapsed" aria-pressed="false">Lapsed</button>
+        <button class="chip" data-st="expired" aria-pressed="false">Expired, full term</button>
+        <button class="chip" data-st="abandoned" aria-pressed="false">Likely abandoned</button>
+      </div>
+      <div class="frow"><span class="lab">Build</span>
+        <button class="chip" data-b="" aria-pressed="true">Any</button>
+        <button class="chip" data-b="2" aria-pressed="false">Weekend or garage</button>
+        <button class="chip" data-b="3" aria-pressed="false">Up to workshop</button>
+      </div>
+      <div class="frow"><span class="lab">Options</span>
+        <button class="chip" id="fSolo" aria-pressed="false">Solo inventors</button>
+        <button class="chip" id="fFree" aria-pressed="false">Hide reserved</button>
+        <select class="field" id="sort" aria-label="Sort" style="width:auto">
+          <option value="build">Easiest to build first</option>
+          <option value="recent">Most recently freed</option>
+          <option value="old">Oldest filing first</option>
+          <option value="az">A to Z</option>
+        </select>
+      </div>
+    </div>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+    <div class="more"><button class="btn secondary" id="more" hidden>Show 24 more</button></div>
+  </section>
+
+  <!-- ================================================================ BENCH -->
+  <section data-view="bench" class="page" hidden>
+    <div class="sechead"><div><h2>My bench</h2><p id="benchNote">The patents you've reserved and the inventions you're shaping.</p></div><button class="btn primary" id="ownIdea">Start from my own idea</button></div>
+    <div class="explain"><span class="badge reserved">Reserved</span><p><b>What reserving does.</b> A reservation holds a patent for you on Patent Yard for 30 days. It leaves other builders' daily sets and shows "Reserved by you" with your optional note, so nobody here duplicates your work. You can hold 5 at a time and renew in the last week. It gives you no legal rights: the invention stays free for everyone.</p></div>
+    <div class="bench">
+      <div class="list"><header><h3>Reserved</h3><span class="badge plain" id="resCount">0 of 5</span></header><div id="resList"></div></div>
+      <div class="list"><header><h3>Ideas</h3><span class="badge plain" id="ideaCount">0</span></header><div id="ideaList"></div></div>
+    </div>
+  </section>
+
+  <!-- ================================================================ HOW IT WORKS -->
+  <section data-view="how" class="page" hidden>
+    <div class="sechead"><div><h2>How a patent gets here</h2><p>Every patent comes from an official USPTO source, links back to it, and is rechecked daily. New patents are added every week.</p></div></div>
+    <ol class="pipe">
+      <li style="--i:0"><span class="n">1</span><b>Official Gazette lapses</b><p>The USPTO's weekly notice of patents that expired because a maintenance fee went unpaid. We take lapses 4 to 12 months old and drop any patent on a year of reinstatement notices.</p><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" target="_blank" rel="noopener noreferrer">Official Gazette for Patents</a></li>
+      <li style="--i:1"><span class="n">2</span><b>Full-term expirations</b><p>Patents filed 1996 through 2001 and granted within four years, whose 20-year term from filing has ended. Drug and chemistry classes are skipped because their terms can be extended.</p><a href="https://ppubs.uspto.gov/pubwebapp/" target="_blank" rel="noopener noreferrer">Patent Public Search</a></li>
+      <li style="--i:2"><span class="n">3</span><b>Abandoned applications</b><p>Published applications filed 2013 to 2017 with no patent anywhere in their family and no family filings since. Labeled "likely abandoned" because the status is inferred.</p><a href="https://ppubs.uspto.gov/pubwebapp/" target="_blank" rel="noopener noreferrer">Patent Public Search</a></li>
+      <li style="--i:3"><span class="n">4</span><b>Family clearance</b><p>Every US relative is checked. If a sibling patent could still be in force, or a continuation could still be pending, the patent is left out.</p></li>
+      <li style="--i:4"><span class="n">5</span><b>Full file</b><p>Claims, description, up to eight original drawing sheets, family members and citations come from Patent Public Search. Nothing is added or invented.</p></li>
+      <li style="--i:5"><span class="n">6</span><b>Daily recheck</b><p>Each day every listing is checked again against the newest Gazette and its current family. Anything that changed leaves the register.</p></li>
+    </ol>
+    <div class="law">
+      <div class="panel"><h3>What you can do</h3><ul>
+        <li>Make, use and sell what an expired or abandoned US patent describes. Nobody can enforce it against you in the US.</li>
+        <li>Improve on it and patent the improvement, if the improvement is new and not obvious.</li>
+        <li>File a provisional application yourself to lock in a filing date for 12 months.</li></ul></div>
+      <div class="panel"><h3>What you can't do</h3><ul>
+        <li>Patent the same invention. The published document is prior art against everyone, you included.</li>
+        <li>Assume the whole product is free. A newer patent on some other part could still apply; we only check this patent's own family.</li>
+        <li>Assume foreign rights are gone. We check US rights only.</li></ul></div>
+      <div class="panel"><h3>Fine print</h3><ul>
+        <li><b>Lapsed</b> patents can be reinstated if the owner shows the missed payment was unintentional. Anyone who started using the invention during the lapse keeps limited "intervening rights" under 35 U.S.C. 41(c)(2).</li>
+        <li><b>Likely abandoned</b> status is inferred from USPTO records. Confirm it on Patent Center before relying on it.</li>
+        <li>Patent Yard is not legal advice. For anything with real money behind it, talk to a registered patent attorney or agent.</li></ul></div>
+    </div>
+    <div class="sechead" style="margin-top:44px"><div><h2>Questions</h2></div></div>
+    <div class="faq">
+      <details><summary>What is a lapsed patent?</summary><p>US patents need maintenance fees 3.5, 7.5 and 11.5 years after grant, with a six-month grace period. If the owner doesn't pay, the patent expires at the 4th, 8th or 12th anniversary of its grant, and the USPTO lists it in the Official Gazette. From then on nobody can enforce it.</p></details>
+      <details><summary>What does "expired, full term" mean?</summary><p>A US utility patent filed after June 8, 1995 lasts 20 years from its earliest non-provisional filing date, sometimes plus a term adjustment. The patents in this group were filed 1996 through 2001 and granted within four years of filing, which keeps any adjustment short, so their terms have ended.</p></details>
+      <details><summary>Can I really build and sell these?</summary><p>In the US, yes: an expired or abandoned patent gives no one the right to stop you. Two cautions. Other, newer patents might cover parts of a product you build, and foreign patents in the same family might still be alive. Check both before you invest serious money.</p></details>
+      <details><summary>Can I patent one of these?</summary><p>Not as it is. The published document is prior art. You can patent a genuine improvement that is new and not obvious, which is what the Reinvent studio helps you find.</p></details>
+      <details><summary>What does reserving do?</summary><p>It holds a patent for you on Patent Yard for 30 days so other builders here can see someone is working on it, and it removes it from their daily sets. It is a courtesy between users, not a legal right. You can hold 5 at a time.</p></details>
+      <details><summary>Where do the drawings come from?</summary><p>Every drawing is a page of the patent's own published document, cropped to the drawing and scaled down. We never add to them. If a patent has no drawings, you can ask Claude for a concept sketch, which is clearly marked as AI-generated and not part of the patent.</p></details>
+      <details><summary>How current is the data?</summary><p>New patents are added every week after the Official Gazette publishes. Every listed patent is rechecked against USPTO records daily; the time of the last check is in the header and on each patent's Sources tab.</p></details>
+      <details><summary>Is it really free?</summary><p>Yes. Browsing, reserving, the Reinvent studio and provisional drafting are free. The AI tools run on your own Claude account, and the USPTO charges its own filing fee (from $65 for a micro entity).</p></details>
+    </div>
+  </section>
+
+  <!-- ================================================================ LEGAL -->
+  <section data-view="legal" class="page" hidden>
+    <div class="sechead"><div><h2>Terms, privacy and disclaimer</h2><p>Plain-language terms for using Patent Yard.</p></div></div>
+    <div class="legal">
+      <section id="terms"><h3>Terms of use</h3><ul>
+        <li>Patent Yard is a free, informational service. It lists US patents and published applications drawn from public USPTO records and links to each source.</li>
+        <li>Status information can be wrong or out of date. Verify a patent's status with the USPTO before you rely on it.</li>
+        <li>Plain-English names, summaries, modern angles and build ratings are Patent Yard's own editorial notes, not part of the patent.</li>
+        <li>Reservations are a courtesy between users. They create no legal rights or obligations, and we may remove any reservation or note.</li>
+        <li>AI output (directions, novelty checks, sketches, drafts) can be wrong or incomplete. You are responsible for anything you file or build.</li>
+        <li>Don't use Patent Yard to harass people, post others' private information in notes, or overload the service.</li></ul></section>
+      <section id="privacy"><h3>Privacy</h3><ul>
+        <li><b>Reservations</b> store your account id, the patent, the dates and your optional note. Other signed-in users of this page see your display name next to what you reserved.</li>
+        <li><b>Ideas, sketches and drafts</b> are stored in your own private space. Nobody else can read them, including the site's owner.</li>
+        <li><b>Field preferences</b> are private in the same way. If you're not signed in, they stay in your browser only.</li>
+        <li><b>AI requests</b> go to Claude on your own account, with the patent text and your idea as input.</li>
+        <li>No ads, no analytics, no tracking cookies.</li></ul></section>
+      <section id="disclaimer"><h3>Disclaimer</h3><p>Patent Yard is not a law firm, is not affiliated with the United States Patent and Trademark Office, and does not give legal advice. "Lapsed" means the USPTO published an expiration notice for an unpaid maintenance fee. "Expired, full term" means its 20-year term, counted from its filing date, has ended. "Likely abandoned" is our inference from USPTO records. None of these guarantees that you are free to make a particular product, since other patents may apply. Talk to a registered patent attorney or agent before investing significant money or filing a nonprovisional application.</p></section>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <div><b>Patent Yard</b><p style="margin-top:10px;max-width:44ch">A free register of US patents whose protection has ended, with tools to reinvent them. Data from the USPTO. Not legal advice.</p><p class="num" id="footVer" style="margin-top:10px"></p></div>
+    <nav aria-label="Explore"><span class="kicker">Explore</span><button data-go="today">Today</button><button data-go="browse">Browse</button><button data-go="bench">My bench</button><button data-go="how">How it works</button></nav>
+    <nav aria-label="Sources"><span class="kicker">Sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" target="_blank" rel="noopener noreferrer">Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" target="_blank" rel="noopener noreferrer">Patent Public Search</a><a href="https://patentcenter.uspto.gov/" target="_blank" rel="noopener noreferrer">Patent Center</a></nav>
+    <nav aria-label="Legal"><span class="kicker">Legal</span><button data-go="legal" data-anchor="terms">Terms of use</button><button data-go="legal" data-anchor="privacy">Privacy</button><button data-go="legal" data-anchor="disclaimer">Disclaimer</button></nav>
+  </footer>
+</main>
+
+<dialog id="dlg" aria-labelledby="dlgTitle"></dialog>
+<dialog id="studio" aria-label="Invention studio"></dialog>
+<dialog id="viewer" aria-label="Drawing viewer"></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ======================================================================
+   Helpers
+   ====================================================================== */
+const $ = (s, el = document) => el.querySelector(s);
+const $$ = (s, el = document) => [...el.querySelectorAll(s)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const DAY = 864e5, HOLD_DAYS = 30, MAX_RES = 5, WALL = 15, NOTE_MAX = 140;
+const BUILD = ["", "Weekend", "Garage", "Workshop", "Lab", "Industrial"];
+const EXT = 'target="_blank" rel="noopener noreferrer"';
+const HOME = "https://claude.ai/artifact/9Qg7NM7egHbxqJ2FWMEAmt";  // public address; patent links append #<id>
+const STATUS = { lapsed: "Lapsed, fee not paid", expired: "Expired, full term", abandoned: "Likely abandoned" };
+const icon = (name, cls = "i") => `<svg class="${cls}" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+const isPatentId = s => /^US-[A-Z]*\d{5,11}-[A-Z]\d?$/.test(s);
+
+const S = {
+  meta: null, patents: [], byId: Object.create(null), shards: {}, claims: {}, rawClaims: [], ideas: [],
+  prefs: { fields: [] }, me: { id: null }, wall: [], wallDay: "",
+  db: null, user: null, sample: null, downloads: null, canWrite: null, profiles: {}, open: null, tab: "overview",
+  browse: { q: "", ind: "", st: "", b: "", solo: false, free: false, sort: "build", shown: 24 },
+};
+
+function toast(msg, ms = 4600) { const t = $("#toast"); t.textContent = msg; clearTimeout(toast.t); toast.t = setTimeout(() => t.textContent = "", ms); }
+function rng(seed) { let h = 1779033703 ^ seed.length; for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 3432918353), h = h << 13 | h >>> 19;
+  return () => { h = Math.imul(h ^ h >>> 16, 2246822507); h = Math.imul(h ^ h >>> 13, 3266489909); return ((h ^= h >>> 16) >>> 0) / 4294967296; }; }
+const dayKey = () => new Date().toLocaleDateString("en-CA");
+const toDate = s => new Date(s && s.length <= 10 ? s + "T12:00:00" : s);
+const fmtDate = (s, o = { month: "short", year: "numeric" }) => { if (!s) return "—"; const d = toDate(s); return isNaN(d) ? "—" : d.toLocaleDateString("en-US", o); };
+const fullDate = s => fmtDate(s, { month: "long", day: "numeric", year: "numeric" });
+const fmtWhen = s => { const d = new Date(s); return isNaN(d) ? "" : d.toLocaleString("en-US", { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" }); };
+const yr = s => s ? s.slice(0, 4) : "—";
+const addYears = (s, y) => { const d = toDate(s); d.setMonth(d.getMonth() + Math.round(y * 12)); return d.toISOString().slice(0, 10); };
+const indName = k => S.meta?.industries[k] || k;
+const clip = (s, n) => String(s || "").slice(0, n);
+const digits = s => String(s || "").replace(/\D/g, "");
+function local(k, v) { try { if (v === undefined) return JSON.parse(localStorage.getItem("patentyard." + k) || "null"); localStorage.setItem("patentyard." + k, JSON.stringify(v)); } catch { return null; } }
+const meter = b => `<span class="meter" aria-hidden="true">${[1,2,3,4,5].map(i => `<i class="${i <= b ? "on" : ""}"></i>`).join("")}</span>`;
+const statusBadge = p => `<span class="badge ${p.st}">${STATUS[p.st]}</span>`;
+const freedOn = p => p.x || p.te || p.p || "";
+const freedLine = p => p.st === "lapsed" ? `Lapsed ${fmtDate(p.x)}` : p.st === "expired" ? `Term ended ${fmtDate(p.te)}` : `Published ${yr(p.p)}`;
+function countUp(el, to) {
+  el.textContent = to.toLocaleString();  // correct even if animation frames never run (background tab)
+  if (reduced || !to) return;
+  const t0 = performance.now(), from = Math.round(to * .6);
+  const step = t => { const k = Math.min(1, (t - t0) / 1000), e = 1 - Math.pow(1 - k, 3); el.textContent = Math.round(from + (to - from) * e).toLocaleString(); if (k < 1) requestAnimationFrame(step); };
+  requestAnimationFrame(step);
+}
+let vt;
+function transition(fn) {
+  if (reduced || !document.startViewTransition || document.hidden) return fn();
+  vt?.skipTransition?.();
+  vt = document.startViewTransition(fn);
+  for (const p of [vt.ready, vt.finished, vt.updateCallbackDone]) p?.catch(() => {});
+}
+
+/* ======================================================================
+   Links. Every patent links back to where it came from and to places to
+   cross-check it. Formats: USPTO (PDF, Patent Center, Patent Public
+   Search), Google Patents, Justia, FreePatentsOnline, Espacenet.
+   ====================================================================== */
+function links(p, d) {
+  const [, num, kind] = p.id.split("-"), app = p.st === "abandoned";
+  return {
+    pdf: `https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/${num}`,
+    ppubs: `https://ppubs.uspto.gov/pubwebapp/external.html?q=${num}.pn.&db=${app ? "US-PGPUB" : "USPAT"}`,
+    center: d?.app ? `https://patentcenter.uspto.gov/applications/${digits(d.app)}` : "https://patentcenter.uspto.gov/",
+    google: `https://patents.google.com/patent/US${num}${kind}/en`,
+    justia: `https://patents.justia.com/patent/${num}`,
+    fpo: app ? `https://www.freepatentsonline.com/y${num.slice(0, 4)}/${num.slice(4)}.html` : `https://www.freepatentsonline.com/${num}.html`,
+    espacenet: `https://worldwide.espacenet.com/patent/search?q=pn%3DUS${num}${kind}`,
+    fees: "https://fees.uspto.gov/MaintenanceFees/",
+  };
+}
+const gp = id => { const [, num, kind] = String(id).split("-"); return `https://patents.google.com/patent/US${num}${kind || ""}/en`; };
+function citeRef(raw) {  // cited references arrive as "7038588", "2015/0025423", "D512345" or "RE12345"
+  const x = String(raw).trim();
+  if (/^\d{4}\/\d{7}$/.test(x)) return { label: `US ${x}`, href: `https://patents.google.com/patent/US${x.replace("/", "")}A1/en` };
+  if (/^\d{5,8}$/.test(x)) return { label: `US ${Number(x).toLocaleString("en-US")}`, href: `https://patents.google.com/patent/US${x}/en` };
+  if (/^D\d{4,7}$/.test(x)) return { label: `US ${x} (design)`, href: `https://patents.google.com/patent/US${x}S/en` };
+  if (/^RE\d{4,6}$/.test(x)) return { label: `US ${x} (reissue)`, href: `https://patents.google.com/patent/US${x}E/en` };
+  return { label: `US ${x}`, href: `https://patents.google.com/?q=${encodeURIComponent("US" + x.replace(/[^A-Za-z0-9]/g, ""))}` };
+}
+
+/* ======================================================================
+   Data bundles (see pipeline/build.py)
+   ====================================================================== */
+async function shard(kind, key) {
+  const k = kind + "-" + key;
+  return S.shards[k] ||= fetch(`data/${k}.json`).then(r => r.ok ? r.json() : {}).catch(() => ({}));
+}
+const figSrc = async p => p?.fig ? (await shard("fig", p.fs))[p.id] || null : null;
+const detailOf = async p => (await shard("detail", p.ind))[p.id] || {};
+const docOf = async p => (await shard("doc", p.fs))[p.id] || {};
+async function sheetsOf(p) { const first = await figSrc(p); const rest = p.ns > 1 ? (await shard("sheets", p.fs))[p.id] || [] : []; return [first, ...rest].filter(Boolean); }
+function fillFigs(root) {
+  for (const img of $$("img[data-fig]", root)) {
+    if (img.dataset.done) continue;
+    img.dataset.done = 1;
+    figSrc(S.byId[img.dataset.fig]).then(src => {
+      const box = img.closest(".fig");
+      if (!src) { box?.classList.remove("load"); img.replaceWith(Object.assign(document.createElement("span"), { className: "nofig", textContent: "No drawings in this document" })); return; }
+      img.onload = () => { box?.classList.remove("load"); if (!reduced && img.dataset.anim) img.classList.add("ink"); };
+      img.src = src;
+    });
+  }
+}
+
+/* ======================================================================
+   Reservations. Each viewer writes only claims/<their id> (the page's
+   access rules enforce it); everything read back is still validated.
+   ====================================================================== */
+function cleanItems(items) {
+  const now = Date.now(), out = [];
+  for (const [pid, c] of Object.entries(items && typeof items === "object" ? items : {})) {
+    if (!Object.hasOwn(S.byId, pid) || !c || typeof c.at !== "string" || typeof c.until !== "string" || (c.renewed != null && typeof c.renewed !== "string")) continue;
+    const at = Date.parse(c.at), until = Date.parse(c.until), from = Date.parse(c.renewed || c.at);
+    if (![at, until, from].every(Number.isFinite) || until < now || at > now + 3e5 || from < at || until - from > (HOLD_DAYS + 1) * DAY) continue;
+    out.push([pid, { at: c.at, until: c.until, renewed: c.renewed || null, note: typeof c.note === "string" ? c.note.slice(0, NOTE_MAX) : "" }]);
+  }
+  return out.sort((a, b) => a[1].at.localeCompare(b[1].at)).slice(0, MAX_RES);
+}
+function computeClaims(docs) {
+  const win = {};
+  for (const d of docs) for (const [pid, c] of cleanItems(d.items)) {
+    const cur = win[pid];
+    if (!cur || c.at < cur.at || (c.at === cur.at && d.uid < cur.uid)) win[pid] = { uid: d.uid, ...c };
+  }
+  return win;
+}
+const claimOf = id => S.claims[id];
+const heldByOther = id => { const c = S.claims[id]; return !!(c && c.uid !== S.me.id); };
+const mine = () => Object.entries(S.claims).filter(([, c]) => c.uid === S.me.id).map(([id, c]) => ({ id, ...c }));
+const myItems = () => { const d = S.rawClaims.find(d => d.uid === S.me.id); return Object.fromEntries(d ? cleanItems(d.items) : []); };
+const daysLeft = c => Math.max(0, Math.ceil((Date.parse(c.until) - Date.now()) / DAY));
+function reserveBlocker(p) {
+  if (!S.db || !S.me.id) return "Reserving needs you to be signed in to Claude with access to this page.";
+  if (S.canWrite === false) return "You have view-only access to this page, so you can't reserve.";
+  if (heldByOther(p.id)) return "Someone else has reserved this one.";
+  if (!claimOf(p.id) && mine().length >= MAX_RES) return `You can hold ${MAX_RES} reservations at a time. Release one first.`;
+  return null;
+}
+async function writeMyClaims(items) {
+  await S.db.doc("claims/" + S.me.id).set({ items });
+  applyClaims(S.rawClaims.filter(d => d.uid !== S.me.id).concat({ uid: S.me.id, items }));
+}
+async function reserve(id, note = "", btn) {
+  const p = S.byId[id], why = reserveBlocker(p);
+  if (why) return toast(why);
+  if (btn) btn.disabled = true;
+  const items = myItems(), now = new Date();
+  items[id] = { at: now.toISOString(), until: new Date(+now + HOLD_DAYS * DAY).toISOString(), note: String(note || "").trim().slice(0, NOTE_MAX) };
+  try {
+    S.justReserved = id;
+    await writeMyClaims(items);
+    toast(`Reserved until ${fmtDate(items[id].until, { month: "short", day: "numeric" })}. It's on your bench.`);
+  } catch (e) {
+    S.justReserved = null;
+    if (e?.code === "invalid_argument") S.canWrite = false;
+    toast(e?.code === "quota_exceeded" ? "Patent Yard's storage is full right now. Try again later." : "Couldn't reserve that. Check your access and try again.");
+  } finally { if (btn) btn.disabled = false; }
+}
+async function release(id) {
+  const items = myItems(); delete items[id];
+  try { await writeMyClaims(items); toast("Released. It's back in everyone's daily sets."); } catch { toast("Couldn't release it. Try again."); }
+}
+async function renew(id) {
+  const items = myItems(); if (!items[id]) return;
+  const now = new Date();
+  items[id] = { ...items[id], renewed: now.toISOString(), until: new Date(+now + HOLD_DAYS * DAY).toISOString() };
+  try { await writeMyClaims(items); toast(`Renewed until ${fmtDate(items[id].until, { month: "short", day: "numeric" })}.`); } catch { toast("Couldn't renew it. Try again."); }
+}
+function applyClaims(raw) {
+  S.rawClaims = raw; S.claims = computeClaims(raw);
+  if (S.db && S.me.id) {  // lost a same-moment race: drop the losing claim so it doesn't linger
+    const mineRaw = Object.fromEntries(cleanItems(raw.find(d => d.uid === S.me.id)?.items));
+    const lost = Object.keys(mineRaw).filter(id => heldByOther(id));
+    if (lost.length) { lost.forEach(id => delete mineRaw[id]); S.db.doc("claims/" + S.me.id).set({ items: mineRaw }).catch(() => {}); toast("Someone reserved that a moment before you."); }
+  }
+  $("#stRes").textContent = Object.keys(S.claims).length;
+  if (S.wall.some(p => heldByOther(p.id))) renderToday(false);
+  const ids = [...new Set(Object.values(S.claims).map(c => c.uid))];
+  (S.user && ids.length ? S.user.profiles(ids) : Promise.resolve({})).then(ps => { S.profiles = ps || {}; refreshReserved(); });
+}
+const holderName = c => c.uid === S.me.id ? "you" : (S.profiles[c.uid]?.name || "a builder");
+function resMark(p, fresh) {
+  const c = claimOf(p.id); if (!c) return "";
+  return `<span class="resmark ${c.uid === S.me.id ? "mine" : ""} ${fresh ? "fresh" : ""}" role="img" aria-label="Reserved by ${esc(holderName(c))}, ${daysLeft(c)} days left">${icon("flag")}Reserved${c.uid === S.me.id ? " by you" : ""}</span>`;
+}
+function refreshReserved() {
+  for (const card of $$(".card[data-id]")) {
+    const id = card.dataset.id, p = S.byId[id]; if (!p) continue;
+    card.querySelector(".resmark")?.remove();
+    const html = resMark(p, S.justReserved === id && !reduced);
+    if (html) card.insertAdjacentHTML("beforeend", html);
+    const rb = card.querySelector("[data-act=reserve]");
+    if (rb) { const c = claimOf(id); rb.textContent = c ? (c.uid === S.me.id ? "Release" : "Reserved") : "Reserve"; rb.disabled = heldByOther(id); }
+  }
+  S.justReserved = null;
+  if (!$("[data-view=bench]").hidden) renderBench();
+  if ($("#dlg").open && S.open && !($("#resForm") && !claimOf(S.open))) renderActions(S.open);  // keep a half-typed note
+}
+
+/* ======================================================================
+   Cards
+   ====================================================================== */
+function card(p, i, opts = {}) {
+  const c = claimOf(p.id), feat = opts.feat;
+  const resLabel = c ? (c.uid === S.me.id ? "Release" : "Reserved") : "Reserve";
+  const owner = p.ia ? "Solo inventor" : p.a || "—";
+  const fig = `<button class="fig load" data-open="${p.id}" aria-label="Open ${esc(p.t)}"><img alt="Drawing from ${esc(p.n)}" data-fig="${p.id}" data-anim="1"><span class="over">${statusBadge(p)}</span>${p.ns ? `<span class="sheets">${icon("sheet")}${p.sh || p.ns} ${(p.sh || p.ns) === 1 ? "drawing" : "drawings"}</span>` : ""}</button>`;
+  const body = `<div class="cbody"><span class="fieldname">${esc(indName(p.ind))} · <span class="num-id">${esc(p.n)}</span></span>
+    <h3><button data-open="${p.id}">${esc(p.t)}</button></h3><p>${esc(p.h)}</p>${feat && p.tw ? `<div class="angle"><b>Modern angle</b>${esc(p.tw)}</div>` : ""}</div>`;
+  const meta = `<div class="cmeta"><div><small>Build</small><span>${meter(p.b)}${BUILD[p.b]}</span></div><div><small>${p.st === "lapsed" ? "Lapsed" : p.st === "expired" ? "Term ended" : "Published"}</small><span>${esc(p.st === "lapsed" ? fmtDate(p.x) : p.st === "expired" ? fmtDate(p.te) : yr(p.p))}</span></div><div><small>${p.st === "abandoned" ? "Applicant" : "Assignee at issue"}</small><span title="${esc(owner)}">${esc(owner)}</span></div></div>`;
+  const acts = `<div class="cacts"><button class="btn secondary sm" data-act="reserve" data-id="${p.id}" ${heldByOther(p.id) ? "disabled" : ""}>${resLabel}</button><button class="btn primary sm" data-act="reinvent" data-id="${p.id}">${icon("spark")}Reinvent</button></div>`;
+  const inner = feat ? `${fig}<div class="side">${body}${meta}${acts}</div>` : `${fig}${body}${meta}${acts}`;
+  return `<article class="card ${feat ? "feat" : ""}" data-id="${p.id}" style="--i:${Math.min(i, 16)}">${inner}${resMark(p)}</article>`;
+}
+
+/* ======================================================================
+   Today
+   ====================================================================== */
+function buildWall() {
+  const all = Object.keys(S.meta.industries).filter(k => S.patents.some(p => p.ind === k));
+  const fields = S.prefs.fields?.length ? S.prefs.fields.filter(f => all.includes(f)) : all;
+  const r = rng(dayKey() + "|" + (S.me.id || "guest") + "|" + fields.join(","));
+  const pools = fields.map(f => S.patents.filter(p => p.ind === f && !heldByOther(p.id)).map(p => ({ p, s: r() + (5 - p.b) * .12 + (p.ia ? .08 : 0) + (p.ns > 2 ? .05 : 0) })).sort((a, b) => b.s - a.s).map(x => x.p));
+  const out = [];
+  for (let k = 0; out.length < WALL && pools.some(pl => pl.length); k++) { const pl = pools[k % pools.length]; if (pl.length) out.push(pl.shift()); }
+  const fi = out.findIndex(p => p.fig && p.b <= 3 && p.tw);
+  if (fi > 0) out.unshift(out.splice(fi, 1)[0]);
+  return out;
+}
+function renderToday(restartPlot = true) {
+  S.wall = buildWall(); S.wallDay = dayKey();
+  $("#wall").innerHTML = S.wall.map((p, i) => card(p, i, { feat: i === 0 })).join("") || `<div class="empty">No patents match your fields yet. Choose more fields above.</div>`;
+  fillFigs($("#wall"));
+  const f = S.prefs.fields || [];
+  $("#myFields").innerHTML = f.length ? f.map(k => `<span class="chip">${esc(indName(k))}</span>`).join("") : `<span class="muted" style="font-size:14px">All fields</span>`;
+  if (restartPlot) plotter.start();
+}
+function renderPicker() {
+  const sel = new Set(S.prefs.fields || []);
+  $("#pickerChips").innerHTML = Object.entries(S.meta.industries).filter(([k]) => S.patents.some(p => p.ind === k))
+    .map(([k, n]) => `<button class="chip" data-pick="${k}" aria-pressed="${sel.has(k)}">${esc(n)} <span class="muted">${S.patents.filter(p => p.ind === k).length}</span></button>`).join("");
+}
+function tickClock() {
+  const n = new Date(), m = new Date(n); m.setHours(24, 0, 0, 0);
+  const s = Math.floor((m - n) / 1000), p = x => String(x).padStart(2, "0");
+  $("#clock").textContent = `${p(Math.floor(s / 3600))}:${p(Math.floor(s / 60) % 60)}:${p(s % 60)}`;
+  if (S.meta && S.wallDay && S.wallDay !== dayKey()) renderToday();
+}
+
+/* Hero: redraws a real drawing sheet cell by cell, like a plotter. */
+const plotter = {
+  run: 0,
+  hex(v) { v = v.trim().replace("#", ""); return [0, 2, 4].map(i => parseInt(v.slice(i, i + 2), 16)); },
+  async start() {
+    const my = ++this.run, picks = S.wall.filter(p => p.fig).slice(0, 5);
+    if (!picks.length) return;
+    for (let k = 0; my === this.run; k++) {
+      await this.draw(picks[k % picks.length], my);
+      if (reduced) return;
+      await sleep(5200);
+      while (document.hidden && my === this.run) await sleep(800);
+    }
+  },
+  async draw(p, my) {
+    const src = await figSrc(p); if (!src || my !== this.run) return;
+    const img = new Image(); await new Promise(r => { img.onload = img.onerror = r; img.src = src; });
+    const box = $("#plotbox"), cv = $("#plot"), pen = $("#pen"), dpr = Math.min(2, devicePixelRatio || 1);
+    box.style.opacity = 0; await sleep(reduced ? 0 : 400); if (my !== this.run || !box.clientWidth) return;
+    const W = cv.width = pen.width = Math.round(box.clientWidth * dpr), H = cv.height = pen.height = Math.round(box.clientHeight * dpr);
+    const ctx = cv.getContext("2d"), pc = pen.getContext("2d");
+    const sc = Math.min(W / img.width, H / img.height) * .9, dw = Math.max(1, Math.round(img.width * sc)), dh = Math.max(1, Math.round(img.height * sc));
+    const ox = Math.round((W - dw) / 2), oy = Math.round((H - dh) / 2);
+    const off = document.createElement("canvas"); off.width = dw; off.height = dh;
+    const o = off.getContext("2d"); o.drawImage(img, 0, 0, dw, dh);
+    const css = getComputedStyle(document.documentElement), d = o.getImageData(0, 0, dw, dh), [r, g, b] = this.hex(css.getPropertyValue("--ink"));
+    for (let i = 0; i < d.data.length; i += 4) { const a = 255 - d.data[i]; d.data[i] = r; d.data[i + 1] = g; d.data[i + 2] = b; d.data[i + 3] = a; }
+    o.putImageData(d, 0, 0);
+    $("#plotNo").textContent = p.n; $("#plotName").textContent = p.t;
+    $("#plotMeta").textContent = `${indName(p.ind)} · ${freedLine(p)}`;
+    const ob = $("#plotOpen"); ob.hidden = false; ob.dataset.open = p.id;
+    ctx.clearRect(0, 0, W, H); pc.clearRect(0, 0, W, H); box.style.opacity = 1;
+    if (reduced) { ctx.drawImage(off, ox, oy); return; }
+    const C = Math.round(12 * dpr), cells = [];
+    for (let y = 0, row = 0; y < dh; y += C, row++) {
+      const xs = []; for (let x = 0; x < dw; x += C) xs.push(x);
+      if (row % 2) xs.reverse();
+      for (const x of xs) { let ink = 0; const w = Math.min(C, dw - x), h = Math.min(C, dh - y);
+        for (let yy = y; yy < y + h && !ink; yy += 2) for (let xx = x; xx < x + w; xx += 2) if (d.data[(yy * dw + xx) * 4 + 3] > 90) { ink = 1; break; }
+        if (ink) cells.push([x, y]); }
+    }
+    const per = Math.max(3, Math.ceil(cells.length / 150)), inkc = `rgb(${r},${g},${b})`, dot = css.getPropertyValue("--accent").trim();
+    for (let i = 0; i < cells.length && my === this.run; i += per) {
+      for (const [x, y] of cells.slice(i, i + per)) ctx.drawImage(off, x, y, Math.min(C, dw - x), Math.min(C, dh - y), ox + x, oy + y, Math.min(C, dw - x), Math.min(C, dh - y));
+      const [x, y] = cells[Math.min(cells.length - 1, i + per - 1)], px = ox + x + C / 2, py = oy + y + C / 2;
+      pc.clearRect(0, 0, W, H); pc.strokeStyle = inkc; pc.globalAlpha = .15; pc.lineWidth = dpr;
+      pc.beginPath(); pc.moveTo(px, 0); pc.lineTo(px, H); pc.moveTo(0, py); pc.lineTo(W, py); pc.stroke();
+      pc.globalAlpha = 1; pc.fillStyle = dot; pc.beginPath(); pc.arc(px, py, 3.5 * dpr, 0, 7); pc.fill();
+      await new Promise(requestAnimationFrame);
+    }
+    pc.clearRect(0, 0, W, H);
+  },
+};
+
+/* ======================================================================
+   Browse
+   ====================================================================== */
+function filtered() {
+  const B = S.browse, q = B.q.trim().toLowerCase();
+  const list = S.patents.filter(p => (!B.ind || p.ind === B.ind) && (!B.st || p.st === B.st) && (!B.b || p.b <= +B.b) && (!B.solo || p.ia) && (!B.free || !claimOf(p.id))
+    && (!q || (p.t + " " + p.h + " " + p.ot + " " + (p.a || "") + " " + p.n + " " + p.id + " " + (p.tags || []).join(" ")).toLowerCase().includes(q)));
+  const by = { build: (a, b) => a.b - b.b || freedOn(b).localeCompare(freedOn(a)), recent: (a, b) => freedOn(b).localeCompare(freedOn(a)), old: (a, b) => (a.e || a.f).localeCompare(b.e || b.f), az: (a, b) => a.t.localeCompare(b.t) }[B.sort];
+  return list.sort(by);
+}
+function renderBrowse() {
+  const list = filtered(), B = S.browse;
+  $("#count").textContent = `${list.length} of ${S.patents.length} patents`;
+  $("#grid").innerHTML = list.slice(0, B.shown).map((p, i) => card(p, i % 24, { browse: true })).join("") || `<div class="empty">Nothing matches. Loosen a filter or clear the search.</div>`;
+  fillFigs($("#grid"));
+  $("#more").hidden = list.length <= B.shown;
+}
+function initBrowse() {
+  const fields = Object.entries(S.meta.industries).filter(([k]) => S.patents.some(p => p.ind === k));
+  $("#fInd").insertAdjacentHTML("beforeend", `<button class="chip" data-ind="" aria-pressed="true">All</button>` + fields.map(([k, n]) => `<button class="chip" data-ind="${k}" aria-pressed="false">${esc(n)}</button>`).join(""));
+  let t; $("#q").addEventListener("input", e => { clearTimeout(t); t = setTimeout(() => { S.browse.q = e.target.value; S.browse.shown = 24; renderBrowse(); }, 160); });
+  $("#sort").onchange = e => { S.browse.sort = e.target.value; renderBrowse(); };
+  $("#more").onclick = () => { S.browse.shown += 24; renderBrowse(); };
+  const group = (sel, key) => $$(sel).forEach(b => b.onclick = () => { $$(sel).forEach(x => x.setAttribute("aria-pressed", x === b)); S.browse[key] = b.dataset[key]; S.browse.shown = 24; renderBrowse(); });
+  group("[data-ind]", "ind"); group("[data-st]", "st"); group("[data-b]", "b");
+  for (const [id, key] of [["#fSolo", "solo"], ["#fFree", "free"]]) $(id).onclick = e => { S.browse[key] = !S.browse[key]; e.currentTarget.setAttribute("aria-pressed", S.browse[key]); renderBrowse(); };
+  $("#hq").addEventListener("keydown", e => { if (e.key === "Enter") { S.browse.q = e.target.value; $("#q").value = e.target.value; S.browse.shown = 24; go("browse"); } });
+}
+
+/* ======================================================================
+   Graphics built only from the patent's own data
+   ====================================================================== */
+// Maintenance fees are due 3.5, 7.5 and 11.5 years after grant; a lapse at the 4th, 8th or 12th anniversary
+// means the fee due half a year earlier was not paid, and every earlier one was.
+function feeSchedule(p) {
+  if (p.st !== "lapsed" || !p.p || !p.x) return null;
+  const years = (toDate(p.x) - toDate(p.p)) / (365.25 * DAY), missed = years < 6 ? 0 : years < 10 ? 1 : 2;
+  return [3.5, 7.5, 11.5].map((y, k) => ({ y, due: addYears(p.p, y), state: k < missed ? "paid" : k === missed ? "missed" : "never" }));
+}
+function timelineEvents(p, doc) {
+  const ev = [];
+  if (p.e && p.e < p.f) ev.push({ d: p.e, t: "Earliest priority date" });
+  ev.push({ d: p.f, t: "Application filed" });
+  if (p.st === "abandoned") {
+    ev.push({ d: p.p, t: "Application published" });
+  } else {
+    const pub = (doc?.family || []).find(m => m.k === "application" && m.f === p.f);
+    if (pub?.p) ev.push({ d: pub.p, t: "Application published" });
+    ev.push({ d: p.p, t: "Patent granted" });
+  }
+  const fees = feeSchedule(p);
+  if (fees) { for (const f of fees.filter(f => f.state !== "never")) ev.push({ d: f.due, t: `${f.y}-year fee ${f.state === "paid" ? "paid" : "not paid"}`, k: f.state === "missed" ? "bad" : "" }); ev.push({ d: p.x, t: "Patent expired", k: "bad" }); }
+  if (p.st === "expired" && p.te) ev.push({ d: p.te, t: "20-year term ended", k: "bad" });
+  ev.push({ d: new Date().toISOString().slice(0, 10), t: "Today", k: "now" });
+  return ev.filter(e => e.d).sort((a, b) => a.d.localeCompare(b.d));
+}
+function timelineSVG(events) {
+  const W = 760, pad = 40, y0 = 70, t0 = toDate(events[0].d).getTime(), t1 = toDate(events.at(-1).d).getTime(), span = Math.max(t1 - t0, DAY);
+  const X = d => pad + (toDate(d).getTime() - t0) / span * (W - pad * 2);
+  const years = []; for (let y = toDate(events[0].d).getFullYear() + 1; y <= toDate(events.at(-1).d).getFullYear(); y++) years.push(y);
+  const every = Math.ceil(years.length / 10);
+  let lastX = -1e9, lane = 0;
+  const marks = events.map(e => { const x = X(e.d); lane = x - lastX < 120 ? (lane + 1) % 3 : 0; lastX = x; return { ...e, x, lane }; });
+  const color = k => k === "bad" ? "var(--lapsed)" : k === "now" ? "var(--ink-3)" : "var(--accent)";
+  return `<svg class="chart" viewBox="0 0 ${W} ${y0 + 150}" role="img" aria-label="Timeline: ${esc(events.map(e => `${e.t} ${fullDate(e.d)}`).join("; "))}">
+    <line class="axis" x1="${pad}" y1="${y0}" x2="${W - pad}" y2="${y0}" stroke-width="2"/>
+    ${years.filter((_, i) => i % every === 0).map(y => { const x = X(`${y}-01-01`); return `<line class="tick" x1="${x}" y1="${y0 - 6}" x2="${x}" y2="${y0 + 6}"/><text class="muted" x="${x}" y="${y0 - 12}" text-anchor="middle">${y}</text>`; }).join("")}
+    ${marks.map(m => { const ly = y0 + 28 + m.lane * 38; return `<line x1="${m.x}" y1="${y0}" x2="${m.x}" y2="${ly - 12}" stroke="${color(m.k)}" stroke-width="1" stroke-dasharray="${m.k === "now" ? "3 3" : ""}"/>
+      <circle cx="${m.x}" cy="${y0}" r="${m.k === "now" ? 4 : 6}" fill="${m.k === "now" ? "var(--surface)" : color(m.k)}" stroke="${color(m.k)}" stroke-width="2"/>
+      <text x="${m.x}" y="${ly}" text-anchor="${m.x < 110 ? "start" : m.x > W - 110 ? "end" : "middle"}" style="font-weight:600;fill:var(--ink)">${esc(m.t)}</text>
+      <text class="muted" x="${m.x}" y="${ly + 16}" text-anchor="${m.x < 110 ? "start" : m.x > W - 110 ? "end" : "middle"}">${esc(fmtDate(m.d, { month: "short", day: "numeric", year: "numeric" }))}</text>`; }).join("")}
+  </svg>`;
+}
+// Which claim each dependent claim refers to, read from "claim N" in its own text.
+function claimTree(claims) {
+  const nums = new Set(claims.map(c => c[0])), parent = {}, kids = {};
+  for (const [n, t] of claims) { const m = /\bclaims?\s+(\d{1,3})/i.exec(t); const pnum = m && +m[1]; if (pnum && nums.has(pnum) && pnum < n) { parent[n] = pnum; (kids[pnum] ||= []).push(n); } }
+  const text = Object.fromEntries(claims);
+  const label = n => esc(text[n].split(/\s+/).slice(0, 9).join(" ")) + (text[n].split(/\s+/).length > 9 ? "…" : "");
+  const node = n => `<li class="${parent[n] ? "" : "root"}"><button data-claim="${n}"><b>${n}</b><span>${label(n)}</span></button>${kids[n] ? `<ul>${kids[n].map(node).join("")}</ul>` : ""}</li>`;
+  return `<ul class="tree">${claims.filter(c => !parent[c[0]]).map(c => node(c[0])).join("")}</ul>`;
+}
+function familyLane(p, doc) {
+  const me = { n: p.n, id: p.id, t: p.ot, f: p.f, p: p.p, k: p.st === "abandoned" ? "application" : "patent", s: STATUS[p.st], me: true };
+  const all = [...(doc.family || []), me].sort((a, b) => (a.f + a.p).localeCompare(b.f + b.p));
+  return `<div class="famlane" role="list">${all.map(m => `<div class="famnode ${m.me ? "me" : ""}" role="listitem"><small>${m.me ? "This document" : m.k === "patent" ? "Patent" : "Published application"}</small><b>${esc(m.n)}</b><p>${esc(m.t)}</p><small>Filed ${esc(fmtDate(m.f))}${m.p ? ` · ${m.k === "patent" ? "granted" : "published"} ${esc(fmtDate(m.p))}` : ""}</small><div style="margin-top:8px"><span class="badge ${m.me ? p.st : "plain"}">${esc(m.s)}</span></div>${m.me ? "" : `<div style="margin-top:8px"><a href="${gp(m.id)}" ${EXT}>View on Google Patents</a></div>`}</div>`).join("")}</div>`;
+}
+
+/* AI concept sketch, only for documents with no drawings and for the user's own ideas. The SVG is
+   cleaned to plain shapes and shown through <img>, where scripts never run. */
+const SVG_OK = new Set("svg g path line polyline polygon rect circle ellipse text tspan title defs marker".split(" "));
+function cleanSVG(raw) {
+  const m = String(raw).match(/<svg[\s\S]*<\/svg>/i); if (!m) return null;
+  const doc = new DOMParser().parseFromString(m[0], "image/svg+xml"), root = doc.documentElement;
+  if (root.nodeName.toLowerCase() !== "svg" || doc.querySelector("parsererror")) return null;
+  const walk = el => { for (const c of [...el.children]) { if (!SVG_OK.has(c.nodeName.toLowerCase())) { c.remove(); continue; }
+    for (const a of [...c.attributes]) { const n = a.name.toLowerCase(); if (n.startsWith("on") || n === "style" || /href$/.test(n) || /url\(/i.test(a.value)) c.removeAttribute(a.name); } walk(c); } };
+  for (const a of [...root.attributes]) if (a.name.toLowerCase().startsWith("on") || a.name === "style") root.removeAttribute(a.name);
+  walk(root);
+  if (!root.hasAttribute("xmlns")) root.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+  const out = new XMLSerializer().serializeToString(root);
+  return out.length < 60000 ? "data:image/svg+xml;charset=utf-8," + encodeURIComponent(out) : null;
+}
+async function sketch(subject, signal) {
+  const r = await S.sample(`Draw a clean black-and-white line drawing, in the style of a patent figure, of the invention described below. Show only what the text describes; do not add features. Use an SVG with viewBox="0 0 640 480", a white background rect, black strokes (stroke-width 2), no fills other than white, no colors, and only reference numerals (10, 12, 14...) as text. Reply with only the SVG markup.\n\n${subject}`, { signal, cache: false });
+  const url = cleanSVG(r.text);
+  if (!url) throw { code: "invalid_svg" };
+  return url;
+}
+
+/* ======================================================================
+   Patent dossier
+   ====================================================================== */
+const TABS = [["overview", "Overview"], ["drawings", "Drawings"], ["claims", "Claims"], ["desc", "Description"], ["history", "Timeline & family"], ["sources", "Sources & verification"]];
+async function openSheet(id, tab = "overview") {
+  const p = S.byId[id]; if (!p) return;
+  S.open = id; S.tab = tab;
+  const dlg = $("#dlg");
+  dlg.innerHTML = `<div class="dbar"><span class="num-id">${esc(p.n)} · ${esc(indName(p.ind))}</span><span style="display:flex;gap:8px;align-items:center"><button class="btn quiet sm" data-act="copylink" data-id="${p.id}">${icon("link")}Copy link</button><button class="x" data-close aria-label="Close">${icon("x")}</button></span></div>
+    <div class="dtop"><div><div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">${statusBadge(p)}<span class="badge plain">${meter(p.b)}${BUILD[p.b]} build</span>${p.ia ? `<span class="badge plain">Solo inventor</span>` : ""}${p.v ? `<span class="badge ok">${icon("check")}Verified ${esc(fmtDate(p.v, { month: "short", day: "numeric" }))}</span>` : ""}</div>
+      <h2 id="dlgTitle">${esc(p.t)}</h2><div class="asfiled" id="asFiled">Title as filed: ${esc(p.ot)}</div></div>
+      <div class="dacts" id="dActs"></div></div>
+    <div class="dtabs" role="tablist" aria-label="Patent file">${TABS.map(([k, t]) => `<button class="dtab" role="tab" id="tab-${k}" data-tab="${k}" aria-selected="${k === tab}" aria-controls="dpanel">${t}${k === "claims" ? `<small>${p.cl}</small>` : ""}${k === "drawings" ? `<small>${p.sh || 0}</small>` : ""}</button>`).join("")}</div>
+    <div id="dpanel" role="tabpanel" aria-labelledby="tab-${tab}"><div class="dpanel"><span class="think">Loading the file…</span></div></div>`;
+  if (!dlg.open) dlg.showModal();
+  renderActions(id);
+  const d = await detailOf(p);
+  if (S.open !== id) return;
+  $("#asFiled").textContent = `Title as filed: ${p.ot}${d.asg ? ` · ${p.st === "abandoned" ? "Applicant" : "Assignee"}: ${d.asg}` : ""}${d.inv ? ` · Inventors: ${d.inv}` : ""}`;
+  renderTab(tab);
+}
+function whyFree(p) {
+  if (p.st === "lapsed") return { checks: [
+      `The USPTO Official Gazette${p.og ? ` of ${fullDate(p.og.d)}` : ""} lists it as expired on ${fullDate(p.x)} for an unpaid maintenance fee.`,
+      "It isn't on any reinstatement notice published since.",
+      p.fam > 1 ? `Its ${p.fam - 1} US ${p.fam - 1 === 1 ? "relative has" : "relatives have"} also lapsed, expired or never issued.` : "It has no other US patents or pending applications in its family."],
+    warn: "We check US rights only. Check foreign counterparts before selling abroad." };
+  if (p.st === "expired") return { checks: [
+      `Filed ${fullDate(p.f)}. A US utility patent lasts 20 years from filing, so its base term ended ${fullDate(p.te)}.`,
+      `Granted ${fullDate(p.p)}, within four years of filing, so any term adjustment for USPTO delay is short. The filing is over 24 years old.`,
+      p.fam > 1 ? `Its ${p.fam - 1} US ${p.fam - 1 === 1 ? "relative has" : "relatives have"} also lapsed, expired or never issued.` : "It has no other US patents or pending applications in its family.",
+      "It isn't in a drug or chemistry class, where term extensions are common."],
+    warn: "Rarely, a term adjustment extends a patent by months or years. Confirm the expiration on Patent Center." };
+  return { checks: [
+      `Published ${fullDate(p.p)}, and no patent has issued in its family since.`,
+      "Its family has had no new filings for more than seven years.",
+      `Filed ${fullDate(p.f)}. Applications rarely stay pending this long.`],
+    warn: "This status is inferred. Confirm it on Patent Center before relying on it." };
+}
+async function renderTab(tab) {
+  const id = S.open, p = S.byId[id]; if (!p) return;
+  S.tab = tab;
+  $$(".dtab").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === tab));
+  $("#dpanel")?.setAttribute("aria-labelledby", "tab-" + tab);
+  const [d, doc] = await Promise.all([detailOf(p), tab === "overview" || tab === "drawings" ? Promise.resolve({}) : docOf(p)]);
+  const sheets = tab === "drawings" || tab === "overview" ? await sheetsOf(p) : [];
+  if (S.open !== id || S.tab !== tab) return;  // the viewer moved on while a bundle loaded
+  const L = links(p, d), W = whyFree(p);
+  let html = "";
+  if (tab === "overview") {
+    html = `<div class="ov"><div class="ovfig">${sheets.length ? `<button class="fig load" data-view-sheet="0" aria-label="Enlarge drawing"><img alt="Drawing sheet 1 of ${esc(p.n)}" data-fig="${p.id}" data-anim="1"></button>
+        ${sheets.length > 1 ? `<div class="strip">${sheets.map((s, i) => `<button data-view-sheet="${i}" aria-label="Sheet ${i + 1}"><img alt="" src="${s}"></button>`).join("")}</div>` : ""}
+        <p class="cap">Sheet 1 of ${p.sh || sheets.length} from the published document. <a href="${L.pdf}" ${EXT}>All sheets (USPTO PDF)</a></p>`
+        : `<div class="gen"><p>This document has no drawings.</p><button class="btn secondary sm" data-tab="drawings">${icon("spark")}Sketch it with AI</button></div>`}</div>
+      <div class="stack">
+        <div class="block"><h4>In plain English <span class="src">Patent Yard summary</span></h4><p class="lead">${esc(p.h)}</p></div>
+        <div class="panel soft"><div class="block"><h4>Why it's free to use</h4><ul class="checks">${W.checks.map(w => `<li>${esc(w)}</li>`).join("")}<li class="warn">${esc(W.warn)}</li></ul></div></div>
+        ${p.tw ? `<div class="angle"><b>Modern angle · Patent Yard idea</b>${esc(p.tw)}</div>` : ""}
+        <div class="facts"><div><small>Filed</small><b>${esc(fullDate(p.f))}</b></div><div><small>${p.st === "abandoned" ? "Published" : "Granted"}</small><b>${esc(fullDate(p.p))}</b></div><div><small>${p.st === "lapsed" ? "Expired (fee)" : p.st === "expired" ? "Term ended" : "Status"}</small><b>${p.st === "lapsed" ? esc(fullDate(p.x)) : p.st === "expired" ? esc(fullDate(p.te)) : "Abandoned (inferred)"}</b></div><div><small>Application number</small><b>${esc(d.app || "—")}</b></div><div><small>Classification (CPC)</small><b>${esc((d.cpc || []).slice(0, 2).join(", ") || "—")}</b></div><div><small>Claims · pages</small><b>${p.cl} · ${esc(d.pages || "—")}</b></div></div>
+        <div class="block"><h4>Abstract <span class="src">From the patent</span></h4><p class="prose">${esc(d.abs)}</p></div>
+        ${d.bg ? `<div class="block"><h4>Background <span class="src">From the patent</span></h4><p class="prose">${esc(d.bg)}</p></div>` : ""}
+      </div></div>`;
+  } else if (tab === "drawings") {
+    html = sheets.length ? `<p class="note" style="margin-bottom:14px">${sheets.length === (p.sh || sheets.length) ? `All ${sheets.length} drawing ${sheets.length === 1 ? "sheet" : "sheets"}` : `${sheets.length === 1 ? "The first" : `The first ${sheets.length}`} of ${p.sh} drawing sheets`} from the published document, cropped to the drawing. ${(p.sh || 0) > sheets.length ? `<a href="${L.pdf}" ${EXT}>Every sheet is in the USPTO PDF.</a>` : ""}</p>
+      <div class="gallery">${sheets.map((s, i) => `<figure><button class="fig" data-view-sheet="${i}" aria-label="Enlarge sheet ${i + 1}"><img alt="Drawing sheet ${i + 1} of ${esc(p.n)}" src="${s}"></button><figcaption><span>Sheet ${i + 1} of ${p.sh || sheets.length}</span><span>${esc(p.n)}</span></figcaption></figure>`).join("")}</div>
+      ${d.figs?.length ? `<div class="panel" style="margin-top:18px"><div class="block"><h4>Figures as described in the patent</h4><ul class="prose" style="padding-left:18px;margin:0;display:grid;gap:4px">${d.figs.map(f => `<li>${esc(f)}</li>`).join("")}</ul></div></div>` : ""}`
+      : `<div class="gen"><h3>This document has no drawings</h3><p class="prose">You can ask Claude for a concept sketch based only on the abstract and first claim. It is not part of the patent.</p><div class="rowbtns"><button class="btn primary sm" data-act="sketchpatent" data-id="${p.id}">${icon("spark")}Generate a concept sketch</button><span class="status" id="skStatus"></span></div><div id="skOut"></div></div>`;
+  } else if (tab === "claims") {
+    const cl = (doc.claims?.length ? doc.claims : [[1, d.c1]]).map((x, i) => Array.isArray(x) ? x : [i + 1, x]);
+    const gap = cl[0][0] > 1 ? `<p class="note" style="margin-bottom:10px">${cl[0][0] === 2 ? "Claim 1 was" : `Claims 1 to ${cl[0][0] - 1} were`} canceled before publication.</p>` : "";
+    html = `<div class="ov claimsov"><div class="ovfig"><div class="panel"><div class="block"><h4>Claim structure</h4><p class="note" style="margin-bottom:10px">Independent claims and the claims that build on them, read from each claim's text. Tap one to jump to it.</p>${claimTree(cl)}</div></div></div>
+      <div>${gap}<p class="note" style="margin-bottom:14px">What the ${p.st === "abandoned" ? "application" : "patent"} claimed, word for word. All of it is now free to use.</p>
+      <ol class="claimlist">${cl.map(([n, c]) => { const ind = !/\bclaims?\s+\d/i.test(c); return `<li class="${ind ? "ind" : ""}" id="claim-${n}"><span>${n}.</span><div>${ind ? "<em>Independent claim</em>" : ""}${esc(c)}</div></li>`; }).join("")}</ol></div></div>`;
+  } else if (tab === "desc") {
+    const paras = doc.desc || [];
+    html = paras.length ? `<div class="desc">${paras.map(t => t.length < 90 && t === t.toUpperCase() && /[A-Z]{3}/.test(t) ? `<h4>${esc(t.toLowerCase().replace(/[a-z]/, c => c.toUpperCase()))}</h4>` : `<p>${esc(t)}</p>`).join("")}${doc.more ? `<p class="note">The description continues in the <a href="${L.pdf}" ${EXT}>full USPTO document</a>.</p>` : ""}</div>`
+      : `<p class="prose">The full description is in the <a href="${L.pdf}" ${EXT}>USPTO document</a>.</p>`;
+  } else if (tab === "history") {
+    const fees = feeSchedule(p), cites = doc.cites || [];
+    html = `<div class="stack">
+      <div class="panel"><div class="block"><h4>Timeline <span class="src">From USPTO dates</span></h4><div class="chartbox">${timelineSVG(timelineEvents(p, doc))}</div></div></div>
+      ${fees ? `<div class="panel"><div class="block"><h4>Maintenance fees</h4><p class="note" style="margin-bottom:12px">Fees are due 3.5, 7.5 and 11.5 years after grant. This patent expired on ${esc(fullDate(p.x))}, so the fee marked "not paid" was the one that went unpaid.</p>
+        <div class="fees">${fees.map(f => `<div class="fee"><b>${f.y}-year fee</b><small>Due ${esc(fullDate(f.due))}</small><span class="badge ${f.state === "paid" ? "ok" : f.state === "missed" ? "lapsed" : "plain"}">${f.state === "paid" ? "Paid" : f.state === "missed" ? "Not paid" : "Never came due"}</span></div>`).join("")}</div></div></div>` : ""}
+      <div class="panel"><div class="block"><h4>US family <span class="src">${(doc.family || []).length + 1} ${(doc.family || []).length ? "documents" : "document"}, by filing date</span></h4>${familyLane(p, doc)}
+        <p class="note" style="margin-top:10px">Earlier publications, parents and continuations. None of them can still be enforced, or this patent would not be listed.</p></div></div>
+      <div class="panel"><div class="block"><h4>US patents it cites <span class="src">${cites.length}</span></h4>${cites.length ? `<div class="cites">${cites.map(n => { const c = citeRef(n); return `<a class="chip" href="${c.href}" ${EXT}>${esc(c.label)}</a>`; }).join("")}</div><p class="note" style="margin-top:10px">Prior art cited by the examiner or applicant. Useful when you check your own idea for novelty.</p>` : `<p class="prose">No US citations on record.</p>`}</div></div>
+    </div>`;
+  } else if (tab === "sources") {
+    const origin = p.st === "lapsed"
+      ? [{ href: p.og?.u || "https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents", t: "USPTO Official Gazette", s: `Notice of Expiration of Patents Due to Failure to Pay Maintenance Fee${p.og ? `, issue of ${fullDate(p.og.d)}` : ""}.`, m: "Where this listing came from" },
+         { href: L.fees, t: "Maintenance fee record", s: "Enter the patent number to see its fee history.", m: "USPTO Fees" }]
+      : [{ href: L.ppubs, t: "USPTO Patent Public Search", s: p.st === "expired" ? "The patent record, found by filing date (1996 to 2001) and classification." : "The published application, found by filing date (2013 to 2017) and classification.", m: "Where this listing came from" }];
+    const official = [{ href: L.pdf, t: "Full published document", s: "Text and every drawing sheet as a PDF.", m: "USPTO" }, { href: L.center, t: "File history", s: "Status, office actions, notices, fee records and petitions.", m: "USPTO Patent Center" }, { href: L.ppubs, t: "Patent Public Search record", s: "Searchable full text and bibliographic data.", m: "USPTO" }];
+    const cross = [{ href: L.google, t: "Google Patents", s: "Worldwide family, citing patents and legal events.", m: "patents.google.com" }, { href: L.justia, t: "Justia Patents", s: "Full text, claims and classification.", m: "patents.justia.com" }, { href: L.fpo, t: "FreePatentsOnline", s: "Full text and PDF.", m: "freepatentsonline.com" }, { href: L.espacenet, t: "Espacenet", s: "Foreign family and legal status.", m: "European Patent Office" }];
+    const lcard = (x, cls = "") => `<a class="lcard ${cls}" href="${x.href}" ${EXT}><b>${esc(x.t)}${icon("ext")}</b><span>${esc(x.s)}</span><small>${esc(x.m)}</small></a>`;
+    html = `<div class="stack">
+      <div class="cols2"><div class="panel"><div class="block"><h4>Verification</h4><ul class="checks">${W.checks.map(w => `<li>${esc(w)}</li>`).join("")}<li>Rechecked against USPTO records ${p.v ? "on " + esc(fullDate(p.v)) : "at the last update"}, and again every day.</li><li class="warn">${esc(W.warn)}</li></ul></div></div>
+      <div class="panel"><div class="block"><h4>Confirm it yourself</h4><ol class="prose" style="padding-left:18px;margin:0;display:grid;gap:6px">
+        <li>Open the <a href="${L.center}" ${EXT}>file history on Patent Center</a>.</li>
+        <li>${p.st === "lapsed" ? `The status should read "Patent Expired Due to NonPayment of Maintenance Fees Under 37 CFR 1.362".` : p.st === "expired" ? `Its 20-year term from filing ended ${esc(fullDate(p.te))}. Check the "Patent Term Adjustment" and "Patent Term Extension" entries, which add days to that date.` : `The status should read "Abandoned", usually with a notice of abandonment in the documents.`}</li>
+        <li>Check the documents for any later petition to revive or reinstate.</li></ol></div></div></div>
+      <div class="block"><h4>Source</h4><div class="linkgrid">${origin.map((x, i) => lcard(x, i === 0 ? "src" : "")).join("")}</div></div>
+      <div class="block"><h4>Official USPTO records</h4><div class="linkgrid">${official.map(x => lcard(x)).join("")}</div></div>
+      <div class="block"><h4>Cross-check elsewhere</h4><div class="linkgrid">${cross.map(x => lcard(x)).join("")}</div></div>
+      <p class="note">Names, summaries, modern angles and build ratings are Patent Yard's editorial notes. Everything else on this page comes from the documents linked above.</p></div>`;
+  }
+  const box = $("#dpanel");
+  if (S.open !== id || S.tab !== tab || !box) return;
+  box.innerHTML = `<div class="dpanel">${html}</div>`;
+  fillFigs(box);
+}
+function renderActions(id) {
+  const box = $("#dActs"); if (!box) return;
+  const p = S.byId[id], c = claimOf(id);
+  let res;
+  if (c && c.uid === S.me.id) res = `<button class="btn secondary" data-act="release" data-id="${id}">Release reservation</button>`;
+  else if (c) { const pr = S.profiles[c.uid]; res = `<span class="holder">${pr?.avatarUrl ? `<img src="${esc(pr.avatarUrl)}" alt="">` : ""}Reserved by ${esc(holderName(c))} until ${esc(fmtDate(c.until, { month: "short", day: "numeric" }))}${c.note ? ` · "${esc(c.note)}"` : ""}</span>`; }
+  else res = `<button class="btn secondary" data-act="reserveform" data-id="${id}">Reserve for ${HOLD_DAYS} days</button>`;
+  box.innerHTML = `${res}<button class="btn primary" data-act="reinvent" data-id="${id}">${icon("spark")}Reinvent with AI</button>`;
+}
+function showReserveForm(id) {
+  const why = reserveBlocker(S.byId[id]);
+  if (why) return toast(why);
+  const box = $("#dActs"); if (!box || $("#resForm")) return;
+  box.insertAdjacentHTML("beforeend", `<form class="resform" id="resForm"><input class="field" id="resNote" maxlength="${NOTE_MAX}" placeholder="What are you building? (optional, shown to others)" aria-label="Reservation note"><button class="btn primary" type="submit">Confirm</button><button class="btn quiet" type="button" data-act="cancelres">Cancel</button><p>Holds it for ${HOLD_DAYS} days on Patent Yard. No legal rights; the invention stays free for everyone.</p></form>`);
+  $("#resNote").focus();
+  $("#resForm").onsubmit = e => { e.preventDefault(); reserve(id, $("#resNote").value, e.submitter); };
+}
+
+/* Full-screen drawing viewer */
+const V = { list: [], i: 0, label: "" };
+async function openViewer(p, i) {
+  V.list = await sheetsOf(p); V.i = Math.max(0, Math.min(i, V.list.length - 1)); V.label = p.n; V.total = p.sh || V.list.length; V.pdf = links(p).pdf;
+  const dlg = $("#viewer");
+  if (!dlg.open) dlg.showModal();
+  renderViewer();
+}
+function renderViewer() {
+  $("#viewer").innerHTML = `<div class="vbar"><span>${esc(V.label)} · Sheet ${V.i + 1} of ${V.total}</span><span style="display:flex;gap:8px;align-items:center"><a class="btn sm" style="color:#fff;border-color:rgba(255,255,255,.25)" href="${V.pdf}" ${EXT}>USPTO PDF ${icon("ext")}</a><button class="x" data-close aria-label="Close viewer">${icon("x")}</button></span></div>
+    <div class="stage" id="vStage"><img src="${V.list[V.i]}" alt="Drawing sheet ${V.i + 1}" data-zoomtoggle></div>
+    <div class="vnav"><button class="btn sm" data-vstep="-1" ${V.i === 0 ? "disabled" : ""}>${icon("left")}Previous</button><button class="btn sm" data-vstep="1" ${V.i >= V.list.length - 1 ? "disabled" : ""}>Next${icon("right")}</button></div>`;
+}
+
+/* ======================================================================
+   AI (runs on the viewer's own Claude account)
+   ====================================================================== */
+function aiError(e) {
+  const c = e?.code;
+  if (c === "cancelled") return "";
+  if (["not_granted", "sampling_disabled", "not_declared", "capability_disabled", "capability_removed", "unavailable"].includes(c)) { S.sampleOff = true; return "AI tools are off for this page. Allow Claude to run here to use them."; }
+  return { rate_limited: "Too many requests right now. Wait a minute, then try again.", session_expired: "Your Claude session expired. Sign in again, then retry.", refused: "Claude declined this request. Rephrase the idea and try again.", invalid_json: "The answer came back malformed. Try again.", invalid_svg: "The sketch came back unusable. Try again.", prompt_too_large: "That's too much text for one request. Shorten the description." }[c] || "The request didn't finish. Try again.";
+}
+function patentContext(p, d) {
+  if (!p) return "";
+  return `SOURCE PATENT (${STATUS[p.st].toLowerCase()}; free to practice in the US; its disclosure is prior art)
+Number: ${p.n}
+Title as filed: ${p.ot}
+Filed: ${p.f}
+Abstract: ${d.abs || ""}
+Claim 1: ${(d.c1 || "").slice(0, 1200)}
+Figures: ${(d.figs || []).slice(0, 6).join("; ")}
+Background: ${(d.bg || "").slice(0, 700)}`;
+}
+const ideaText = i => `INVENTION\nName: ${i.name}\nPitch: ${i.pitch}\nHow it works: ${i.desc}\nWhat is new compared with the source patent and existing products: ${i.change}`;
+const blankIdea = pid => ({ id: "i" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6), pid, name: "", pitch: "", desc: "", change: "", dirs: [], pick: -1, novelty: null, draft: "", sketch: "", stage: "spark", updated: new Date().toISOString() });
+
+/* ======================================================================
+   Studio: directions -> shape -> novelty -> provisional
+   ====================================================================== */
+const ST = { idea: null, step: 0, ctl: null };
+const STEPS = ["Directions", "Shape it", "Novelty check", "Provisional draft"];
+function openStudio(pid, idea) {
+  const had = idea || (pid && S.ideas.find(i => i.pid === pid));
+  ST.idea = had ? { ...blankIdea(pid), ...had } : blankIdea(pid);
+  ST.step = had ? ({ spark: ST.idea.dirs.length ? 0 : 1, shaped: 2, checked: 3, drafted: 3 }[ST.idea.stage] ?? 0) : (pid ? 0 : 1);
+  if (!ST.idea.pid && ST.step === 0) ST.step = 1;
+  if ($("#dlg").open) $("#dlg").close();
+  const dlg = $("#studio"); if (!dlg.open) dlg.showModal();
+  renderStudio();
+}
+function grabShape() {
+  if (!$("#iName")) return;
+  Object.assign(ST.idea, { name: clip($("#iName").value.trim(), 120), pitch: clip($("#iPitch").value.trim(), 400), desc: clip($("#iDesc").value.trim(), 12000), change: clip($("#iChange").value.trim(), 4000) });
+}
+function renderStudio() {
+  const i = ST.idea, p = S.byId[i.pid];
+  const can = [!!p, true, !!i.name, !!i.name], done = [i.dirs.length > 0, !!i.name, !!i.novelty, !!i.draft];
+  $("#studio").innerHTML = `<div class="dbar"><span class="num-id">Invention studio${p ? " · from " + esc(p.n) : " · your own idea"}</span><button class="x" data-close aria-label="Close">${icon("x")}</button></div>
+    <div class="stepper" role="tablist">${STEPS.map((t, k) => `<button class="step ${done[k] ? "done" : ""}" data-step="${k}" ${k === ST.step ? 'aria-current="step"' : ""} ${can[k] ? "" : "disabled"}><span class="dot">${done[k] && k !== ST.step ? icon("check") : k + 1}</span><b>${t}</b></button>`).join("")}</div>
+    <div class="spane" id="spane"></div>`;
+  [paneDirections, paneShape, paneNovelty, paneDraft][ST.step]();
+}
+const srcLine = p => p ? `<div class="srcline"><img data-fig="${p.id}" alt=""><div><b>${esc(p.t)}</b><div class="muted" style="font-size:12.5px">${esc(p.n)} · ${esc(freedLine(p))}</div></div></div>` : "";
+async function saveIdea(stage) {
+  const i = ST.idea; if (stage) i.stage = stage; i.updated = new Date().toISOString();
+  i.draft = clip(i.draft, 150000);
+  const k = S.ideas.findIndex(x => x.id === i.id); if (k >= 0) S.ideas[k] = { ...i }; else S.ideas.unshift({ ...i });
+  await Store.saveIdea({ ...i });
+}
+function setStatus(msg, err, thinking, el = "#aiStatus") { const s = $(el); if (!s) return; s.className = "status" + (err ? " err" : ""); s.innerHTML = thinking ? `<span class="think">Claude is working. This can take up to a minute.</span>` : esc(msg); }
+const needAI = (el = "#aiStatus") => { if (S.sample) return true; setStatus(S.sampleOff ? "AI tools are off for this page." : "AI tools need you to be signed in to Claude on this page.", true, false, el); return false; };
+function paneDirections() {
+  const i = ST.idea, p = S.byId[i.pid];
+  $("#spane").innerHTML = `${srcLine(p)}
+    <p class="prose">Claude studies the patent and proposes four modern directions: things that became cheap, possible or wanted since it was filed. Pick one to shape into your own invention.</p>
+    <div class="rowbtns"><button class="btn primary" id="genDirs">${icon("spark")}${i.dirs.length ? "Try four new directions" : "Generate directions"}</button><button class="btn quiet" id="stopAi" hidden>Stop</button><span class="status" id="aiStatus"></span></div>
+    <div class="dirs" id="dirs">${i.dirs.map((d, k) => dirCard(d, k)).join("")}</div>
+    <div class="rowbtns"><button class="btn secondary" id="toShape" ${i.pick < 0 ? "disabled" : ""}>Shape the chosen direction</button></div>`;
+  fillFigs($("#spane"));
+  $("#genDirs").onclick = genDirections;
+  $("#toShape").onclick = () => { const d = i.dirs[i.pick]; if (!d) return; if (!i.name || i.fromPick !== i.pick) Object.assign(i, { name: d.name, pitch: d.pitch, desc: `${d.pitch}\n\n${d.build}`, change: `${d.change} ${d.novelty}`.trim(), fromPick: i.pick }); ST.step = 1; renderStudio(); };
+}
+const dirCard = (d, k) => `<button class="dir" data-dir="${k}" style="--i:${k}" aria-pressed="${ST.idea.pick === k}"><b>${esc(d.name)}</b><span class="muted" style="font-size:14px">${esc(d.pitch)}</span><dl><dt>What's new</dt><dd>${esc(d.change)}</dd><dt>Who pays</dt><dd>${esc(d.buyer)}</dd><dt>First prototype</dt><dd>${esc(d.build)}</dd></dl></button>`;
+async function genDirections() {
+  const i = ST.idea, p = S.byId[i.pid];
+  if (!p || !needAI()) return;
+  const d = await detailOf(p), b = $("#genDirs");
+  b.disabled = true; $("#stopAi").hidden = false; setStatus("", false, true);
+  ST.ctl = new AbortController();
+  const prompt = `You help an independent inventor turn a US patent that is now free to use into a new, patentable product idea.\n\n${patentContext(p, d)}\n\nPropose 4 distinct modern directions. Each should exploit something that became cheap, possible or in demand since the filing date (for example cheap sensors, phones, low-cost AI models, 3D printing, better batteries, new materials, subscriptions, sustainability rules). Each must be buildable by a small team and contain a concrete new element that could be claimed, not just "add an app".\n\nReply with only a JSON array of 4 objects, no other text:\n[{"name":"2-4 word product name","pitch":"one plain-English sentence","change":"what is concretely new versus the original","buyer":"who pays and why","build":"what a first prototype needs","novelty":"the element that could be claimed"}]`;
+  try {
+    const dirs = await S.sample.json(prompt, { signal: ST.ctl.signal, cache: false });
+    if (!Array.isArray(dirs) || !dirs.length) throw { code: "invalid_json" };
+    i.dirs = dirs.slice(0, 4).map(x => ({ name: clip(x?.name || "Untitled", 80), pitch: clip(x?.pitch, 400), change: clip(x?.change, 600), buyer: clip(x?.buyer, 300), build: clip(x?.build, 500), novelty: clip(x?.novelty, 400) }));
+    i.pick = -1; await saveIdea("spark"); if ($("#studio").open && ST.step === 0) renderStudio();
+  } catch (e) { setStatus(aiError(e), !!aiError(e)); b.disabled = false; $("#stopAi").hidden = true; }
+}
+function paneShape() {
+  const i = ST.idea, p = S.byId[i.pid];
+  $("#spane").innerHTML = `${srcLine(p)}
+    <div class="fgroup"><label for="iName">Invention name</label><input class="field" id="iName" maxlength="120" value="${esc(i.name)}" placeholder="Self-leveling camp stove"></div>
+    <div class="fgroup"><label for="iPitch">One-line pitch</label><input class="field" id="iPitch" maxlength="400" value="${esc(i.pitch)}" placeholder="What it does, for whom, in one sentence"></div>
+    <div class="fgroup"><label for="iDesc">How it works</label><textarea class="field" id="iDesc" maxlength="12000" placeholder="Parts, how they connect, how someone uses it. Sketchy is fine.">${esc(i.desc)}</textarea></div>
+    <div class="rowbtns"><button class="btn secondary sm" data-rw="improve">Improve with AI</button><button class="btn secondary sm" data-rw="concise">Make concise</button><button class="btn secondary sm" data-rw="detail">Add detail</button><button class="btn quiet sm" id="stopAi" hidden>Stop</button><span class="status" id="aiStatus"></span></div>
+    <div class="fgroup"><label for="iChange">What's new${p ? " compared with the original" : ""}</label><textarea class="field" id="iChange" maxlength="4000" style="min-height:90px" placeholder="The part nobody has done before. This is what you would claim.">${esc(i.change)}</textarea></div>
+    <div class="panel soft"><div class="block"><h4>Concept sketch <span class="src">AI-generated, not from any patent</span></h4>
+      <div id="ideaSketch">${i.sketch ? `<img src="${esc(i.sketch)}" alt="AI concept sketch of ${esc(i.name)}" style="width:100%;max-width:520px;background:#fff;border-radius:8px;border:1px solid var(--line)">` : `<p class="note">Ask Claude for a line drawing of your idea. Useful as a starting point for the figures in your provisional.</p>`}</div>
+      <div class="rowbtns" style="margin-top:10px"><button class="btn secondary sm" id="sketchIdea">${icon("spark")}${i.sketch ? "Redraw sketch" : "Sketch my idea"}</button><span class="status" id="skStatus"></span></div></div></div>
+    <div class="rowbtns"><button class="btn secondary" id="saveShape">Save to my bench</button><button class="btn primary" id="toNovelty">Check novelty</button></div>`;
+  fillFigs($("#spane"));
+  $("#saveShape").onclick = async () => { grabShape(); if (!i.name) return setStatus("Give it a name first.", true); await saveIdea(i.stage === "spark" ? "shaped" : i.stage); toast("Saved to your bench."); renderStudio(); };
+  $("#toNovelty").onclick = async () => { grabShape(); if (!i.name) return setStatus("Give it a name first.", true); await saveIdea(i.stage === "spark" ? "shaped" : i.stage); ST.step = 2; renderStudio(); };
+  $("#sketchIdea").onclick = async e => {
+    grabShape(); if (!i.name && !i.desc) return setStatus("Describe your idea first.", true, false, "#skStatus");
+    if (!needAI("#skStatus")) return;
+    e.currentTarget.disabled = true; setStatus("", false, true, "#skStatus"); ST.ctl = new AbortController();
+    try { i.sketch = await sketch(ideaText(i), ST.ctl.signal); await saveIdea(); $("#ideaSketch").innerHTML = `<img src="${esc(i.sketch)}" alt="AI concept sketch of ${esc(i.name)}" style="width:100%;max-width:520px;background:#fff;border-radius:8px;border:1px solid var(--line)">`; setStatus("Sketch saved with your idea.", false, false, "#skStatus"); }
+    catch (err) { setStatus(aiError(err), !!aiError(err), false, "#skStatus"); }
+    finally { if ($("#sketchIdea")) $("#sketchIdea").disabled = false; }
+  };
+  $$("[data-rw]").forEach(b => b.onclick = async () => {
+    grabShape(); if (!needAI()) return;
+    const p2 = S.byId[i.pid], d = p2 ? await detailOf(p2) : {};
+    const how = { improve: "Rewrite it so it is clear, specific and complete: name the parts, how they connect, and how it is used. Keep the inventor's ideas; add nothing they would not recognize.", concise: "Rewrite it in half the words, keeping every technical element.", detail: "Expand it with concrete engineering detail: components, materials, dimensions or ranges, sequence of operation, and two alternative embodiments." }[b.dataset.rw];
+    const ta = $("#iDesc"), before = ta.value; ST.ctl = new AbortController(); $("#stopAi").hidden = false; setStatus("", false, true); $$("[data-rw]").forEach(x => x.disabled = true);
+    try {
+      const { text } = await S.sample(`${how}\n\nReturn only the rewritten description as plain text, no heading.\n\n${ideaText(i)}\n\n${patentContext(p2, d)}`, { signal: ST.ctl.signal, cache: false, onText: ({ text }) => { ta.value = text; } });
+      ta.value = clip(text, 12000); i.desc = ta.value; setStatus("Rewritten. Edit anything you like, then save.");
+    } catch (e) { ta.value = e?.text || before; setStatus(aiError(e), !!aiError(e)); }
+    finally { if ($("#stopAi")) $("#stopAi").hidden = true; $$("[data-rw]").forEach(x => x.disabled = false); }
+  });
+}
+function paneNovelty() {
+  const i = ST.idea, n = i.novelty, p = S.byId[i.pid];
+  const color = n ? ({ promising: "var(--accent)", crowded: "var(--aband)", weak: "var(--lapsed)" }[n.verdict] || "var(--ink)") : "var(--ink)";
+  $("#spane").innerHTML = `<div class="srcline"><div><b>${esc(i.name)}</b><div class="muted" style="font-size:13px">${esc(i.pitch)}</div></div></div>
+    <p class="prose">A first-pass screen: Claude compares your idea with the source patent and with products and patents it knows about, then suggests searches to run yourself. It can't see patents filed after its training, so treat this as a starting point, not a clearance.</p>
+    <div class="rowbtns"><button class="btn primary" id="runNov">${n ? "Run the check again" : "Run novelty check"}</button><button class="btn quiet" id="stopAi" hidden>Stop</button><span class="status" id="aiStatus"></span></div>
+    ${n ? `<div class="verdict"><div class="gauge" style="color:${color}">${esc(n.score)}</div><div><span class="badge ${n.verdict === "promising" ? "ok" : n.verdict === "crowded" ? "abandoned" : "lapsed"}">${esc(n.verdict.charAt(0).toUpperCase() + n.verdict.slice(1))}</span><p class="prose" style="margin-top:8px">${esc(n.summary)}</p></div></div>
+    <div class="cols2"><div class="panel"><div class="block"><h4>Overlaps to watch</h4><ul>${(n.overlaps || []).map(o => `<li><b>${esc(o.what)}</b> ${esc(o.why)}</li>`).join("")}</ul></div></div>
+    <div class="panel"><div class="block"><h4>How to stand apart</h4><ul>${(n.differentiators || []).map(x => `<li>${esc(x)}</li>`).join("")}</ul></div></div></div>
+    <div class="panel"><div class="block"><h4>Search these yourself</h4><div class="cites">${(n.queries || []).map(q => `<a class="chip" ${EXT} href="https://patents.google.com/?q=${encodeURIComponent("(" + q + ")")}">${esc(q)} ${icon("ext")}</a>`).join("")}</div></div></div>
+    <div class="rowbtns"><button class="btn primary" id="toDraft">Draft the provisional</button></div>` : ""}`;
+  $("#runNov").onclick = async () => {
+    if (!needAI()) return;
+    const d = p ? await detailOf(p) : {};
+    ST.ctl = new AbortController(); $("#runNov").disabled = true; $("#stopAi").hidden = false; setStatus("", false, true);
+    try {
+      const r = await S.sample.json(`Act as a patent searcher doing a quick first-pass novelty screen for an independent inventor. This is not a legal opinion.\n\n${ideaText(i)}\n\n${p ? patentContext(p, d) : "No source patent: this is the inventor's own idea."}\n\nUsing what you know about existing patents and products, judge how likely the new elements are to be novel and non-obvious. Remember the source patent is prior art. Reply with only a JSON object:\n{"verdict":"promising"|"crowded"|"weak","score":<1-10, higher is more patentable>,"summary":"two plain sentences","overlaps":[{"what":"existing product, patent or technique","why":"how it overlaps"}],"differentiators":["specific change that would make it more distinct"],"queries":["3 to 5 short keyword searches to run on Google Patents"]}`, { signal: ST.ctl.signal, cache: false });
+      const verdict = ["promising", "crowded", "weak"].includes(String(r?.verdict).toLowerCase()) ? String(r.verdict).toLowerCase() : "crowded";
+      i.novelty = { verdict, score: Math.max(1, Math.min(10, Math.round(Number(r?.score)) || 5)), summary: clip(r?.summary, 600), overlaps: (Array.isArray(r?.overlaps) ? r.overlaps : []).slice(0, 5).map(o => ({ what: clip(o?.what, 200), why: clip(o?.why, 400) })), differentiators: (Array.isArray(r?.differentiators) ? r.differentiators : []).slice(0, 5).map(x => clip(x, 300)), queries: (Array.isArray(r?.queries) ? r.queries : []).slice(0, 5).map(x => clip(x, 120)) };
+      await saveIdea(i.stage === "drafted" ? "drafted" : "checked"); if ($("#studio").open && ST.step === 2) renderStudio();
+    } catch (e) { setStatus(aiError(e), !!aiError(e)); $("#runNov").disabled = false; $("#stopAi").hidden = true; }
+  };
+  $("#toDraft") && ($("#toDraft").onclick = () => { ST.step = 3; renderStudio(); });
+}
+function paneDraft() {
+  const i = ST.idea, p = S.byId[i.pid];
+  $("#spane").innerHTML = `<div class="srcline"><div><b>${esc(i.name)}</b><div class="muted" style="font-size:13px">${esc(i.pitch)}</div></div></div>
+    <p class="prose">Claude drafts a provisional specification you can edit here, then file yourself. A provisional locks in your filing date for 12 months while you build and pitch.</p>
+    <div class="rowbtns"><button class="btn primary" id="runDraft">${i.draft ? "Redraft from scratch" : "Draft my provisional"}</button><button class="btn quiet" id="stopAi" hidden>Stop</button><span class="status" id="aiStatus"></span></div>
+    <div class="fgroup"><label for="draft">Specification (Markdown, editable)</label><textarea class="field draft" id="draft" placeholder="Your draft will appear here.">${esc(i.draft)}</textarea></div>
+    <div class="rowbtns"><button class="btn secondary" id="saveDraft">Save draft</button><button class="btn secondary" id="copyDraft">Copy text</button><button class="btn secondary" id="dlDraft" ${S.downloads ? "" : "hidden"}>Download .md</button></div>
+    <div class="panel"><div class="block"><h4>Filing it yourself</h4><ol class="prose" style="padding-left:18px;margin:0;display:grid;gap:6px">
+      <li>Prepare the figures the draft lists. Clear hand drawings are acceptable in a provisional${i.sketch ? "; your concept sketch is a starting point" : ""}.</li>
+      <li>Create a free USPTO.gov account and open <a href="https://patentcenter.uspto.gov/" ${EXT}>Patent Center</a>.</li>
+      <li>Upload the specification and drawings as PDFs with a cover sheet (form PTO/SB/16). Claim micro entity status if you qualify (PTO/SB/15A).</li>
+      <li>Pay the fee and save the filing receipt. File the nonprovisional within 12 months to keep this date.</li></ol>
+      <div class="feegrid" style="margin-top:14px"><div><b>$65</b><small>Micro entity</small></div><div><b>$130</b><small>Small entity</small></div><div><b>$325</b><small>Large entity</small></div></div>
+      <p class="note" style="margin-top:8px">Provisional filing fee from the USPTO fee schedule effective January 19, 2025 (revised August 14, 2026). Check the <a href="https://www.uspto.gov/learning-and-resources/fees-and-payment/uspto-fee-schedule" ${EXT}>current schedule</a> before paying.</p></div></div>`;
+  const ta = $("#draft");
+  $("#saveDraft").onclick = async () => { i.draft = ta.value; await saveIdea(i.draft ? "drafted" : i.stage); toast("Draft saved to your bench."); };
+  $("#copyDraft").onclick = async () => { try { await navigator.clipboard.writeText(ta.value); toast("Copied."); } catch { ta.select(); toast("Selected. Press Ctrl+C or Cmd+C to copy."); } };
+  $("#dlDraft").onclick = async () => { try { await S.downloads.save({ filename: (i.name || "invention").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") + "-provisional-draft.md", data: ta.value || " " }); } catch (e) { if (e?.code !== "declined") toast("Download isn't available here. Use Copy instead."); } };
+  $("#runDraft").onclick = async () => {
+    if (!needAI()) return;
+    const d = p ? await detailOf(p) : {};
+    ST.ctl = new AbortController(); $("#runDraft").disabled = true; $("#stopAi").hidden = false; setStatus("", false, true);
+    const before = ta.value;
+    try {
+      const { text, truncated } = await S.sample(`Draft a United States provisional patent application specification in Markdown for the invention below.\n\nUse these sections: # Title; ## Field; ## Background (describe the problem; cite ${p ? p.n + " as prior art and explain what it leaves unsolved" : "general prior approaches"}); ## Summary; ## Brief Description of the Drawings (propose FIG. 1 to FIG. 5 the inventor should prepare); ## Detailed Description (enough for a skilled person to make and use it: components with reference numerals 100, 102, 104..., how they connect, operation step by step, materials, ranges, and at least three alternative embodiments); ## Example Claims (1 independent claim and 6 dependent claims, optional in a provisional but useful later); ## Abstract (under 150 words).\n\nWrite in formal patent style but plainly. Never invent test data. Put facts only the inventor knows in [square brackets].\n\n${ideaText(i)}${i.novelty ? "\nDifferentiators to emphasize: " + i.novelty.differentiators.join("; ") : ""}\n\n${p ? patentContext(p, d) : ""}`,
+        { signal: ST.ctl.signal, cache: false, onText: ({ text }) => { ta.value = text; ta.scrollTop = ta.scrollHeight; } });
+      ta.value = text; i.draft = text; await saveIdea("drafted"); $$(".step")[3]?.classList.add("done");
+      setStatus(truncated ? "The draft was cut short. Save it, then ask again for the missing sections." : "Draft ready and saved. Read every line before you file.");
+    } catch (e) { ta.value = e?.text || before; setStatus(aiError(e), !!aiError(e)); }
+    finally { $("#runDraft").disabled = false; $("#stopAi").hidden = true; }
+  };
+}
+
+/* ======================================================================
+   Bench and storage
+   ====================================================================== */
+function renderBench() {
+  const res = mine().sort((a, b) => a.until.localeCompare(b.until));
+  $("#resCount").textContent = `${res.length} of ${MAX_RES}`;
+  $("#resList").innerHTML = res.map((r, k) => {
+    const p = S.byId[r.id]; if (!p) return "";
+    const left = daysLeft(r);
+    return `<div class="rowi" style="--i:${k}"><div class="th"><img data-fig="${p.id}" alt=""></div><div><b>${esc(p.t)}</b><small>${esc(p.n)} · ${left} ${left === 1 ? "day" : "days"} left${r.note ? ` · "${esc(r.note)}"` : ""}</small></div><div class="ra"><button class="btn primary sm" data-act="reinvent" data-id="${p.id}">Reinvent</button><button class="btn secondary sm" data-open="${p.id}">Open</button>${left <= 7 ? `<button class="btn secondary sm" data-act="renew" data-id="${p.id}">Renew</button>` : ""}<button class="btn quiet sm" data-act="release" data-id="${p.id}">Release</button></div></div>`;
+  }).join("") || `<div class="empty">${S.db && S.me.id ? `Nothing reserved yet. Reserve up to ${MAX_RES} patents from today's set or any patent's page; each hold lasts ${HOLD_DAYS} days.` : "Reserving needs you to be signed in to Claude with access to this page. You can still reinvent any patent."}</div>`;
+  const stageName = { spark: "Directions", shaped: "Shaped", checked: "Checked", drafted: "Drafted" };
+  $("#ideaCount").textContent = S.ideas.length;
+  $("#ideaList").innerHTML = S.ideas.slice().sort((a, b) => String(b.updated).localeCompare(String(a.updated))).map((i, k) => {
+    const p = S.byId[i.pid];
+    return `<div class="rowi" style="--i:${k}"><div class="th">${i.sketch ? `<img src="${esc(i.sketch)}" alt="">` : p ? `<img data-fig="${p.id}" alt="">` : "Own idea"}</div><div><b>${esc(i.name || (p ? "Directions for " + p.t : "Untitled idea"))}</b><small><span class="badge plain" style="height:20px">${stageName[i.stage] || "Idea"}</span> ${esc(i.pitch || (p ? p.n : ""))}</small></div><div class="ra"><button class="btn primary sm" data-act="studio" data-idea="${esc(i.id)}">Continue</button><button class="btn quiet sm" data-act="delidea" data-idea="${esc(i.id)}">Delete</button></div></div>`;
+  }).join("") || `<div class="empty">No ideas yet. Open any patent and choose "Reinvent with AI", or start from your own idea.</div>`;
+  fillFigs($("[data-view=bench]"));
+}
+const validIdea = i => i && typeof i === "object" && typeof i.id === "string" && /^[A-Za-z0-9_-]{1,40}$/.test(i.id) && (!i.sketch || String(i.sketch).startsWith("data:image/svg+xml"));
+const Store = {
+  uid: null, db: null,
+  ok() { return this.db && this.uid; },
+  profile() { return this.db.doc(`data/users/${this.uid}/profile`); },
+  async loadPrefs() { if (this.ok()) { try { const s = await this.profile().get(); if (s.exists) return s.data(); } catch {} } return local("prefs"); },
+  async savePrefs(p) { local("prefs", p); if (this.ok()) { try { await this.profile().set(p); } catch { this.db = null; } } },
+  watchIdeas(cb) {
+    const fallback = () => cb((local("ideas") || []).filter(validIdea));
+    if (this.ok()) return this.profile().collection("ideas").onSnapshot(s => cb(s.docs.map(d => ({ dirs: [], ...d.data() })).filter(validIdea)), () => { this.db = null; fallback(); });
+    fallback();
+  },
+  async saveIdea(i) {
+    if (this.ok()) { try { return await this.profile().collection("ideas").doc(i.id).set(i); } catch (e) { if (e?.code === "quota_exceeded") return toast("Storage is full. Delete an old idea first."); this.db = null; toast("Saved in this browser only."); } }
+    local("ideas", S.ideas);
+  },
+  async deleteIdea(id) {
+    S.ideas = S.ideas.filter(i => i.id !== id);
+    if (this.ok()) { try { return await this.profile().collection("ideas").doc(id).delete(); } catch {} }
+    local("ideas", S.ideas);
+  },
+};
+
+/* ======================================================================
+   Navigation and events
+   ====================================================================== */
+const VIEWS = ["today", "browse", "bench", "how", "legal"];
+function show(view, anchor) {
+  if (!VIEWS.includes(view)) view = "today";
+  $$("[data-view]").forEach(s => s.hidden = s.dataset.view !== view);
+  $$(".tab").forEach(t => t.setAttribute("aria-current", t.dataset.go === view ? "page" : "false"));
+  if (view === "browse" && S.patents.length) renderBrowse();
+  if (view === "bench") renderBench();
+  if (view === "today" && S.patents.length) plotter.start(); else plotter.run++;
+  const el = anchor && document.getElementById(anchor);
+  window.scrollTo({ top: el ? el.getBoundingClientRect().top + scrollY - 80 : 0, behavior: "instant" });
+}
+function go(view, anchor) { try { history.replaceState(null, "", "#" + view); } catch {} transition(() => show(view, anchor)); }
+document.addEventListener("click", async e => {
+  const t = e.target.closest("[data-go],[data-open],[data-act],[data-close],[data-dir],[data-step],[data-pick],[data-tab],[data-view-sheet],[data-vstep],[data-zoomtoggle],[data-claim],[data-scroll],#stopAi");
+  if (!t) return;
+  if (t.dataset.go) { e.preventDefault(); return go(t.dataset.go, t.dataset.anchor); }
+  if (t.dataset.scroll) return document.getElementById(t.dataset.scroll)?.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+  if (t.dataset.open) return openSheet(t.dataset.open);
+  if (t.hasAttribute("data-close")) return t.closest("dialog").close();
+  if (t.dataset.tab) return renderTab(t.dataset.tab);
+  if (t.dataset.viewSheet !== undefined) return openViewer(S.byId[S.open], +t.dataset.viewSheet);
+  if (t.dataset.vstep) { V.i = Math.max(0, Math.min(V.list.length - 1, V.i + +t.dataset.vstep)); return renderViewer(); }
+  if (t.hasAttribute("data-zoomtoggle")) return $("#vStage")?.classList.toggle("zoom");
+  if (t.dataset.claim) { const li = $("#claim-" + t.dataset.claim); if (li) { li.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" }); li.classList.add("hl"); setTimeout(() => li.classList.remove("hl"), 1600); } return; }
+  if (t.id === "stopAi") return ST.ctl?.abort();
+  if (t.dataset.pick) return t.setAttribute("aria-pressed", t.getAttribute("aria-pressed") !== "true");
+  if (t.dataset.dir) { ST.idea.pick = +t.dataset.dir; $$("[data-dir]").forEach(b => b.setAttribute("aria-pressed", b === t)); $("#toShape").disabled = false; return; }
+  if (t.dataset.step) { grabShape(); ST.step = +t.dataset.step; return renderStudio(); }
+  const id = t.dataset.id, act = t.dataset.act;
+  if (act === "reserve") { const c = claimOf(id); return c && c.uid === S.me.id ? release(id) : reserve(id, "", t); }
+  if (act === "reserveform") return showReserveForm(id);
+  if (act === "cancelres") return $("#resForm")?.remove();
+  if (act === "copylink") { const url = `${HOME}#${id}`; try { await navigator.clipboard.writeText(url); toast("Link copied. It opens this patent directly."); } catch { toast(url, 9000); } return; }
+  if (act === "release") return release(id);
+  if (act === "renew") return renew(id);
+  if (act === "reinvent") return openStudio(id);
+  if (act === "sketchpatent") {
+    if (!needAI("#skStatus")) return;
+    const p = S.byId[id], d = await detailOf(p); t.disabled = true; setStatus("", false, true, "#skStatus");
+    try { const url = await sketch(`${p.ot}\nAbstract: ${d.abs}\nClaim 1: ${(d.c1 || "").slice(0, 1200)}`); $("#skOut").innerHTML = `<p class="aiflag" style="margin:10px 0">${icon("spark")}AI-generated concept sketch. Not part of the patent; based only on its text.</p><img src="${url}" alt="AI concept sketch of ${esc(p.t)}">`; setStatus("", false, false, "#skStatus"); }
+    catch (err) { setStatus(aiError(err), !!aiError(err), false, "#skStatus"); }
+    finally { t.disabled = false; }
+    return;
+  }
+  if (act === "studio") { const i = S.ideas.find(x => x.id === t.dataset.idea); return i && openStudio(null, { ...i }); }
+  if (act === "delidea") {
+    if (t.dataset.confirm) { await Store.deleteIdea(t.dataset.idea); renderBench(); return toast("Idea deleted."); }
+    t.dataset.confirm = 1; t.textContent = "Confirm delete"; setTimeout(() => { if (t.isConnected) { delete t.dataset.confirm; t.textContent = "Delete"; } }, 4000);
+  }
+});
+document.addEventListener("keydown", e => {
+  if ($("#viewer").open && ["ArrowRight", "ArrowLeft"].includes(e.key)) { V.i = Math.max(0, Math.min(V.list.length - 1, V.i + (e.key === "ArrowRight" ? 1 : -1))); return renderViewer(); }
+  const t = e.target.closest?.(".dtab");
+  if (!t || !["ArrowRight", "ArrowLeft"].includes(e.key)) return;
+  const tabs = $$(".dtab"), k = (tabs.indexOf(t) + (e.key === "ArrowRight" ? 1 : -1) + tabs.length) % tabs.length;
+  tabs[k].focus(); renderTab(tabs[k].dataset.tab);
+});
+$("#editFields").onclick = () => { renderPicker(); $("#picker").hidden = !$("#picker").hidden; };
+$("#savePicker").onclick = async () => {
+  S.prefs.fields = $$("[data-pick]").filter(b => b.getAttribute("aria-pressed") === "true").map(b => b.dataset.pick);
+  $("#picker").hidden = true; renderToday(); await Store.savePrefs({ fields: S.prefs.fields }); toast(S.prefs.fields.length ? "Your daily set now follows these fields." : "Showing all fields.");
+};
+$("#ownIdea").onclick = () => openStudio(null);
+addEventListener("hashchange", () => {  // a patent or section link followed while the page is already open
+  const h = location.hash.slice(1);
+  if (isPatentId(h) && S.byId[h]) openSheet(h); else if (VIEWS.includes(h)) transition(() => show(h));
+});
+$("#studio").addEventListener("close", () => { ST.ctl?.abort(); if (!$("[data-view=bench]").hidden) renderBench(); });
+$("#dlg").addEventListener("close", () => { S.open = null; });
+for (const d of $$("dialog")) d.addEventListener("click", e => { if (e.target === d) d.close(); });
+
+/* ======================================================================
+   Boot. Capabilities light up after first paint; the page works without them.
+   ====================================================================== */
+(async function boot() {
+  try {
+    const j = await (await fetch("data/index.json")).json();
+    S.meta = j.meta; S.patents = j.patents;
+    for (const p of S.patents) S.byId[p.id] = p;
+  } catch { $("#wall").innerHTML = `<div class="empty">The register didn't load. Refresh the page to try again.</div>`; return; }
+  countUp($("#stPool"), S.patents.length);
+  countUp($("#stLapsed"), S.meta.lapsedYear || 0);
+  $("#stSources").textContent = Object.values(S.meta.bySource || {}).filter(Boolean).length || 3;
+  const ver = S.meta.verified || S.meta.built;
+  $("#vpill span").textContent = `Verified ${fmtWhen(ver)}`;
+  $("#vpill").title = `Every listing was rechecked against USPTO records on ${fmtWhen(ver)}`;
+  $("#footVer").textContent = `${S.patents.length} patents · last checked against USPTO records ${fmtWhen(ver)}`;
+  S.prefs = local("prefs") || { fields: [] };
+  if (!Array.isArray(S.prefs.fields)) S.prefs.fields = [];
+  renderToday(); initBrowse(); setInterval(tickClock, 1000); tickClock();
+  const hash = location.hash.slice(1);
+  if (isPatentId(hash) && S.byId[hash]) openSheet(hash); else if (hash) show(hash);
+
+  const use = n => window.claude?.use ? window.claude.use(n).catch(() => null) : Promise.resolve(null);
+  const [db, user, sample, downloads] = await Promise.all(["db", "user", "sample", "downloads"].map(use));
+  Object.assign(S, { db, user, sample, downloads });
+  if (user) {
+    const me = await user.me();
+    S.me = { id: me.id };
+    S.canWrite = await user.can("data.write");
+    if (me.id) $("#who").innerHTML = `<img src="${esc(me.avatarUrl)}" alt="${esc(me.name || "You")}" title="${esc(me.name || "Signed in")}">`;
+  }
+  Store.db = db; Store.uid = S.me.id;
+  if (!Store.ok()) $("#benchNote").textContent = "The patents you've reserved and the inventions you're shaping. Without a signed-in account, ideas are saved in this browser only.";
+  const prefs = await Store.loadPrefs();
+  if (prefs && Array.isArray(prefs.fields) && JSON.stringify(prefs.fields) !== JSON.stringify(S.prefs.fields)) { S.prefs = { fields: prefs.fields.filter(f => typeof f === "string") }; renderToday(); }
+  Store.watchIdeas(list => { S.ideas = list; if (!$("[data-view=bench]").hidden) renderBench(); });
+  if (db) db.collection("claims").onSnapshot(s => applyClaims(s.docs.map(d => ({ uid: d.id, items: d.data()?.items }))), () => {});  // the id is the writer; never trust a uid inside the data
+})();
+</script>
