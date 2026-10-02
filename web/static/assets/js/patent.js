@@ -111,9 +111,9 @@ async function refreshRes() {
   btn.dataset.mode = !r ? "reserve" : r.mine ? (daysLeft(r.expires_at) <= 7 ? "renew" : "release") : "taken";
   btn.innerHTML = { reserve: `${icon("flag")}Reserve`, release: `${icon("flag")}Release`, renew: `${icon("flag")}Renew`, taken: `${icon("flag")}Reserved` }[btn.dataset.mode];
   btn.disabled = btn.dataset.mode === "taken";
-  line.innerHTML = !r ? (user ? "" : `<span>Reserve it so other builders know you're on it.</span>`)
+  line.innerHTML = !r ? (user ? "" : `<span>Reserve it so other builders know you're on it. It doesn't stop anyone from using it.</span>`)
     : r.mine ? `<span class="badge ok">Reserved by you</span><span>until ${esc(fmtDate(r.expires_at))}${r.note ? ` · "${esc(r.note)}"` : ""}${btn.dataset.mode === "renew" ? ` · <button class="btn quiet sm" type="button" id="relNow">Release</button>` : ""}</span>`
-    : `<span class="badge reserved">Reserved</span><span>by ${esc(r.holder)} until ${esc(fmtDate(r.expires_at))}${r.note ? ` · "${esc(r.note)}"` : ""}</span>`;
+    : `<span class="badge reserved">Reserved</span><span>by ${esc(r.holder)} until ${esc(fmtDate(r.expires_at))}${r.note ? ` · "${esc(r.note)}"` : ""}. You can still use it too.</span>`;
   $("#relNow")?.addEventListener("click", () => act("release"));
 }
 async function act(mode, note) {
@@ -123,7 +123,7 @@ async function act(mode, note) {
     if (mode === "reserve") await b.reserve(id, note);
     else if (mode === "release") await b.release(id);
     else await b.renew(id);
-    toast({ reserve: "Reserved for 30 days. It's on your bench.", release: "Released. Other builders can reserve it now.", renew: "Renewed for another 30 days." }[mode], 4600, "ok");
+    toast({ reserve: "Reserved for 30 days. It's on your bench. Others can still use the patent.", release: "Released. Other builders can reserve it now.", renew: "Renewed for another 30 days." }[mode], 4600, "ok");
     if (mode === "reserve") { const r = btn.getBoundingClientRect(); celebrate(r.left + r.width / 2, r.top + r.height / 2); }
   } catch (e) {
     toast({ taken: "Someone reserved it a moment before you.", limit: "You can hold 5 reservations at a time. Release one from your bench first.", not_signed_in: "Sign in to reserve.", too_early: "You can renew in the last 7 days of a hold." }[e.code] || "That didn't work. Try again.", 5200, "err");
@@ -136,7 +136,8 @@ btn.addEventListener("click", async () => {
   if (!user) return (location.href = signInUrl());
   if (btn.dataset.mode !== "reserve") return act(btn.dataset.mode);
   dlg.innerHTML = `<div class="dbar"><b id="resTitle">Reserve for 30 days</b><button class="x" type="button" data-close aria-label="Close">${icon("x")}</button></div>
-    <form class="dbody" id="resForm"><p class="muted">Holds this patent for you on Patent Yard for 30 days so other builders here know you're working on it. It gives no legal rights; the invention stays free for everyone. You can hold 5 at a time.</p>
+    <form class="dbody" id="resForm"><p class="resnote"><b>A reservation doesn't stop anyone from using this patent.</b> It's only a note to other Patent Yard users that you're working on it. Anyone can still make, use and sell what it describes, and file their own improvements. It gives you no legal rights.</p>
+    <p class="muted">The hold lasts 30 days. You can hold 5 at a time.</p>
     <div class="fgroup"><label for="resNote">What are you building? (optional, shown to others)</label><input class="field" id="resNote" maxlength="140"><small>Notes are public. Keep the inventive details of your own idea out of them.</small></div>
     <div class="rowbtns"><button class="btn primary" type="submit">Reserve</button><button class="btn quiet" type="button" data-close>Cancel</button></div></form>`;
   dlg.showModal();

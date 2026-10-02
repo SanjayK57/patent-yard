@@ -298,6 +298,8 @@ footer.foot .fine{grid-column:1/-1;border-top:1px solid var(--line);padding-top:
 .badges{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .pactions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;max-width:420px}
 @media (max-width:860px){.pactions{justify-content:flex-start;max-width:none}}
+.resnote{padding:10px 12px;border-radius:10px;background:var(--aband-soft);border:1px solid color-mix(in srgb,var(--aband) 30%,transparent);font-size:13.5px;line-height:1.5;margin:0 0 12px}
+.resnote b{color:var(--aband)}
 .resline{flex-basis:100%;display:flex;justify-content:flex-end;font-size:13.5px;color:var(--ink-2);gap:8px;align-items:center;text-align:right}
 @media (max-width:860px){.resline{justify-content:flex-start;text-align:left}}
 .playout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:40px;margin-top:28px}

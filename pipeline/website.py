@@ -520,7 +520,7 @@ class Site:
   <div class="steps3">
     <div><span class="n">1</span><h3>Find</h3><p>Search millions of patents whose protection has ended. Each one links to the official USPTO record it came from.</p></div>
     <div><span class="n">2</span><h3>Reinvent with Claude</h3><p>One click writes a prompt and a PDF brief for your own Claude: modern directions, a novelty screen and a provisional draft.</p></div>
-    <div><span class="n">3</span><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement.</p></div>
+    <div><span class="n">3</span><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement. Reserving doesn't stop anyone else from using it.</p></div>
   </div>
 </section>
 <section class="section reveal">
@@ -978,7 +978,7 @@ class Site:
 <div id="benchView" hidden>
   <div id="welcome"></div>
   <div class="sechead"><div><h1>My bench</h1><p id="benchWho"></p></div><div class="rowbtns"><a class="btn primary" href="/studio/">{icon("spark")}New invention</a><a class="btn secondary" href="/settings/">{icon("gear")}Settings</a><button class="btn quiet" type="button" id="signOut">Sign out</button></div></div>
-  <div class="explain"><span class="badge reserved">Reserved</span><p><b>What reserving does.</b> A reservation holds a patent for you on Patent Yard for 30 days. Other builders see it's taken, with your optional note, so nobody here duplicates your work. You can hold 5 at a time and renew in the last week. It gives you no legal rights: the invention stays free for everyone.</p></div>
+  <div class="explain"><span class="badge reserved">Reserved</span><p><b>What reserving does.</b> A reservation holds a patent for you on Patent Yard for 30 days. Other builders see it's taken, with your optional note, so nobody here duplicates your work. You can hold 5 at a time and renew in the last week. <b>It doesn't stop anyone from using the patent.</b> It gives you no legal rights: the invention stays free for everyone, including other builders.</p></div>
   <div class="bench">
     <div class="list"><header><h2>Reserved</h2><span class="badge plain" id="resCount">0 of 5</span></header><div id="resList"></div></div>
     <div class="list"><header><h2>Inventions</h2><span class="badge plain" id="ideaCount">0</span></header><div id="ideaList"></div></div>
@@ -1011,7 +1011,7 @@ class Site:
   <details><summary>What does "expired, full term" mean?</summary><p>A US utility patent filed after June 8, 1995 lasts 20 years from its earliest non-provisional filing date. Patents filed before May 29, 2000 can't receive a term adjustment for USPTO delays, and other extensions are capped at five years, so all of them have ended. Patents filed before June 8, 1995 lasted 17 years from grant or 20 from filing, whichever was longer; those are listed once both have passed. Everything granted before 1976 has long expired.</p></details>
   <details><summary>Can I really build and sell these?</summary><p>In the US, yes: an expired or abandoned patent gives no one the right to stop you. Two cautions. Other, newer patents might cover parts of a product you build, and foreign patents in the same family might still be alive. Check both before you invest serious money.</p></details>
   <details><summary>Can I patent one of these?</summary><p>Not as it is. The published document is prior art. You can patent a genuine improvement that is new and not obvious, which is what the invention studio helps you find.</p></details>
-  <details><summary>What does reserving do?</summary><p>It holds a patent for you on Patent Yard for 30 days so other builders here can see someone is working on it. It is a courtesy between users, not a legal right. You can hold 5 at a time and renew in the last week.</p></details>
+  <details><summary>What does reserving do?</summary><p>It holds a patent for you on Patent Yard for 30 days so other builders here can see someone is working on it. It is a courtesy between users, not a legal right: it doesn't stop anyone, on Patent Yard or anywhere else, from using the patent. You can hold 5 at a time and renew in the last week.</p></details>
   <details><summary>Where do the drawings come from?</summary><p>Every drawing is a page of the patent's own published document, cropped to the drawing and scaled down. We never add to them. If a patent has no drawings, Claude can sketch it from the text, clearly marked as not part of the patent.</p></details>
   <details><summary>How current is the data?</summary><p>New lapses are added every week after the Official Gazette publishes, and the site republishes every two hours. Recently freed patents are rechecked against USPTO records daily; the date of the last check is on each patent's page. Patents in the full-term archive can't come back to life, so they don't need rechecking.</p></details>
   <details><summary>Is it really free?</summary><p>Yes. Browsing, reserving and the invention studio are free. The AI work happens in your own Claude account, which has a free plan, and the USPTO charges its own filing fee (from $65 for a micro entity provisional).</p></details>
