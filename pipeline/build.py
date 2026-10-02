@@ -82,7 +82,7 @@ def collect(budget=None):
         if c.get("verify_ok") is False or (c["status"] == "lapsed" and pn in reinstated):
             dropped.append(c["guid"])
             continue
-        if budget and note is None:  # the size-capped claude.ai version keeps to patents with a written note
+        if budget and (note is None or P.armed(c["cpc"])):  # the claude.ai version: written notes only, no weapons
             continue
         clean(c)
         note = note or auto_note(c)
@@ -107,7 +107,7 @@ def collect(budget=None):
             "a": c["assignee"] or c["inventors"], "ia": not c["assignee"],
             "fig": c.get("fig") if fig else None, "fs": n, "ns": (1 if fig else 0) + len(extra),
             "sh": c.get("sheet_count") or (1 if fig else 0), "tags": note.get("tags", []),
-            "cl": len(c.get("claims_all") or []), "auto": bool(note.get("auto")), "pending": bool(c.get("text_pending")),
+            "cl": len(c.get("claims_all") or []), "arm": P.armed(c["cpc"]), "auto": bool(note.get("auto")), "pending": bool(c.get("text_pending")),
             "fam": len(c["family_members"]) + 1 if "family_members" in c else c.get("familySize", 1), "v": (c.get("verified") or "")[:10],
         }
         if c["status"] == "lapsed" and c.get("og_date"):

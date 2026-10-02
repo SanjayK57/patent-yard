@@ -21,6 +21,7 @@ async function choose(id) {
   if (!id) { patent = null; picked.innerHTML = ""; kit.refresh(); draft(); return; }
   try { patent = await loadPatent(id); }
   catch { toast("That patent didn't load."); return; }
+  if (patent.armed) { patent = null; toast("The studio doesn't work with weapons patents: Claude doesn't help design weapons."); return; }
   picked.innerHTML = `<div class="srcline">${patent.sheets[0] ? `<img src="${patent.sheets[0]}" alt="">` : ""}<div><b>${esc(patent.t)}</b><div class="muted" style="font-size:12.5px">${esc(patent.n)} · ${esc(patent.status)}</div></div><button class="btn quiet sm" type="button" id="unpick" style="margin-left:auto">Remove</button></div>`;
   $("#unpick").addEventListener("click", () => choose(null));
   pq.value = ""; list.hidden = true; kit.refresh(); draft();

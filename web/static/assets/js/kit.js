@@ -208,6 +208,10 @@ export function mountKit({ tasks, prompt, getPatent, getIdea, initial = "worksho
   let task = initial;
   const avail = () => TASKS.filter(t => !t.patent || getPatent());
   const render = () => {
+    if (getPatent()?.armed) {  // weapons patents get no kit (pipeline/patents.py armed)
+      tasks.innerHTML = `<p class="status">Claude doesn't help design weapons, ammunition or explosives, so there is no kit for this patent. Work with a federally licensed manufacturer and a registered patent attorney or agent instead.</p>`;
+      prompt.value = ""; return;
+    }
     if (!avail().some(t => t.id === task)) task = "workshop";
     tasks.innerHTML = avail().map(t => `<button type="button" class="task" data-task="${t.id}" aria-pressed="${t.id === task}">${t.rec ? "<em>Recommended</em>" : ""}<b>${esc(t.name)}</b><span>${esc(t.desc)}</span></button>`).join("");
     prompt.value = buildPrompt(task, getPatent(), getIdea());

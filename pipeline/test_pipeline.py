@@ -173,6 +173,12 @@ if __name__ == "__main__":
 
 
 class Classification(unittest.TestCase):
+    def test_weapons_get_no_kit(self):
+        self.assertTrue(P.armed(["F41A21/325", "F41A21/34"]))  # muzzle device with suppressor (US 11,397,066)
+        self.assertTrue(P.armed(["B33Y80/00", "C06B 45/00"]))
+        self.assertFalse(P.armed(["F16L1/00", "A63B69/00"]))
+        self.assertFalse(P.armed(None))
+
     def test_main_group_prefixes_match_whole(self):
         self.assertEqual(P.field_of(["G06F1/16"]), "electronics")
         self.assertEqual(P.field_of(["G06F12/02"]), "software")

@@ -637,7 +637,8 @@ class Site:
             fig = (f'<div class="nofig later"><b><span class="pulse" aria-hidden="true"></span>Drawings on their way</b><p class="muted">This {kind} has {e["sh"]} drawing '
                    f'{"sheet" if e["sh"] == 1 else "sheets"}. They are being downloaded; every one is in the USPTO PDF now.</p><a class="btn secondary sm" href="{L["pdf"]}" {EXT}>{icon("file")}Open the USPTO PDF</a></div>')
         else:
-            fig = f'<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button></div>'
+            fig = ('<div class="nofig"><b>This document has no drawings.</b></div>' if e.get("arm") else
+                   f'<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button></div>')
         cpc = dd.get("cpc", [])
         cpc_html = (E(cpc[0]) + (f' <span class="muted" title="{E(", ".join(cpc))}">+{len(cpc) - 1} more</span>' if len(cpc) > 1 else "")) if cpc else "—"
         abstract = (f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose">{E(dd["abs"])}</p></div>' if dd["abs"] else
@@ -647,6 +648,7 @@ class Site:
 <section class="psec" id="overview"><h2>Overview</h2>
 <div class="ov"><div>{fig}</div>
 <div class="stack">
+  {KIT_OFF if e.get("arm") else ""}
   {plain or abstract}
   <div class="panel soft"><div class="block"><h3>Why it's free to use</h3><ul class="checks">{"".join(f"<li>{E(c)}</li>" for c in checks)}<li class="warn">{E(warn)}</li></ul></div></div>
   {f'<div class="angle"><b>Modern angle · Patent Yard idea</b>{E(e["tw"])}</div>' if e["tw"] else ""}
@@ -687,7 +689,8 @@ class Site:
 <div class="drawwrap{" withlist" if figs else ""}"><div class="gallery">{gal}</div>{figlist}</div>
 </section>"""
         else:
-            drawings = f"""<section class="psec" id="drawings"><h2>Drawings</h2><div class="nofig"><b>This document has no drawings.</b><p class="muted">Ask Claude for concept sketches based only on the patent's text. They are not part of the patent.</p><button class="btn primary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button></div></section>"""
+            sketch = "" if e.get("arm") else f'<p class="muted">Ask Claude for concept sketches based only on the patent\'s text. They are not part of the patent.</p><button class="btn primary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button>'
+            drawings = f"""<section class="psec" id="drawings"><h2>Drawings</h2><div class="nofig"><b>This document has no drawings.</b>{sketch}</div></section>"""
 
         # claims: one readable column, dependents indented under the claim they build on, and a map beside it
         gap = claims[0][0] - 1 if claims else 0
@@ -787,7 +790,7 @@ class Site:
   <div><div class="badges">{badge(e["st"])}{build_badge}{'<span class="badge plain">Solo inventor</span>' if e["ia"] else ""}<span class="badge ok" id="vbadge" hidden></span></div>
   <h1>{E(e["t"])}</h1><p class="asfiled">{asfiled}{owner}</p></div>
   <div class="pactions">
-    <button class="btn primary" type="button" data-kit="workshop">{icon("spark")}Reinvent with Claude</button>
+    {"" if e.get("arm") else f'<button class="btn primary" type="button" data-kit="workshop">{icon("spark")}Reinvent with Claude</button>'}
     <button class="btn secondary" type="button" id="reserveBtn">{icon("flag")}Reserve</button>
     <a class="btn secondary" href="{L["pdf"]}" {EXT}>{icon("file")}USPTO PDF</a>
     <button class="btn quiet" type="button" id="saveBtn" aria-pressed="false">{icon("bookmark")}<span>Save</span></button>
@@ -1182,7 +1185,7 @@ class Site:
                 "abs": dd["abs"], "claims": [c if isinstance(c, list) else [i + 1, c] for i, c in enumerate(doc["claims"])][:80], "figs": figure_lines(dd.get("figs") or []),
                 "fieldText": dd.get("field") or "", "bg": dd.get("bg") or "", "inventors": dd.get("inv"), "assignee": dd.get("asg"), "cpc": dd.get("cpc") or [],
                 "app": dd.get("app"), "why": checks, "warn": warn, "sheets": [self.img(e["id"], k) for k in range(1, n + 1)], "totalSheets": e["sh"],
-                "url": SITE + purl(e["id"]), "pdf": L["pdf"], "google": L["google"]}
+                "url": SITE + purl(e["id"]), "pdf": L["pdf"], "google": L["google"], "armed": bool(e.get("arm"))}
 
     def catalog(self, archive=None):
         """The data browse and search run on, so no page ever downloads the whole register:
@@ -1289,6 +1292,13 @@ def owner_key(o):
     return " ".join(OWNER_NOISE.sub(" ", o.lower()).split()) or o.lower()
 
 
+# Shown instead of the Claude kit on weapons patents (patents.armed). Same text in web/functions/_archive.js.
+KIT_OFF = ('<div class="panel soft kitoff"><div class="block"><h3>No Claude kit for weapons</h3><p class="prose">Claude doesn\'t help design '
+           'weapons, ammunition or explosives, so this page has no Reinvent kit. To develop this one, work with a federally licensed '
+           'manufacturer (many of these items are regulated) and a registered patent attorney or agent, listed on the '
+           '<a href="https://oedci.uspto.gov/OEDCI/" target="_blank" rel="noopener noreferrer">USPTO roster</a>.</p></div></div>')
+
+
 # What makes a patent worth showing off on the home page: a field people get excited about, an exciting subject and a
 # detailed drawing; never anything about bodily fluids or the like, and never one another builder has reserved.
 COOL_FIELDS = {"robotics": 3, "mobility": 2.5, "ai": 2.5, "energy": 2, "sports": 2, "consumer": 2, "tools": 2, "electronics": 1.5,
@@ -1309,7 +1319,7 @@ UNCOOL_WORDS = re.compile(r"\b(urin\w*|fec(al|es)|faeces|stools?|toilets?|bowels
 def coolness(r):
     e = r["entry"]
     text = " ".join([e["t"], e["ot"], e["h"], " ".join(e["tags"])])
-    if UNCOOL_WORDS.search(text):
+    if e.get("arm") or UNCOOL_WORDS.search(text):
         return -10
     ink = r["fig"].stat().st_size / 30000 if r["fig"] else 0
     return (COOL_FIELDS.get(e["ind"], .5) + min(2, .6 * len(COOL_WORDS.findall(text))) + min(1.5, ink)

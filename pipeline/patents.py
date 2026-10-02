@@ -61,6 +61,15 @@ def field_of(cpcs):
     return None
 
 
+# Weapons, ammunition and explosives. They stay listed (the documents are public), but get no Claude kit, notes or
+# spotlight: Claude declines weapons design work, so a kit would only lead to a refusal.
+ARMED = ("F41", "F42", "C06B", "C06C", "C06D", "G21J")
+
+
+def armed(cpcs):
+    return any(c.replace(" ", "").upper().startswith(ARMED) for c in cpcs or ())
+
+
 def years_ago(today, years):
     return (today - dt.timedelta(days=int(365.25 * years))).isoformat()
 

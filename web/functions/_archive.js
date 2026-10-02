@@ -13,6 +13,10 @@ const fieldOf = r => [SITE.fieldKeys[r.ind] || "other", SITE.fields[SITE.fieldKe
 // what kind of document an archive record is: "S" design patent, "A" published application, "" utility patent
 const KIND = { S: ["Expired design patent", "expired"], A: ["Likely abandoned", "abandoned"], "": ["Expired, full term", "expired"] };
 
+// Weapons, ammunition and explosives (pipeline/patents.py armed): listed, but no Claude kit. Same note as pipeline/website.py KIT_OFF.
+const armed = r => (r.cpc || []).some(c => /^(F41|F42|C06[BCD]|G21J)/i.test(c.replace(/\s/g, "")));
+const KIT_OFF = `<div class="panel soft kitoff"><div class="block"><h3>No Claude kit for weapons</h3><p class="prose">Claude doesn't help design weapons, ammunition or explosives, so this page has no Reinvent kit. To develop this one, work with a federally licensed manufacturer (many of these items are regulated) and a registered patent attorney or agent, listed on the <a href="https://oedci.uspto.gov/OEDCI/" ${EXT}>USPTO roster</a>.</p></div></div>`;
+
 export function links(r) {
   const [, num, kind] = r.id.split("-"), app = r.k === "A";
   return {
@@ -45,11 +49,11 @@ export function kitOf(r) {
   const L = links(r), [checks, warn] = why(r);
   return { id: r.id, n: r.n, t: r.t, ot: r.t, h: "", tw: "", st: KIND[r.k || ""][1], status: KIND[r.k || ""][0], field: fieldOf(r)[1], filed: r.f, granted: r.p,
     expired: null, termEnd: r.te, abs: "", claims: [], figs: [], fieldText: "", bg: "", inventors: r.i || null, assignee: r.a || null, cpc: r.cpc || [],
-    app: r.app, why: checks, warn, sheets: [], totalSheets: r.sh, url: `${SITE.site}/patents/${r.id}/`, pdf: L.pdf, google: L.google };
+    app: r.app, why: checks, warn, sheets: [], totalSheets: r.sh, url: `${SITE.site}/patents/${r.id}/`, pdf: L.pdf, google: L.google, armed: armed(r) };
 }
 
 export function renderArchive(tpl, r) {
-  const [fk, field] = fieldOf(r), L = links(r), [checks, warn] = why(r);
+  const [fk, field] = fieldOf(r), L = links(r), [checks, warn] = why(r), arm = armed(r);
   const owner = (r.a ? ` · Assignee: ${E(r.a)}` : "") + (r.i ? ` · Inventors: ${E(r.i)}` : "");
   const lc = (x, cls = "") => `<a class="lcard ${cls}" href="${x[0]}" ${EXT}><b>${E(x[1])}${icon("ext")}</b><span>${E(x[2])}</span><small>${E(x[3])}</small></a>`;
   const official = [[L.pdf, "Full published document", "Text and every drawing sheet as a PDF.", "USPTO"],
@@ -60,6 +64,7 @@ export function renderArchive(tpl, r) {
     [L.espacenet, "Espacenet", "Foreign family and legal status.", "European Patent Office"]];
   const draw = r.sh
     ? `<div class="nofig later"><b>${r.sh} drawing ${r.sh === 1 ? "sheet" : "sheets"}</b><p class="muted">Every sheet is in the USPTO PDF.</p><a class="btn secondary sm" href="${L.pdf}" ${EXT}>${icon("file")}Open the USPTO PDF</a></div>`
+    : arm ? `<div class="nofig"><b>This document has no drawings.</b></div>`
     : `<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">${icon("spark")}Sketch it with Claude</button></div>`;
   const cpc = (r.cpc || []).length ? E(r.cpc[0]) + (r.cpc.length > 1 ? ` <span class="muted" title="${E(r.cpc.join(", "))}">+${r.cpc.length - 1} more</span>` : "") : "—";
   const body = `<div class="page" id="patent" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="0" data-total="${r.sh || 0}" data-pdf="${L.pdf}">
@@ -68,7 +73,7 @@ export function renderArchive(tpl, r) {
   <div><div class="badges"><span class="badge ${KIND[r.k || ""][1]}">${KIND[r.k || ""][0]}</span><span class="badge plain">Archive</span>${r.a ? "" : '<span class="badge plain">Solo inventor</span>'}<span class="badge ok" id="vbadge" hidden></span></div>
   <h1>${E(r.t)}</h1><p class="asfiled">${E(r.n)}${owner}</p></div>
   <div class="pactions">
-    <button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>
+    ${arm ? "" : `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>`}
     <button class="btn secondary" type="button" id="reserveBtn">${icon("flag")}Reserve</button>
     <a class="btn secondary" href="${L.pdf}" ${EXT}>${icon("file")}USPTO PDF</a>
     <button class="btn quiet" type="button" id="saveBtn" aria-pressed="false">${icon("bookmark")}<span>Save</span></button>
@@ -81,8 +86,8 @@ export function renderArchive(tpl, r) {
   <div>
   <section class="psec" id="overview"><h2>Overview</h2>
   <div class="ov"><div>${draw}</div>
-  <div class="stack">
-    <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its USPTO record in Patent Yard's full-term archive. Its claims, description and drawings are in the <a href="${L.pdf}" ${EXT}>USPTO PDF</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>, and the Claude kit works from them.</p>
+  <div class="stack">${arm ? KIT_OFF : ""}
+    <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its USPTO record in Patent Yard's full-term archive. Its claims, description and drawings are in the <a href="${L.pdf}" ${EXT}>USPTO PDF</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>${arm ? "" : ", and the Claude kit works from them"}.</p>
       <div class="rowbtns" style="margin-top:12px"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${L.pdf}" ${EXT}>${icon("file")}USPTO PDF</a></div></div></div>
     <div class="panel soft"><div class="block"><h3>Why it's free to use</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>
     <div class="facts">

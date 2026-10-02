@@ -99,7 +99,7 @@ def merge_notes(new):
 def todo(limit=40):
     """The most promising patents still without a note. Bulk downloads list without one, so this is a daily batch."""
     cur = curation()
-    rows = sorted((c for _, c in records() if c["guid"] not in cur), key=P.appeal, reverse=True)[:limit]
+    rows = sorted((c for _, c in records() if c["guid"] not in cur and not P.armed(c.get("cpc"))), key=P.appeal, reverse=True)[:limit]
     for c in rows:
         yield {"id": c["guid"], "field": c["industry"], "status": c["status"], "title": c["title"], "abstract": c["abstract"][:700]}
 
