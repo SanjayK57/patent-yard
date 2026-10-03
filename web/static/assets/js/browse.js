@@ -13,10 +13,14 @@ const PAGE = ARCH ? 24 : 48;  // archive cards come from larger files, so fewer 
 const S = {
   q: params.get("q") || "", ind: fixedField || params.get("field") || "", st: params.get("status") || "", b: params.get("build") || "",
   fig: params.get("fig") === "1", solo: params.get("solo") === "1", free: params.get("free") === "1", sort: params.get("sort") || "",
+  reg: params.get("region") || "",
 };
 let K, L, A, scores = null, list = [], shown = 0, seq = 0, resMap = new Map();
-const total = () => (ARCH && !scores ? A.n : list.length);  // the archive without a query: every patent, newest first
-const slice = (from, to) => (ARCH && !scores ? Array.from({ length: Math.max(0, Math.min(to, A.n) - from) }, (_, k) => from + k) : list.slice(from, to));
+// the archive is ordered by region (latest.json archive.spans: [name, first, end]), so a region is one index range
+const span = () => (S.reg && A?.spans?.find(s => s[0] === S.reg)) || [S.reg, 0, A?.n || 0];
+const total = () => (ARCH && !scores ? span()[2] - span()[1] : list.length);  // the archive without a query: every patent, newest first
+const slice = (from, to) => (ARCH && !scores ? Array.from({ length: Math.max(0, Math.min(to, total()) - from) }, (_, k) => span()[1] + from + k) : list.slice(from, to));
+const place = () => (!S.reg ? "the US, Europe, Canada and Australia" : S.reg === "US" ? "the US" : S.reg);
 const sortBy = () => S.sort || (S.q.trim() ? "relevance" : getSettings().sort || "build");
 const CMP = {
   relevance: (a, b) => scores.get(b) - scores.get(a) || a - b,
@@ -28,7 +32,7 @@ const CMP = {
 const isDefault = () => !S.q.trim() && !S.st && !S.b && !S.fig && !S.solo && !S.free && sortBy() === "build" && (!!fixedField || !S.ind);
 
 function compute() {
-  if (ARCH) { list = scores ? [...scores.keys()].sort((a, b) => scores.get(b) - scores.get(a) || a - b) : []; return; }
+  if (ARCH) { const [, lo, hi] = span(); list = scores ? [...scores.keys()].filter(i => i >= lo && i < hi).sort((a, b) => scores.get(b) - scores.get(a) || a - b) : []; return; }
   const fi = S.ind ? L.fields.indexOf(S.ind) : -1, si = ["lapsed", "expired", "abandoned"].indexOf(S.st), bmax = +S.b || 0;
   const ok = d => (fi < 0 || K.field[d] === fi) && (si < 0 || (K.flags[d] & 3) === si) && (!bmax || (K.build[d] && K.build[d] <= bmax))
     && (!S.fig || K.flags[d] & 8) && (!S.solo || K.flags[d] & 4);
@@ -49,7 +53,7 @@ async function render() {
   shown = Math.min(PAGE, total());
   const n = total().toLocaleString("en-US");
   $("#count").textContent = ARCH
-    ? (scores ? `${n} ${total() === 1 ? "match" : "matches"} for “${S.q.trim()}” in the archive` : `${n} patents from the US, Europe, Canada and Australia past their term, newest first`)
+    ? (scores ? `${n} ${total() === 1 ? "match" : "matches"} for “${S.q.trim()}” in the archive` : `${n} patents from ${place()} past their term, newest first`)
     : S.q.trim() ? `${n} ${list.length === 1 ? "match" : "matches"} for “${S.q.trim()}”` : `${n} of ${K.n.toLocaleString("en-US")} patents`;
   $("#empty").hidden = total() > 0;
   $("#more").hidden = total() <= shown;
@@ -76,6 +80,7 @@ function syncUrl() {
   toggle.textContent = active ? `Filters · ${active}` : "Filters";
   const p = new URLSearchParams();
   if (ARCH) p.set("in", "archive");
+  if (ARCH && S.reg) p.set("region", S.reg);
   if (S.q) p.set("q", S.q);
   if (S.ind && !fixedField) p.set("field", S.ind);
   if (S.st) p.set("status", S.st);
@@ -124,7 +129,7 @@ function group(sel, key) {
     });
   }
 }
-group("#filters [data-ind]", "ind"); group("#filters [data-st]", "st"); group("#filters [data-b]", "b");
+group("#filters [data-ind]", "ind"); group("#filters [data-st]", "st"); group("#filters [data-b]", "b"); group("#filters [data-reg]", "reg");
 for (const [id, key] of [["#fFig", "fig"], ["#fSolo", "solo"], ["#fFree", "free"]]) {
   const b = $(id); b.setAttribute("aria-pressed", String(S[key]));
   b.addEventListener("click", () => { S[key] = !S[key]; b.setAttribute("aria-pressed", String(S[key])); update(); });

@@ -18,6 +18,8 @@ Two front ends share one data pipeline:
 pipeline/            data pipeline, Python 3.9+ standard library only
   pipeline.py        command line (below)
   uspto.py           USPTO sources: Official Gazette parser, Patent Public Search client
+  europe.py          European patents past their term, from the EPO's Linked open EP data (SPARQL, CC BY 4.0)
+  national.py        Canadian (CIPO, OGL-Canada) and Australian (IP Australia IPGOD, CC BY 2.5 AU) patents past their term
   patents.py         fields, text parsing, and the rules for "free to use"
   drawings.py        drawing sheet -> small cropped PNG (nothing added to the drawing)
   register.py        harvest, dossier download, daily verification, notes
@@ -47,7 +49,12 @@ dev/                 test tools for the claude.ai version
 | Expired, full term | USPTO Patent Public Search, patents filed 1996-2001 | Filed 24+ years ago and granted within 4 years of filing (so term adjustments are small); drug and chemistry classes skipped |
 | Likely abandoned | USPTO Patent Public Search, applications filed 2013-2017 | No patent anywhere in the family and no family filing in 7+ years; labeled as inferred |
 
-Every candidate must pass the family check: no other US family member may still be in force or pending.
+| Expired, Europe | EPO Linked open EP data, publication numbers 1 to 3.3M | Filed 20+ years ago, 25.5 for medicine and crop-protection classes (SPC) |
+| Expired, Canada | CIPO patent data (bulk CSV, raw/canada/src) | Filed from Oct 1, 1989 and 20+ years ago (22 for drug classes, CSP), or granted 17+ years ago under the old Act |
+| Expired, Australia | IP Australia IPGOD 2022 (bulk CSV, raw/australia/src) | Standard: earliest filing 21+ years ago (26 for pharmaceuticals); innovation 9, petty 7 |
+
+Every US register candidate must pass the family check: no other US family member may still be in force or pending.
+Patents from other offices are checked only where they were granted, and their pages say so.
 Each patent page links to its source record, the USPTO PDF, Patent Center, Patent Public Search, Google Patents,
 Justia, FreePatentsOnline and Espacenet for cross-checking.
 
@@ -62,6 +69,9 @@ python3 pipeline.py archive               # everything that can no longer be in 
                                           # patents past their full term (1790-2012), designs granted 15+ years ago,
                                           # applications published 2001-2016 with no patent and no family filing in
                                           # 7 years; resumable (raw/archive/done.json)
+python3 pipeline.py europe                # European patents past their term from the EPO's SPARQL endpoint, 2 queries at
+                                          # a time (fair use); resumable (raw/europe/done.json)
+python3 national.py canada|australia      # rebuild raw/canada or raw/australia from the downloaded bulk files
 python3 pipeline.py publish [--every 120] # rebuild and redeploy every N minutes, until stopped (holds web/.build.lock)
 python3 pipeline.py harvest --per 6       # new patents per field from all sources; --sources lapsed,expired
                                           # --only robotics,ai  --resume (continue a partial run)
@@ -101,7 +111,7 @@ cleaned of markup and HTML entities (patents.plain), and typo'd dates (year 0204
 
 ## The archive
 
-Archive patents have no pre-built page: `dist/shard/a/<n>.bin` holds one small gzipped record each, and
+Archive patents (US, and kinds E, CA and AU from the other offices) have no pre-built page: `dist/shard/a/<n>.bin` holds one small gzipped record each, and
 `functions/_archive.js` pours it into the page shell `dist/tpl/archive/`. Archive search uses its own files under
 `/v/x<hash>/`: `s/<crc32(word) % 1024>.json` (exact words; words in more than 1.5% of titles are not indexed and are
 skipped in queries) and `c/<n>.json` (card text, 1,536 per file, newest first). Browse switches to it with `?in=archive`.

@@ -14,7 +14,7 @@ import struct
 import sys
 from pathlib import Path
 
-SHARDS = 2048
+SHARDS = 1024  # pipeline/website.py SHARDS
 ROUTES = [(re.compile(r"^/patents/(US-[A-Z]*(\d{5,11})-[A-Z]\d?)/$"), "p", "text/html; charset=utf-8"),
           (re.compile(r"^/img/p/(US-[A-Z]*(\d{5,11})-[A-Z]\d?)/(\d+)\.png$"), "i", "image/png"),
           (re.compile(r"^/data/p/(US-[A-Z]*(\d{5,11})-[A-Z]\d?)\.json$"), "k", "application/json")]

@@ -57,12 +57,13 @@ FIELD_NOTES = {
     "other": "Everything outside the fields above, from printing to music to packaging.",
 }
 
-SHARDS = 2048  # patent pages, drawings and kit data are packed into this many files each (web/functions/_lib.js)
+SHARDS = 1024  # patent pages, drawings, kit data and archive records are packed into this many files each (web/functions/_lib.js); fewer files keeps the site under Cloudflare Pages' 20,000
 BLOCK = 256    # catalog cards per file
 WEIGHTS = [10, 6, 5, 4, 3, 2]  # search: name, title as filed, summary, tags, owner, first sentence of the abstract
 ARCH_BLOCK, ARCH_BUCKETS = 1536, 1024  # the archive: card text per file, search index files (a free site holds 20,000 files)
 ARCH_KEYS = ("id", "n", "t", "f", "p", "te", "a", "i", "ind", "cpc", "app", "pg", "sh", "k", "g")  # k: "" utility, S design, A application, E/CA/AU other offices
 REGIONS = {"E": "Europe", "CA": "Canada", "AU": "Australia"}  # archive kinds from other offices (functions/_archive.js REGIONS)
+SPAN_ORDER = ["US", "Europe", "Canada", "Australia"]  # the archive is ordered by region, so browse filters one by its index range
 
 E = lambda s: html.escape("" if s is None else str(s), quote=True)
 DEPENDENT = re.compile(r"\bclaims?\s+\d", re.I)
@@ -548,8 +549,9 @@ class Site:
         fields = "".join(f'<button class="chip" type="button" data-ind="{k}" aria-pressed="false">{E(n)}</button>' for k, n in self.fields.items())
         return f"""
 <form class="filters" id="filters" role="search">
-  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recently freed <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive: US and Europe <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
+  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recently freed, US <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
   <div class="frow qrow"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">Filters</button></div>
+  {'' if field or len(self.meta.get("archiveSpans", [])) < 2 else '<div class="frow regrow"><span class="lab">From</span><button class="chip" type="button" data-reg="" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-reg="{n}" aria-pressed="false">{n} <small class="num">{b - a:,}</small></button>' for n, a, b in self.meta["archiveSpans"]) + '</div>'}
   {'' if field else f'<div class="frow scrollrow" id="fInd"><span class="lab">Field</span><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div>'}
   <div class="frow"><span class="lab">Status</span>
     <button class="chip" type="button" data-st="" aria-pressed="true">All</button>
@@ -1525,6 +1527,12 @@ def _build():
     DIST.mkdir(parents=True)
     s = Site(rows, meta)
     recs = archive_records({r["entry"]["id"] for r in rows})
+    recs.sort(key=lambda r: SPAN_ORDER.index(REGIONS.get(r[13], "US")))  # stable: newest first within each region
+    spans, at = [], 0
+    for name, c in sorted(collections.Counter(REGIONS.get(r[13], "US") for r in recs).items(), key=lambda x: SPAN_ORDER.index(x[0])):
+        spans.append([name, at, at + c])
+        at += c
+    meta["archiveSpans"] = spans
     meta["archive"] = len(recs)
     by_kind = collections.Counter(r[13] for r in recs)
     meta["archiveEU"] = by_kind["E"]
@@ -1549,6 +1557,7 @@ def _build():
     s.archive_template()
     s.feeds()
     arch = archive_catalog(recs)
+    arch["spans"] = spans
     write_archive(recs)
     nfiles, nbytes = s.catalog(arch)
     function_config()

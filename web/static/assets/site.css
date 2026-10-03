@@ -785,7 +785,8 @@ dialog.cmdk[open]{display:grid}
 @media (prefers-reduced-motion:reduce){.hbar i{width:var(--w)}.vbar i{height:var(--h)}.linechart .line{stroke-dashoffset:0}.linechart .area{opacity:1}}
 /* browse: the full-term archive */
 .colrow .chip small{font:600 11.5px/1 var(--mono);opacity:.7}
-.filters.archive .frow:not(.qrow):not(.colrow){display:none}
+.filters.archive .frow:not(.qrow):not(.colrow):not(.regrow){display:none}
+.filters:not(.archive) .regrow{display:none}
 .archhint{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:-4px 0 14px;padding:10px 14px;border:1px dashed var(--line-strong);border-radius:10px;font-size:14px;color:var(--ink-2)}
 .archhint a{font-weight:600}
 /* home: search first, a rail of picks, field chips */
