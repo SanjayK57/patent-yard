@@ -577,6 +577,16 @@ kbd.hk{font:500 11px/1 var(--mono);padding:3px 6px;border:1px solid var(--line);
 .acctmenu .menu svg{color:var(--ink-3)}
 @media (max-width:860px){.acctmenu>button span:not(.avatar){display:none}.acctmenu>button{padding:0 4px}}
 /* cards: a placeholder for patents without drawings, skeletons while loading, a gentle entrance */
+.card.acard{border-top:3px solid var(--accent)}
+.card.acard .ahead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:14px 16px 0}
+.card.acard .ahead .num-id{font:600 12.5px/1.2 var(--mono);color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card.acard .ahead .badge{flex:none}
+.card.acard .cbody{flex:1}
+.card.acard h3{font-size:17px}
+
+.docview iframe{display:block;width:100%;height:min(78vh,760px);border:1px solid var(--line);border-radius:var(--radius);background:var(--surface-2)}
+.docview .cap{margin-top:8px;font-size:13px;color:var(--ink-3)}
+@media (max-width:860px){.docview iframe{height:60vh}}
 .card .fig.blank{display:grid;place-items:center;background:repeating-linear-gradient(135deg,var(--surface-2) 0 10px,var(--sunken) 10px 11px)}
 .card .numart{font:600 15px/1.2 var(--mono);color:var(--ink-3);padding:6px 10px;border-radius:6px;background:var(--surface);border:1px solid var(--line)}
 .card.skel{pointer-events:none;box-shadow:none}

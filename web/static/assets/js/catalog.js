@@ -191,7 +191,8 @@ const AKIND = { S: ["Expired design", "expired", "Granted", "Design"], A: ["Like
   AU: ["Expired, Australia", "expired", "Year", "Australian"] };
 export function archiveCardHTML(c, names) {
   const n = numberLabel(c.id), owner = c.a || (c.k === "A" ? "Inventors" : "Solo inventor"), K = AKIND[c.k] || AKIND[""];
-  return `<article class="card" data-id="${esc(c.id)}"><div class="fig blank"><span class="over"><span class="badge ${K[1]}">${K[0]}</span></span><span class="numart">${esc(n)}</span></div>`
-    + `<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)} · <span class="num-id">${esc(n)}</span></span><h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3></div>`
+  // archive patents have no drawing on file, so their cards lead with the text instead of an empty picture
+  return `<article class="card acard" data-id="${esc(c.id)}"><div class="ahead"><span class="badge ${K[1]}">${K[0]}</span><span class="num-id">${esc(n)}</span></div>`
+    + `<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)}</span><h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3></div>`
     + `<div class="cmeta"><div><small>${K[2]}</small><span>${c.year}</span></div><div><small>Kind</small><span>${K[3]}</span></div><div><small>Owner</small><span title="${esc(owner)}">${esc(owner)}</span></div></div></article>`;
 }

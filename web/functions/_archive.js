@@ -25,7 +25,7 @@ const REGIONS = {
     granted: r => /-B\d$/.test(r.id),
     links: (num, kind, r) => {
       const pdf = `https://data.epo.org/linked-data/representation/publication/EP/${num}/NW${kind}.pdf`, google = `https://patents.google.com/patent/EP${num}${kind}/en`;
-      return { doc: pdf, docLabel: "EPO PDF", docNote: "The claims, description and any drawings are in the published document.", google,
+      return { doc: pdf, embed: pdf, docLabel: "EPO PDF", docNote: "The claims, description and any drawings are in the published document.", google,
         official: [[pdf, "Full published document", "Claims, description and drawings as a PDF.", "EPO"],
           [`https://register.epo.org/application?number=EP${r.app}`, "European Patent Register", "Procedure, status, file inspection and legal events.", "EPO"],
           [`https://data.epo.org/linked-data/data/publication/EP/${num}/${kind}/-`, "Linked open EP data record", "The bibliographic record this page is built from.", "EPO"]],
@@ -121,7 +121,7 @@ export function why(r) {
 export function kitOf(r) {
   const L = links(r), [checks, warn] = why(r);
   return { id: r.id, n: r.n, t: r.t, ot: r.t, h: "", tw: "", st: kindOf(r)[1], status: kindOf(r)[0], field: fieldOf(r)[1], filed: r.f, granted: REGIONS[r.k] ? r.g || r.p : r.p, where: REGIONS[r.k]?.name, adj: REGIONS[r.k]?.adj, office: REGIONS[r.k]?.office,
-    expired: null, termEnd: r.te, abs: "", claims: [], figs: [], fieldText: "", bg: "", inventors: r.i || null, assignee: r.a || null, cpc: r.cpc || [],
+    expired: null, termEnd: r.te, abs: r.ab || "", claims: [], figs: [], fieldText: "", bg: "", inventors: r.i || null, assignee: r.a || null, cpc: r.cpc || [],
     app: r.app, why: checks, warn, sheets: [], totalSheets: r.sh, url: `${SITE.site}/patents/${r.id}/`, pdf: L.doc || L.pdf, google: L.google, armed: armed(r) };
 }
 
@@ -135,7 +135,11 @@ export function renderArchive(tpl, r) {
   const cross = R ? L.cross : [[L.google, "Google Patents", "Full text, worldwide family, citing patents and legal events.", "patents.google.com"],
     [L.justia, "Justia Patents", "Full text, claims and classification.", "patents.justia.com"], [L.fpo, "FreePatentsOnline", "Full text and PDF.", "freepatentsonline.com"],
     [L.espacenet, "Espacenet", "Foreign family and legal status.", "European Patent Office"]];
-  const draw = R
+  // the published document itself, inline: its first page has the abstract and main drawing (US and EPO PDFs allow framing)
+  const embed = R ? L.embed : L.pdf;
+  const draw = embed
+    ? `<div class="docview"><iframe src="${embed}#view=FitH" title="Published document ${E(r.n)}" loading="lazy"></iframe><p class="cap">The published document from the ${office}: abstract, claims, description${r.k === "S" ? "" : " and drawings"}. <a href="${embed}" ${EXT}>Open it full size</a></p></div>`
+    : R
     ? `<div class="nofig later"><b>Drawings and full text</b><p class="muted">${L.docNote}</p><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}Open the ${L.docLabel}</a></div>`
     : r.sh
     ? `<div class="nofig later"><b>${r.sh} drawing ${r.sh === 1 ? "sheet" : "sheets"}</b><p class="muted">Every sheet is in the USPTO PDF.</p><a class="btn secondary sm" href="${L.pdf}" ${EXT}>${icon("file")}Open the USPTO PDF</a></div>`
@@ -162,6 +166,7 @@ export function renderArchive(tpl, r) {
   <section class="psec" id="overview"><h2>Overview</h2>
   <div class="ov"><div>${draw}</div>
   <div class="stack">${arm ? KIT_OFF : ""}
+    ${r.ab ? `<div class="block"><h3>Abstract <span class="src">From the ${R ? R.adj + " " : ""}patent</span></h3><p class="prose">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its ${office} record in Patent Yard's ${R ? `archive of ${R.adj} patents past their term` : "full-term archive"}. Its claims, description and drawings are in the <a href="${doc}" ${EXT}>${R ? L.docLabel : "USPTO PDF"}</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>${arm ? "" : ", and the Claude kit works from them"}.</p>
       <div class="rowbtns" style="margin-top:12px"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a></div></div></div>
     <div class="panel soft"><div class="block"><h3>Why it's free to use</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>
