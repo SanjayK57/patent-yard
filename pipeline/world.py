@@ -11,6 +11,8 @@ Cloudflare Pages serves only whole files (no byte ranges) and at most 20,000 fil
 A .bin of records is: uint32 count, uint32 offsets[count + 1], then the records back to back.
 
   python3 world.py build       # raw/world/parts -> web/world (about 2 hours; disk-backed, so memory stays small)
+  python3 world.py deploy      # upload web/world/cards and web/world/details to their Pages projects, then write
+                               # web/world/live.json, which turns All patents on in the next website build
 """
 import array, collections, datetime as dt, gzip, hashlib, json, os, re, shutil, struct, sys, time, zlib
 from pathlib import Path
@@ -178,6 +180,22 @@ def build():
     print(f"world: {doc:,} docs, {meta['free']:,} past their term ({time.time() - t0:.0f}s)", flush=True)
 
 
+HOSTS = {"cards": "patentyard-cards", "details": "patentyard-details"}
+
+
+def deploy():
+    import subprocess
+    for d, project in HOSTS.items():
+        n = sum(1 for _ in (OUT / d).rglob("*"))
+        assert n < 20000, f"{d}: {n} files, over the Pages limit"
+        subprocess.run(["npx", "--yes", "wrangler@4", "pages", "deploy", str(OUT / d), "--project-name", project, "--branch", "main",
+                        "--commit-dirty=true"], check=True, cwd=OUT.parent)
+    meta = json.loads((OUT / "cards" / "meta.json").read_text())
+    live = {**{d: f"https://{p}.pages.dev" for d, p in HOSTS.items()}, **{k: meta[k] for k in ("n", "per", "ids", "buckets", "free")}}
+    (OUT / "live.json").write_text(json.dumps(live, indent=1))
+    print("world: live", live, flush=True)
+
+
 if __name__ == "__main__":
     if sys.argv[1:] == ["test"]:
         assert past_term("19990101", [], "20261003") and not past_term("20070101", [], "20261003")
@@ -192,4 +210,4 @@ if __name__ == "__main__":
         assert zlib.decompress(deflate("héllo"), -15).decode() == "héllo" and number_key("CN-1-A") == number_key("CN-1-B")
         print("ok")
     else:
-        build()
+        {"build": build, "deploy": deploy}[sys.argv[1]]()

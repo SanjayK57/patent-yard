@@ -9,3 +9,4 @@ web/.build.lock
 web/.wrangler/
 site/data/
 .DS_Store
+web/world/
