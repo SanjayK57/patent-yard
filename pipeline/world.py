@@ -69,12 +69,13 @@ def records():
 
 
 def split():
-    """Pass 1: records into one temp file per publication year, so pass 2 can number them newest first."""
+    """Pass 1: records into one temp file per publication month, so pass 2 can number them newest first a month at a
+    time (a year of recent patents is millions of records; a month fits easily in memory)."""
     shutil.rmtree(TMP, ignore_errors=True)
     TMP.mkdir(parents=True)
     files, n, t0 = {}, 0, time.time()
     for r in records():
-        y = (r["p"] or r["f"] or "0000")[:4]
+        y = (r["p"] or r["f"] or "0000-00").replace("-", "")[:6]
         if y not in files:
             files[y] = open(TMP / f"y{y}.jsonl", "w", encoding="utf-8")
         files[y].write(json.dumps(r, ensure_ascii=False, separators=(",", ":")) + "\n")
@@ -83,7 +84,7 @@ def split():
             print(f"split: {n:,} records ({time.time() - t0:.0f}s)", flush=True)
     for f in files.values():
         f.close()
-    print(f"split: {n:,} records in {len(files)} years", flush=True)
+    print(f"split: {n:,} records in {len(files)} months", flush=True)
 
 
 def number_key(pn):
@@ -123,7 +124,7 @@ def build():
         cards.clear()
         details.clear()
 
-    for yf in sorted(TMP.glob("y*.jsonl"), reverse=True):  # newest year first
+    for yf in sorted(TMP.glob("y*.jsonl"), reverse=True):  # newest month first
         rs = [json.loads(line) for line in open(yf, encoding="utf-8")]
         rs.sort(key=lambda r: (r["p"] or r["f"], r["pn"]), reverse=True)
         for r in rs:
@@ -139,7 +140,8 @@ def build():
             doc += 1
             if doc % PER == 0:
                 flush()
-        print(f"pack: {yf.stem[1:]} done, {doc:,} docs ({time.time() - t0:.0f}s)", flush=True)
+        if yf.stem.endswith("01") or yf.stem == "y000000":
+            print(f"pack: {yf.stem[1:5]} done, {doc:,} docs ({time.time() - t0:.0f}s)", flush=True)
     if cards:
         flush()
     for f in words:
