@@ -1365,7 +1365,7 @@ def archive_records(skip):
     fields, out, seen = list(P.FIELDS), [], set(skip)
     for x in archived():
         pid, k = x["id"], x.get("k", "")
-        if pid in seen or not x.get("p") or (not x.get("f") and x["p"] >= "1976-01-01" and k != "S"):
+        if pid in seen or not x.get("p") or (not x.get("f") and x["p"] >= "1976-01-01" and k in ("", "A")):  # a US record missing its filing date
             continue
         seen.add(pid)
         field = "designs" if k == "S" else P.field_of(x["cpc"]) or "other"
