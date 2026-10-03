@@ -20,6 +20,8 @@ pipeline/            data pipeline, Python 3.9+ standard library only
   uspto.py           USPTO sources: Official Gazette parser, Patent Public Search client
   europe.py          European patents past their term, from the EPO's Linked open EP data (SPARQL, CC BY 4.0)
   national.py        Canadian (CIPO, OGL-Canada) and Australian (IP Australia IPGOD, CC BY 2.5 AU) patents past their term
+  world.py           All patents: 122.8M applications worldwide from Google Patents Public Data, packed for free hosting
+  google_abstracts.py  abstract excerpts from the same export for register patents still waiting on their USPTO text
   patents.py         fields, text parsing, and the rules for "free to use"
   drawings.py        drawing sheet -> small cropped PNG (nothing added to the drawing)
   register.py        harvest, dossier download, daily verification, notes
@@ -108,6 +110,21 @@ Free-plan ceiling: Functions get 100,000 requests a day (a patent page view is o
 Fields follow a patent's main (first) CPC classification, longest prefix first (patents.py FIELDS); a prefix longer
 than a subclass names a main group and must match whole (G06F1 is G06F1/16, not G06F12/02). USPTO text fields are
 cleaned of markup and HTML entities (patents.plain), and typo'd dates (year 0204) are ignored.
+
+## All patents (worldwide)
+
+The second section of the site: every application in Google Patents Public Data (CC BY 4.0), 122.8M records with a
+title, from more than 100 offices. Getting the data (run by the user; the safety system treats it as a transaction):
+`pipeline/world.sql` makes the BigQuery table `patentyard.world` (about 270 GB scanned, inside the free 1 TB a month),
+`export_world.sh` exports it to gs://patentyard-export-cf5d9a01 and `download_world.sh` downloads the 1,000 files (18 GB)
+to raw/world/parts. Then `world_chain.sh` runs `world.py build` (about 2.5 hours, under 2 GB of memory: one temp file
+per month, newest first) and `world.py deploy`, which uploads web/world/cards (cards + search index) and
+web/world/details (records + number index) to the Pages projects patentyard-cards and patentyard-details (17,044 files
+each, under the 20,000 limit) and writes web/world/live.json; the next website build then shows the section
+(nav "Free to use / All patents", /all/, functions/_world.js pages, /api/cards). Pages serves whole files only, so
+the Function fetches a pack and slices it; a free Worker gets 10 ms of CPU, so nothing there parses JSON indexes.
+Statuses: "past its term" when filed long enough ago (20 years, 26 for medicine and crop-protection classes); every
+other status is shown as published, unchecked.
 
 ## The archive
 
