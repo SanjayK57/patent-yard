@@ -1,5 +1,5 @@
 """All patents: every patent application worldwide from Google Patents Public Data (BigQuery
-patents-public-data.patents.publications, CC BY 4.0), exported by export_world.sh to raw/world/parts/*.json.gz.
+patents-public-data.patents.publications, CC BY 4.0), exported by export_world.sh to raw/world/parts/*.json.gz (query: world.sql, run into patentyard.world).
 
 Cloudflare Pages serves only whole files (no byte ranges) and at most 20,000 files of 25 MiB per project, so the
 120M+ records are numbered newest first and packed into files that a Pages Function slices without parsing:
