@@ -65,7 +65,7 @@ addEventListener("keydown", e => {  // [ and ] step through the field
 
 // the page itself never changes from day to day; the date of the last check comes from the catalog
 latest().then(L => {
-  if (!L.verified) return;
+  if (!L.verified || $("#patent").dataset.source) return;  // only the recently freed register is rechecked daily
   const vb = $("#vbadge");
   vb.innerHTML = `${icon("check")}Verified ${esc(fmtDate(L.verified, { month: "long", day: "numeric" }))}`; vb.hidden = false;
   $$(".vdate").forEach(el => (el.textContent = `, most recently on ${fmtDate(L.verified, { month: "long", day: "numeric", year: "numeric" })}`));
@@ -104,7 +104,7 @@ spy();
 const btn = $("#reserveBtn"), line = $("#resline"), dlg = $("#resDlg");
 async function refreshRes() {
   const { b, user } = await session;
-  if (!b) { btn.hidden = true; return; }
+  if (!b || $("#patent").dataset.noreserve) { btn.hidden = true; return; }  // nothing to reserve on a patent that may be in force
   let r;
   try { r = (await b.reservations()).find(x => x.patent_id === id); } catch { r = null; }
   btn.hidden = false; btn.disabled = false;

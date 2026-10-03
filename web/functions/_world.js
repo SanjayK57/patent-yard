@@ -85,7 +85,7 @@ export function renderWorld(tpl, r) {
   const owner = (r.a ? ` · Owner: ${E(r.a)}` : "") + (r.i ? ` · Inventor: ${E(r.i)}` : "");
   const facts = [["Country", country], ["Filed", full(r.f)], ["Published", full(r.p)], ["Granted", r.g ? full(r.g) : "Not recorded"], ["Priority", full(r.pr)],
     ["Application", r.app || "—"], ["Classification (CPC)", r.cpc.join(", ") || "—"], ["Family", r.fam ? `Google family ${r.fam}` : "—"]];
-  const body = `<div class="page" id="patent" data-id="${E(r.pn)}" data-n="${E(n)}" data-sheets="0" data-total="0" data-pdf="${g}">
+  const body = `<div class="page" id="patent" data-source="world"${r.free ? "" : ' data-noreserve="1"'} data-id="${E(r.pn)}" data-n="${E(n)}" data-sheets="0" data-total="0" data-pdf="${g}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/all/">All patents</a><span>/</span><span>${E(n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${cls}">${st}</span><span class="badge plain">${E(country)}</span><span class="badge ok" id="vbadge" hidden></span></div>

@@ -146,7 +146,7 @@ export function renderArchive(tpl, r) {
     : arm ? `<div class="nofig"><b>This document has no drawings.</b></div>`
     : `<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">${icon("spark")}Sketch it with Claude</button></div>`;
   const cpc = (r.cpc || []).length ? E(r.cpc[0]) + (r.cpc.length > 1 ? ` <span class="muted" title="${E(r.cpc.join(", "))}">+${r.cpc.length - 1} more</span>` : "") : "—";
-  const body = `<div class="page" id="patent" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="0" data-total="${r.sh || 0}" data-pdf="${doc}">
+  const body = `<div class="page" id="patent" data-source="archive" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="0" data-total="${r.sh || 0}" data-pdf="${doc}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/${fk}/">${E(field)}</a><span>/</span><span>${E(r.n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${K[1]}">${K[0]}</span><span class="badge plain">${R ? R.name : "Archive"}</span>${r.a ? "" : '<span class="badge plain">Solo inventor</span>'}<span class="badge ok" id="vbadge" hidden></span></div>

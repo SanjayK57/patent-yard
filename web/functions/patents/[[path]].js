@@ -28,5 +28,5 @@ async function world(ctx, id, url) {
   const r = await worldRecord(id);
   if (!r) return notFound(ctx);
   if (r.pn !== id || !url.pathname.endsWith("/")) return Response.redirect(new URL(`/patents/${r.pn}/`, url), 301);
-  return respond(ctx, renderWorld(await archiveShell(ctx), r), "text/html; charset=utf-8", "public, max-age=86400", false);
+  return respond(ctx, renderWorld(await archiveShell(ctx), r), "text/html; charset=utf-8", "public, max-age=3600", false);
 }
