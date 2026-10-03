@@ -870,3 +870,4 @@ dialog.cmdk[open]{display:grid}
 .fine-print{font-size:13px;margin-top:28px;max-width:80ch}
 .otext h3 a{color:inherit;text-decoration:none}
 .otext h3 a:hover{text-decoration:underline;text-underline-offset:3px}
+.allline{margin-top:14px;font-size:14.5px;color:var(--ink-3)}

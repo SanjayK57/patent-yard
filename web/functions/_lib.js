@@ -4,6 +4,8 @@
 import SITE from "./site.json";
 
 export const validId = id => /^(US-[A-Z]*\d{5,11}-[A-Z]\d?|EP-\d{7}-[AB]\d|CA-\d{1,7}-[A-Z]\d?|AU-\d{10}-[A-Z])$/.test(id);
+// any office's number, with or without a kind code: CN-112345678-A, JP-H11123456-A, DE-102005012345 (functions/_world.js)
+export const worldId = id => /^[A-Z]{2}-[A-Z0-9]{1,24}(-[A-Z][0-9]?)?$/.test(id);
 const shardOf = num => Number(num) % SITE.shards;
 
 async function open(ctx, kind, num) {

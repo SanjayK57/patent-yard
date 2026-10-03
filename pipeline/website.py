@@ -334,7 +334,10 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
 </svg>"""
 
-NAV = [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields"), ("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
+# All patents (pipeline/world.py) lives in its own Pages projects; web/world/live.json names them once they are deployed
+WORLD = json.loads((WEB / "world" / "live.json").read_text()) if (WEB / "world" / "live.json").exists() else None
+NAV = ([("/browse/", "Free to use"), ("/all/", "All patents"), ("/opportunities/", "Opportunities")] if WORLD else
+       [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields")]) + [("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
 LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>'
 
 
@@ -498,6 +501,7 @@ class Site:
     <p class="lede rise" style="--d:2">{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record. Find one, then turn it into your own invention with Claude.</p>
     <form class="bigsearch rise" style="--d:3" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search by idea, title, owner or patent number"><button class="btn primary" type="submit">Search</button></form>
     <div class="tryrow rise" style="--d:4"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
+    {f'<p class="allline rise" style="--d:5">Checking what already exists? <a href="/all/">Search all {big_number(WORLD["n"])} patents worldwide</a>, including ones still in force.</p>' if WORLD else ""}
   </div>
   <figure class="plotter rise" style="--d:2">
     <div class="phead"><span>{E(hero["n"])}</span><span>Original drawing, plotted live</span></div>
@@ -828,6 +832,24 @@ class Site:
         i = self.field_pos[r["entry"]["id"]]
         near = lst[max(0, i - k // 2):i] + lst[i + 1:i + 1 + k]
         return near[:k]
+
+    def all_patents(self):
+        n = WORLD["n"]
+        body = f"""<div class="page">
+<div class="sechead"><div><div class="kicker">All patents</div><h1>Search {big_number(n)} patents worldwide</h1>
+<p class="lede">Every patent and published application in Google's public patent data, from more than 100 patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
+<form class="filters" id="wfilters" role="search">
+  <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"></div>
+  <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc" style="width:auto"><option value="">All countries</option></select>
+    <button class="chip" type="button" id="wfree" aria-pressed="false">Past their term only</button></div>
+</form>
+<p class="muted" id="wcount" aria-live="polite">Loading…</p>
+<div class="grid" id="wgrid"></div>
+<div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div>
+<p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. "Past its term" means filed long enough ago that no patent from it can still be in force; every other status is as published, so confirm it with the official register before relying on it.</p>
+</div>"""
+        self.page("/all/", "All patents", f"Search {big_number(n)} patents and applications from more than 100 patent offices, with the ones past their term marked.",
+                  body, section="/all/", scripts=("all",))
 
     def opportunities(self):
         # ties: the broader first claim, then more claims
@@ -1213,7 +1235,8 @@ class Site:
         css = (DIST / "assets" / "site.css").read_bytes()
         self.css = f"/assets/site.{zlib.crc32(css):08x}.css"
         (DIST / "assets" / "site.css").rename(DIST / self.css.lstrip("/"))
-        cfg = {"siteUrl": SITE, "supabaseUrl": CONFIG.get("supabase_url", ""), "supabaseAnonKey": CONFIG.get("supabase_anon_key", ""), "version": self.version}
+        cfg = {"siteUrl": SITE, "supabaseUrl": CONFIG.get("supabase_url", ""), "supabaseAnonKey": CONFIG.get("supabase_anon_key", ""), "version": self.version,
+               **({"world": {"cards": WORLD["cards"]}} if WORLD else {})}
         (DIST / "assets" / "js" / "config.js").write_text(f"window.PY_CONFIG = {json.dumps(cfg)};\n")
 
     def kit(self, r, detail, doc):
@@ -1552,7 +1575,9 @@ def function_config():
     block = (STATIC / "_headers").read_text().split("\n\n")[0].splitlines()[1:]
     headers = dict(x.strip().split(": ", 1) for x in block if ": " in x)
     fields = {k: v[0] for k, v in P.FIELDS.items()}
-    (WEB / "functions" / "site.json").write_text(json.dumps({"shards": SHARDS, "headers": headers, "site": SITE, "fieldKeys": list(P.FIELDS), "fields": fields}, indent=1) + "\n")
+    world = {k: WORLD[k] for k in ("cards", "details", "per", "ids")} if WORLD else None
+    (WEB / "functions" / "site.json").write_text(json.dumps({"shards": SHARDS, "headers": headers, "site": SITE, "fieldKeys": list(P.FIELDS), "fields": fields,
+                                                             **({"world": world} if world else {})}, indent=1) + "\n")
 
 
 def build():
@@ -1622,6 +1647,8 @@ def _build():
     s.not_found()
     s.insights(gazette_all(), recs)
     s.opportunities()
+    if WORLD:
+        s.all_patents()
     s.saved()
     s.archive_template()
     s.feeds()

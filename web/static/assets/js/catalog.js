@@ -143,7 +143,7 @@ export const skeletons = n => Array.from({ length: n }, () => `<div class="card 
 //   /v/<av>/s/<n>.json  word -> archive patents, for words whose crc32 % buckets is n (exact words, the commonest left out)
 //   /v/<av>/c/<n>.json  [id, title, owner, field index, grant year] for archive patents n*block onward, newest first
 const CRC = Array.from({ length: 256 }, (_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
-const crc32 = s => { let c = 0xFFFFFFFF; for (const b of new TextEncoder().encode(s)) c = CRC[(c ^ b) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+export const crc32 = s => { let c = 0xFFFFFFFF; for (const b of new TextEncoder().encode(s)) c = CRC[(c ^ b) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
 
 export async function archiveInfo() { return (await latest()).archive; }
 
