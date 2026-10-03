@@ -191,7 +191,7 @@ def deploy():
         n = sum(1 for _ in (OUT / d).rglob("*"))
         assert n < 20000, f"{d}: {n} files, over the Pages limit"
         subprocess.run(["npx", "--yes", "wrangler@4", "pages", "deploy", str(OUT / d), "--project-name", project, "--branch", "main",
-                        "--commit-dirty=true"], check=True, cwd=OUT.parent)
+                        "--commit-dirty=true"], check=True, cwd=OUT)  # not web/: its functions/ would ride along
     meta = json.loads((OUT / "cards" / "meta.json").read_text())
     live = {**{d: f"https://{p}.pages.dev" for d, p in HOSTS.items()}, **{k: meta[k] for k in ("n", "per", "ids", "buckets", "free")}}
     (OUT / "live.json").write_text(json.dumps(live, indent=1))
