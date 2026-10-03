@@ -12,6 +12,7 @@ patents first when the size budget is reached.
 """
 import base64
 import datetime as dt
+import functools
 import json
 import re
 import zlib
@@ -54,14 +55,34 @@ def auto_note(c):
     return {"name": t, "hook": hook, "build": 0, "tags": [], "twist": "", "auto": True}
 
 
+@functools.lru_cache(maxsize=1)
+def google_abstracts():
+    """guid -> {"ab", "i"}: abstract excerpts from Google Patents Public Data (google_abstracts.py) for patents still
+    waiting on their USPTO text."""
+    f = RAW / "google_abstracts.json"
+    return json.loads(f.read_text()) if f.exists() else {}
+
+
+def excerpt(c):
+    """Fill a waiting patent's abstract (and inventor) from the Google excerpt; True when it did."""
+    g = None if c.get("abstract") else google_abstracts().get(c["guid"])
+    if not g:
+        return False
+    ab = g["ab"]
+    c["abstract"] = ab if len(ab) < 315 or ab.endswith(".") else ab.rsplit(" ", 1)[0] + " …"  # the export cut it at 320
+    c["inventors"] = c.get("inventors") or g.get("i") or ""
+    return True
+
+
 def dossier(r):
     """Detail and full document for one row, read from its record when a page needs them."""
     c = clean(json.loads(r["path"].read_text()))
+    abx = excerpt(c)
     desc = P.tidy(c.get("desc") or [])
     doc = {"claims": c.get("claims_all") or ([[1, c["claim1"]]] if c.get("claim1") else []), "desc": desc, "more": c.get("desc_more", False),
            "family": c.get("family_members") or [], "cites": c.get("cites") or []}
     detail = {
-        "abs": c.get("abstract") or "", "c1": c.get("claim1") or "", "figs": c.get("figures") or [],
+        "abs": c.get("abstract") or "", "abx": abx, "c1": c.get("claim1") or "", "figs": c.get("figures") or [],
         "field": P.field_text(desc) if desc else c.get("field", ""),
         "bg": P.background_text(desc) if desc else c.get("background", ""), "tw": r["entry"]["tw"], "cpc": c["cpc"][:8], "app": c["app"],
         "inv": c["inventors"], "asg": c["assignee"], "rel": c.get("related") or [], "pages": c["pages"],
@@ -85,6 +106,7 @@ def collect(budget=None):
         if budget and (note is None or P.armed(c["cpc"])):  # the claude.ai version: written notes only, no weapons
             continue
         clean(c)
+        excerpt(c)
         note = note or auto_note(c)
         fig = RAW / "figs" / f"{c['guid']}.png"
         fig = fig if fig.exists() else None

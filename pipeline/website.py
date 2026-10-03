@@ -12,6 +12,7 @@ import datetime as dt
 import fcntl
 import gzip
 import html
+import itertools
 import json
 import multiprocessing
 import os
@@ -648,7 +649,8 @@ class Site:
                    f'<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button></div>')
         cpc = dd.get("cpc", [])
         cpc_html = (E(cpc[0]) + (f' <span class="muted" title="{E(", ".join(cpc))}">+{len(cpc) - 1} more</span>' if len(cpc) > 1 else "")) if cpc else "—"
-        abstract = (f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose">{E(dd["abs"])}</p></div>' if dd["abs"] else
+        abstract = (f'<div class="block"><h3>Abstract <span class="src">Excerpt, from Google Patents</span></h3><p class="prose">{E(dd["abs"])}</p><p class="muted" style="margin-top:8px;font-size:13.5px">The full abstract, claims and description are {later}</p></div>' if dd.get("abx") else
+                    f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose">{E(dd["abs"])}</p></div>' if dd["abs"] else
                     f'<div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>Full text on its way</h3><p class="prose">This {kind} is listed from its USPTO record because it passed every check. Its abstract, claims and description are {later}</p></div></div>')
         plain = "" if e["auto"] else f'<div class="block"><h3>In plain English <span class="src">Patent Yard summary</span></h3><p class="lead">{E(e["h"])}</p></div>'
         overview = f"""
@@ -891,7 +893,7 @@ class Site:
         """The register in numbers, drawn from the same records as every page. Charts animate in as they scroll into view."""
         rows, m = self.rows, self.meta
         n, keys_ = len(rows), list(P.FIELDS)
-        arch = collections.Counter(keys_[r[8]] for r in recs)
+        arch = collections.Counter(keys_[r[3]] for r in recs)
         fields = sorted(((len(self.by_field.get(k, [])) + arch.get(k, 0), k, name) for k, name in P.FIELDS.items()
                          if self.by_field.get(k) or arch.get(k)), reverse=True)
         top = fields[0][0] or 1
@@ -920,10 +922,10 @@ class Site:
             at[4 if y < 6 else 8 if y < 10 else 12] += 1
         tl = sum(at.values()) or 1
         lapse_bars = "".join(f'<div class="vcol"><span class="vbar"><i style="--h:{v / tl * 100:.1f}%"></i></span><b class="num">{v / tl * 100:.0f}%</b><small>Year {y}</small></div>' for y, v in at.items())
-        solo = sum(1 for r in rows if r["entry"]["ia"]) + sum(1 for r in recs if not r[6])
+        solo = sum(1 for r in rows if r["entry"]["ia"]) + sum(1 for r in recs if not r[2])
         # one company, however USPTO spelled it ("INTERNATIONAL BUSINESS MACHINES CORPORATION", "...Corporation")
         names, spell = collections.Counter(), {}
-        for o in [r["entry"]["a"] for r in rows if not r["entry"]["ia"]] + [r[6] for r in recs]:
+        for o in [r["entry"]["a"] for r in rows if not r["entry"]["ia"]] + [r[2] for r in recs]:
             if o:
                 k = owner_key(o)
                 names[k] += 1
@@ -934,8 +936,8 @@ class Site:
         own = "".join(f'<li><span>{E(shown(k))}</span><b class="num">{c:,}</b></li>' for k, c in names.most_common(10))
         rein = sum(w[2] for w in weeks)
         # the archive, by the decade its patents were granted
-        dec = collections.Counter(int(r[4][:3]) * 10 for r in recs)
-        kinds = collections.Counter(r[13] for r in recs)
+        dec = collections.Counter(r[4] // 10 * 10 for r in recs)
+        kinds = collections.Counter(r[5] for r in recs)
         dtop = max(dec.values(), default=1)
         dec_bars = "".join(f'<div class="hrow"><span class="hl">{y}s</span><span class="hbar"><i style="--w:{c / dtop * 100:.1f}%"></i></span><b class="num">{c:,}</b></div>'
                            for y, c in sorted(dec.items(), reverse=True))
@@ -1313,13 +1315,15 @@ class Site:
             for r in newest)
         (DIST / "feed.xml").write_text(f'<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom"><title>New on Patent Yard</title><link href="{SITE}/"/><link rel="self" href="{SITE}/feed.xml"/><id>{SITE}/</id><updated>{updated}</updated>{entries}</feed>\n')
 
-    def sitemaps(self):
-        # a sitemap holds at most 50,000 addresses, so the register is split and listed in an index
-        maps = [self.pages[i:i + 40000] for i in range(0, len(self.pages), 40000)]
-        for k, chunk in enumerate(maps, 1):
+    def sitemaps(self, more=()):
+        # a sitemap holds at most 50,000 addresses, so the register (and `more` paths, streamed) is split and indexed
+        everything, maps = itertools.chain(self.pages, ((p, None) for p in more)), 0
+        while chunk := list(itertools.islice(everything, 40000)):
+            maps += 1
+            k = maps
             urls = "".join(f"<url><loc>{SITE}{p}</loc>{f'<lastmod>{m}</lastmod>' if m else ''}</url>" for p, m in chunk)
             (DIST / f"sitemap-{k}.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
-        items = "".join(f"<sitemap><loc>{SITE}/sitemap-{k}.xml</loc></sitemap>" for k in range(1, len(maps) + 1))
+        items = "".join(f"<sitemap><loc>{SITE}/sitemap-{k}.xml</loc></sitemap>" for k in range(1, maps + 1))
         (DIST / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</sitemapindex>\n')
         (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /account/\nDisallow: /shard/\nDisallow: /v/\nDisallow: /tpl/\n\nSitemap: {SITE}/sitemap.xml\n")
 
@@ -1452,9 +1456,17 @@ def archive_term_end(f, p, kind=""):
     return end if f >= "1995-06-08" else max(end, add_years(p, 17))
 
 
+ARCH_TMP = WEB / "archive.tmp"  # full archive records, one file per shard, while the build runs
+
+
 def archive_records(skip):
-    """Archive patents not already in the register, newest grant first, as tuples in ARCH_KEYS order."""
+    """Archive patents not already in the register, newest first, as light (id, title, owner, field index, year, kind)
+    tuples. The full records (ARCH_KEYS) go straight to ARCH_TMP for write_archive, so millions of them never sit in
+    memory at once (a build of 11M+ archive patents fits in a few GB)."""
     fields, out, seen = list(P.FIELDS), [], set(skip)
+    shutil.rmtree(ARCH_TMP, ignore_errors=True)
+    ARCH_TMP.mkdir()
+    tmp = [open(ARCH_TMP / f"{k}.bin", "wb") for k in range(SHARDS)]
     for x in archived():
         pid, k = x["id"], x.get("k", "")
         if pid in seen or not x.get("p") or (not x.get("f") and x["p"] >= "1976-01-01" and k in ("", "A")):  # a US record missing its filing date
@@ -1463,19 +1475,30 @@ def archive_records(skip):
         field = "designs" if k == "S" else P.field_of(x["cpc"]) or "other"
         t = P.plain(x["t"]) or "Untitled"
         t = t.capitalize() if t.isupper() else t  # SHOUTED TITLES from old records read better as sentences
-        out.append((pid, P.pub_number({"guid": pid, "type": "US-PGPUB" if k == "A" else "USPAT"}), t, x.get("f") or "", x["p"],
-                    x.get("te") or archive_term_end(x.get("f"), x["p"], k), P.plain(x.get("a")), P.plain(x.get("i")), fields.index(field), x["cpc"][:3],
-                    x.get("app") or "", x.get("pg") or 0, x.get("sh") or 0, k, x.get("g") or "", x.get("ab") or ""))
+        a = P.plain(x.get("a"))
+        full = (pid, P.pub_number({"guid": pid, "type": "US-PGPUB" if k == "A" else "USPAT"}), t, x.get("f") or "", x["p"],
+                x.get("te") or archive_term_end(x.get("f"), x["p"], k), a, P.plain(x.get("i")), fields.index(field), x["cpc"][:3],
+                x.get("app") or "", x.get("pg") or 0, x.get("sh") or 0, k, x.get("g") or "", x.get("ab") or "")
+        key, gz = pid.encode(), gzip.compress(json.dumps(dict(zip(ARCH_KEYS, full)), separators=(",", ":"), ensure_ascii=False).encode(), 6, mtime=0)
+        tmp[shard_of(pid)].write(struct.pack("<HI", len(key), len(gz)) + key + gz)
+        out.append((pid, t, a, fields.index(field), int(x["p"][:4]), k))
+    for f in tmp:
+        f.close()
     return out
 
 
-def write_archive(recs):
-    """One small gzipped JSON record per archive patent, packed in shards like the pages (functions/_archive.js reads them)."""
-    groups = {}
-    for r in recs:
-        groups.setdefault(shard_of(r[0]), {})[r[0]] = gzip.compress(json.dumps(dict(zip(ARCH_KEYS, r)), separators=(",", ":"), ensure_ascii=False).encode(), 6, mtime=0)
-    for k, items in groups.items():
-        write_shard(DIST / "shard" / "a" / f"{k}.bin", items)
+def write_archive():
+    """One small gzipped JSON record per archive patent, packed in shards like the pages (functions/_archive.js reads
+    them), a shard at a time from the files archive_records wrote."""
+    for k in range(SHARDS):
+        b, items, i = (ARCH_TMP / f"{k}.bin").read_bytes(), {}, 0
+        while i < len(b):
+            kl, gl = struct.unpack_from("<HI", b, i)
+            items[b[i + 6:i + 6 + kl].decode()] = b[i + 6 + kl:i + 6 + kl + gl]
+            i += 6 + kl + gl
+        if items:
+            write_shard(DIST / "shard" / "a" / f"{k}.bin", items)
+    shutil.rmtree(ARCH_TMP)
 
 
 def archive_catalog(recs):
@@ -1484,17 +1507,18 @@ def archive_catalog(recs):
       s/<n>.json  word -> patents, for the words whose crc32 % ARCH_BUCKETS is n (exact words; the commonest are left out)"""
     df = collections.Counter()
     for r in recs:
-        df.update(set(search_words(r[2])) | set(search_words(r[6])))
+        df.update(set(search_words(r[1])) | set(search_words(r[2])))
     stop = sorted(w for w, c in df.items() if c > max(2000, len(recs) * 0.015))
     stopset, buckets = set(stop), [{} for _ in range(ARCH_BUCKETS)]
     for i, r in enumerate(recs):
-        tw = set(search_words(r[2])) - stopset
-        for wi, ws in ((0, tw), (1, set(search_words(r[6])) - stopset - tw)):
+        tw = set(search_words(r[1])) - stopset
+        for wi, ws in ((0, tw), (1, set(search_words(r[2])) - stopset - tw)):
             for w in ws:
-                buckets[zlib.crc32(w.encode()) % ARCH_BUCKETS].setdefault(w, []).append(i * 2 + wi)
+                b = buckets[zlib.crc32(w.encode()) % ARCH_BUCKETS]
+                (b.get(w) or b.setdefault(w, array.array("I"))).append(i * 2 + wi)  # compact: 4 bytes a posting
     files = {}
     for k in range(0, len(recs), ARCH_BLOCK):
-        files[f"c/{k // ARCH_BLOCK}.json"] = json.dumps([[r[0], r[2], r[6], r[8], int(r[4][:4]), r[13]] for r in recs[k:k + ARCH_BLOCK]],
+        files[f"c/{k // ARCH_BLOCK}.json"] = json.dumps([list(r) for r in recs[k:k + ARCH_BLOCK]],
                                                        separators=(",", ":"), ensure_ascii=False).encode()
     for k, b in enumerate(buckets):
         enc = {}
@@ -1625,19 +1649,19 @@ def _build():
     DIST.mkdir(parents=True)
     s = Site(rows, meta)
     recs = archive_records({r["entry"]["id"] for r in rows})
-    recs.sort(key=lambda r: SPAN_ORDER.index(REGIONS.get(r[13], "US")))  # stable: newest first within each region
+    recs.sort(key=lambda r: SPAN_ORDER.index(REGIONS.get(r[5], "US")))  # stable: newest first within each region
     spans, at = [], 0
-    for name, c in sorted(collections.Counter(REGIONS.get(r[13], "US") for r in recs).items(), key=lambda x: SPAN_ORDER.index(x[0])):
+    for name, c in sorted(collections.Counter(REGIONS.get(r[5], "US") for r in recs).items(), key=lambda x: SPAN_ORDER.index(x[0])):
         spans.append([name, at, at + c])
         at += c
     meta["archiveSpans"] = spans
     meta["archive"] = len(recs)
-    by_kind = collections.Counter(r[13] for r in recs)
+    by_kind = collections.Counter(r[5] for r in recs)
     meta["archiveEU"] = by_kind["E"]
     meta["archiveRegions"] = {REGIONS[k]: by_kind[k] for k in REGIONS if by_kind[k]}
     meta["reserved"] = reserved_ids()
     keys_ = list(P.FIELDS)
-    meta["archiveByField"] = {keys_[i]: c for i, c in collections.Counter(r[8] for r in recs).items()}
+    meta["archiveByField"] = {keys_[i]: c for i, c in collections.Counter(r[3] for r in recs).items()}
     s.assets()
     s.home()
     s.browse()
@@ -1659,7 +1683,7 @@ def _build():
     s.feeds()
     arch = archive_catalog(recs)
     arch["spans"] = spans
-    write_archive(recs)
+    write_archive()
     nfiles, nbytes = s.catalog(arch)
     function_config()
     bad = [f"{p.relative_to(DIST)}: {u}" for p in DIST.rglob("*.html") for u in s.bad_links(p.read_text())]
@@ -1672,8 +1696,7 @@ def _build():
             s.pages += smap
             bad += b
     s.pages.sort()
-    s.pages += [(purl(r[0]), None) for r in recs]
-    s.sitemaps()
+    s.sitemaps(purl(r[0]) for r in recs)
     assert not bad, "broken links: " + "; ".join(bad[:10])
     files = [p for p in DIST.rglob("*") if p.is_file()]
     size = sum(p.stat().st_size for p in files)
