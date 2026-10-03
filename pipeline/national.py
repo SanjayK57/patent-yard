@@ -63,6 +63,28 @@ def rows(zips):
 
 # ---------------------------------------------------------------- Canada
 
+def unwrap(text, width=40):
+    """CIPO abstracts keep each printed line break as ", ". A ", " at least `width` characters into a line is taken as
+    a break (a hyphen there joins the word), an earlier one as a real comma.
+    ponytail: a real comma late in a line becomes a space; fine for a summary, the official text is linked."""
+    out, line = [], 0
+    for i, part in enumerate(text.split(", ")):
+        if i:
+            if line >= width:
+                if out[-1].endswith("-") and part[:1].islower():
+                    out[-1] = out[-1][:-1]
+                else:
+                    out.append(" ")
+                line = 0
+            else:
+                out.append(", ")
+        out.append(part)
+        line += len(part) + 2
+    s = re.sub(r"^\W*(ABSTRACT( OF THE DISCLOSURE)?|PRECIS DE LA DIVULGATION)?\W*", "", "".join(out).strip(), flags=re.I)
+    s = re.sub(r"^(?:[A-Z0-9()/&'-]+[,:.]? ){2,}(?=(?:A|An|[A-Z][a-z]+)\b)", "", s)  # a title line in capitals before the text
+    return s if len(s) <= 700 else s[:700].rsplit(" ", 1)[0] + " …"
+
+
 def canada_over(f, g, ipc, today):
     if f and f >= "1989-10-01":
         return plus(f, 22 if any(c.startswith(DRUGS) for c in ipc) else 20) < today
@@ -88,6 +110,12 @@ def canada(today=None):
             if x[6].strip() and x[8].strip() and x[10].strip():
                 ipc[int(x[0])].append(f"{x[6].strip()}{x[8].strip().zfill(2)}{x[10].strip()}" + (f"{int(main_g)}/{sub_g}" if main_g.isdigit() and sub_g else ""))
     keep = {n for n, (f, g, _, _) in main.items() if canada_over(f, g, ipc.get(n, ()), today) and (g or f)}
+    parts = collections.defaultdict(list)  # English abstracts, in their sequence order
+    for x in rows(sorted(src.glob("PT_abstract_*.zip"))):
+        if len(x) >= 5 and x[0].strip().isdigit() and int(x[0]) in keep and x[3].strip() == "EN":
+            parts[int(x[0])].append((int(x[1]) if x[1].strip().isdigit() else 0, x[4].strip()))
+    abstracts = {n: unwrap(", ".join(t for _, t in sorted(p))) for n, p in parts.items()}
+    del parts
     owners, inventors = {}, collections.defaultdict(list)
     for x in rows(sorted(src.glob("PT_interested_party_*.zip"))):
         if len(x) < 8 or not x[0].strip().isdigit() or int(x[0]) not in keep:
@@ -103,7 +131,7 @@ def canada(today=None):
         cpcs = ipc.get(n, [])
         recs.append({"id": f"CA-{n}-{re.sub(r'[^A-Z0-9]', '', kind)[:2] or 'A'}", "t": t, "f": f, "p": g or f, "g": g,
                      "te": plus(f, 20) if f and f >= "1989-10-01" else plus(g, 17), "a": owners.get(n, ("", ""))[1],
-                     "i": "; ".join(inventors.get(n, [])), "cpc": cpcs, "k": "CA"})
+                     "i": "; ".join(inventors.get(n, [])), "cpc": cpcs, "k": "CA", **({"ab": abstracts[n]} if abstracts.get(n) else {})})
     write("canada", "ca", recs)
 
 
@@ -159,6 +187,8 @@ if __name__ == "__main__":
         assert australia_over("standard_complete", "2005-10-01", [], "2026-10-03") and not australia_over("standard_complete", "2006-01-01", [], "2026-10-03")
         assert not australia_over("standard_complete", "2002-01-01", ["A61K9/00"], "2026-10-03") and australia_over("innovation", "2017-01-01", [], "2026-10-03")
         assert not australia_over("provisional", "1990-01-01", [], "2026-10-03")
+        assert unwrap("ABSTRACT OF THE DISCLOSURE, The present invention relates to a mortar gun which, comprises a substantially vertical hopper adapted to contain, mortar and having a front wall, a rear wall and a substantially, horizontal bottom wall.") == (
+            "The present invention relates to a mortar gun which comprises a substantially vertical hopper adapted to contain mortar and having a front wall, a rear wall and a substantially horizontal bottom wall.")  # CA 2050000
         assert name("ICHIKAWA CO LTD") == "Ichikawa Co Ltd" and name("McDonald Ltd") == "McDonald Ltd" and title("A MACHINE FOR X") == "A machine for x"
         print("ok")
     else:

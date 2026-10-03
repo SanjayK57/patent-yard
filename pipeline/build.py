@@ -99,6 +99,7 @@ def collect(budget=None):
             used += size
         # a written note may set the field; otherwise it follows the patent's main classification
         field = note.get("ind") or (P.field_of(c["cpc"]) or "other" if note.get("auto") else c["industry"])
+        w1, ni = P.breadth(c.get("claims_all"))
         n = zlib.crc32(c["guid"].encode()) % SHARDS
         entry = {
             "id": c["guid"], "n": P.pub_number(c), "ind": field, "st": c["status"],
@@ -107,7 +108,7 @@ def collect(budget=None):
             "a": c["assignee"] or c["inventors"], "ia": not c["assignee"],
             "fig": c.get("fig") if fig else None, "fs": n, "ns": (1 if fig else 0) + len(extra),
             "sh": c.get("sheet_count") or (1 if fig else 0), "tags": note.get("tags", []),
-            "cl": len(c.get("claims_all") or []), "arm": P.armed(c["cpc"]), "auto": bool(note.get("auto")), "pending": bool(c.get("text_pending")),
+            "cl": len(c.get("claims_all") or []), "w1": w1, "ni": ni, "arm": P.armed(c["cpc"]), "auto": bool(note.get("auto")), "pending": bool(c.get("text_pending")),
             "fam": len(c["family_members"]) + 1 if "family_members" in c else c.get("familySize", 1), "v": (c.get("verified") or "")[:10],
         }
         if c["status"] == "lapsed" and c.get("og_date"):

@@ -1,0 +1,111 @@
+{
+  "_about": "Claude's analysis for the Opportunities page (pipeline/website.py opportunities), in ranked order. Each entry says what became free, who would buy it, why now, and what to check. Written from each patent's abstract and claims; market context is general, with no figures.",
+  "US-8551104-B2": {
+    "open": "A cordless, hand-held diode-laser device for slowing hair regrowth, with its battery-driven pulse circuit inside the housing.",
+    "buyers": "At-home beauty device brands and salons that want a cordless laser rather than a flash lamp.",
+    "now": "Diode lasers and high-drain lithium cells are far cheaper than in 2006, and at-home light-based hair removal is an established consumer category.",
+    "watch": "Laser devices sold for this use need FDA clearance and eye-safety engineering, and the original owner may hold newer patents."
+  },
+  "US-8766483-B2": {
+    "open": "Extending wireless charging range by having a second, differently sized resonant antenna pick up power and re-transmit it to a nearby device.",
+    "buyers": "Makers of desks, car consoles, shelves and IoT hubs that want charging to reach farther than one pad.",
+    "now": "Phones, earbuds and sensors all charge wirelessly now, and people want charging surfaces rather than exact placement.",
+    "watch": "Wireless power is crowded with newer patents, so check freedom to operate for the specific antenna design you use."
+  },
+  "US-8787621-B2": {
+    "open": "Estimating an animal's weight from a camera image by matching it to models of known weight, then tracking daily gain and forecasting weight.",
+    "buyers": "Ranches, feedlots, dairies and livestock auctions that weigh animals by hand or on scales.",
+    "now": "Phone cameras and off-the-shelf vision models make this a software product rather than a research project.",
+    "watch": "The owner's related applications may still be alive; check the family before launching."
+  },
+  "US-8788096-B1": {
+    "open": "A two-wheeled self-balancing telepresence robot with a camera head on a slim telescoping shaft and a stabilizer that retracts into the base.",
+    "buyers": "Remote-work offices, hospitals, eldercare homes and building security.",
+    "now": "Hoverboard-style motors, cheap IMUs and video calling have made balancing robots inexpensive to build.",
+    "watch": "Other telepresence robot patents remain in force, so keep to the claimed layout or check them."
+  },
+  "US-8706742-B1": {
+    "open": "Ranking documents for relevance to an issue, then mining their metadata (senders, dates, folders) for leads that correlate with the high scores.",
+    "buyers": "Law firms, e-discovery vendors and compliance teams reviewing large document sets.",
+    "now": "Language models make document scoring cheap, and the metadata-lead step adds an explainable layer on top.",
+    "watch": "E-discovery has many active patents; the claims here are specific to the iterative control-subset method."
+  },
+  "US-8634686-B2": {
+    "open": "A solar concentrator that tracks the sun with no motors: two immiscible fluids move toward the hot spot and couple focused light into a light guide.",
+    "buyers": "Solar and daylighting companies looking for flat, trackerless concentrators.",
+    "now": "Cheap high-efficiency cells and interest in low-maintenance solar make passive tracking more attractive.",
+    "watch": "This is lab-grade optics; expect real materials and lifetime testing before a product."
+  },
+  "US-8577630-B2": {
+    "open": "When a battery pack detects a failure, a latch automatically drains its stored energy so a damaged pack holds less charge.",
+    "buyers": "E-bike, e-scooter, power-tool and home battery makers, and fleet operators.",
+    "now": "Battery fires in micromobility are a public concern, and the claim is broad: detect, latch, drain.",
+    "watch": "Draining a damaged lithium pack safely takes careful thermal design and testing to UL standards."
+  },
+  "US-8641415-B2": {
+    "open": "Finding cracks in a tooth, even under a crown, by stressing it gently and listening to its acoustic emission against a baseline recorded earlier.",
+    "buyers": "Dental device makers and dental practices.",
+    "now": "Small piezo sensors and signal-processing chips are cheap, and cracked teeth are hard to find with X-rays.",
+    "watch": "A diagnostic dental device needs regulatory clearance before sale."
+  },
+  "US-8593286-B2": {
+    "open": "Wireless body sensors feeding a system that gives athletes statistical feedback and a coaching instruction for a defined sport.",
+    "buyers": "Sports-tech startups, coaching apps, teams and training academies.",
+    "now": "Watches and clip-on motion sensors are everywhere; the value is in sport-specific feedback.",
+    "watch": "Sports analytics is crowded, so keep the build close to the claimed rules-based feedback."
+  },
+  "US-8745998-B2": {
+    "open": "Predicting when fog has formed on a vehicle window and switching the defroster on and off automatically.",
+    "buyers": "Electric vehicle makers, bus and truck fleets, and aftermarket climate-control suppliers.",
+    "now": "In electric vehicles cabin heating costs driving range, so running the defroster only when needed saves energy.",
+    "watch": "Automakers hold many newer climate-control patents; check the sensors you plan to use."
+  },
+  "US-8794601-B2": {
+    "open": "A humidifier that uses furnace condensate, passing water through a membrane that blocks the condensate's acid, with airflow across it.",
+    "buyers": "HVAC equipment makers and installers.",
+    "now": "Condensing furnaces are standard and already produce the water; the claim has just two elements, so it is broad.",
+    "watch": "Membrane choice, water quality and local plumbing codes need checking."
+  },
+  "US-8682482-B2": {
+    "open": "A robot arm that watches a worker, estimates how far along a task they are, and hands over the next part at the right moment.",
+    "buyers": "Small manufacturers, repair shops, labs and commercial kitchens.",
+    "now": "Camera-based pose tracking and low-cost collaborative arms make this practical outside big factories.",
+    "watch": "Collaborative robots must meet safety standards for working near people."
+  },
+  "US-8678771-B2": {
+    "open": "Building metal parts from a stack of bonded foils cut from slices of a 3D model, where the foils differ in thickness.",
+    "buyers": "Makers of heat exchangers, cooling plates, tooling and aerospace parts.",
+    "now": "Laser and waterjet cutting are cheap, and laminated metal parts can be made without a metal 3D printer.",
+    "watch": "Bond strength and flatness decide whether parts pass; plan testing early."
+  },
+  "US-8660842-B2": {
+    "open": "Using a camera to judge a room's shape, then tuning echo and noise removal before recognizing speech.",
+    "buyers": "Video-conferencing hardware, smart speakers with cameras, cars and home robots.",
+    "now": "Devices with both a camera and microphones are common, and vision models can read a room's layout.",
+    "watch": "Speech processing has many active patents; the claim needs the image-to-reverberation step."
+  },
+  "US-8773052-B2": {
+    "open": "Driving a brushless motor with a phase advance that varies periodically over time and adjusts with motor speed.",
+    "buyers": "Makers of vacuums, fans, drones, power tools and e-bike motor controllers.",
+    "now": "Brushless motors are in almost everything with a fan or wheel, and this is firmware on a cheap microcontroller.",
+    "watch": "The motor maker may hold newer control patents; implement the claimed method, not later refinements."
+  },
+  "US-8658106-B2": {
+    "open": "A cover for a fuel pump handle that sprays sanitizer on the handle after it is put back.",
+    "buyers": "Fuel station chains, EV charging networks and pump makers.",
+    "now": "People expect cleaner shared touch points, and EV charging cables have the same problem.",
+    "watch": "Sanitizer spraying at a fuel pump has fire-safety and chemical rules to meet."
+  },
+  "US-8590533-B2": {
+    "open": "A hands-free breathing-resistance training mask with interchangeable inlet plugs that set how hard it is to inhale.",
+    "buyers": "Fitness brands, sports teams and respiratory-training coaches.",
+    "now": "Breathing training is a growing fitness niche, and the mask can be made by injection molding.",
+    "watch": "Health claims for breathing devices are regulated; sell it as training equipment."
+  },
+  "US-8747287-B2": {
+    "open": "A chair whose back pivots against swappable spring cylinders, so sitting doubles as a back-extension exercise.",
+    "buyers": "Office furniture makers and home-fitness brands.",
+    "now": "Desk work and back pain are common, and people want exercise built into furniture.",
+    "watch": "Load testing for furniture safety standards is required."
+  }
+}

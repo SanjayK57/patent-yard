@@ -61,7 +61,7 @@ SHARDS = 1024  # patent pages, drawings, kit data and archive records are packed
 BLOCK = 256    # catalog cards per file
 WEIGHTS = [10, 6, 5, 4, 3, 2]  # search: name, title as filed, summary, tags, owner, first sentence of the abstract
 ARCH_BLOCK, ARCH_BUCKETS = 1536, 1024  # the archive: card text per file, search index files (a free site holds 20,000 files)
-ARCH_KEYS = ("id", "n", "t", "f", "p", "te", "a", "i", "ind", "cpc", "app", "pg", "sh", "k", "g")  # k: "" utility, S design, A application, E/CA/AU other offices
+ARCH_KEYS = ("id", "n", "t", "f", "p", "te", "a", "i", "ind", "cpc", "app", "pg", "sh", "k", "g", "ab")  # k: "" utility, S design, A application, E/CA/AU other offices
 REGIONS = {"E": "Europe", "CA": "Canada", "AU": "Australia"}  # archive kinds from other offices (functions/_archive.js REGIONS)
 SPAN_ORDER = ["US", "Europe", "Canada", "Australia"]  # the archive is ordered by region, so browse filters one by its index range
 
@@ -334,7 +334,7 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 <symbol id="i-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
 </svg>"""
 
-NAV = [("/browse/", "Browse"), ("/fields/", "Fields"), ("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works"), ("/about/", "About")]
+NAV = [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields"), ("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
 LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>'
 
 
@@ -829,6 +829,42 @@ class Site:
         near = lst[max(0, i - k // 2):i] + lst[i + 1:i + 1 + k]
         return near[:k]
 
+    def opportunities(self):
+        # ties: the broader first claim, then more claims
+        scored = sorted(((p, r) for r in self.rows if (p := potential(r)) is not None),
+                        key=lambda t: (-t[0], t[1]["entry"].get("w1") or 999, -(t[1]["entry"].get("cl") or 0), t[1]["entry"]["id"]))
+        by_id = {r["entry"]["id"]: r for _, r in scored}
+        picks = [(by_id[k], v) for k, v in ANALYSIS.items() if k in by_id]
+        top = [r for _, r in scored if r["entry"]["id"] not in ANALYSIS][:96]
+        chips = lambda e: "".join(f'<span class="chip sm">{E(x)}</span>' for x in signals(e))
+        pick_html = "".join(f"""<article class="oppick reveal" data-of="{r["entry"]["ind"]}">
+  <a class="ofig" href="{purl(r["entry"]["id"])}">{f'<img src="{self.img(r["entry"]["id"])}" alt="Drawing from {E(r["entry"]["n"])}" loading="lazy">' if r["fig"] else ""}<span class="rank">{i}</span></a>
+  <div class="otext"><span class="fieldname">{E(self.fields.get(r["entry"]["ind"], r["entry"]["ind"]))} · <span class="num-id">{E(r["entry"]["n"])}</span></span>
+    <h3><a href="{purl(r["entry"]["id"])}">{E(r["entry"]["t"])}</a></h3>
+    <dl><div><dt>Now free to use</dt><dd>{E(a["open"])}</dd></div><div><dt>Who would buy it</dt><dd>{E(a["buyers"])}</dd></div>
+    <div><dt>Why now</dt><dd>{E(a["now"])}</dd></div><div><dt>Check first</dt><dd>{E(a["watch"])}</dd></div></dl>
+    <div class="chips">{chips(r["entry"])}</div>
+    <div class="rowbtns"><a class="btn primary sm" href="{purl(r["entry"]["id"])}">Open patent</a><a class="btn secondary sm" href="/studio/?patent={quote(r["entry"]["id"])}">{icon("spark")}Reinvent with Claude</a></div></div>
+</article>""" for i, (r, a) in enumerate(picks, 1))
+        top_html = "".join(f'<div class="opp" data-of="{r["entry"]["ind"]}"><span class="rank">{i}</span>{self.card(r, i)}<div class="chips">{chips(r["entry"])}</div></div>'
+                           for i, r in enumerate(top, len(picks) + 1))
+        fields = sorted({r["entry"]["ind"] for r, _ in picks} | {r["entry"]["ind"] for r in top}, key=lambda k: list(self.fields).index(k) if k in self.fields else 99)
+        filt = '<button class="chip" type="button" data-of="" aria-pressed="true">All</button>' + "".join(
+            f'<button class="chip" type="button" data-of="{k}" aria-pressed="false">{E(self.fields.get(k, k))}</button>' for k in fields)
+        body = f"""<div class="page">
+<div class="sechead"><div><div class="kicker">Opportunities</div><h1>The biggest openings in the register</h1>
+<p class="lede">Recently freed patents ranked by the signals that track commercial value: how long the owner kept paying to protect it, how broad its claims are, who owned it and the size of the market it sells into. The top {len(picks)} come with Claude's analysis of what is now free, who would buy it and why now.</p></div></div>
+<ul class="omethod"><li><b>Kept up for years</b><span>An owner paying maintenance fees for 8 to 12 years thought it was worth protecting.</span></li><li><b>Broad claims</b><span>A short independent claim covered more ground, and all of it is free now.</span></li><li><b>Company-owned</b><span>A business filed and paid for it, usually for a product.</span></li><li><b>Large market</b><span>Its field sells into a big market: medical, energy, AI, robotics, vehicles.</span></li></ul>
+<div class="frow ofilter" role="group" aria-label="Filter by field"><span class="lab">Field</span>{filt}</div>
+<section class="section"><div class="sechead"><div><h2>Claude's analysis</h2><p>Read from each patent's abstract and claims. Market notes are general, with no figures we can't source.</p></div></div>
+<div class="opicks">{pick_html}</div></section>
+<section class="section"><div class="sechead"><div><h2>Next {len(top)} by score</h2><p>Ranked by the same signals. Open any one for its claims, drawings and the Claude kit.</p></div></div>
+<div class="grid ogrid">{top_html}</div></section>
+<p class="muted fine-print">Rankings are estimates from public patent records, not a valuation, investment advice or a promise of sales. A lapsed patent's own claims are free to use in the US, but newer patents, regulations and other rights can still apply. Check before you build, and see the <a href="/legal/disclaimer/">disclaimer</a>.</p>
+</div>"""
+        self.page("/opportunities/", "Opportunities", f"The {len(picks) + len(top)} recently freed patents with the most commercial potential, ranked by owner investment, claim breadth and market, with Claude's analysis of the top {len(picks)}.",
+                  body, section="/opportunities/", scripts=("opps",))
+
     def insights(self, issues, recs=()):
         """The register in numbers, drawn from the same records as every page. Charts animate in as they scroll into view."""
         rows, m = self.rows, self.meta
@@ -1317,7 +1353,7 @@ COOL_WORDS = re.compile(r"\b(drones?|robot\w*|solar|bike|bicycles?|skate\w*|came
                         r"camp\w*|tent|fishing|golf|tennis|ski\w*|snow\w*|water ?craft|jet|engine|gyro\w*|projector|holograph\w*)\b", re.I)
 UNCOOL_WORDS = re.compile(r"\b(urin\w*|fec(al|es)|faeces|stools?|toilets?|bowels?|bladders?|catheter\w*|\w*ostomy|diapers?|incontinen\w*|"
                           r"menstru\w*|tampons?|vomit\w*|sputum|saliva\w*|semen|sperm\w*|enemas?|ha?emorrhoid\w*|cadavers?|corpses?|"
-                          r"embalm\w*|lice|fleas?|parasit\w*|rectal|anal|vagin\w*|penile|penis|condoms?|erectile|nipples?|breasts?|"
+                          r"embalm\w*|lice|fleas?|parasites?|rectal|anal|vagin\w*|penile|penis|condoms?|erectile|nipples?|breasts?|"
                           r"cysts?|mucus|phlegm|excre\w*|sewage|manure|carcass\w*|slaughter\w*|euthan\w*|tumou?rs?|cancer\w*|"
                           r"wounds?|blood|biops\w*|surgical)\b", re.I)
 
@@ -1330,6 +1366,38 @@ def coolness(r):
     ink = r["fig"].stat().st_size / 30000 if r["fig"] else 0
     return (COOL_FIELDS.get(e["ind"], .5) + min(2, .6 * len(COOL_WORDS.findall(text))) + min(1.5, ink)
             + (5 - (e["b"] or 5)) * .2 + (.3 if e["tw"] else 0))
+
+
+# Opportunities: how much commercial ground a recently freed patent opened, from signals patent-value research relies on:
+# how long the owner kept paying to protect it, how broad its claims are, who owned it, and the market its field sells into.
+MARKET = {"medical": 1.0, "energy": 1.0, "ai": 1.0, "robotics": .9, "mobility": .9, "electronics": .8, "consumer": .8, "software": .7, "imaging": .7,
+          "agrifood": .7, "telecom": .6, "chips": .6, "industrial": .6, "biotech": .6, "tools": .6, "sports": .6, "materials": .5}
+ANALYSIS = json.loads((Path(__file__).parent / "opportunities.json").read_text())  # Claude's write-ups, in ranked order
+
+
+def kept_years(e):
+    return (d(e["x"]) - d(e["p"])).days / 365.25 if e.get("x") and e.get("p") else 0
+
+
+def potential(r):
+    """A score for the Opportunities page, or None for patents it leaves out (weapons, unfit for a showcase, not lapsed).
+    ponytail: hand-set weights; replace with a fitted model if licensing or sales outcomes ever become available."""
+    e = r["entry"]
+    if e.get("arm") or e["st"] != "lapsed" or UNCOOL_WORDS.search(f'{e["t"]} {e["ot"]} {e["h"]}'):
+        return None
+    y, w1 = kept_years(e), e.get("w1") or 0
+    return (MARKET.get(e["ind"], .3) * 2 + (1.8 if y > 11 else .9 if y > 7 else 0) + (.8 if 0 < w1 <= 60 else .5 if 0 < w1 <= 100 else .2 if 0 < w1 <= 150 else 0)
+            + min(.6, .15 * (e.get("ni") or 0)) + (0 if e["ia"] else .4) + (.3 if r["fig"] else 0))
+
+
+def signals(e):
+    """The reasons a patent ranks, in plain words."""
+    y = kept_years(e)
+    out = [f"Owner paid to keep it {y:.0f} years" if y > 7 else ""]
+    out.append(f'Broad claim, {e["w1"]} words' if 0 < (e.get("w1") or 0) <= 100 else "")
+    out.append(f'{e["cl"]} claims' if e.get("cl") else "")
+    out.append("Solo inventor" if e["ia"] else f'Owned by {e["a"]}' if e["a"] else "")
+    return [x for x in out if x]
 
 
 def reserved_ids():
@@ -1373,7 +1441,7 @@ def archive_records(skip):
         t = t.capitalize() if t.isupper() else t  # SHOUTED TITLES from old records read better as sentences
         out.append((pid, P.pub_number({"guid": pid, "type": "US-PGPUB" if k == "A" else "USPAT"}), t, x.get("f") or "", x["p"],
                     x.get("te") or archive_term_end(x.get("f"), x["p"], k), P.plain(x.get("a")), P.plain(x.get("i")), fields.index(field), x["cpc"][:3],
-                    x.get("app") or "", x.get("pg") or 0, x.get("sh") or 0, k, x.get("g") or ""))
+                    x.get("app") or "", x.get("pg") or 0, x.get("sh") or 0, k, x.get("g") or "", x.get("ab") or ""))
     return out
 
 
@@ -1553,6 +1621,7 @@ def _build():
     s.legal()
     s.not_found()
     s.insights(gazette_all(), recs)
+    s.opportunities()
     s.saved()
     s.archive_template()
     s.feeds()

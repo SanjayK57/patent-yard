@@ -70,6 +70,16 @@ def armed(cpcs):
     return any(c.replace(" ", "").upper().startswith(ARMED) for c in cpcs or ())
 
 
+DEPENDS = re.compile(r"\b(claims?\s+\d|of\s+\d+\b|according to claim|of claim)", re.I)
+
+
+def breadth(claims):
+    """Words in the shortest independent claim, and how many independent claims there are (0, 0 without text).
+    A short claim has fewer limits, so it covered more ground; that ground is what a lapse sets free."""
+    ind = [t for t in ((c[1] if isinstance(c, list) else c) for c in claims or ()) if not DEPENDS.search(t)]
+    return min((len(t.split()) for t in ind), default=0), len(ind)
+
+
 def years_ago(today, years):
     return (today - dt.timedelta(days=int(365.25 * years))).isoformat()
 
