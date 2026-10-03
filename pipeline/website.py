@@ -485,6 +485,11 @@ class Site:
         chips = "".join(f'<a class="fchip" href="/fields/{k}/"><span>{E(n)}</span><small class="num">{len(self.by_field[k]) + by_field.get(k, 0):,}</small></a>'
                         for k, n in self.fields.items())
         tries = "".join(f'<a class="chip" href="/browse/?q={quote(t)}">{E(t)}</a>' for t in ("drone", "solar charger", "robot arm", "kitchen", "bicycle", "hearing aid"))
+        span = {n: b - a for n, a, b in m.get("archiveSpans", [])}
+        sources = [(m["count"] + span.get("US", 0), "United States", "USPTO", "US"), (span.get("Europe", 0), "Europe", "European Patent Office", "Europe"),
+                   (span.get("Canada", 0), "Canada", "CIPO", "Canada"), (span.get("Australia", 0), "Australia", "IP Australia", "Australia")]
+        statband = "".join(f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{c:,}</b><span>{E(place)} · {E(office)}</span></a>'
+                           for c, place, office, r in sources if c)
         body = f"""
 <section class="hero">
   <div>
@@ -500,12 +505,7 @@ class Site:
     <figcaption><div><b>{E(hero["t"])}</b><small>{E(self.fields[hero["ind"]])} · {E(" ".join(freed_line(hero)))}</small></div><a class="btn secondary sm" href="{purl(hero["id"])}">Open patent</a></figcaption>
   </figure>
 </section>
-<div class="statband" aria-label="Register totals">
-  <div><b class="num" data-count="{total}">{total:,}</b><span>free-to-use patents, from four patent offices</span></div>
-  <div><b class="num" data-count="{m["count"]}">{m["count"]:,}</b><span>freed in the past year, with full files</span></div>
-  <div><b class="num" data-count="{m["lapsedYear"]}">{m["lapsedYear"]:,}</b><span>lapsed in the past year (Official Gazette)</span></div>
-  <div><b>Daily</b><span>rechecked against USPTO records</span></div>
-</div>
+<nav class="statband" aria-label="Free-to-use patents by patent office">{statband}</nav>
 {self.ticker()}
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">
