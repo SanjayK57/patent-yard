@@ -1,6 +1,6 @@
 // Runs on every page: menu, account button, reservation marks on patent cards, and shared helpers.
 import { backend } from "./backend.js";
-import { latest, topMatches, patentNumber, numberLabel, randomPatent, STATUS, archiveSearch, archiveCards } from "./catalog.js";
+import { latest, topMatches, patentNumber, numberLabel, numLabel, randomPatent, STATUS, archiveSearch, archiveCards } from "./catalog.js";
 
 // Best matches across both collections: the recently freed register first, then the archive fills up to n.
 export async function bestMatches(q, n) {
@@ -116,9 +116,9 @@ if (hq) {
     if (q.length < 2) { list.hidden = true; return; }
     const num = patentNumber(q);
     const all = `<li><a role="option" href="/browse/?q=${encodeURIComponent(q)}"><span>See all results</span>${icon("right")}</a></li>`
-      + `<li><a role="option" href="/browse/?in=archive&q=${encodeURIComponent(q)}"><span>Search the full-term archive</span>${icon("right")}</a></li>`;
+      + `<li><a role="option" href="/browse/?in=archive&q=${encodeURIComponent(q)}"><span>Search the archive: US, Europe, Canada, Australia</span>${icon("right")}</a></li>`;
     if (num) {
-      list.innerHTML = `<li><a role="option" href="/patents/${num}"><span>Go to ${esc(numberLabel(`US-${num}-`).trim())}</span>${icon("right")}</a></li>`;
+      list.innerHTML = `<li><a role="option" href="/patents/${num}"><span>Go to ${esc(numLabel(num))}</span>${icon("right")}</a></li>`;
       list.hidden = false; mark(-1); return;
     }
     list.classList.add("busy");
@@ -307,9 +307,9 @@ function palette() {
     const acts = [["Surprise me with a random patent", "act=surprise", "shuffle"], [`Switch to ${isDark() ? "light" : "dark"} mode`, "act=theme", isDark() ? "sun" : "moon"]].filter(([l]) => !lv || l.toLowerCase().includes(lv));
     let html = "";
     const num = patentNumber(v);
-    if (num) html += group("Patent number", row(`Go to ${numberLabel(`US-${num}-`).trim()}`, "", "right", `data-go="/patents/${num}"`));
+    if (num) html += group("Patent number", row(`Go to ${numLabel(num)}`, "", "right", `data-go="/patents/${num}"`));
     else if (v.length >= 2) html += group("Patents", `<div class="cmdh muted" aria-hidden="true" id="cmdBusy">Searching…</div>` + row(`Search the register for “${v}”`, "", "search", `data-go="/browse/?q=${encodeURIComponent(v)}"`)
-      + row(`Search the full-term archive for “${v}”`, "millions more", "db", `data-go="/browse/?in=archive&q=${encodeURIComponent(v)}"`));
+      + row(`Search the archive for “${v}”`, "4 patent offices", "db", `data-go="/browse/?in=archive&q=${encodeURIComponent(v)}"`));
     if (pages.length) html += group("Pages", pages.map(([l, href, ic]) => row(l, "", ic, `data-go="${href}"`)).join(""));
     if (acts.length) html += group("Actions", acts.map(([l, a, ic]) => row(l, "", ic, `data-act="${a.split("=")[1]}"`)).join(""));
     list.innerHTML = html; mark(0);

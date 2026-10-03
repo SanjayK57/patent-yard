@@ -3,6 +3,7 @@
 
   python3 pipeline.py harvest [--per 6] [--only robotics,ai] [--sources lapsed,abandoned,expired] [--resume]
   python3 pipeline.py bulk [--minutes 300]  every lapsed patent that passes the checks, resumable
+  python3 pipeline.py europe [--minutes N]   every European patent past its term (EPO linked open data), resumable
   python3 pipeline.py archive [--minutes N]  every US utility patent whose term has certainly ended (1976-), resumable
   python3 pipeline.py publish [--every 120]  rebuild and redeploy the website every N minutes, until stopped
   python3 pipeline.py todo [--limit 40]  the most promising patents still without a note (JSON lines)
@@ -48,7 +49,7 @@ def publish(every):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("cmd", choices=["harvest", "bulk", "archive", "publish", "todo", "notes", "enrich", "verify", "build", "web", "test"])
+    ap.add_argument("cmd", choices=["harvest", "bulk", "archive", "europe", "publish", "todo", "notes", "enrich", "verify", "build", "web", "test"])
     ap.add_argument("--weeks", type=int, default=9, help="harvest: how many Gazette issues to sample")
     ap.add_argument("--per", type=int, default=6, help="harvest: new patents per field")
     ap.add_argument("--only", help="harvest: comma-separated fields")
@@ -70,6 +71,9 @@ def main():
         publish(a.every)
     elif a.cmd == "archive":
         register.archive(a.minutes)
+    elif a.cmd == "europe":
+        import europe
+        europe.run(a.minutes)
     elif a.cmd == "todo":
         for row in register.todo(a.limit):
             print(json.dumps(row, ensure_ascii=False))

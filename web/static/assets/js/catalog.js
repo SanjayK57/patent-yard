@@ -64,8 +64,12 @@ export const words = s => String(s ?? "").toLowerCase().normalize("NFKD").replac
   .split(/[^a-z0-9]+/).filter(w => w.length >= 2 && !STOP.has(w) && /[a-z]/.test(w));
 
 // "US 11,112,282 B2", "11112282" or "2015/0123456" -> the number, so the search can jump straight to it
+// "US 11,112,282 B2" -> "11112282", "EP 0500272 B1" -> "EP0500272": the address /patents/<it> redirects to the patent
 export function patentNumber(q) {
-  const m = String(q).replace(/[,\s/]/g, "").match(/^(?:us)?(\d{5,11})(?:[a-z]\d?)?$/i);
+  const s = String(q).replace(/[,\s/.]/g, ""), ep = s.match(/^ep(\d{1,7})(?:[ab]\d)?$/i), other = s.match(/^(ca\d{1,7}|au\d{10})(?:[a-z]\d?)?$/i);
+  if (ep) return "EP" + ep[1].padStart(7, "0");
+  if (other) return other[1].toUpperCase();
+  const m = s.match(/^(?:us)?(\d{5,11})(?:[a-z]\d?)?$/i);
   return m ? m[1] : null;
 }
 
@@ -107,8 +111,13 @@ export async function topMatches(q, n) {
 }
 
 // ---------------------------------------------------------------- cards (pipeline/website.py Site.card draws the same)
+// what patentNumber() returned, for display: "11112282" -> "US 11,112,282", "EP0500272" -> "EP 0500272"
+export const numLabel = num => (/^(EP|CA|AU)/.test(num) ? `${num.slice(0, 2)} ${num.slice(2)}` : numberLabel(`US-${num}-`).trim());
+
 export function numberLabel(id) {
-  const [, num, kind] = id.split("-");
+  const [cc, num, kind] = id.split("-");
+  if (cc === "EP" || cc === "CA") return `${cc} ${num} ${kind}`;
+  if (cc === "AU") return `AU ${num}`;
   if (/\D/.test(num)) return `US ${num} ${kind}`.trim();  // designs and reissues: US D500000 S
   return num.length > 8 ? `US ${num.slice(0, 4)}/${num.slice(4)} ${kind}` : `US ${Number(num).toLocaleString("en-US")} ${kind}`;
 }
@@ -177,7 +186,9 @@ export async function archiveCards(docs) {
   return docs.map(d => { const [id, t, a, ind, year, k] = blocks[Math.floor(d / A.block)][d % A.block]; return { doc: d, id, t, a, ind: L.fields[ind], year, k: k || "" }; });
 }
 
-const AKIND = { S: ["Expired design", "expired", "Granted", "Design"], A: ["Likely abandoned", "abandoned", "Published", "Application"], "": ["Expired, full term", "expired", "Granted", "Full term"] };
+const AKIND = { S: ["Expired design", "expired", "Granted", "Design"], A: ["Likely abandoned", "abandoned", "Published", "Application"], "": ["Expired, full term", "expired", "Granted", "Full term"],
+  E: ["Expired, Europe", "expired", "Published", "European"], CA: ["Expired, Canada", "expired", "Year", "Canadian"],
+  AU: ["Expired, Australia", "expired", "Year", "Australian"] };
 export function archiveCardHTML(c, names) {
   const n = numberLabel(c.id), owner = c.a || (c.k === "A" ? "Inventors" : "Solo inventor"), K = AKIND[c.k] || AKIND[""];
   return `<article class="card" data-id="${esc(c.id)}"><div class="fig blank"><span class="over"><span class="badge ${K[1]}">${K[0]}</span></span><span class="numart">${esc(n)}</span></div>`

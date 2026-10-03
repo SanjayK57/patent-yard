@@ -16,6 +16,8 @@ const fmt = s => { const d = new Date((s || "") + "T12:00:00"); return isNaN(d) 
 const clip = (s, n) => { s = String(s || "").trim(); return s.length > n ? s.slice(0, n).replace(/\s+\S*$/, "") + " …" : s; };
 const isDep = c => /\bclaims?\s+\d/i.test(c);
 const hasIdea = i => !!(i && (i.name || i.pitch || i.desc || i.change));
+// patents from other offices carry where/adj/office (functions/_archive.js kitOf); the rest are US patents
+const where = p => p?.where || "the US", office = p => p?.office || "USPTO";
 
 export function patentContext(p) {
   if (!p) return "";
@@ -24,7 +26,7 @@ export function patentContext(p) {
   if (p.expired) dates.push(`Expired for an unpaid maintenance fee: ${fmt(p.expired)}`);
   if (p.termEnd) dates.push(`20-year term ended: ${fmt(p.termEnd)}`);
   return [
-    "SOURCE PATENT (free to make, use and sell in the US; its published text is prior art)",
+    `SOURCE PATENT (free to make, use and sell in ${where(p)}; its published text is prior art)`,
     `Number: ${p.n}`,
     `Title as filed: ${p.ot}`,
     `Status: ${p.status}. ${p.why.join(" ")}`,
@@ -57,7 +59,7 @@ export function buildPrompt(task, p, idea) {
   const tail = [p ? ATTACH : "", p ? FAITHFUL : "", ctx, mine].filter(Boolean).join("\n\n");
   const askIdea = have ? "" : " First ask me to describe my invention (name, how it works, what's new), then continue.";
   const T = {
-    workshop: `I'm an independent inventor. I want to build a new, patentable product based on ${p ? "a US patent whose protection has ended, so anyone may now make, use and sell what it describes in the US. Its published text is prior art, so I can't patent it as it is" : "my own idea"}. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.
+    workshop: `I'm an independent inventor. I want to build a new, patentable product based on ${p ? `a ${p.adj || "US"} patent whose protection has ended, so anyone may now make, use and sell what it describes in ${where(p)}. Its published text is prior art, so I can't patent it as it is` : "my own idea"}. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.
 
 Step 1, modern directions. ${have ? "Start from my invention below and suggest how to strengthen it, plus three alternative directions." : `Propose four distinct product directions based on ${src}.`} Each should use something that became cheap, possible or in demand since ${p ? "the patent was filed" : "recently"} (for example low-cost sensors, phones, AI models, 3D printing, better batteries, new materials, subscriptions or new regulations) and contain a concrete new element that could be claimed, not just "add an app". For each give: a 2-4 word name, a one-sentence pitch, what is concretely new, who pays and why, what a first prototype needs, and the element that could be claimed.
 
@@ -179,8 +181,8 @@ export async function downloadBrief(task, p, idea, prompt) {
     head(`Claims (${p.claims.length})`);
     for (const [n, c] of p.claims) text(`${n}. ${c}`, { size: 9.6, style: isDep(c) ? "normal" : "bold", after: 5 });
     head("Sources");
-    text(`Patent Yard record: ${p.url}`, { size: 10, after: 2 }); text(`Official USPTO PDF: ${p.pdf}`, { size: 10, after: 2 }); text(`Google Patents: ${p.google}`, { size: 10 });
-    text("Names, summaries and modern angles are Patent Yard's editorial notes. Patent Yard is not legal advice; confirm status with the USPTO before relying on it.", { size: 9, color: [110, 116, 130] });
+    text(`Patent Yard record: ${p.url}`, { size: 10, after: 2 }); text(`Official ${office(p)} document: ${p.pdf}`, { size: 10, after: 2 }); text(`Google Patents: ${p.google}`, { size: 10 });
+    text(`Names, summaries and modern angles are Patent Yard's editorial notes. Patent Yard is not legal advice; confirm status with the ${office(p)} before relying on it.`, { size: 9, color: [110, 116, 130] });
     if (p.sheets.length) {
       const imgs = await Promise.all(p.sheets.map(sheetData));
       imgs.forEach((im, i) => {
@@ -190,7 +192,7 @@ export async function downloadBrief(task, p, idea, prompt) {
         const maxH = H - y - M - 30, s = Math.min(TW / im.w, maxH / im.h);
         doc.addImage(im.data, "JPEG", M + (TW - im.w * s) / 2, y + 4, im.w * s, im.h * s);
       });
-      if ((p.totalSheets || 0) > p.sheets.length) { doc.addPage(); y = M; text(`This patent has ${p.totalSheets} drawing sheets; all of them are in the official USPTO PDF: ${p.pdf}`); }
+      if ((p.totalSheets || 0) > p.sheets.length) { doc.addPage(); y = M; text(`This patent has ${p.totalSheets} drawing sheets; all of them are in the official ${office(p)} document: ${p.pdf}`); }
     }
   }
   const pages = doc.getNumberOfPages();

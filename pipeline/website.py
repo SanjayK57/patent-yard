@@ -61,7 +61,8 @@ SHARDS = 2048  # patent pages, drawings and kit data are packed into this many f
 BLOCK = 256    # catalog cards per file
 WEIGHTS = [10, 6, 5, 4, 3, 2]  # search: name, title as filed, summary, tags, owner, first sentence of the abstract
 ARCH_BLOCK, ARCH_BUCKETS = 1536, 1024  # the archive: card text per file, search index files (a free site holds 20,000 files)
-ARCH_KEYS = ("id", "n", "t", "f", "p", "te", "a", "i", "ind", "cpc", "app", "pg", "sh", "k")
+ARCH_KEYS = ("id", "n", "t", "f", "p", "te", "a", "i", "ind", "cpc", "app", "pg", "sh", "k", "g")  # k: "" utility, S design, A application, E/CA/AU other offices
+REGIONS = {"E": "Europe", "CA": "Canada", "AU": "Australia"}  # archive kinds from other offices (functions/_archive.js REGIONS)
 
 E = lambda s: html.escape("" if s is None else str(s), quote=True)
 DEPENDENT = re.compile(r"\bclaims?\s+\d", re.I)
@@ -353,7 +354,7 @@ class Site:
 
     # -------------------------------------------------------- shell
     def page(self, path, title, desc, body, *, section="", og_image=None, jsonld=None, scripts=(), lastmod=None, index=True, write=True):
-        full_title = f"{title} · Patent Yard" if title != "Patent Yard" else "Patent Yard: free-to-use US patents, verified daily"
+        full_title = f"{title} · Patent Yard" if title != "Patent Yard" else "Patent Yard: free-to-use patents from four patent offices"
         cur = ' aria-current="page"'
         nav = "".join(f'<a href="{href}"{cur if section == href else ""}>{label}</a>' for href, label in NAV)
         og = og_image or self.default_og
@@ -410,12 +411,12 @@ class Site:
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div><b>Patent Yard</b><p style="margin-top:10px;max-width:44ch">A free register of US patents whose protection has ended, rechecked against USPTO records every day, with tools to turn them into new inventions.</p><p class="num" id="footStat" style="margin-top:10px">Rechecked against USPTO records every day</p></div>
+    <div><b>Patent Yard</b><p style="margin-top:10px;max-width:44ch">A free register of patents from the US, Europe, Canada and Australia whose protection has ended, traced to official records, with tools to turn them into new inventions.</p><p class="num" id="footStat" style="margin-top:10px">Rechecked against USPTO records every day</p></div>
     <nav aria-label="Explore"><span class="kicker">Explore</span><a href="/browse/">Browse all</a><a href="/fields/">Fields</a><a href="/studio/">Invention studio</a><a href="/insights/">Insights</a><a href="/saved/">Saved patents</a><a href="/account/">My bench</a><a href="/feed.xml">New patents feed</a></nav>
     <nav aria-label="Fields"><span class="kicker">Fields</span>{fields_nav}</nav>
-    <nav aria-label="Sources"><span class="kicker">Sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>USPTO Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a><a href="https://patentcenter.uspto.gov/" {EXT}>Patent Center</a></nav>
+    <nav aria-label="Sources"><span class="kicker">Sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>USPTO Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a><a href="https://patentcenter.uspto.gov/" {EXT}>Patent Center</a><a href="https://data.epo.org/linked-data/" {EXT}>EPO linked open data</a></nav>
     <nav aria-label="Company"><span class="kicker">Patent Yard</span><a href="/about/">About</a><a href="/how-it-works/">How it works</a><a href="/how-it-works/#faq">FAQ</a><a href="/contact/">Contact</a><a href="/settings/">Settings</a><a href="/legal/terms/">Terms</a><a href="/legal/privacy/">Privacy</a><a href="/legal/disclaimer/">Disclaimer</a><a href="/legal/copyright/">Copyright</a><a href="/legal/accessibility/">Accessibility</a></nav>
-    <p class="fine">Patent data comes from the United States Patent and Trademark Office. Patent Yard is not affiliated with the USPTO and does not give legal advice. Plain-English names, summaries and modern angles are Patent Yard's editorial notes.</p>
+    <p class="fine">Patent data comes from the United States Patent and Trademark Office; the European Patent Office's Linked open EP data, used under <a href="https://creativecommons.org/licenses/by/4.0/" {EXT}>CC BY 4.0</a>; the Canadian Intellectual Property Office, and contains information licensed under the <a href="https://open.canada.ca/en/open-government-licence-canada" {EXT}>Open Government Licence – Canada</a>; and IP Australia's IPGOD, used under <a href="https://creativecommons.org/licenses/by/2.5/au/" {EXT}>CC BY 2.5 AU</a>. Patent Yard is not affiliated with any of these offices and does not give legal advice. Plain-English names, summaries and modern angles are Patent Yard's editorial notes.</p>
   </div>
 </footer>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -488,7 +489,7 @@ class Site:
   <div>
     <div class="kicker rise" style="--d:0">The search engine for free-to-use patents</div>
     <h1 class="rise" style="--d:1">Build on inventions <em>nobody owns</em> anymore.</h1>
-    <p class="lede rise" style="--d:2">{big_number(total)} US patents whose protection has ended, each traced to its USPTO record. Find one, then turn it into your own invention with Claude.</p>
+    <p class="lede rise" style="--d:2">{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record. Find one, then turn it into your own invention with Claude.</p>
     <form class="bigsearch rise" style="--d:3" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search by idea, title, owner or patent number"><button class="btn primary" type="submit">Search</button></form>
     <div class="tryrow rise" style="--d:4"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
   </div>
@@ -499,7 +500,7 @@ class Site:
   </figure>
 </section>
 <div class="statband" aria-label="Register totals">
-  <div><b class="num" data-count="{total}">{total:,}</b><span>free-to-use US patents listed</span></div>
+  <div><b class="num" data-count="{total}">{total:,}</b><span>free-to-use patents, from four patent offices</span></div>
   <div><b class="num" data-count="{m["count"]}">{m["count"]:,}</b><span>freed in the past year, with full files</span></div>
   <div><b class="num" data-count="{m["lapsedYear"]}">{m["lapsedYear"]:,}</b><span>lapsed in the past year (Official Gazette)</span></div>
   <div><b>Daily</b><span>rechecked against USPTO records</span></div>
@@ -529,7 +530,7 @@ class Site:
         ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "Patent Yard", "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
               {"@context": "https://schema.org", "@type": "Organization", "name": "Patent Yard", "url": SITE + "/", "logo": SITE + "/favicon.svg"}]
-        self.page("/", "Patent Yard", f"Search {big_number(total)} US patents whose protection has ended, each traced to its USPTO record, with tools to reinvent them with Claude.",
+        self.page("/", "Patent Yard", f"Search {big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record, with tools to reinvent them with Claude.",
                   body, og_image=self.img(hero["id"]), jsonld=ld, scripts=("home",))
 
     def ticker(self):
@@ -547,7 +548,7 @@ class Site:
         fields = "".join(f'<button class="chip" type="button" data-ind="{k}" aria-pressed="false">{E(n)}</button>' for k, n in self.fields.items())
         return f"""
 <form class="filters" id="filters" role="search">
-  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recently freed <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Full-term archive <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
+  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recently freed <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive: US and Europe <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
   <div class="frow qrow"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">Filters</button></div>
   {'' if field else f'<div class="frow scrollrow" id="fInd"><span class="lab">Field</span><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div>'}
   <div class="frow"><span class="lab">Status</span>
@@ -596,7 +597,7 @@ class Site:
             f'<a class="tile" href="/fields/{k}/"><span class="th">{self.field_thumb(k)}</span><span><b>{E(n)}</b><small>{E(FIELD_NOTES.get(k, ""))} {len(self.by_field[k]) + self.meta.get("archiveByField", {}).get(k, 0):,} patents.</small></span></a>'
             for k, n in self.fields.items())
         body = f"""<div class="page"><div class="sechead"><div><h1>Fields</h1><p>Patents are filed under the field their classification points to. Pick one to see everything in it.</p></div></div><div class="tiles">{tiles}</div></div>"""
-        self.page("/fields/", "Fields", "Free-to-use US patents grouped by field, from software and AI to tools, energy and sports.", body, section="/fields/")
+        self.page("/fields/", "Fields", "Free-to-use patents from the US, Europe, Canada and Australia, grouped by field, from software and AI to tools, energy and sports.", body, section="/fields/")
         for k, n in self.fields.items():
             rows = self.doc_by_field[k]
             counts = {s: sum(1 for r in rows if r["entry"]["st"] == s) for s in STATUS}
@@ -604,11 +605,11 @@ class Site:
             parts = [f"{counts['lapsed']:,} lapsed", f"{counts['expired']:,} expired at full term", f"{counts['abandoned']:,} likely abandoned"]
             body = f"""<div class="page" data-field="{k}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/">Fields</a><span>/</span><span>{E(n)}</span></nav>
-<div class="sechead"><div><h1>{E(n)}</h1><p>{E(FIELD_NOTES.get(k, ""))} {len(rows) + arch:,} patents: {len(rows):,} freed in the past year ({", ".join(p for p in parts if not p.startswith("0 "))}){f", and {arch:,} more in the full-term archive" if arch else ""}.</p></div><div class="rowbtns"><a class="btn secondary" href="/browse/?field={k}">Open in browse</a>{f'<a class="btn quiet" href="/browse/?in=archive">Search the archive</a>' if arch else ""}</div></div>
+<div class="sechead"><div><h1>{E(n)}</h1><p>{E(FIELD_NOTES.get(k, ""))} {len(rows) + arch:,} patents: {len(rows):,} freed in the past year ({", ".join(p for p in parts if not p.startswith("0 "))}){f", and {arch:,} more in the archive, from the US, Europe, Canada and Australia" if arch else ""}.</p></div><div class="rowbtns"><a class="btn secondary" href="/browse/?field={k}">Open in browse</a>{f'<a class="btn quiet" href="/browse/?in=archive">Search the archive</a>' if arch else ""}</div></div>
 {self.filters(field=k)}
 {self.listing(rows)}
 </div>"""
-            self.page(f"/fields/{k}/", f"{n} patents", f"{len(rows):,} free-to-use US patents in {n.lower()}: {FIELD_NOTES.get(k, '')}",
+            self.page(f"/fields/{k}/", f"{n} patents", f"{len(rows) + arch:,} free-to-use patents in {n.lower()}: {FIELD_NOTES.get(k, '')}",
                       body, section="/fields/", scripts=("browse",))
 
     def patent(self, r, detail, doc):
@@ -879,12 +880,12 @@ class Site:
         dec_bars = "".join(f'<div class="hrow"><span class="hl">{y}s</span><span class="hbar"><i style="--w:{c / dtop * 100:.1f}%"></i></span><b class="num">{c:,}</b></div>'
                            for y, c in sorted(dec.items(), reverse=True))
         archive_sec = (f'<section class="panel reveal span2"><h2>The archive, by decade</h2><p class="muted">{len(recs):,} patents and applications that can no longer be in force: '
-                       f'{kinds.get("", 0):,} utility patents past their full term, {kinds.get("S", 0):,} expired designs and {kinds.get("A", 0):,} likely abandoned applications, by the decade they were granted or published.</p>'
+                       f'{kinds.get("", 0):,} US utility patents past their full term, {kinds.get("S", 0):,} expired US designs, {kinds.get("A", 0):,} likely abandoned US applications, and {kinds.get("E", 0):,} European, {kinds.get("CA", 0):,} Canadian and {kinds.get("AU", 0):,} Australian patents and applications past their term, by the decade they were granted or published.</p>'
                        f'<div class="hbars">{dec_bars}</div></section>') if recs else ""
         body = f"""<div class="page">
 <div class="sechead"><div><h1>Insights</h1><p>The register in numbers: what lapses, when, and who used to own it. Drawn from the same USPTO records as every patent page, updated with each refresh.</p></div></div>
 <div class="statband reveal">
-  <div><b class="num" data-count="{n + len(recs)}">{n + len(recs):,}</b><span>patents listed, {n:,} of them freed in the past year</span></div>
+  <div><b class="num" data-count="{n + len(recs)}">{n + len(recs):,}</b><span>patents listed: {n + kinds.get("", 0) + kinds.get("S", 0) + kinds.get("A", 0):,} US, {kinds.get("E", 0):,} European, {kinds.get("CA", 0):,} Canadian and {kinds.get("AU", 0):,} Australian</span></div>
   <div><b class="num" data-count="{m["lapsedYear"]}">{m["lapsedYear"]:,}</b><span>US patents lapsed in the past year</span></div>
   <div><b class="num" data-count="{rein}">{rein:,}</b><span>reinstated after a late payment, and left out</span></div>
   <div><b class="num" data-count="{round(solo / max(1, n + len(recs)) * 100)}">{solo / max(1, n + len(recs)) * 100:.0f}</b><span>percent from solo inventors, with no company named</span></div>
@@ -990,19 +991,22 @@ class Site:
 
     def how(self):
         body = f"""<div class="page narrow" style="margin-inline:auto">
-<div class="sechead"><div><h1>How a patent gets here</h1><p>Every patent comes from an official USPTO source and links back to it. Recently freed patents are rechecked daily, and new ones are added every week.</p></div></div>
+<div class="sechead"><div><h1>How a patent gets here</h1><p>Every patent comes from an official patent office source (the USPTO, the EPO, the Canadian Intellectual Property Office or IP Australia) and links back to it. Recently freed patents are rechecked daily, and new ones are added every week.</p></div></div>
 <ol class="pipe">
   <li><span class="n">1</span><b>Recently lapsed</b><p>Every patent the USPTO's weekly Official Gazette listed in the past year as expired for an unpaid maintenance fee, minus any reinstated since. These get their full file: claims, description and drawings.</p><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>Official Gazette for Patents</a></li>
   <li><span class="n">2</span><b>Family clearance</b><p>For recently lapsed patents, every US relative is checked. If a sibling patent could still be in force, or a continuation could still be pending, the patent is left out.</p></li>
   <li><span class="n">3</span><b>Full-term archive</b><p>Every US utility patent whose term has certainly ended: filed before May 29, 2000 (no term adjustments, extensions capped at five years), or granted before 1976. Listed from its USPTO record, with links to the full text.</p><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a></li>
   <li><span class="n">4</span><b>Design patents</b><p>Design patents granted more than 15 years ago. A design lasts 14 years from grant (15 if filed from May 13, 2015), and covers only how a product looks.</p><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a></li>
   <li><span class="n">5</span><b>Abandoned applications</b><p>Applications published 2001 to 2016 with no patent anywhere in their family and no family filing in seven years. Labeled "likely abandoned" because the status is inferred.</p><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a></li>
-  <li><span class="n">6</span><b>Rechecked and growing</b><p>Each day recently lapsed patents are checked against the newest Gazette, and their families in rotation. New lapses join every week, and the site republishes every two hours.</p></li>
+  <li><span class="n">6</span><b>European patents</b><p>Every European patent and application filed more than 20 years ago, so no European patent from it can still be in force; 25 and a half for medicines and crop protection, which a supplementary protection certificate can extend. From the EPO's linked open data (CC BY 4.0).</p><a href="https://data.epo.org/linked-data/" {EXT}>Linked open EP data</a></li>
+  <li><span class="n">7</span><b>Canadian patents</b><p>Every Canadian patent and application whose term has certainly ended: filed from October 1, 1989 and more than 20 years ago (22 for drugs, which a certificate of supplementary protection can extend), or granted under the old law more than 17 years ago. From CIPO's patent data, under the Open Government Licence – Canada.</p><a href="https://open.canada.ca/data/en/dataset/fe1dfbb9-0fc3-42ca-b2a9-6ca4c05dbac9" {EXT}>CIPO patent data</a></li>
+  <li><span class="n">8</span><b>Australian patents</b><p>Every Australian standard patent filed more than 21 years ago (26 for pharmaceuticals, which can get an extension), and every innovation and petty patent past its short term. From IP Australia's IPGOD (CC BY 2.5 AU).</p><a href="https://data.gov.au/data/dataset/ipgod2022" {EXT}>IPGOD</a></li>
+  <li><span class="n">9</span><b>Rechecked and growing</b><p>Each day recently lapsed patents are checked against the newest Gazette, and their families in rotation. New lapses join every week, and the site republishes every two hours.</p></li>
 </ol>
 <div class="section"><div class="sechead"><div><h2>Reinventing with Claude</h2></div></div>
 <div class="prose"><p>Patent Yard doesn't run AI on its servers, so it stays free. Instead, every patent page and the <a href="/studio/">invention studio</a> write a careful prompt for your own Claude account, plus a PDF brief with the patent's claims, figures and original drawings. Paste the prompt into Claude, attach the brief, and Claude works through it with you: modern directions, a novelty screen, a provisional patent draft, concept sketches or a prototype plan.</p><p>Claude can't see patents filed after its training, so treat its novelty screen as a starting point and run the searches it suggests.</p></div></div>
 <div class="section"><div class="law">
-  <div class="panel"><h3>What you can do</h3><ul><li>Make, use and sell what an expired or abandoned US patent describes. Nobody can enforce it against you in the US.</li><li>Improve on it and patent the improvement, if the improvement is new and not obvious.</li><li>File a provisional application yourself to lock in a filing date for 12 months.</li></ul></div>
+  <div class="panel"><h3>What you can do</h3><ul><li>Make, use and sell what an expired or abandoned US patent describes. Nobody can enforce it against you in the US. The same goes for an expired European, Canadian or Australian patent where it was granted.</li><li>Check the other places: a patent from one office says nothing about rights anywhere else. Each page says which office it comes from.</li><li>Improve on it and patent the improvement, if the improvement is new and not obvious.</li><li>File a provisional application yourself to lock in a filing date for 12 months.</li></ul></div>
   <div class="panel"><h3>What you can't do</h3><ul><li>Patent the same invention. The published document is prior art against everyone, you included.</li><li>Assume the whole product is free. A newer patent on some other part could still apply; we only check this patent's own family.</li><li>Assume foreign rights are gone. We check US rights only.</li></ul></div>
   <div class="panel"><h3>Fine print</h3><ul><li><b>Lapsed</b> patents can be reinstated if the owner shows the missed payment was unintentional. Anyone who started using the invention during the lapse keeps limited "intervening rights" under 35 U.S.C. 41(c)(2).</li><li><b>Likely abandoned</b> status is inferred from USPTO records. Confirm it on Patent Center before relying on it.</li><li>Patent Yard is not legal advice. For anything with real money behind it, talk to a registered patent attorney or agent.</li></ul></div>
 </div></div>
@@ -1013,7 +1017,7 @@ class Site:
   <details><summary>Can I patent one of these?</summary><p>Not as it is. The published document is prior art. You can patent a genuine improvement that is new and not obvious, which is what the invention studio helps you find.</p></details>
   <details><summary>What does reserving do?</summary><p>It holds a patent for you on Patent Yard for 30 days so other builders here can see someone is working on it. It is a courtesy between users, not a legal right: it doesn't stop anyone, on Patent Yard or anywhere else, from using the patent. You can hold 5 at a time and renew in the last week.</p></details>
   <details><summary>Where do the drawings come from?</summary><p>Every drawing is a page of the patent's own published document, cropped to the drawing and scaled down. We never add to them. If a patent has no drawings, Claude can sketch it from the text, clearly marked as not part of the patent.</p></details>
-  <details><summary>How current is the data?</summary><p>New lapses are added every week after the Official Gazette publishes, and the site republishes every two hours. Recently freed patents are rechecked against USPTO records daily; the date of the last check is on each patent's page. Patents in the full-term archive can't come back to life, so they don't need rechecking.</p></details>
+  <details><summary>How current is the data?</summary><p>New lapses are added every week after the Official Gazette publishes, and the site republishes every two hours. Recently freed patents are rechecked against USPTO records daily; the date of the last check is on each patent's page. Patents in the archive, from every office, can't come back to life, so they don't need rechecking.</p></details>
   <details><summary>Is it really free?</summary><p>Yes. Browsing, reserving and the invention studio are free. The AI work happens in your own Claude account, which has a free plan, and the USPTO charges its own filing fee (from $65 for a micro entity provisional).</p></details>
 </div></div></div>"""
         self.page("/how-it-works/", "How it works", "Where Patent Yard's patents come from, how they are checked every day, and what you can legally do with them.", body, section="/how-it-works/")
@@ -1023,12 +1027,12 @@ class Site:
         body = f"""<div class="page narrow" style="margin-inline:auto">
 <div class="sechead"><div><h1>About Patent Yard</h1><p>A free register of inventions that anyone in the US may now build.</p></div></div>
 <div class="prose">
-<p>Every week, thousands of US patents stop being enforceable: owners stop paying maintenance fees, terms run out, and applications are quietly abandoned. The inventions in them become free for anyone to make, use and sell in the US. Most are never looked at again.</p>
+<p>Every week, thousands of US patents stop being enforceable: owners stop paying maintenance fees, terms run out, and applications are quietly abandoned. The inventions in them become free for anyone to make, use and sell in the US. The same happens in Europe, Canada, Australia and everywhere else. Most are never looked at again.</p>
 <p>Patent Yard collects them into one searchable register, traces each to its official USPTO record, shows the full file of recently freed ones with their original drawings, and explains the best of them in plain English. Builders can reserve a patent so others know it's taken, and take it to Claude to turn it into a new, patentable invention.</p>
 <h2>What we promise</h2>
 <ul><li><b>Sources first.</b> Every status comes from an official USPTO record, and every patent page links to it and to independent places to cross-check.</li><li><b>Nothing invented.</b> Drawings, claims and descriptions are the patent's own. Our names, summaries and modern angles are labeled as ours.</li><li><b>Free.</b> No ads, no paywall, no tracking. AI work runs in your own Claude account.</li></ul>
 <h2>Today</h2>
-<p>{m["count"] + m.get("archive", 0):,} free-to-use US patents and applications across {len(self.fields)} fields: {m["count"]:,} freed in the past year with their full files ({m["bySource"]["lapsed"]:,} lapsed for an unpaid fee), and {m.get("archive", 0):,} in the archive of patents past their full term, expired designs and likely abandoned applications. In the past year the Official Gazette recorded {m["lapsedYear"]:,} fee lapses and {m["reinstatedYear"]:,} reinstatements.</p>
+<p>{m["count"] + m.get("archive", 0):,} free-to-use patents and applications from the US, Europe, Canada and Australia, across {len(self.fields)} fields: {m["count"]:,} US patents freed in the past year with their full files ({m["bySource"]["lapsed"]:,} lapsed for an unpaid fee), and {m.get("archive", 0):,} in the archive: US patents past their full term, expired designs, likely abandoned applications, and {", ".join(f"{c:,} from {k}" for k, c in m.get("archiveRegions", {}).items())} past their term. In the past year the Official Gazette recorded {m["lapsedYear"]:,} fee lapses and {m["reinstatedYear"]:,} reinstatements.</p>
 <h2>Not legal advice</h2>
 <p>Patent Yard is not a law firm and is not affiliated with the United States Patent and Trademark Office. Read the <a href="/legal/disclaimer/">disclaimer</a> before relying on anything here.</p>
 </div></div>"""
@@ -1089,8 +1093,8 @@ class Site:
         terms = [
             ("agreement", "Agreement", f"""<p>These Terms of Use govern your use of Patent Yard, the website at {SITE.replace("https://", "")} and its related services ("Patent Yard", "we", "us"). By using Patent Yard you agree to these Terms, to our <a href="/legal/privacy/">Privacy Policy</a> and to our <a href="/legal/disclaimer/">Disclaimer</a>, which are part of these Terms. If you don't agree, please don't use Patent Yard.</p>"""),
             ("eligibility", "Who may use Patent Yard", """<p>You must be at least 13 years old. If you are under 18, use Patent Yard only with a parent's or guardian's permission. An account is for one person. Keep your sign-in details to yourself; you are responsible for what happens under your account.</p>"""),
-            ("service", "What Patent Yard is, and isn't", """<p>Patent Yard is a free, informational register of US patents and published applications whose protection appears to have ended, drawn from public records of the United States Patent and Trademark Office (USPTO), with tools that write prompts and briefs for an AI assistant of your choosing.</p><p><b>Patent Yard is not a law firm and does not give legal advice.</b> Nothing on the site creates an attorney-client relationship. Patent Yard is not affiliated with, endorsed by or connected to the USPTO or any government agency.</p>"""),
-            ("accuracy", "Accuracy, and no guarantee you are free to make anything", """<p>Statuses on Patent Yard come from public records and from rules we apply to them. Records can be wrong, incomplete or out of date, and our rules and inferences can be wrong. "Likely abandoned" is an inference. A patent listed here may have been reinstated, extended or corrected after we checked. We check US rights only.</p><p>Even when a patent has expired, other patents, design patents, trademarks, trade dress, copyrights, regulations or contracts may still apply to a product you make, use or sell. <b>You are solely responsible for confirming a patent's status and your freedom to operate</b> before you rely on anything here. For anything that matters, consult a registered patent attorney or agent.</p>"""),
+            ("service", "What Patent Yard is, and isn't", """<p>Patent Yard is a free, informational register of patents and published applications from the US, Europe, Canada and Australia whose protection appears to have ended, drawn from public records of the United States Patent and Trademark Office (USPTO), the European Patent Office (EPO), the Canadian Intellectual Property Office (CIPO) and IP Australia, with tools that write prompts and briefs for an AI assistant of your choosing.</p><p><b>Patent Yard is not a law firm and does not give legal advice.</b> Nothing on the site creates an attorney-client relationship. Patent Yard is not affiliated with, endorsed by or connected to the USPTO, the EPO, CIPO, IP Australia or any government agency.</p>"""),
+            ("accuracy", "Accuracy, and no guarantee you are free to make anything", """<p>Statuses on Patent Yard come from public records and from rules we apply to them. Records can be wrong, incomplete or out of date, and our rules and inferences can be wrong. "Likely abandoned" is an inference. A patent listed here may have been reinstated, extended or corrected after we checked. We check each patent only where it was granted: US rights for a US patent, European rights for a European patent, and so on.</p><p>Even when a patent has expired, other patents, design patents, trademarks, trade dress, copyrights, regulations or contracts may still apply to a product you make, use or sell. <b>You are solely responsible for confirming a patent's status and your freedom to operate</b> before you rely on anything here. For anything that matters, consult a registered patent attorney or agent.</p>"""),
             ("use", "Your use of patents and information", """<p>Patent documents are public records. Patent Yard grants no license to any patent or invention; whatever right you have to use an invention comes from the law, not from us. You are solely responsible for anything you build, sell, publish or file, including its safety, its compliance with law and any claims made against you.</p>"""),
             ("reservations", "Reservations", """<p>A reservation is a courtesy between users of Patent Yard. It gives you no legal right, exclusivity or priority of any kind: anyone may still make, use or sell what an expired patent describes, and anyone may file on their own improvements. We may limit, change, release or remove reservations and notes at any time.</p>"""),
             ("ai", "AI-assisted tools", """<p>The Reinvent with Claude kit and the invention studio create prompts and PDF briefs in your browser. If you paste them into Claude or another AI service, that service's own terms and privacy policy apply. AI output can be inaccurate, incomplete, unoriginal or unsuitable for filing, and it may describe things that infringe others' rights. Review everything yourself. We are not responsible for any AI service or its output.</p>"""),
@@ -1125,7 +1129,7 @@ class Site:
             ("advice", "Not legal advice", """<p>Patent Yard is an informational tool. It is not a law firm, it doesn't give legal advice, and using it doesn't create an attorney-client relationship. Before you invest significant money, sell a product or file a patent application, talk to a registered patent attorney or agent. The USPTO keeps a <a href="https://oedci.uspto.gov/OEDCI/" target="_blank" rel="noopener noreferrer">directory of registered practitioners</a>.</p>"""),
             ("affiliation", "Not affiliated with the USPTO", """<p>Patent Yard is independent. It is not affiliated with, endorsed by or connected to the United States Patent and Trademark Office or any government agency. Patent data comes from public USPTO records, which themselves can contain errors, including scanning errors in older documents.</p>"""),
             ("status", "What our statuses mean", """<ul><li><b>Lapsed, fee not paid.</b> The USPTO's Official Gazette published an expiration notice because a maintenance fee went unpaid. A lapsed patent can be reinstated if the owner later shows the late payment was unintentional; people who began using the invention during the lapse keep limited "intervening rights" under 35 U.S.C. 41(c). Recent lapses carry the most risk.</li><li><b>Expired, full term.</b> The patent's maximum term has ended under the rules described on <a href="/how-it-works/">How it works</a>. In the archive, we have not checked the patent's family.</li><li><b>Expired design patent.</b> A design patent's 14- or 15-year term from grant has ended. It covered only the product's appearance.</li><li><b>Likely abandoned.</b> Our inference from USPTO records: no patent issued in the application's family and nothing was filed in it for years. Confirm it on Patent Center.</li></ul>"""),
-            ("free", 'What "free to use" does and doesn\'t mean', """<p>When a patent's protection has ended, that patent can no longer be enforced in the United States. That does not mean a product is free of every right: other patents (including newer patents on improvements), design patents, trademarks, trade dress, copyrights, regulations and contracts may still apply, and the same invention may still be protected in other countries. We check US rights only, and only the patent shown.</p>"""),
+            ("free", 'What "free to use" does and doesn\'t mean', """<p>When a patent's protection has ended, that patent can no longer be enforced where it was granted: the United States for a US patent, the countries a European patent covered, Canada or Australia. That does not mean a product is free of every right: other patents (including newer patents on improvements), design patents, trademarks, trade dress, copyrights, regulations and contracts may still apply, and the same invention may still be protected in other countries. We check only the patent shown, and only where it was granted.</p>"""),
             ("content", "Our notes and tools", """<p>Plain-English names, summaries, modern angles and build ratings are Patent Yard's editorial opinions, not part of any patent, and may be wrong. Drawings and text are reproduced from public patent documents. Prompts, briefs and anything an AI produces from them can be inaccurate or unoriginal; review all of it before you rely on it.</p>"""),
             ("patenting", "Patenting your own improvements", """<p>The published text of any patent here is prior art: you can't patent the same invention. You may be able to patent a genuine improvement that is new and not obvious. Public disclosure, sales and offers can start deadlines or end your chance to patent, and US and foreign rules differ. Get professional advice before you disclose or file.</p>"""),
             ("risk", "Use at your own risk", """<p>All information is provided as is, without warranty, and may be incomplete, out of date or wrong. You are responsible for your decisions and for verifying anything important with the USPTO and a qualified professional. See our <a href="/legal/terms/">Terms of Use</a> for the full disclaimer of warranties and limitation of liability.</p>"""),
@@ -1344,6 +1348,8 @@ def archive_term_end(f, p, kind=""):
     and 17 years from grant. A design: 14 years from grant (15 if filed from May 13, 2015). An abandoned application: ""."""
     if kind == "A":
         return ""
+    if kind == "E":  # European: 20 years from filing (europe.py waits longer for classes a certificate can extend)
+        return add_years(f, 20)
     if kind == "S":
         return add_years(p, 15 if f and f >= "2015-05-13" else 14)
     if not f or p < "1976-01-01":
@@ -1361,9 +1367,11 @@ def archive_records(skip):
             continue
         seen.add(pid)
         field = "designs" if k == "S" else P.field_of(x["cpc"]) or "other"
-        out.append((pid, P.pub_number({"guid": pid, "type": "US-PGPUB" if k == "A" else "USPAT"}), P.plain(x["t"]) or "Untitled", x.get("f") or "", x["p"],
-                    archive_term_end(x.get("f"), x["p"], k), P.plain(x.get("a")), P.plain(x.get("i")), fields.index(field), x["cpc"][:3],
-                    x.get("app") or "", x.get("pg") or 0, x.get("sh") or 0, k))
+        t = P.plain(x["t"]) or "Untitled"
+        t = t.capitalize() if t.isupper() else t  # SHOUTED TITLES from old records read better as sentences
+        out.append((pid, P.pub_number({"guid": pid, "type": "US-PGPUB" if k == "A" else "USPAT"}), t, x.get("f") or "", x["p"],
+                    x.get("te") or archive_term_end(x.get("f"), x["p"], k), P.plain(x.get("a")), P.plain(x.get("i")), fields.index(field), x["cpc"][:3],
+                    x.get("app") or "", x.get("pg") or 0, x.get("sh") or 0, k, x.get("g") or ""))
     return out
 
 
@@ -1518,6 +1526,9 @@ def _build():
     s = Site(rows, meta)
     recs = archive_records({r["entry"]["id"] for r in rows})
     meta["archive"] = len(recs)
+    by_kind = collections.Counter(r[13] for r in recs)
+    meta["archiveEU"] = by_kind["E"]
+    meta["archiveRegions"] = {REGIONS[k]: by_kind[k] for k in REGIONS if by_kind[k]}
     meta["reserved"] = reserved_ids()
     keys_ = list(P.FIELDS)
     meta["archiveByField"] = {keys_[i]: c for i, c in collections.Counter(r[8] for r in recs).items()}

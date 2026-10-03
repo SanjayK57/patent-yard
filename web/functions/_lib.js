@@ -3,7 +3,7 @@
 // is far larger. A shard is a 4-byte length, a JSON index {key: [offset, length]}, then the items back to back.
 import SITE from "./site.json";
 
-export const validId = id => /^US-[A-Z]*\d{5,11}-[A-Z]\d?$/.test(id);
+export const validId = id => /^(US-[A-Z]*\d{5,11}-[A-Z]\d?|EP-\d{7}-[AB]\d|CA-\d{1,7}-[A-Z]\d?|AU-\d{10}-[A-Z])$/.test(id);
 const shardOf = num => Number(num) % SITE.shards;
 
 async function open(ctx, kind, num) {
@@ -20,11 +20,11 @@ export async function item(ctx, kind, id, key = id) {
   return at ? s.buf.subarray(s.start + at[0], s.start + at[0] + at[1]) : null;
 }
 
-// "11112282" -> "US-11112282-B2", when the register or the archive has it
-export async function find(ctx, num) {
-  for (const kind of ["p", "a"]) {
+// "11112282" -> "US-11112282-B2", ("0500000", "EP") -> "EP-0500000-B1", likewise "CA" and "AU", when the register or the archive has it
+export async function find(ctx, num, cc = "US") {
+  for (const kind of cc === "US" ? ["p", "a"] : ["a"]) {
     const s = await open(ctx, kind, num);
-    const id = s && Object.keys(s.index).find(k => k.split("-")[1] === num);
+    const id = s && Object.keys(s.index).find(k => k.startsWith(`${cc}-${num}-`));
     if (id) return id;
   }
   return null;

@@ -527,8 +527,9 @@ def archive(minutes=None, workers=4):
 
 
 def archived():
-    """Every archive record, newest grant year first."""
-    for f in sorted(ARCHIVE.glob("*.jsonl"), reverse=True):
+    """Every archive record, US and from other offices (europe.py, national.py), newest year first."""
+    files = list(ARCHIVE.glob("*.jsonl")) + [f for d in ("europe", "canada", "australia") for f in (RAW / d).glob("*.jsonl")]
+    for f in sorted(files, key=lambda f: f.name, reverse=True):
         for line in f.read_text().splitlines():
             if line:
                 yield json.loads(line)

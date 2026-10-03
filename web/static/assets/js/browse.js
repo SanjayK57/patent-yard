@@ -1,7 +1,7 @@
 // Browse and field pages: search, filters and sorting over the whole register, drawn from the catalog
 // (catalog.js) one page of cards at a time. The server-rendered first page shows until the catalog is ready.
 // State lives in the URL (?q=&field=&status=&build=&fig=1&solo=1&free=1&sort=) so filtered views can be shared.
-// ?in=archive searches the full-term archive instead (millions of patents; its own index, newest grant first).
+// ?in=archive searches the archive instead: millions of US, European, Canadian and Australian patents past their term, with its own index, newest first.
 import { $, $$, esc, getSettings, reservations, markCards } from "./app.js";
 import { latest, keys, search, cards, cardHTML, skeletons, patentNumber, archiveInfo, archiveSearch, archiveTerms, archiveCards, archiveCardHTML } from "./catalog.js";
 
@@ -49,7 +49,7 @@ async function render() {
   shown = Math.min(PAGE, total());
   const n = total().toLocaleString("en-US");
   $("#count").textContent = ARCH
-    ? (scores ? `${n} ${total() === 1 ? "match" : "matches"} for “${S.q.trim()}” in the full-term archive` : `${n} patents past their full term, newest grant first`)
+    ? (scores ? `${n} ${total() === 1 ? "match" : "matches"} for “${S.q.trim()}” in the archive` : `${n} patents from the US, Europe, Canada and Australia past their term, newest first`)
     : S.q.trim() ? `${n} ${list.length === 1 ? "match" : "matches"} for “${S.q.trim()}”` : `${n} of ${K.n.toLocaleString("en-US")} patents`;
   $("#empty").hidden = total() > 0;
   $("#more").hidden = total() <= shown;
@@ -111,7 +111,7 @@ async function archiveHint() {
   const n = (await archiveSearch(q_).catch(() => new Map())).size;
   if (my !== seq) return;
   box.hidden = !n;
-  box.innerHTML = `<span>Also <b>${n.toLocaleString("en-US")}</b> ${n === 1 ? "match" : "matches"} among the patents past their full term.</span><a href="/browse/?in=archive&q=${encodeURIComponent(q_)}">Search the archive →</a>`;
+  box.innerHTML = `<span>Also <b>${n.toLocaleString("en-US")}</b> ${n === 1 ? "match" : "matches"} among patents from the US, Europe, Canada and Australia in the archive.</span><a href="/browse/?in=archive&q=${encodeURIComponent(q_)}">Search the archive →</a>`;
 }
 
 // ---------------------------------------------------------------- controls
@@ -166,7 +166,7 @@ for (const b of $$("#filters [data-coll]")) {
     location.href = "/browse/" + (p.size ? "?" + p : "");
   });
 }
-if (ARCH) { $("#filters").classList.add("archive"); q.placeholder = "Search titles and owners of patents past their full term"; }
+if (ARCH) { $("#filters").classList.add("archive"); q.placeholder = "Search patents from the US, Europe, Canada and Australia"; }
 
 // ---------------------------------------------------------------- start
 (async () => {

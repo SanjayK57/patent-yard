@@ -104,6 +104,10 @@ def number(guid):
 
 def pub_number(c):
     kind, num = c["guid"].split("-")[-1], number(c["guid"])
+    if c["guid"].startswith(("EP-", "CA-")):  # European and Canadian: EP 0500000 B1, CA 1333741 C
+        return f"{c['guid'][:2]} {num} {kind}"
+    if c["guid"].startswith("AU-"):  # Australian application numbers carry no kind code: AU 2002254354
+        return f"AU {num}"
     if c["type"] != "USPAT":
         return f"US {num[:4]}/{num[4:]} {kind}"
     pre, digits = re.match(r"([A-Z]*)(\d*)", num).groups()  # design and reissue patents: US D1,039,700 S
