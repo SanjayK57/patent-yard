@@ -116,7 +116,8 @@ if (hq) {
     if (q.length < 2) { list.hidden = true; return; }
     const num = patentNumber(q);
     const all = `<li><a role="option" href="/browse/?q=${encodeURIComponent(q)}"><span>See all results</span>${icon("right")}</a></li>`
-      + `<li><a role="option" href="/browse/?in=archive&q=${encodeURIComponent(q)}"><span>Search the archive: US, Europe, Canada, Australia</span>${icon("right")}</a></li>`;
+      + `<li><a role="option" href="/browse/?in=archive&q=${encodeURIComponent(q)}"><span>Search the archive: US, Europe, Canada, Australia</span>${icon("right")}</a></li>`
+      + (window.PY_CONFIG?.world ? `<li><a role="option" href="/all/?q=${encodeURIComponent(q)}"><span>Search all patents worldwide</span>${icon("right")}</a></li>` : "");
     if (num) {
       list.innerHTML = `<li><a role="option" href="/patents/${num}"><span>Go to ${esc(numLabel(num))}</span>${icon("right")}</a></li>`;
       list.hidden = false; mark(-1); return;
@@ -286,7 +287,7 @@ export function celebrate(x = innerWidth / 2, y = innerHeight / 3) {
 }
 
 // ---------------------------------------------------------------- command palette: ⌘K or Ctrl+K, or the search button on small screens
-const PAGES = [["Browse the register", "/browse/", "search"], ["Fields", "/fields/", "sheet"], ["Insights", "/insights/", "chart"], ["Invention studio", "/studio/", "spark"],
+const PAGES = [["Browse the register", "/browse/", "search"], ...(window.PY_CONFIG?.world ? [["All patents worldwide", "/all/", "db"]] : []), ["Opportunities", "/opportunities/", "spark"], ["Fields", "/fields/", "sheet"], ["Insights", "/insights/", "chart"], ["Invention studio", "/studio/", "spark"],
   ["Saved patents", "/saved/", "bookmark"], ["My bench", "/account/", "flag"], ["Settings", "/settings/", "gear"], ["How it works", "/how-it-works/", "shield"], ["About", "/about/", "db"], ["Contact", "/contact/", "file"]];
 let pal;
 function palette() {
@@ -309,7 +310,8 @@ function palette() {
     const num = patentNumber(v);
     if (num) html += group("Patent number", row(`Go to ${numLabel(num)}`, "", "right", `data-go="/patents/${num}"`));
     else if (v.length >= 2) html += group("Patents", `<div class="cmdh muted" aria-hidden="true" id="cmdBusy">Searching…</div>` + row(`Search the register for “${v}”`, "", "search", `data-go="/browse/?q=${encodeURIComponent(v)}"`)
-      + row(`Search the archive for “${v}”`, "4 patent offices", "db", `data-go="/browse/?in=archive&q=${encodeURIComponent(v)}"`));
+      + row(`Search the archive for “${v}”`, "4 patent offices", "db", `data-go="/browse/?in=archive&q=${encodeURIComponent(v)}"`)
+      + (window.PY_CONFIG?.world ? row(`Search all patents for “${v}”`, "worldwide, in force or not", "db", `data-go="/all/?q=${encodeURIComponent(v)}"`) : ""));
     if (pages.length) html += group("Pages", pages.map(([l, href, ic]) => row(l, "", ic, `data-go="${href}"`)).join(""));
     if (acts.length) html += group("Actions", acts.map(([l, a, ic]) => row(l, "", ic, `data-act="${a.split("=")[1]}"`)).join(""));
     list.innerHTML = html; mark(0);
