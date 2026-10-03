@@ -1534,16 +1534,20 @@ def shard_of(pid):
 
 
 def write_shard(path, items):
-    """One shard file: a 4-byte length, a JSON index {key: [offset, length]}, then the items back to back.
-    web/functions/_lib.js reads it. Sorted and gzip-stamped with a fixed time, so unchanged content gives
-    the same bytes and the deploy skips the upload."""
-    hdr, off = {}, 0
+    """One shard file, read by web/functions/_lib.js without parsing anything (a free Worker gets 10 ms of CPU):
+      "PYS2", uint32 n, then n entries (uint32 crc32(key), uint32 offset, uint32 length) sorted, then the items,
+      each stored as uint16 key length, key, payload. Patent ids also get an entry under "CC-NUMBER" (no kind code)
+      pointing at the same item, so a bare number finds its patent. Deterministic, so unchanged shards skip upload."""
+    entries, blob = [], bytearray()
     for k in sorted(items):
-        hdr[k] = [off, len(items[k])]
-        off += len(items[k])
-    h = json.dumps(hdr, separators=(",", ":")).encode()
+        kb, off = k.encode(), len(blob)
+        blob += struct.pack("<H", len(kb)) + kb + items[k]
+        entries.append((zlib.crc32(kb), off, len(blob) - off))
+        if "/" not in k and k.count("-") == 2:
+            entries.append((zlib.crc32(k.rsplit("-", 1)[0].encode()), off, len(blob) - off))
+    entries.sort()
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_bytes(struct.pack(">I", len(h)) + h + b"".join(items[k] for k in sorted(items)))
+    path.write_bytes(b"PYS2" + struct.pack("<I", len(entries)) + b"".join(struct.pack("<III", *e) for e in entries) + bytes(blob))
 
 
 _SITE = None  # the Site being built, shared with forked workers

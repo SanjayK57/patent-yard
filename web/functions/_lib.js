@@ -1,6 +1,7 @@
 // Patent pages, drawing sheets and kit data are packed into shard files, web/dist/shard/<kind>/<n>.bin (written by
 // pipeline/website.py write_shard), because a free Cloudflare Pages site holds at most 20,000 files and the register
-// is far larger. A shard is a 4-byte length, a JSON index {key: [offset, length]}, then the items back to back.
+// is far larger. A shard is "PYS2", uint32 n, n sorted entries (crc32(key), offset, length), then the items, each
+// uint16 key length + key + payload: a binary search finds an item with no parsing, inside the free plan's 10 ms.
 import SITE from "./site.json";
 
 export const validId = id => /^(US-[A-Z]*\d{5,11}-[A-Z]\d?|EP-\d{7}-[AB]\d|CA-\d{1,7}-[A-Z]\d?|AU-\d{10}-[A-Z])$/.test(id);
@@ -8,26 +9,41 @@ export const validId = id => /^(US-[A-Z]*\d{5,11}-[A-Z]\d?|EP-\d{7}-[AB]\d|CA-\d
 export const worldId = id => /^[A-Z]{2}-[A-Z0-9]{1,24}(-[A-Z][0-9]?)?$/.test(id);
 const shardOf = num => Number(num) % SITE.shards;
 
+const CRC = Array.from({ length: 256 }, (_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
+const crc32 = s => { let c = 0xFFFFFFFF; for (const b of new TextEncoder().encode(s)) c = CRC[(c ^ b) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+const dec = new TextDecoder();
+
 async function open(ctx, kind, num) {
   const res = await ctx.env.ASSETS.fetch(new URL(`/shard/${kind}/${shardOf(num)}.bin`, ctx.request.url));
   if (!res.ok) return null;
-  const buf = new Uint8Array(await res.arrayBuffer());
-  const n = new DataView(buf.buffer, buf.byteOffset, 4).getUint32(0);
-  return { buf, start: 4 + n, index: JSON.parse(new TextDecoder().decode(buf.subarray(4, 4 + n))) };
+  const buf = new Uint8Array(await res.arrayBuffer()), dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
+  const n = dv.getUint32(4, true);
+  return { buf, dv, n, base: 8 + 12 * n };
+}
+
+// the first item under `key` whose stored key passes `ok`, as [stored key, payload]
+function lookup(s, key, ok) {
+  const h = crc32(key);
+  let lo = 0, hi = s.n;
+  while (lo < hi) { const mid = (lo + hi) >> 1; if (s.dv.getUint32(8 + 12 * mid, true) < h) lo = mid + 1; else hi = mid; }
+  for (let i = lo; i < s.n && s.dv.getUint32(8 + 12 * i, true) === h; i++) {
+    const off = s.base + s.dv.getUint32(12 + 12 * i, true), len = s.dv.getUint32(16 + 12 * i, true);
+    const kl = s.buf[off] | (s.buf[off + 1] << 8), k = dec.decode(s.buf.subarray(off + 2, off + 2 + kl));
+    if (ok(k)) return [k, s.buf.subarray(off + 2 + kl, off + len)];
+  }
+  return null;
 }
 
 export async function item(ctx, kind, id, key = id) {
   const s = await open(ctx, kind, id.split("-")[1].replace(/\D/g, ""));
-  const at = s?.index[key];
-  return at ? s.buf.subarray(s.start + at[0], s.start + at[0] + at[1]) : null;
+  return (s && lookup(s, key, k => k === key)?.[1]) || null;
 }
 
 // "11112282" -> "US-11112282-B2", ("0500000", "EP") -> "EP-0500000-B1", likewise "CA" and "AU", when the register or the archive has it
 export async function find(ctx, num, cc = "US") {
   for (const kind of cc === "US" ? ["p", "a"] : ["a"]) {
-    const s = await open(ctx, kind, num);
-    const id = s && Object.keys(s.index).find(k => k.startsWith(`${cc}-${num}-`));
-    if (id) return id;
+    const s = await open(ctx, kind, num), hit = s && lookup(s, `${cc}-${num}`, k => k.startsWith(`${cc}-${num}-`));
+    if (hit) return hit[0];
   }
   return null;
 }

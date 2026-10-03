@@ -12,6 +12,7 @@ import json
 import re
 import struct
 import sys
+import zlib
 from pathlib import Path
 
 SHARDS = 1024  # pipeline/website.py SHARDS
@@ -25,10 +26,16 @@ def shard_item(root, kind, num, key):
     f = Path(root) / "shard" / kind / f"{int(num) % SHARDS}.bin"
     if not f.exists():
         return None
-    b = f.read_bytes()
-    n = struct.unpack(">I", b[:4])[0]
-    at = json.loads(b[4:4 + n]).get(key)
-    return b[4 + n + at[0]:4 + n + at[0] + at[1]] if at else None
+    b = f.read_bytes()  # pipeline/website.py write_shard
+    n, h = struct.unpack_from("<I", b, 4)[0], zlib.crc32(key.encode())
+    for i in range(n):
+        eh, off, ln = struct.unpack_from("<III", b, 8 + 12 * i)
+        if eh == h:
+            off += 8 + 12 * n
+            kl = struct.unpack_from("<H", b, off)[0]
+            if b[off + 2:off + 2 + kl].decode() == key:
+                return b[off + 2 + kl:off + ln]
+    return None
 
 
 def security_headers(root):
