@@ -2,6 +2,7 @@
 // project holds at most 20,000 files. Pages serves whole files only, so the Function fetches a pack and slices out
 // the records it needs: uint32 count, uint32 offsets[count + 1], then the records.
 import SITE from "./site.json";
+import { timelineSection } from "./_timeline.js";
 
 const W = SITE.world || {};
 const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -81,6 +82,9 @@ const google = r => `https://patents.google.com/patent/${r.pn.replace(/-/g, "")}
 export function renderWorld(tpl, r) {
   const [st, cls, checks] = status(r), n = label(r), g = google(r), country = countryName(r.cc);
   const esp = `https://worldwide.espacenet.com/patent/search?q=pn%3D${r.pn.replace(/-/g, "")}`;
+  const end = r.f && `${+r.f.slice(0, 4) + 20}${r.f.slice(4)}`;
+  const timeline = timelineSection([[r.pr !== r.f && r.pr, "Priority date"], [r.f, "Application filed"], [r.p, "Published"], [r.g, "Granted"],
+    r.free && [end, "20 years from filing", "bad"]], "Google Patents");
   const lc = x => `<a class="lcard" href="${x[0]}" ${EXT}><b>${E(x[1])}${icon("ext")}</b><span>${E(x[2])}</span><small>${E(x[3])}</small></a>`;
   const owner = (r.a ? ` · Owner: ${E(r.a)}` : "") + (r.i ? ` · Inventor: ${E(r.i)}` : "");
   const facts = [["Country", country], ["Filed", full(r.f)], ["Published", full(r.p)], ["Granted", r.g ? full(r.g) : "Not recorded"], ["Priority", full(r.pr)],
@@ -100,7 +104,7 @@ export function renderWorld(tpl, r) {
   </div>
 </div>
 <div class="playout">
-  <nav class="toc" aria-label="On this page"><a href="#overview">Overview</a><a href="#sources">Sources</a></nav>
+  <nav class="toc" aria-label="On this page"><a href="#overview">Overview</a>${timeline ? '<a href="#history">Timeline</a>' : ""}<a href="#sources">Sources</a></nav>
   <div>
   <section class="psec" id="overview"><h2>Overview</h2>
   <div class="ov"><div><div class="nofig later"><b>Full text and drawings</b><p class="muted">The claims, description and drawings are on Google Patents${r.tl && r.tl !== "en" ? ", with a machine translation" : ""}.</p><a class="btn secondary sm" href="${g}" ${EXT}>${icon("file")}Open on Google Patents</a></div></div>
@@ -110,6 +114,7 @@ export function renderWorld(tpl, r) {
       ${r.free ? "" : `<p class="muted" style="margin-top:8px">Looking for inventions you can use now? <a href="/browse/">Browse the free-to-use register</a>.</p>`}</div></div>
     <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("")}</div>
   </div></div></section>
+  ${timeline}
   <section class="psec" id="sources"><h2>Sources</h2><div class="stack">
     <div class="cols2 links2"><div class="block"><h3>Read it</h3><div class="linklist">${lc([g, "Google Patents", "Full text, drawings, family and legal events.", "patents.google.com"])}${lc([esp, "Espacenet", "The European Patent Office's worldwide search, with legal status.", "European Patent Office"])}</div></div>
     <div class="block"><h3>Where this record comes from</h3><p class="prose">Google Patents Public Data, used under CC BY 4.0. Field: ${E(fieldName(r.ind))}.</p></div></div>

@@ -2,6 +2,7 @@
 // record is read from shard/a and poured into the page shell /tpl/archive/ that the build writes. Millions of pages
 // this way cost one small record each instead of a page each.
 import SITE from "./site.json";
+import { timelineSection } from "./_timeline.js";
 
 const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const icon = n => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
@@ -145,6 +146,12 @@ export function renderArchive(tpl, r) {
     ? `<div class="nofig later"><b>${r.sh} drawing ${r.sh === 1 ? "sheet" : "sheets"}</b><p class="muted">Every sheet is in the USPTO PDF.</p><a class="btn secondary sm" href="${L.pdf}" ${EXT}>${icon("file")}Open the USPTO PDF</a></div>`
     : arm ? `<div class="nofig"><b>This document has no drawings.</b></div>`
     : `<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">${icon("spark")}Sketch it with Claude</button></div>`;
+  const events = r.k === "S" ? [[r.p, "Design granted"], [r.te, "Term ended", "bad"]]
+    : r.k === "A" ? [[r.f, "Application filed"], [r.p, "Application published"]]
+    : r.k === "E" ? [[r.f, "Application filed"], [r.p, "Published"], [r.g, "Patent granted"], [r.te, "Term ended", "bad"]]
+    : R ? [[r.f, "Application filed"], [r.g, "Patent granted"], [r.te, r.k === "AU" ? "Term ended by" : "Term ended", "bad"]]
+    : [[r.f, "Application filed"], [r.p, "Patent granted"], [r.te, "Term ended", "bad"]];
+  const timeline = timelineSection(events, office);
   const cpc = (r.cpc || []).length ? E(r.cpc[0]) + (r.cpc.length > 1 ? ` <span class="muted" title="${E(r.cpc.join(", "))}">+${r.cpc.length - 1} more</span>` : "") : "—";
   const body = `<div class="page" id="patent" data-source="archive" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="0" data-total="${r.sh || 0}" data-pdf="${doc}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/${fk}/">${E(field)}</a><span>/</span><span>${E(r.n)}</span></nav>
@@ -161,7 +168,7 @@ export function renderArchive(tpl, r) {
   </div>
 </div>
 <div class="playout">
-  <nav class="toc" aria-label="On this page"><a href="#overview">Overview</a><a href="#sources">Sources &amp; verification</a></nav>
+  <nav class="toc" aria-label="On this page"><a href="#overview">Overview</a>${timeline ? '<a href="#history">Timeline</a>' : ""}<a href="#sources">Sources &amp; verification</a></nav>
   <div>
   <section class="psec" id="overview"><h2>Overview</h2>
   <div class="ov"><div>${draw}</div>
@@ -176,6 +183,7 @@ export function renderArchive(tpl, r) {
       <div><small>Application number</small><b>${E(r.app || "—")}</b></div><div><small>Classification (CPC)</small><b>${cpc}</b></div><div><small>Length</small><b>${r.pg ? `${r.pg} pages` : "—"}</b></div>`}
     </div>
   </div></div></section>
+  ${timeline}
   <section class="psec" id="sources"><h2>Sources &amp; verification</h2><div class="stack">
     <div class="cols2 links2"><div class="block"><h3>Official ${office} records</h3><div class="linklist">${official.map(x => lc(x)).join("")}</div></div>
     <div class="block"><h3>Cross-check elsewhere</h3><div class="linklist">${cross.map(x => lc(x)).join("")}</div></div></div>
