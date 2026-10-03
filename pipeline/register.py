@@ -68,6 +68,18 @@ def save(path, c):
     tmp.replace(path)  # atomic, so a concurrent build never reads half a file
 
 
+RECORD_LOCK = threading.Lock()
+
+
+def patch(path, change):
+    """Re-read a record, apply change(c) and save it, under one lock: bulk's text and drawing steps run side by side,
+    and each saving its own stale copy used to undo the other's work."""
+    with RECORD_LOCK:
+        c = json.loads(path.read_text())
+        change(c)
+        save(path, c)
+
+
 def gazette_all():
     """Every cached Gazette issue, with its week number."""
     out = []
@@ -320,29 +332,32 @@ def bulk(minutes=None, workers=4):
 
     # 2-4. text, first drawing, remaining sheets for every listed lapsed patent still missing them
     def pending(test):
+        """Paths of the records still needing a step, best first, a field at a time; records are read again when their
+        turn comes, so tens of thousands of full texts never sit in memory."""
         pools = {}
         for p, c, _ in listed():
             if c["status"] == "lapsed" and test(c):
-                pools.setdefault(c["industry"], []).append((p, c))
+                pools.setdefault(c["industry"], []).append((P.appeal(c), str(p)))
         for lst in pools.values():
-            lst.sort(key=lambda t: P.appeal(t[1]), reverse=True)
-        return [lst[i] for i in range(max(map(len, pools.values()), default=0)) for lst in pools.values() if i < len(lst)]
+            lst.sort(reverse=True)
+        return [Path(lst[i][1]) for i in range(max(map(len, pools.values()), default=0)) for lst in pools.values() if i < len(lst)]
 
-    def text(job):
-        p, c = job
+    def text(p):
         if not left():
             return 0
+        c = json.loads(p.read_text())
+        if not c.get("text_pending"):
+            return 0
         try:
-            c.update(P.record_text(pp().document(c["guid"], c["type"])))
-            c.pop("text_pending", None)
-            save(p, c)
+            got = P.record_text(pp().document(c["guid"], c["type"]))
+            patch(p, lambda r: (r.update(got), r.pop("text_pending", None)))
             return 1
         except Exception as e:
             print(c["guid"], "text failed:", e, flush=True)
             return 0
 
-    def sheets(job, upto):
-        p, c = job
+    def sheets(p, upto):
+        c = json.loads(p.read_text())
         first, last = c["drawings"]
         try:
             if not c.get("fig"):
@@ -352,18 +367,19 @@ def bulk(minutes=None, workers=4):
                 if not fig:
                     return 0
                 (RAW / "figs" / f"{c['guid']}.png").write_bytes(fig[0])
-                c["fig"] = [fig[1], fig[2]]
-                save(p, c)
+                patch(p, lambda r: r.__setitem__("fig", [fig[1], fig[2]]))
                 return 1
             extra, want = c.get("extra_sheets") or 0, min(last - first, upto - 1)
+            got = extra
             for k in range(extra + 1, want + 1):
                 if not left():
                     break
                 out = shrink_sheet(pp().sheet(c["imageLocation"], first + k), max_w=520)
                 if out:
                     (RAW / "sheets" / f"{c['guid']}-{k}.png").write_bytes(out[0])
-                    c["extra_sheets"] = k
-            save(p, c)
+                    got = k
+            if got > extra:
+                patch(p, lambda r: r.__setitem__("extra_sheets", max(got, r.get("extra_sheets") or 0)))
             return 1
         except Exception as e:
             print(c["guid"], "sheet failed:", e, flush=True)
