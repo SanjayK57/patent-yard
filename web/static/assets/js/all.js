@@ -12,7 +12,7 @@ const SPECIAL = { EP: "Europe (EPO)", SU: "Soviet Union", CS: "Czechoslovakia", 
   AP: "ARIPO (Africa)", OA: "OAPI (Africa)", GC: "Gulf Cooperation Council", WO: "WIPO" };
 const regions = new Intl.DisplayNames(["en"], { type: "region" });
 const country = c => SPECIAL[c] || (() => { try { return regions.of(c); } catch { return c; } })();
-let meta, names, fields, stop, docs = null, cut = false, pos = 0, seq = 0;  // docs: matching docs, or null for every patent; cut: a word kept only its newest matches
+let meta, kidx = {}, names, fields, stop, docs = null, cut = false, pos = 0, seq = 0;  // docs: matching docs, or null for every patent; cut: a list kept only its newest docs
 
 const gunzip = async b => new Uint8Array(await new Response(new Response(b).body.pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
 const buckets = new Map();
@@ -35,6 +35,13 @@ async function postings(w) {  // word -> its docs, from varint steps
   }
   return out;
 }
+// country and "past their term" filters: the newest docs of each, prepared by pipeline/world.py filters
+const varints = d => { const out = []; for (let i = 0, prev = 0; i < d.length;) { let v = 0, s = 1, x; do { x = d[i++]; v += (x & 127) * s; s *= 128; } while (x & 128); out.push(prev += v); } return out; };
+const filterLists = new Map();
+function filterList(key) {
+  if (!filterLists.has(key)) filterLists.set(key, fetch(`${W.cards}/k/${encodeURIComponent(key)}.bin`).then(r => (r.ok ? r.arrayBuffer() : Promise.reject())).then(gunzip).then(varints));
+  return filterLists.get(key);
+}
 function intersect(lists) {
   lists.sort((a, b) => a.length - b.length);
   return lists.slice(1).reduce((cur, l) => { const out = []; let j = 0; for (const d of cur) { while (l[j] < d) j++; if (l[j] === d) out.push(d); } return out; }, lists[0]);
@@ -55,18 +62,12 @@ function numberPath(s) {
 }
 
 async function page(my) {
-  const shown = [], filtered = S.cc || S.free, step = filtered ? 40 : 24;
-  for (let tries = 0; shown.length < 24 && tries < (filtered ? 10 : 1); tries++) {
-    const end = docs ? docs.length : meta.n, batch = docs ? docs.slice(pos, pos + step) : Array.from({ length: Math.max(0, Math.min(step, end - pos)) }, (_, k) => pos + k);
-    if (!batch.length) break;
-    pos += batch.length;
-    const rows = await fetch(`/api/cards?d=${batch.join(",")}`).then(r => r.json()).catch(() => []);
-    if (my !== seq) return;
-    for (const [, line] of rows) { const f = line.split("\t"); if ((!S.cc || f[4] === S.cc) && (!S.free || +f[6] & 1)) shown.push(line); }
-  }
-  grid.insertAdjacentHTML("beforeend", shown.map(cardHTML).join(""));
-  more.hidden = pos >= (docs ? docs.length : meta.n);
-  if (!grid.children.length) count.textContent += filtered ? " None of the newest matches fit the filters; try fewer filters." : "";
+  const end = docs ? docs.length : meta.n, batch = docs ? docs.slice(pos, pos + 24) : Array.from({ length: Math.max(0, Math.min(24, end - pos)) }, (_, k) => pos + k);
+  pos += batch.length;
+  const rows = batch.length ? await fetch(`/api/cards?d=${batch.join(",")}`).then(r => r.json()).catch(() => []) : [];
+  if (my !== seq) return;
+  grid.insertAdjacentHTML("beforeend", rows.map(([, line]) => cardHTML(line)).join(""));
+  more.hidden = pos >= end;
 }
 
 async function run() {
@@ -81,19 +82,22 @@ async function run() {
   if (S.q.trim() && !ws.length) { count.textContent = `“${S.q.trim()}” is too common to search by. Add a more specific word.`; return; }
   count.textContent = "Searching…";
   cut = false;
-  docs = ws.length ? intersect(await Promise.all(ws.map(postings))) : null;
+  const key = S.cc ? (S.free ? `${S.cc}-free` : S.cc) : S.free ? "all-free" : null, k = key && kidx[key];
+  if (k?.[1]) cut = true;
+  const lists = key && !k ? null : await Promise.all([...ws.map(postings), ...(key ? [filterList(key)] : [])]).catch(() => null);
   if (my !== seq) return;
-  const n = docs ? docs.length : meta.n, q_ = S.q.trim();
-  const head = !docs ? `${n.toLocaleString("en-US")} patents worldwide, newest first`
-    : cut ? `The newest matches for “${q_}”. A word in it is very common, so its newest ${meta.cap.toLocaleString("en-US")} patents are searched`
-    : `${n.toLocaleString("en-US")} ${n === 1 ? "patent matches" : "patents match"} “${q_}”, newest first`;
-  const only = [S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ");
-  count.textContent = `${head}${only ? `. Showing those ${only}` : ""}.`;
+  if (!lists) { docs = []; count.textContent = `No patents ${[S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ")} in the data.`; return; }
+  docs = lists.length ? intersect(lists) : null;
+  const n = docs ? docs.length : meta.n, q_ = S.q.trim(), what = [S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ");
+  const total = k ? k[0] : meta.n, newest = `newest ${meta.cap.toLocaleString("en-US")}`;
+  count.textContent = (!ws.length ? (key ? `${total.toLocaleString("en-US")} patents ${what}${k[1] ? `; showing the ${newest}` : ""}, newest first.` : `${n.toLocaleString("en-US")} patents worldwide, newest first.`)
+    : `${n.toLocaleString("en-US")} ${n === 1 ? "patent matches" : "patents match"} “${q_}”${what ? ` ${what}` : ""}, newest first.${cut ? ` A common word or a big filter keeps only its ${newest} patents, so older matches can be missing.` : ""}`);
+  if (!n) count.textContent += " Try fewer words or filters.";
   await page(my);
 }
 
 (async () => {
-  try { [meta, { names, fields }] = await Promise.all([fetch(`${W.cards}/meta.json`).then(r => r.json()), latest()]); }
+  try { [meta, { names, fields }, kidx] = await Promise.all([fetch(`${W.cards}/meta.json`).then(r => r.json()), latest(), fetch(`${W.cards}/k/index.json`).then(r => (r.ok ? r.json() : {})).catch(() => ({}))]); }
   catch { count.textContent = "All patents didn't load. Reload to try again."; return; }
   stop = new Set(meta.stop);
   cc.insertAdjacentHTML("beforeend", Object.entries(meta.countries).slice(0, 60).map(([c, n]) => `<option value="${esc(c)}">${esc(country(c))} (${n.toLocaleString("en-US")})</option>`).join(""));

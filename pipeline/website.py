@@ -359,7 +359,7 @@ class Site:
 
     # -------------------------------------------------------- shell
     def page(self, path, title, desc, body, *, section="", og_image=None, jsonld=None, scripts=(), lastmod=None, index=True, write=True):
-        full_title = f"{title} · Patent Yard" if title != "Patent Yard" else "Patent Yard: free-to-use patents from four patent offices"
+        full_title = f"{title} · Patent Yard" if title != "Patent Yard" else ("Patent Yard: search 122.8 million patents, and the free ones" if WORLD else "Patent Yard: free-to-use patents from four patent offices")
         cur = ' aria-current="page"'
         nav = "".join(f'<a href="{href}"{cur if section == href else ""}>{label}</a>' for href, label in NAV)
         og = og_image or self.default_og
@@ -492,17 +492,18 @@ class Site:
         span = {n: b - a for n, a, b in m.get("archiveSpans", [])}
         sources = [(m["count"] + span.get("US", 0), "United States", "USPTO", "US"), (span.get("Europe", 0), "Europe", "European Patent Office", "Europe"),
                    (span.get("Canada", 0), "Canada", "CIPO", "Canada"), (span.get("Australia", 0), "Australia", "IP Australia", "Australia")]
-        statband = "".join(f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{c:,}</b><span>{E(place)} · {E(office)}</span></a>'
-                           for c, place, office, r in sources if c)
+        statband = (f'<a href="/all/"><b class="num" data-count="{WORLD["n"]}">{WORLD["n"]:,}</b><span>All patents worldwide · 100+ offices</span></a>' if WORLD else "") + "".join(
+            f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{c:,}</b><span>{E(place)} · free to use</span></a>'
+            for c, place, office, r in sources if c)
         body = f"""
 <section class="hero">
   <div>
     <div class="kicker rise" style="--d:0">The search engine for free-to-use patents</div>
     <h1 class="rise" style="--d:1">Build on inventions <em>nobody owns</em> anymore.</h1>
-    <p class="lede rise" style="--d:2">{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record. Find one, then turn it into your own invention with Claude.</p>
+    <p class="lede rise" style="--d:2">{f'Search {big_number(WORLD["n"])} patents worldwide, and find the {big_number(total)} you can use for free, from the US, Europe, Canada and Australia.' if WORLD else f'{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record.'} Find one, then turn it into your own invention with Claude.</p>
     <form class="bigsearch rise" style="--d:3" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search by idea, title, owner or patent number"><button class="btn primary" type="submit">Search</button></form>
     <div class="tryrow rise" style="--d:4"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
-    {f'<p class="allline rise" style="--d:5">Checking what already exists? <a href="/all/">Search all {big_number(WORLD["n"])} patents worldwide</a>, including ones still in force.</p>' if WORLD else ""}
+    {f'<p class="allline rise" style="--d:5">Searching for ideas you can use? The box above searches the free-to-use register. Checking what already exists? <a href="/all/">Search all {big_number(WORLD["n"])} patents worldwide</a>, including ones still in force.</p>' if WORLD else ""}
   </div>
   <figure class="plotter rise" style="--d:2">
     <div class="phead"><span>{E(hero["n"])}</span><span>Original drawing, plotted live</span></div>
@@ -510,7 +511,7 @@ class Site:
     <figcaption><div><b>{E(hero["t"])}</b><small>{E(self.fields[hero["ind"]])} · {E(" ".join(freed_line(hero)))}</small></div><a class="btn secondary sm" href="{purl(hero["id"])}">Open patent</a></figcaption>
   </figure>
 </section>
-<nav class="statband" aria-label="Free-to-use patents by patent office">{statband}</nav>
+<nav class="statband{" five" if WORLD else ""}" aria-label="Patents by collection and office">{statband}</nav>
 {self.ticker()}
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">

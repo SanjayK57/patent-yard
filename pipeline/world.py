@@ -11,6 +11,7 @@ Cloudflare Pages serves only whole files (no byte ranges) and at most 20,000 fil
 A .bin of records is: uint32 count, uint32 offsets[count + 1], then the records back to back.
 
   python3 world.py build       # raw/world/parts -> web/world (about 2 hours; disk-backed, so memory stays small)
+  python3 world.py filters     # country / past-term filter lists from the built cards (minutes)
   python3 world.py deploy      # upload web/world/cards and web/world/details to their Pages projects, then write
                                # web/world/live.json, which turns All patents on in the next website build
 """
@@ -182,6 +183,42 @@ def build():
     print(f"world: {doc:,} docs, {meta['free']:,} past their term ({time.time() - t0:.0f}s)", flush=True)
 
 
+def filters():
+    """Filter lists for All patents, read from the card packs (no export needed): for each country, every country's
+    patents past their term, and all patents past their term, the newest CAP docs as gzip varint steps in
+    cards/k/<key>.bin ("KR", "KR-free", "all-free"), with k/index.json {key: [docs in total, 1 if cut to CAP]}.
+    The browser intersects them with search words, so a country filter works without a query too."""
+    t0, lists, totals = time.time(), collections.defaultdict(lambda: array.array("I")), collections.Counter()
+    packs = sorted((OUT / "cards" / "c").glob("*.bin"), key=lambda f: int(f.stem))
+    for f in packs:
+        b = f.read_bytes()
+        n = struct.unpack_from("<I", b)[0]
+        offs, base, first = struct.unpack_from(f"<{n + 1}I", b, 4), 4 + 4 * (n + 1), int(f.stem) * PER
+        for i in range(n):
+            parts = b[base + offs[i]:base + offs[i + 1]].split(b"\t")
+            cc, free = parts[4].decode(), int(parts[6]) & FREE
+            for key in ((cc, f"{cc}-free", "all-free") if free else (cc,)):
+                totals[key] += 1
+                if len(lists[key]) < CAP:
+                    lists[key].append(first + i)
+        if int(f.stem) % 1000 == 999:
+            print(f"filters: {int(f.stem) + 1}/{len(packs)} packs ({time.time() - t0:.0f}s)", flush=True)
+    out = OUT / "cards" / "k"
+    shutil.rmtree(out, ignore_errors=True)
+    out.mkdir()
+    for key, docs in lists.items():
+        blob, prev = bytearray(), 0
+        for d in docs:
+            v, prev = d - prev, d
+            while v >= 128:
+                blob.append(v & 127 | 128)
+                v >>= 7
+            blob.append(v)
+        (out / f"{key}.bin").write_bytes(gzip.compress(bytes(blob), 6, mtime=0))
+    (out / "index.json").write_text(json.dumps({k: [totals[k], int(totals[k] > CAP)] for k in sorted(lists)}))
+    print(f"filters: {len(lists)} lists ({time.time() - t0:.0f}s)", flush=True)
+
+
 HOSTS = {"cards": "patentyard-cards", "details": "patentyard-details"}
 
 
@@ -212,4 +249,4 @@ if __name__ == "__main__":
         assert zlib.decompress(deflate("héllo"), -15).decode() == "héllo" and number_key("CN-1-A") == number_key("CN-1-B")
         print("ok")
     else:
-        {"build": build, "deploy": deploy}[sys.argv[1]]()
+        {"build": build, "deploy": deploy, "filters": filters}[sys.argv[1]]()
