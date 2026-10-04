@@ -10,3 +10,4 @@ web/.wrangler/
 site/data/
 .DS_Store
 web/world/
+web/archive.tmp/
