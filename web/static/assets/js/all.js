@@ -15,16 +15,19 @@ const country = c => SPECIAL[c] || (() => { try { return regions.of(c); } catch 
 let meta, kidx = {}, names, fields, stop, docs = null, cut = false, pos = 0, seq = 0;  // docs: matching docs, or null for every patent; cut: a list kept only its newest docs
 
 const gunzip = async b => new Uint8Array(await new Response(new Response(b).body.pipeThrough(new DecompressionStream("gzip"))).arrayBuffer());
+// two search indexes: s/ over every patent, f/ over those past their term (in s/ a common word keeps only its newest
+// docs, all recent, so "past their term" plus a common word needs f/)
 const buckets = new Map();
-function bucket(n) {
-  if (!buckets.has(n)) buckets.set(n, fetch(`${W.cards}/s/${n}.bin`).then(r => r.arrayBuffer()).then(gunzip).then(u => {
+function bucket(n, idx) {
+  const key = `${idx}/${n}`;
+  if (!buckets.has(key)) buckets.set(key, fetch(`${W.cards}/${key}.bin`).then(r => (r.ok ? r.arrayBuffer() : Promise.reject())).then(gunzip).then(u => {
     const len = new DataView(u.buffer, u.byteOffset).getUint32(0, true);
     return { head: JSON.parse(new TextDecoder().decode(u.subarray(4, 4 + len))), data: u.subarray(4 + len) };
   }));
-  return buckets.get(n);
+  return buckets.get(key);
 }
-async function postings(w) {  // word -> its docs, from varint steps
-  const b = await bucket(crc32(w) % meta.buckets), e = b.head[w];
+async function postings(w, idx) {  // word -> its docs, from varint steps
+  const b = await bucket(crc32(w) % meta.buckets, idx), e = b.head[w];
   if (!e) return [];
   if (e[3]) cut = true;
   const out = new Array(e[2]), d = b.data;
@@ -84,7 +87,8 @@ async function run() {
   cut = false;
   const key = S.cc ? (S.free ? `${S.cc}-free` : S.cc) : S.free ? "all-free" : null, k = key && kidx[key];
   if (k?.[1]) cut = true;
-  const lists = key && !k ? null : await Promise.all([...ws.map(postings), ...(key ? [filterList(key)] : [])]).catch(() => null);
+  const old = S.free || (S.cc && (kidx[`${S.cc}-free`]?.[0] || 0) / (kidx[S.cc]?.[0] || 1) > 0.9);  // a country of mostly old patents
+  const lists = key && !k ? null : await Promise.all([...ws.map(w => postings(w, old ? "f" : "s")), ...(key ? [filterList(key)] : [])]).catch(() => null);
   if (my !== seq) return;
   if (!lists) { docs = []; count.textContent = `No patents ${[S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ")} in the data.`; return; }
   docs = lists.length ? intersect(lists) : null;

@@ -82,6 +82,8 @@ const google = r => `https://patents.google.com/patent/${r.pn.replace(/-/g, "")}
 export function renderWorld(tpl, r) {
   const [st, cls, checks] = status(r), n = label(r), g = google(r), country = countryName(r.cc);
   const esp = `https://worldwide.espacenet.com/patent/search?q=pn%3D${r.pn.replace(/-/g, "")}`;
+  // Google Patents adds a page some weeks after publication; until then its link is a 404, so very new ones lead with Espacenet
+  const fresh = r.p && Date.now() - Date.parse(r.p) < 90 * 864e5, main = fresh ? esp : g;
   const end = r.f && `${+r.f.slice(0, 4) + 20}${r.f.slice(4)}`;
   const timeline = timelineSection([[r.pr !== r.f && r.pr, "Priority date"], [r.f, "Application filed"], [r.p, "Published"], [r.g, "Granted"],
     r.free && [end, "20 years from filing", "bad"]], "Google Patents");
@@ -89,7 +91,7 @@ export function renderWorld(tpl, r) {
   const owner = (r.a ? ` · Owner: ${E(r.a)}` : "") + (r.i ? ` · Inventor: ${E(r.i)}` : "");
   const facts = [["Country", country], ["Filed", full(r.f)], ["Published", full(r.p)], ["Granted", r.g ? full(r.g) : "Not recorded"], ["Priority", full(r.pr)],
     ["Application", r.app || "—"], ["Classification (CPC)", r.cpc.join(", ") || "—"], ["Family", r.fam ? `Google family ${r.fam}` : "—"]];
-  const body = `<div class="page" id="patent" data-source="world"${r.free ? "" : ' data-noreserve="1"'} data-id="${E(r.pn)}" data-n="${E(n)}" data-sheets="0" data-total="0" data-pdf="${g}">
+  const body = `<div class="page" id="patent" data-source="world"${r.free ? "" : ' data-noreserve="1"'} data-id="${E(r.pn)}" data-n="${E(n)}" data-sheets="0" data-total="0" data-pdf="${main}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/all/">All patents</a><span>/</span><span>${E(n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${cls}">${st}</span><span class="badge plain">${E(country)}</span><span class="badge ok" id="vbadge" hidden></span></div>
@@ -97,7 +99,7 @@ export function renderWorld(tpl, r) {
   <div class="pactions">
     ${r.free ? `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>` : ""}
     <button class="btn secondary" type="button" id="reserveBtn"${r.free ? "" : " hidden"}>${icon("flag")}Reserve</button>
-    <a class="btn secondary" href="${g}" ${EXT}>${icon("file")}Full text</a>
+    <a class="btn secondary" href="${main}" ${EXT}>${icon("file")}Full text</a>
     <button class="btn quiet" type="button" id="saveBtn" aria-pressed="false">${icon("bookmark")}<span>Save</span></button>
     <button class="btn quiet" type="button" id="copyLink">${icon("link")}Copy link</button>
     <div class="resline" id="resline" aria-live="polite"></div>
@@ -107,7 +109,9 @@ export function renderWorld(tpl, r) {
   <nav class="toc" aria-label="On this page"><a href="#overview">Overview</a>${timeline ? '<a href="#history">Timeline</a>' : ""}<a href="#sources">Sources</a></nav>
   <div>
   <section class="psec" id="overview"><h2>Overview</h2>
-  <div class="ov"><div><div class="nofig later"><b>Full text and drawings</b><p class="muted">The claims, description and drawings are on Google Patents${r.tl && r.tl !== "en" ? ", with a machine translation" : ""}.</p><a class="btn secondary sm" href="${g}" ${EXT}>${icon("file")}Open on Google Patents</a></div></div>
+  <div class="ov"><div><div class="nofig later"><b>Full text and drawings</b>${fresh
+    ? `<p class="muted">Published ${full(r.p)}, so Google Patents may not have its page yet. Espacenet, the European Patent Office's worldwide search, has the claims, description and drawings.</p><div class="rowbtns"><a class="btn secondary sm" href="${esp}" ${EXT}>${icon("file")}Open on Espacenet</a><a class="btn quiet sm" href="${g}" ${EXT}>Try Google Patents</a></div>`
+    : `<p class="muted">The claims, description and drawings are on Google Patents${r.tl && r.tl !== "en" ? ", with a machine translation" : ""}, and on Espacenet.</p><div class="rowbtns"><a class="btn secondary sm" href="${g}" ${EXT}>${icon("file")}Open on Google Patents</a><a class="btn quiet sm" href="${esp}" ${EXT}>Espacenet</a></div>`}</div></div>
   <div class="stack">
     ${r.ab ? `<div class="block"><h3>Abstract</h3><p class="prose">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Is it free to use?</h3><ul class="checks">${checks.map((c, i) => `<li${!r.free && i === checks.length - 1 ? ' class="warn"' : ""}>${E(c)}</li>`).join("")}</ul>

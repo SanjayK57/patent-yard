@@ -12,6 +12,7 @@ A .bin of records is: uint32 count, uint32 offsets[count + 1], then the records 
 
   python3 world.py build       # raw/world/parts -> web/world (about 2 hours; disk-backed, so memory stays small)
   python3 world.py filters     # country / past-term filter lists from the built cards (minutes)
+  python3 world.py free_index  # search index over past-term patents only, from the built cards (about 15 minutes)
   python3 world.py deploy      # upload web/world/cards and web/world/details to their Pages projects, then write
                                # web/world/live.json, which turns All patents on in the next website build
 """
@@ -219,6 +220,52 @@ def filters():
     print(f"filters: {len(lists)} lists ({time.time() - t0:.0f}s)", flush=True)
 
 
+def free_index():
+    """A second search index, cards/f/<bucket>.bin (same format as s/), over the patents past their term only: in s/ a
+    common word keeps its newest CAP docs, all recent, so "past their term" plus a common word would find nothing.
+    Built from the card packs (titles and owners), the same words world.py build indexes."""
+    t0, post = time.time(), {}
+    packs = sorted((OUT / "cards" / "c").glob("*.bin"), key=lambda f: int(f.stem))
+    for f in packs:
+        b = f.read_bytes()
+        n = struct.unpack_from("<I", b)[0]
+        offs, base, first = struct.unpack_from(f"<{n + 1}I", b, 4), 4 + 4 * (n + 1), int(f.stem) * PER
+        for i in range(n):
+            parts = b[base + offs[i]:base + offs[i + 1]].decode("utf-8").split("\t")
+            if not int(parts[6]) & FREE:
+                continue
+            for w in set(search_words(parts[1])) | set(search_words(parts[2])):
+                a = post.get(w)
+                if a is None:
+                    a = post[w] = [0, array.array("I")]
+                a[0] += 1
+                if len(a[1]) < CAP:
+                    a[1].append(first + i)
+        if int(f.stem) % 1000 == 999:
+            print(f"free index: {int(f.stem) + 1}/{len(packs)} packs, {len(post):,} words ({time.time() - t0:.0f}s)", flush=True)
+    out = OUT / "cards" / "f"
+    shutil.rmtree(out, ignore_errors=True)
+    out.mkdir()
+    buckets = [[] for _ in range(BUCKETS)]
+    for w in post:
+        buckets[zlib.crc32(w.encode()) % BUCKETS].append(w)
+    for k, ws in enumerate(buckets):
+        head, blob = {}, bytearray()
+        for w in sorted(ws):
+            df, docs = post[w]
+            start, prev = len(blob), 0
+            for d in docs:
+                v, prev = d - prev, d
+                while v >= 128:
+                    blob.append(v & 127 | 128)
+                    v >>= 7
+                blob.append(v)
+            head[w] = [start, len(blob) - start, df, int(df > CAP)]
+        h = json.dumps(head, separators=(",", ":")).encode()
+        (out / f"{k}.bin").write_bytes(gzip.compress(struct.pack("<I", len(h)) + h + bytes(blob), 6, mtime=0))
+    print(f"free index: {len(post):,} words in {BUCKETS} files ({time.time() - t0:.0f}s)", flush=True)
+
+
 HOSTS = {"cards": "patentyard-cards", "details": "patentyard-details"}
 
 
@@ -249,4 +296,4 @@ if __name__ == "__main__":
         assert zlib.decompress(deflate("héllo"), -15).decode() == "héllo" and number_key("CN-1-A") == number_key("CN-1-B")
         print("ok")
     else:
-        {"build": build, "deploy": deploy, "filters": filters}[sys.argv[1]]()
+        {"build": build, "deploy": deploy, "filters": filters, "free_index": free_index}[sys.argv[1]]()
