@@ -67,11 +67,11 @@ function numberPath(s) {
 async function page(my) {
   const end = docs ? docs.length : meta.n, batch = docs ? docs.slice(pos, pos + 24) : Array.from({ length: Math.max(0, Math.min(24, end - pos)) }, (_, k) => pos + k);
   pos += batch.length;
-  // a free Worker gets 10 ms of CPU, so each call opens at most 6 packs; the calls run side by side
+  // a free Worker gets 10 ms of CPU, so each call opens at most 4 packs (about 5 ms); the calls run side by side
   const calls = [];
   for (const d of batch) {
     const p = Math.floor(d / meta.per), last = calls[calls.length - 1];
-    if (last && (last.packs.has(p) || last.packs.size < 6)) { last.packs.add(p); last.docs.push(d); } else calls.push({ packs: new Set([p]), docs: [d] });
+    if (last && (last.packs.has(p) || last.packs.size < 4)) { last.packs.add(p); last.docs.push(d); } else calls.push({ packs: new Set([p]), docs: [d] });
   }
   const rows = (await Promise.all(calls.map(c => fetch(`/api/cards?d=${c.docs.join(",")}`).then(r => r.json()).catch(() => [])))).flat();
   if (my !== seq) return;

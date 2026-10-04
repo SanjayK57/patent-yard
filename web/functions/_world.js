@@ -36,9 +36,9 @@ function slice(buf, i) {
 }
 const inflate = bytes => new Response(new Response(bytes).body.pipeThrough(new DecompressionStream("deflate-raw"))).text();
 
-// [[doc, "id\ttitle\towner\tyyyymmdd\tcc\tkind\tflags\tfield"], ...]; at most 40 pack files per call (subrequest limit)
+// [[doc, "id\ttitle\towner\tyyyymmdd\tcc\tkind\tflags\tfield"], ...]; at most 8 packs per call (all.js asks for 4): each pack costs CPU
 export async function cards(docs) {
-  const files = [...new Set(docs.map(d => Math.floor(d / W.per)))].slice(0, 40);
+  const files = [...new Set(docs.map(d => Math.floor(d / W.per)))].slice(0, 8);
   const packs = Object.fromEntries(await Promise.all(files.map(async f => [f, await get(`c/${f}.bin`)])));
   const dec = new TextDecoder();
   return docs.filter(d => packs[Math.floor(d / W.per)]).map(d => { const b = slice(packs[Math.floor(d / W.per)], d % W.per); return b && [d, dec.decode(b)]; }).filter(Boolean);
