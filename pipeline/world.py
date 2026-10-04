@@ -13,6 +13,7 @@ A .bin of records is: uint32 count, uint32 offsets[count + 1], then the records 
   python3 world.py build       # raw/world/parts -> web/world (about 2 hours; disk-backed, so memory stays small)
   python3 world.py filters     # country / past-term filter lists from the built cards (minutes)
   python3 world.py free_index  # search index over past-term patents only, from the built cards (about 15 minutes)
+  python3 world.py stats       # All patents in numbers for the Insights page -> web/world/stats.json
   python3 world.py deploy      # upload web/world/cards and web/world/details to their Pages projects, then write
                                # web/world/live.json, which turns All patents on in the next website build
 """
@@ -269,6 +270,42 @@ def free_index():
 HOSTS = {"cards": "patentyard-cards", "details": "patentyard-details"}
 
 
+def stats():
+    """All patents in numbers for the Insights page, read from the card packs: records by office (and how many are
+    past their term), by year published, by field, granted, and the biggest owners. -> web/world/stats.json"""
+    from website import owner_key
+    t0, packs = time.time(), sorted((OUT / "cards" / "c").glob("*.bin"), key=lambda f: int(f.stem))
+    cc, free, years, fields, owners = (collections.Counter() for _ in range(5))
+    spell, granted = collections.defaultdict(collections.Counter), 0
+    for j, f in enumerate(packs):
+        b = f.read_bytes()
+        n = struct.unpack_from("<I", b)[0]
+        offs, base = struct.unpack_from(f"<{n + 1}I", b, 4), 4 + 4 * (n + 1)
+        for i in range(n):
+            pn, _, a, day_, c, _, flags, ind = b[base + offs[i]:base + offs[i + 1]].decode().split("\t")
+            flags = int(flags)
+            cc[c] += 1
+            free[c] += flags & FREE
+            granted += bool(flags & GRANTED)
+            years[day_[:4]] += 1
+            fields[FIELDS[int(ind)]] += 1
+            if a:
+                k = owner_key(a)
+                owners[k] += 1
+                spell[k][a] += 1
+        # ponytail: lossy count, owners under 50 records are dropped every 200 packs (at most ~3,700 lost per owner,
+        # against 100,000+ for the top ones); keep exact counts if a full owner table is ever needed
+        if j % 200 == 199:
+            for k in [k for k, v in owners.items() if v < 50]:
+                del owners[k], spell[k]
+            print(f"stats: {j + 1}/{len(packs)} packs ({time.time() - t0:.0f}s)", flush=True)
+    top = [[next((o for o, _ in spell[k].most_common() if not o.isupper()), spell[k].most_common(1)[0][0]), v] for k, v in owners.most_common(15)]
+    out = {"n": sum(cc.values()), "free": sum(free.values()), "granted": granted, "countries": {k: [v, free[k]] for k, v in cc.most_common()},
+           "years": dict(sorted(years.items())), "fields": dict(fields.most_common()), "owners": top}
+    (OUT / "stats.json").write_text(json.dumps(out, ensure_ascii=False))
+    print(f"stats: {out['n']:,} records, {len(cc)} offices ({time.time() - t0:.0f}s)", flush=True)
+
+
 def deploy():
     import subprocess
     for d, project in HOSTS.items():
@@ -296,4 +333,4 @@ if __name__ == "__main__":
         assert zlib.decompress(deflate("héllo"), -15).decode() == "héllo" and number_key("CN-1-A") == number_key("CN-1-B")
         print("ok")
     else:
-        {"build": build, "deploy": deploy, "filters": filters, "free_index": free_index}[sys.argv[1]]()
+        {"build": build, "deploy": deploy, "filters": filters, "free_index": free_index, "stats": stats}[sys.argv[1]]()
