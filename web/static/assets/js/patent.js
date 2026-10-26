@@ -10,7 +10,7 @@ const sheets = Array.from({ length: nSheets }, (_, k) => `/img/p/${id}/${k + 1}.
 // ---------------------------------------------------------------- drawing viewer: arrows, thumbnails, swipe, click to zoom and drag to pan
 const V = { i: 0 }, viewer = $("#viewer");
 function renderViewer() {
-  viewer.innerHTML = `<div class="vbar"><span>${esc(P.dataset.n)} · Sheet ${V.i + 1} of ${total}</span><span class="rowbtns"><a class="btn sm" href="${pdf}" target="_blank" rel="noopener noreferrer">USPTO PDF ${icon("ext")}</a><button class="x" type="button" data-close aria-label="Close viewer">${icon("x")}</button></span></div>
+  viewer.innerHTML = `<div class="vbar"><span>${esc(P.dataset.n)} · Sheet ${V.i + 1} of ${sheets.length}${total > sheets.length ? ` (${total} in the PDF)` : ""}</span><span class="rowbtns"><a class="btn sm" href="${pdf}" target="_blank" rel="noopener noreferrer">USPTO PDF ${icon("ext")}</a><button class="x" type="button" data-close aria-label="Close viewer">${icon("x")}</button></span></div>
     <div class="stage" id="vStage"><img src="${sheets[V.i]}" alt="Drawing sheet ${V.i + 1}" data-zoom draggable="false"></div>
     <div class="vnav"><button class="btn sm" type="button" data-step="-1" ${V.i === 0 ? "disabled" : ""}>${icon("left")}Previous</button>
       <div class="vthumbs">${sheets.map((src, k) => `<button type="button" data-goto="${k}" aria-label="Sheet ${k + 1}" aria-current="${k === V.i}"><img src="${src}" alt=""></button>`).join("")}</div>

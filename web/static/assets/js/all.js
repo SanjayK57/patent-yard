@@ -45,6 +45,7 @@ function filterList(key) {
   if (!filterLists.has(key)) filterLists.set(key, fetch(`${W.cards}/k/${encodeURIComponent(key)}.bin`).then(r => (r.ok ? r.arrayBuffer() : Promise.reject())).then(gunzip).then(varints));
   return filterLists.get(key);
 }
+const union = (a, b) => { const out = []; for (let i = 0, j = 0; i < a.length || j < b.length;) { const x = j >= b.length || (i < a.length && a[i] <= b[j]) ? a[i++] : b[j++]; if (out[out.length - 1] !== x) out.push(x); } return out; };
 function intersect(lists) {
   lists.sort((a, b) => a.length - b.length);
   return lists.slice(1).reduce((cur, l) => { const out = []; let j = 0; for (const d of cur) { while (l[j] < d) j++; if (l[j] === d) out.push(d); } return out; }, lists[0]);
@@ -93,8 +94,11 @@ async function run() {
   cut = false;
   const key = S.cc ? (S.free ? `${S.cc}-free` : S.cc) : S.free ? "all-free" : null, k = key && kidx[key];
   if (k?.[1]) cut = true;
-  const old = S.free || (S.cc && (kidx[`${S.cc}-free`]?.[0] || 0) / (kidx[S.cc]?.[0] || 1) > 0.9);  // a country of mostly old patents
-  const lists = key && !k ? null : await Promise.all([...ws.map(w => postings(w, old ? "f" : "s")), ...(key ? [filterList(key)] : [])]).catch(() => null);
+  // "past their term" searches the f/ index. A country of mostly old patents needs it too, since the s/ index keeps only the
+  // newest docs of a common word; without the filter its few in-force patents come from s/, so each word gets both, merged
+  const old = S.cc && (kidx[`${S.cc}-free`]?.[0] || 0) / (kidx[S.cc]?.[0] || 1) > 0.9;
+  const word = w => (S.free ? postings(w, "f") : old ? Promise.all([postings(w, "s"), postings(w, "f")]).then(([a, b]) => union(a, b)) : postings(w, "s"));
+  const lists = key && !k ? null : await Promise.all([...ws.map(word), ...(key ? [filterList(key)] : [])]).catch(() => null);
   if (my !== seq) return;
   if (!lists) { docs = []; count.textContent = `No patents ${[S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ")} in the data.`; return; }
   docs = lists.length ? intersect(lists) : null;

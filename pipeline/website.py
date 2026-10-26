@@ -1353,9 +1353,12 @@ class Site:
             for r in newest)
         (DIST / "feed.xml").write_text(f'<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom"><title>New on Patent Yard</title><link href="{SITE}/"/><link rel="self" href="{SITE}/feed.xml"/><id>{SITE}/</id><updated>{updated}</updated>{entries}</feed>\n')
 
-    def sitemaps(self, more=()):
-        # a sitemap holds at most 50,000 addresses, so the register (and `more` paths, streamed) is split and indexed
-        everything, maps = itertools.chain(self.pages, ((p, None) for p in more)), 0
+    def sitemaps(self):
+        # a sitemap holds at most 50,000 addresses, so the pages and the register are split and indexed. The 11.7M archive
+        # pages are left out, and robots.txt keeps all but the main search engines off patent pages: every patent page,
+        # drawing and kit file runs a Function, a free site gets 100,000 a day, and until 2026-10-25 a crawler working
+        # through the archive used them up by 03:00 UTC each day, so patent pages failed for everyone until midnight.
+        everything, maps = iter(self.pages), 0
         while chunk := list(itertools.islice(everything, 40000)):
             maps += 1
             k = maps
@@ -1363,7 +1366,9 @@ class Site:
             (DIST / f"sitemap-{k}.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{urls}</urlset>\n')
         items = "".join(f"<sitemap><loc>{SITE}/sitemap-{k}.xml</loc></sitemap>" for k in range(1, maps + 1))
         (DIST / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</sitemapindex>\n')
-        (DIST / "robots.txt").write_text(f"User-agent: *\nAllow: /\nDisallow: /account/\nDisallow: /shard/\nDisallow: /v/\nDisallow: /tpl/\n\nSitemap: {SITE}/sitemap.xml\n")
+        never = "".join(f"Disallow: {p}\n" for p in ("/account/", "/shard/", "/v/", "/tpl/", "/img/p/", "/data/p/", "/api/"))
+        engines = "".join(f"User-agent: {b}\n" for b in ("Googlebot", "Bingbot", "Applebot", "DuckDuckBot"))
+        (DIST / "robots.txt").write_text(f"{engines}Crawl-delay: 2\n{never}\nUser-agent: *\nCrawl-delay: 10\n{never}Disallow: /patents/\n\nSitemap: {SITE}/sitemap.xml\n")
 
     # -------------------------------------------------------- links
     def resolves(self, u):
@@ -1756,7 +1761,7 @@ def _build():
             s.pages += smap
             bad += b
     s.pages.sort()
-    s.sitemaps(purl(r[0]) for r in recs)
+    s.sitemaps()
     assert not bad, "broken links: " + "; ".join(bad[:10])
     files = [p for p in DIST.rglob("*") if p.is_file()]
     size = sum(p.stat().st_size for p in files)

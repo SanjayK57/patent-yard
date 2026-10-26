@@ -3,6 +3,7 @@
 // the records it needs: uint32 count, uint32 offsets[count + 1], then the records.
 import SITE from "./site.json";
 import { timelineSection } from "./_timeline.js";
+import { stream } from "./_lib.js";
 
 const W = SITE.world || {};
 const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -23,25 +24,32 @@ export const COUNTRY = { US: "United States", CN: "China", JP: "Japan", KR: "Sou
   MC: "Monaco", AP: "ARIPO", OA: "OAPI", GC: "Gulf Cooperation Council", CU: "Cuba", UY: "Uruguay", EC: "Ecuador", CR: "Costa Rica" };
 export const countryName = cc => COUNTRY[cc] || cc;
 
-const get = async path => {
-  const host = path.startsWith("c/") ? W.cards : W.details;
-  const res = await fetch(`${host}/${path}`, { cf: { cacheTtl: 86400, cacheEverything: true } });
-  return res.ok ? new Uint8Array(await res.arrayBuffer()) : null;
-};
-function slice(buf, i) {
-  const dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength), n = dv.getUint32(0, true);
-  if (i >= n) return null;
-  const base = 4 + 4 * (n + 1);
-  return buf.subarray(base + dv.getUint32(4 + 4 * i, true), base + dv.getUint32(8 + 4 * i, true));
+const fetchPack = path => fetch(`${path.startsWith("c/") ? W.cards : W.details}/${path}`, { cf: { cacheTtl: 86400, cacheEverything: true } });
+const get = async path => { const res = await fetchPack(path); return res.ok ? new Uint8Array(await res.arrayBuffer()) : null; };
+// records `idx` of one pack as {index: bytes}, streamed front to back so only the offsets and those records are kept (_lib.js stream)
+async function records(path, idx) {
+  const res = await fetchPack(path);
+  if (!res.ok || !res.body) return {};
+  const f = stream(res);
+  try {
+    const head = await f.read(0, 4), n = head ? new DataView(head.buffer).getUint32(0, true) : 0;
+    const want = [...new Set(idx)].filter(i => i < n).sort((a, b) => a - b), lo = want[0], out = {};
+    const o = want.length && await f.read(4 + 4 * lo, 12 + 4 * want.at(-1));  // offsets[lo] .. offsets[last + 1]
+    if (!o) return out;
+    const dv = new DataView(o.buffer), base = 4 + 4 * (n + 1), at = i => base + dv.getUint32(4 * (i - lo), true);
+    for (const i of want) { const b = await f.read(at(i), at(i + 1)); if (!b) break; out[i] = b; }
+    return out;
+  } finally { f.close(); }
 }
 const inflate = bytes => new Response(new Response(bytes).body.pipeThrough(new DecompressionStream("deflate-raw"))).text();
 
 // [[doc, "id\ttitle\towner\tyyyymmdd\tcc\tkind\tflags\tfield"], ...]; at most 8 packs per call (all.js asks for 4): each pack costs CPU
 export async function cards(docs) {
-  const files = [...new Set(docs.map(d => Math.floor(d / W.per)))].slice(0, 8);
-  const packs = Object.fromEntries(await Promise.all(files.map(async f => [f, await get(`c/${f}.bin`)])));
+  const by = new Map();
+  for (const d of docs) { const f = Math.floor(d / W.per); if (by.has(f) || by.size < 8) by.set(f, [...(by.get(f) || []), d % W.per]); }
+  const packs = new Map(await Promise.all([...by].map(async ([f, idx]) => [f, await records(`c/${f}.bin`, idx)])));
   const dec = new TextDecoder();
-  return docs.filter(d => packs[Math.floor(d / W.per)]).map(d => { const b = slice(packs[Math.floor(d / W.per)], d % W.per); return b && [d, dec.decode(b)]; }).filter(Boolean);
+  return docs.map(d => { const b = packs.get(Math.floor(d / W.per))?.[d % W.per]; return b && [d, dec.decode(b)]; }).filter(Boolean);
 }
 
 // "CN-112345678-A" or "CN-112345678" -> the full record, or null
@@ -55,8 +63,7 @@ export async function worldRecord(id) {
   let lo = 0, hi = x.byteLength / 8;  // entries are uint64 (key << 32 | doc), little-endian, sorted
   while (lo < hi) { const mid = (lo + hi) >> 1; if (dv.getUint32(mid * 8 + 4, true) < k) lo = mid + 1; else hi = mid; }
   for (let i = lo; i < x.byteLength / 8 && dv.getUint32(i * 8 + 4, true) === k; i++) {
-    const doc = dv.getUint32(i * 8, true), pack = await get(`d/${Math.floor(doc / W.per)}.bin`);
-    const b = pack && slice(pack, doc % W.per);
+    const doc = dv.getUint32(i * 8, true), b = (await records(`d/${Math.floor(doc / W.per)}.bin`, [doc % W.per]))[doc % W.per];
     const r = b && JSON.parse(await inflate(b));
     if (r && r.pn.split("-").slice(0, 2).join("-") === key) return r;
   }

@@ -11,3 +11,8 @@ site/data/
 .DS_Store
 web/world/
 web/archive.tmp/
+
+# Impeccable working files (screenshots, decision pages, sketches)
+.impeccable/review/
+.impeccable/questions/
+.impeccable/mocks/

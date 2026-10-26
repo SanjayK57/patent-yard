@@ -13,36 +13,67 @@ const CRC = Array.from({ length: 256 }, (_, n) => { let c = n; for (let k = 0; k
 const crc32 = s => { let c = 0xFFFFFFFF; for (const b of new TextEncoder().encode(s)) c = CRC[(c ^ b) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
 const dec = new TextDecoder();
 
-async function open(ctx, kind, num) {
-  const res = await ctx.env.ASSETS.fetch(new URL(`/shard/${kind}/${shardOf(num)}.bin`, ctx.request.url));
-  if (!res.ok) return null;
-  const buf = new Uint8Array(await res.arrayBuffer()), dv = new DataView(buf.buffer, buf.byteOffset, buf.byteLength);
-  const n = dv.getUint32(4, true);
-  return { buf, dv, n, base: 8 + 12 * n };
+// Pages serves whole files only (no Range requests), and copying a 2-3 MB file into one buffer took most of the free
+// plan's 10 ms of CPU. So files are read as a stream: read(start, end) keeps just those bytes, reads only move forward,
+// and close() cancels the rest of the download.
+export function stream(res) {
+  // one reused 256 KB buffer, filled by readAtLeast (Workers) so a long skip costs a few reads, not hundreds of small chunks
+  let reader, buf = new ArrayBuffer(1 << 18), chunk = new Uint8Array(0), at = 0;  // chunk holds bytes [at, at + chunk.length)
+  try { reader = res.body.getReader({ mode: "byob" }); } catch { reader = res.body.getReader(); buf = null; }
+  const next = () => (!buf ? reader.read() : reader.readAtLeast ? reader.readAtLeast(buf.byteLength, new Uint8Array(buf)) : reader.read(new Uint8Array(buf)));
+  return {
+    async read(start, end) {
+      const out = new Uint8Array(end - start);
+      for (let got = 0; got < out.length;) {
+        const from = start + got - at;
+        if (from < 0) throw new Error("stream reads only move forward");
+        if (from >= chunk.length) {
+          at += chunk.length;
+          const { value, done } = await next();
+          if (done || !value) return null;
+          chunk = value;
+          if (buf) buf = value.buffer;  // the read handed the buffer back; reuse it (its bytes are copied out before the next read)
+          continue;
+        }
+        const n = Math.min(chunk.length - from, out.length - got);
+        out.set(chunk.subarray(from, from + n), got);
+        got += n;
+      }
+      return out;
+    },
+    close: () => reader.cancel().catch(() => {}),
+  };
 }
 
-// the first item under `key` whose stored key passes `ok`, as [stored key, payload]
-function lookup(s, key, ok) {
-  const h = crc32(key);
-  let lo = 0, hi = s.n;
-  while (lo < hi) { const mid = (lo + hi) >> 1; if (s.dv.getUint32(8 + 12 * mid, true) < h) lo = mid + 1; else hi = mid; }
-  for (let i = lo; i < s.n && s.dv.getUint32(8 + 12 * i, true) === h; i++) {
-    const off = s.base + s.dv.getUint32(12 + 12 * i, true), len = s.dv.getUint32(16 + 12 * i, true);
-    const kl = s.buf[off] | (s.buf[off + 1] << 8), k = dec.decode(s.buf.subarray(off + 2, off + 2 + kl));
-    if (ok(k)) return [k, s.buf.subarray(off + 2 + kl, off + len)];
-  }
-  return null;
+// the first item under `key` in shard `kind` whose stored key passes `ok`, as [stored key, payload]
+async function lookup(ctx, kind, num, key, ok) {
+  const res = await ctx.env.ASSETS.fetch(new URL(`/shard/${kind}/${shardOf(num)}.bin`, ctx.request.url));
+  if (!res.ok || !res.body) return null;
+  const f = stream(res);
+  try {
+    const head = await f.read(0, 8), n = head && new DataView(head.buffer).getUint32(4, true), t = n && await f.read(8, 8 + 12 * n);
+    if (!t) return null;
+    const dv = new DataView(t.buffer), h = crc32(key), base = 8 + 12 * n;
+    let lo = 0, hi = n;
+    while (lo < hi) { const mid = (lo + hi) >> 1; if (dv.getUint32(12 * mid, true) < h) lo = mid + 1; else hi = mid; }
+    for (let i = lo; i < n && dv.getUint32(12 * i, true) === h; i++) {  // entries with one hash are in file order
+      const off = base + dv.getUint32(12 * i + 4, true), b = await f.read(off, off + dv.getUint32(12 * i + 8, true));
+      if (!b) return null;
+      const kl = b[0] | (b[1] << 8), k = dec.decode(b.subarray(2, 2 + kl));
+      if (ok(k)) return [k, b.subarray(2 + kl)];
+    }
+    return null;
+  } finally { f.close(); }
 }
 
 export async function item(ctx, kind, id, key = id) {
-  const s = await open(ctx, kind, id.split("-")[1].replace(/\D/g, ""));
-  return (s && lookup(s, key, k => k === key)?.[1]) || null;
+  return (await lookup(ctx, kind, id.split("-")[1].replace(/\D/g, ""), key, k => k === key))?.[1] || null;
 }
 
 // "11112282" -> "US-11112282-B2", ("0500000", "EP") -> "EP-0500000-B1", likewise "CA" and "AU", when the register or the archive has it
 export async function find(ctx, num, cc = "US") {
   for (const kind of cc === "US" ? ["p", "a"] : ["a"]) {
-    const s = await open(ctx, kind, num), hit = s && lookup(s, `${cc}-${num}`, k => k.startsWith(`${cc}-${num}-`));
+    const hit = await lookup(ctx, kind, num, `${cc}-${num}`, k => k.startsWith(`${cc}-${num}-`));
     if (hit) return hit[0];
   }
   return null;
