@@ -341,7 +341,7 @@ WSTATS = json.loads((WEB / "world" / "stats.json").read_text()) if WORLD and (WE
 COUNTRY = dict(re.findall(r'(\b[A-Z]{2}): "([^"]+)"', (WEB / "functions" / "_world.js").read_text().split("export const COUNTRY")[1].split("};")[0]))
 NAV = ([("/browse/", "Free to use"), ("/all/", "All patents"), ("/opportunities/", "Opportunities")] if WORLD else
        [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields")]) + [("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
-LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg>'
+LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>'
 
 
 class Site:
@@ -504,7 +504,7 @@ class Site:
   <h1 class="rise" style="--d:0">Build on inventions nobody owns anymore.</h1>
   <p class="lede rise" style="--d:1">Find inventions anyone may now build on for free, check what already exists anywhere in the world, and make them yours with Claude.</p>
   <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or numbers"><button class="btn primary" type="submit">Search</button></form>
-  <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
+  <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button>{'<a class="allpat" href="/all/">Or search all patents worldwide ›</a>' if WORLD else ""}</div>
 </section>
 <section class="specimen rise" style="--d:3" aria-labelledby="plateTitle">
   <figure class="plotter">
@@ -538,7 +538,8 @@ class Site:
   </div>
 </section>
 <section class="section reveal">
-  <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a novelty screen and a provisional patent draft. Free.</p></div><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
+  <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a novelty screen and a provisional patent draft. Free.</p></div>
+    <figure class="promptcard"><blockquote>I'm an independent inventor. I want to build a new, patentable product based on my own idea. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.</blockquote><figcaption>The opening of the prompt the studio writes for your Claude</figcaption></figure><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
 </section>"""
         ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "Patent Yard", "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
