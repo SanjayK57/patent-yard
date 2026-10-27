@@ -313,7 +313,7 @@ footer.foot .fine a{color:var(--ink-2)}
 .card.feat .fig img{position:absolute;inset:18px;width:calc(100% - 36px);height:calc(100% - 36px)}
 .card.feat .side{flex:1;display:flex;flex-direction:column;min-width:0}
 .card.feat .cbody{padding:26px 28px 14px;gap:10px;border-top:0;border-left:1px solid var(--line)}
-.card.feat .cbody h3{font-size:30px;letter-spacing:-0.03em}
+.card.feat .cbody h3{font-size:30px;letter-spacing:-0.022em}
 .card.feat .cmeta{padding-inline:28px}
 .angle{padding:14px 16px;border-radius:var(--radius-sm);background:var(--surface-2);font-size:15px;color:var(--ink)}
 .angle b{display:block;font:600 13px/1 var(--body);color:var(--accent);margin-bottom:6px}
@@ -357,7 +357,7 @@ footer.foot .fine a{color:var(--ink-2)}
 @media (max-width:980px){.toc{position:static;display:flex;overflow-x:auto;gap:4px;padding-bottom:6px}.toc a{white-space:nowrap}}
 .psec{padding-bottom:56px;margin-bottom:56px;border-bottom:1px solid var(--line);scroll-margin-top:76px}
 .psec:last-child{border-bottom:0}
-.psec>h2{font-size:clamp(26px,2.6vw,32px);letter-spacing:-0.03em;margin-bottom:22px;display:flex;align-items:baseline;gap:10px}
+.psec>h2{font-size:clamp(26px,2.6vw,32px);letter-spacing:-0.022em;margin-bottom:22px;display:flex;align-items:baseline;gap:10px}
 .psec>h2 small{font:400 15px var(--body);color:var(--ink-3);letter-spacing:0}
 .ov{display:grid;grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr);gap:36px;align-items:start}
 @media (max-width:900px){.ov{grid-template-columns:minmax(0,1fr)}}
@@ -548,7 +548,7 @@ textarea.prompt{min-height:240px;font:13px/1.6 var(--mono);color:var(--ink-2)}
 .faq details[open] summary::after{transform:rotate(45deg)}
 .faq details p{margin-top:10px;font-size:16px;line-height:1.6;color:var(--ink-2);max-width:78ch}
 .notfound{text-align:center;padding:96px 0 40px}
-.notfound h1{font:600 clamp(96px,16vw,180px)/.9 var(--display);letter-spacing:-0.03em}
+.notfound h1{font:600 clamp(96px,16vw,180px)/.9 var(--display);letter-spacing:-0.022em}
 .notfound .rowbtns{justify-content:center}
 
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;display:grid;gap:8px;justify-items:center;width:max-content;max-width:calc(100% - 32px);pointer-events:none}
@@ -664,7 +664,7 @@ kbd.hk{font:500 11.5px/1 var(--body);padding:3px 6px;border-radius:6px;backgroun
 .perks b{display:block;font:600 16px/1.3 var(--display)}
 .perks span{font-size:14.5px;color:var(--ink-3)}
 .authcard{position:relative;padding:32px;border-radius:24px;background:var(--surface-2)}
-.authcard h2{font-size:26px;letter-spacing:-0.03em}
+.authcard h2{font-size:26px;letter-spacing:-0.022em}
 .authcard .sub{font-size:15px;color:var(--ink-3);margin:6px 0 20px}
 .authcard .seg{position:relative;margin-bottom:18px;background:var(--sunken)}
 .authcard .seg .ind{position:absolute;top:3px;bottom:3px;left:3px;border-radius:9px;background:var(--surface);box-shadow:0 1px 3px rgba(0,0,0,.12);transition:transform .35s var(--ease),width .35s var(--ease)}
@@ -802,7 +802,7 @@ a.hrow:hover{background:var(--surface);text-decoration:none}
 .vbar{width:56px;height:100%;display:flex;align-items:flex-end;border-radius:10px;background:var(--sunken);overflow:hidden}
 .vbar i{display:block;width:100%;height:0;background:var(--accent);border-radius:10px 10px 0 0;transition:height 1.1s var(--ease)}
 .reveal.in .vbar i,html:not(.js) .vbar i{height:var(--h)}
-.vcol b{font:700 20px/1 var(--display);letter-spacing:-0.02em}
+.vcol b{font:600 20px/1 var(--display);letter-spacing:-0.02em}
 .vcol small{color:var(--ink-3);font-size:13px}
 .owners{margin:0;padding-left:20px;display:grid;gap:6px;font-size:14.5px}
 .owners li span{overflow:hidden;text-overflow:ellipsis}
