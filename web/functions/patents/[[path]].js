@@ -1,9 +1,9 @@
 // /patents/US-11112282-B2/ -> the patent's page. /patents/11112282, /patents/EP500000, /patents/CA2000001 or /patents/AU2002254354 -> redirect to it.
-import { item, find, respond, notFound, segments, readOnly, validId, worldId, archiveRecord, archiveShell, reinstated, gunzip } from "../_lib.js";
+import { item, find, respond, notFound, segments, readOnly, validId, worldId, archiveRecord, archiveShell, reinstated, gunzip, safe } from "../_lib.js";
 import { renderArchive } from "../_archive.js";
 import { worldRecord, renderWorld } from "../_world.js";
 
-export async function onRequest(ctx) {
+export const onRequest = safe(async ctx => {
   const bad = readOnly(ctx);
   if (bad) return bad;
   const url = new URL(ctx.request.url), parts = segments(ctx);
@@ -25,7 +25,7 @@ export async function onRequest(ctx) {
   if (page) return respond(ctx, page, "text/html; charset=utf-8", "public, max-age=600", true);
   const rec = await archiveRecord(ctx, id);
   return rec ? respond(ctx, renderArchive(await archiveShell(ctx), rec), "text/html; charset=utf-8", "public, max-age=3600", false) : world(ctx, id, url);
-}
+});
 
 // every other patent, from the All patents data; a number without its kind code redirects to the full one
 async function world(ctx, id, url) {
