@@ -2,7 +2,7 @@
 // from the cards project; the cards for a page come from /api/cards, which slices them out of their packs.
 // Docs are numbered newest first, so matching docs in increasing order are the newest matches.
 import { $, esc } from "./app.js";
-import { words, crc32, latest } from "./catalog.js";
+import { words, crc32, latest, plateHTML } from "./catalog.js";
 
 const W = window.PY_CONFIG.world;
 const grid = $("#wgrid"), count = $("#wcount"), more = $("#wmore"), q = $("#wq"), cc = $("#wcc"), free = $("#wfree");
@@ -54,7 +54,7 @@ function intersect(lists) {
 const num = id => { const [c, n, k] = id.split("-"); return `${c} ${n}${k ? " " + k : ""}`; };
 function cardHTML(line) {
   const [id, t, a, date, c, kind, flags, field] = line.split("\t"), past = +flags & 1, granted = +flags & 2;
-  return `<article class="card acard" data-id="${esc(id)}"><div class="ahead"><span class="badge ${past ? "expired" : "plain"}">${past ? "Past its term" : granted ? "Granted" : "Application"}</span><span class="num-id">${esc(num(id))}</span></div>`
+  return `<article class="card acard" data-id="${esc(id)}">${plateHTML(fields[+field] || "other", num(id), `${c} · ${date.slice(0, 4)}`, `<span class="badge ${past ? "expired" : "plain"}">${past ? "Past its term" : granted ? "Granted" : "Application"}</span>`)}`
     + `<div class="cbody"><span class="fieldname">${esc(country(c))} · ${esc(names[fields[+field]] || "")}</span><h3><a href="/patents/${esc(id)}/">${esc(t)}</a></h3></div>`
     + `<div class="cmeta"><div><small>Published</small><span>${esc(date.slice(0, 4))}</span></div><div><small>Kind</small><span>${esc(kind)}</span></div><div><small>Owner</small><span title="${esc(a)}">${esc(a || "—")}</span></div></div></article>`;
 }

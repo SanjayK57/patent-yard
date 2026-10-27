@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "gradient-text",
+        "value": "*",
+        "files": [
+          "web/static/assets/site.css"
+        ],
+        "createdAt": "2026-10-27T22:17:10.570Z",
+        "reason": "Sanjay's pasted brief (Gemini prompt) explicitly asks for gradient text fills on the primary stat numbers"
+      }
+    ]
+  }
+}
