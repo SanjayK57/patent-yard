@@ -86,3 +86,7 @@ for (const btn of document.querySelectorAll("[data-rail]")) {
   const ends = () => document.querySelectorAll(`[aria-controls="${rail.id}"]`).forEach(b => (b.disabled = +b.dataset.rail < 0 ? rail.scrollLeft < 8 : rail.scrollLeft + rail.clientWidth > rail.scrollWidth - 8));
   rail.addEventListener("scroll", ends, { passive: true }); ends();
 }
+
+// phones: a placeholder that fits beside the Search button
+const heroQ = document.getElementById("heroQ");
+if (heroQ && matchMedia("(max-width: 520px)").matches) heroQ.placeholder = "Search patents";
