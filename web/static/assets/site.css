@@ -867,3 +867,6 @@ a.hrow:hover{background:var(--surface);text-decoration:none}
 .hbar.two{position:relative}
 .hbar.two i{position:absolute;inset:0 auto 0 0}
 .hbar.two i:first-child{background:color-mix(in srgb,var(--accent) 28%,var(--sunken))}
+/* a register patent the USPTO reinstated after the last build (functions/patents, web/watch) */
+.pulled{margin-top:24px;padding:16px 20px;border-radius:var(--radius);background:var(--lapsed-soft);color:var(--ink);font-size:16px}
+.pulled b{color:var(--lapsed)}

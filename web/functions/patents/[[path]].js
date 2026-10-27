@@ -1,5 +1,5 @@
 // /patents/US-11112282-B2/ -> the patent's page. /patents/11112282, /patents/EP500000, /patents/CA2000001 or /patents/AU2002254354 -> redirect to it.
-import { item, find, respond, notFound, segments, readOnly, validId, worldId, archiveRecord, archiveShell } from "../_lib.js";
+import { item, find, respond, notFound, segments, readOnly, validId, worldId, archiveRecord, archiveShell, reinstated, gunzip } from "../_lib.js";
 import { renderArchive } from "../_archive.js";
 import { worldRecord, renderWorld } from "../_world.js";
 
@@ -18,6 +18,10 @@ export async function onRequest(ctx) {
   }
   if (id !== parts[0] || !url.pathname.endsWith("/")) return Response.redirect(new URL(`/patents/${id}/`, url), 301);
   const page = await item(ctx, "p", id);
+  if (page && (await reinstated(ctx)).has(id.split("-")[1].replace(/^0+/, ""))) {
+    const html = (await gunzip(page)).replace('tabindex="-1">', 'tabindex="-1"><div class="pulled" role="alert"><b>No longer free to use.</b> The USPTO Official Gazette lists this patent as reinstated: its owner paid the late maintenance fee, so it is back in force. It leaves this register at the next update.</div>');
+    return respond(ctx, html, "text/html; charset=utf-8", "public, max-age=600", false);
+  }
   if (page) return respond(ctx, page, "text/html; charset=utf-8", "public, max-age=600", true);
   const rec = await archiveRecord(ctx, id);
   return rec ? respond(ctx, renderArchive(await archiveShell(ctx), rec), "text/html; charset=utf-8", "public, max-age=3600", false) : world(ctx, id, url);

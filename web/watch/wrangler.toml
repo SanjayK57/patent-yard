@@ -1,0 +1,11 @@
+name = "patentyard-watch"
+main = "index.js"
+compatibility_date = "2026-10-02"
+workers_dev = false
+
+[triggers]
+crons = ["30 14 * * *"]   # daily, 10:30 AM Eastern; Gazette issues come out on Tuesdays
+
+[[kv_namespaces]]
+binding = "PY_KV"
+id = "REPLACE_ME"
