@@ -341,7 +341,7 @@ WSTATS = json.loads((WEB / "world" / "stats.json").read_text()) if WORLD and (WE
 COUNTRY = dict(re.findall(r'(\b[A-Z]{2}): "([^"]+)"', (WEB / "functions" / "_world.js").read_text().split("export const COUNTRY")[1].split("};")[0]))
 NAV = ([("/browse/", "Free to use"), ("/all/", "All patents"), ("/opportunities/", "Opportunities")] if WORLD else
        [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields")]) + [("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
-LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>'
+LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v6M12 16v6M2 12h6M16 12h6"/></svg>'
 
 
 class Site:
@@ -386,8 +386,8 @@ class Site:
 <meta property="og:image" content="{SITE}{og}">
 <meta name="twitter:card" content="summary_large_image">
 {'' if index else '<meta name="robots" content="noindex">'}
-<meta name="theme-color" content="#F6F6F4" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0E0F11" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -395,7 +395,7 @@ class Site:
 <link rel="alternate" type="application/atom+xml" title="New on Patent Yard" href="/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@600;700;800&family=Public+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400&display=swap">
 <link rel="stylesheet" href="{self.css}">
 {ld}
 </head>
@@ -494,29 +494,34 @@ class Site:
         span = {n: b - a for n, a, b in m.get("archiveSpans", [])}
         sources = [(m["count"] + span.get("US", 0), "United States", "USPTO", "US"), (span.get("Europe", 0), "Europe", "European Patent Office", "Europe"),
                    (span.get("Canada", 0), "Canada", "CIPO", "Canada"), (span.get("Australia", 0), "Australia", "IP Australia", "Australia")]
-        statband = (f'<a href="/all/"><b class="num" data-count="{WORLD["n"]}">{WORLD["n"]:,}</b><span>All patents worldwide · 100+ offices</span></a>' if WORLD else "") + "".join(
-            f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{c:,}</b><span>{E(place)} · free to use</span></a>'
+        statband = (f'<a href="/all/"><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patents worldwide, from 100+ offices</span></a>' if WORLD else "") + "".join(
+            f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{big_number(c)}</b><span>free to use in {E(place)}</span></a>'
             for c, place, office, r in sources if c)
+        he = hero
+        ended = full_date(he["x"]) if he["st"] == "lapsed" else full_date(he.get("te")) if he["st"] == "expired" else ""
         body = f"""
-<section class="hero">
-  <div>
-    <div class="kicker rise" style="--d:0">The search engine for free-to-use patents</div>
-    <h1 class="rise" style="--d:1">Build on inventions <em>nobody owns</em> anymore.</h1>
-    <p class="lede rise" style="--d:2">{f'Search {big_number(WORLD["n"])} patents worldwide, and find the {big_number(total)} you can use for free, from the US, Europe, Canada and Australia.' if WORLD else f'{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record.'} Find one, then turn it into your own invention with Claude.</p>
-    <form class="bigsearch rise" style="--d:3" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search by idea, title, owner or patent number"><button class="btn primary" type="submit">Search</button></form>
-    <div class="tryrow rise" style="--d:4"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
-    {f'<p class="allline rise" style="--d:5">Searching for ideas you can use? The box above searches the free-to-use register. Checking what already exists? <a href="/all/">Search all {big_number(WORLD["n"])} patents worldwide</a>, including ones still in force.</p>' if WORLD else ""}
-  </div>
-  <figure class="plotter rise" style="--d:2">
-    <div class="phead"><span>{E(hero["n"])}</span><span>Original drawing, plotted live</span></div>
-    <div class="plotbox" id="plotbox" data-src="{self.img(hero["id"])}"><img src="{self.img(hero["id"])}" alt="Drawing from {E(hero["n"])}"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas></div>
-    <figcaption><div><b>{E(hero["t"])}</b><small>{E(self.fields[hero["ind"]])} · {E(" ".join(freed_line(hero)))}</small></div><a class="btn secondary sm" href="{purl(hero["id"])}">Open patent</a></figcaption>
+<section class="ahero">
+  <h1 class="rise" style="--d:0">Build on inventions nobody owns anymore.</h1>
+  <p class="lede rise" style="--d:1">{f'Search {big_number(WORLD["n"])} patents worldwide, and find the {big_number(total)} you can use for free, from the US, Europe, Canada and Australia.' if WORLD else f'{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record.'} Find one, then turn it into your own invention with Claude.</p>
+  <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search by idea, title, owner or number"><button class="btn primary" type="submit">Search</button></form>
+  <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
+  {f'<p class="allline rise" style="--d:4">Checking what already exists? <a href="/all/">Search all {big_number(WORLD["n"])} patents worldwide&nbsp;›</a></p>' if WORLD else ""}
+</section>
+<section class="specimen rise" style="--d:3" aria-labelledby="plateTitle">
+  <figure class="plotter">
+    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}"><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
+      <div class="lmark" aria-hidden="true"></div><div class="loupe" aria-hidden="true"></div></div>
   </figure>
+  <div class="platefacts">
+    <h2 id="plateTitle">{E(he["t"])}</h2>
+    <p>{E(he["n"])} · {STATUS[he["st"]]}{f" {ended}" if ended else ""} · {E(self.fields[he["ind"]])}</p>
+    <div class="rowbtns"><a class="btn primary" href="{purl(he["id"])}">Open the patent</a><a class="btn link" href="{purl(he["id"])}#kit">Reinvent with Claude ›</a></div>
+  </div>
 </section>
 <nav class="statband{" five" if WORLD else ""}" aria-label="Patents by collection and office">{statband}</nav>
-{self.ticker()}
+
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
-<section class="section reveal" id="today">
+<section class="section band reveal" id="today">
   <div class="sechead"><div><h2>Today's picks</h2><p>Twelve patents worth a look, refreshed every day. Each one is free to make, use and sell in the US.</p></div>
     <div class="railnav"><button class="iconbtn" type="button" data-rail="-1" aria-controls="todayRail" aria-label="Scroll back">{icon("left")}</button><button class="iconbtn" type="button" data-rail="1" aria-controls="todayRail" aria-label="Scroll forward">{icon("right")}</button></div></div>
   <div class="rail" id="todayRail">{"".join(self.card(r, i) for i, r in enumerate(picks))}</div>
@@ -534,7 +539,7 @@ class Site:
   </div>
 </section>
 <section class="section reveal">
-  <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a novelty screen and a provisional patent draft. Free.</p></div><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn secondary lg" href="/how-it-works/">How it works</a></div></div>
+  <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a novelty screen and a provisional patent draft. Free.</p></div><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
 </section>"""
         ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "Patent Yard", "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
@@ -841,7 +846,7 @@ class Site:
     def all_patents(self):
         n = WORLD["n"]
         body = f"""<div class="page">
-<div class="sechead"><div><div class="kicker">All patents</div><h1>Search {big_number(n)} patents worldwide</h1>
+<div class="sechead"><div><h1>Search {big_number(n)} patents worldwide</h1>
 <p class="lede">Every patent and published application in Google's public patent data, from more than 100 patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
 <form class="filters" id="wfilters" role="search">
   <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"></div>
@@ -879,7 +884,7 @@ class Site:
         filt = '<button class="chip" type="button" data-of="" aria-pressed="true">All</button>' + "".join(
             f'<button class="chip" type="button" data-of="{k}" aria-pressed="false">{E(self.fields.get(k, k))}</button>' for k in fields)
         body = f"""<div class="page">
-<div class="sechead"><div><div class="kicker">Opportunities</div><h1>The biggest openings in the register</h1>
+<div class="sechead"><div><h1>The biggest openings in the register</h1>
 <p class="lede">Recently freed patents ranked by the signals that track commercial value: how long the owner kept paying to protect it, how broad its claims are, who owned it and the size of the market it sells into. The top {len(picks)} come with Claude's analysis of what is now free, who would buy it and why now.</p></div></div>
 <ul class="omethod"><li><b>Kept up for years</b><span>An owner paying maintenance fees for 8 to 12 years thought it was worth protecting.</span></li><li><b>Broad claims</b><span>A short independent claim covered more ground, and all of it is free now.</span></li><li><b>Company-owned</b><span>A business filed and paid for it, usually for a product.</span></li><li><b>Large market</b><span>Its field sells into a big market: medical, energy, AI, robotics, vehicles.</span></li></ul>
 <div class="frow ofilter" role="group" aria-label="Filter by field"><span class="lab">Field</span>{filt}</div>
@@ -1044,8 +1049,7 @@ class Site:
 <div id="authView" hidden>
   <div class="authwrap">
     <div class="authpitch">
-      <div class="kicker">Free account</div>
-      <h1>Claim your spot on <em>the yard.</em></h1>
+      <h1>Claim your spot on the yard.</h1>
       <p>An account is free and takes a minute. Browsing and the patent files never need one.</p>
       <ul class="perks">
         <li><span class="pi">{icon("flag")}</span><div><b>Reserve patents</b><span>Hold up to 5 for 30 days so other builders know you're on them.</span></div></li>
@@ -1263,7 +1267,7 @@ class Site:
             self.page(f"/legal/{slug}/", title, f"Patent Yard {title.lower()}: how the free patent register works and what it promises.", body)
 
     def not_found(self):
-        body = '<div class="notfound"><p class="kicker">Error 404</p><h1>Not here</h1><p class="muted" style="margin:14px 0 24px">That page doesn\'t exist, or the patent has left the register after a daily check.</p><div class="rowbtns" style="justify-content:center"><a class="btn primary" href="/browse/">Browse patents</a><a class="btn secondary" href="/">Home</a></div></div>'
+        body = '<div class="notfound"><h1>404</h1><h2 style="margin-top:18px;font-size:32px">Not here</h2><p class="muted" style="margin:14px 0 24px">That page doesn\'t exist, or the patent has left the register after a daily check.</p><div class="rowbtns" style="justify-content:center"><a class="btn primary" href="/browse/">Browse patents</a><a class="btn secondary" href="/">Home</a></div></div>'
         self.page("/404.html", "Page not found", "This page doesn't exist.", body, index=False)
 
     # -------------------------------------------------------- data, images, feeds

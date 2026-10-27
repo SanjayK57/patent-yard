@@ -56,6 +56,29 @@ async function plot() {
 }
 if (box && !reduced) plot().catch(() => {});
 
+// the 1:1 call-out: a pinned box that magnifies the part of the plate under the pointer (a tap does the same on touch)
+const loupe = box?.querySelector(".loupe"), mark = box?.querySelector(".lmark"), ZOOM = 3;
+function look(e) {
+  const img = box.querySelector("img"), b = box.getBoundingClientRect();
+  // the drawing's drawn rectangle inside its contain-fitted box
+  const ir = img.getBoundingClientRect(), s = Math.min(ir.width / img.naturalWidth, ir.height / img.naturalHeight);
+  const w = img.naturalWidth * s, h = img.naturalHeight * s, x0 = ir.left + (ir.width - w) / 2, y0 = ir.top + (ir.height - h) / 2;
+  const x = e.clientX - x0, y = e.clientY - y0;
+  if (!w || x < 0 || y < 0 || x > w || y > h) return box.classList.remove("looking");
+  const L = loupe.clientWidth;
+  loupe.style.setProperty("--lz-img", `url("${box.dataset.src}")`);
+  loupe.style.setProperty("--lz-size", `${w * ZOOM}px ${h * ZOOM}px`);
+  loupe.style.setProperty("--lz-pos", `${L / 2 - x * ZOOM}px ${L / 2 - y * ZOOM}px`);
+  mark.style.left = `${e.clientX - b.left}px`; mark.style.top = `${e.clientY - b.top}px`;
+  mark.style.width = mark.style.height = `${L / ZOOM}px`;
+  box.classList.add("looking");
+}
+if (loupe && matchMedia("(min-width: 901px)").matches) {
+  box.addEventListener("pointermove", look);
+  box.addEventListener("pointerdown", look);
+  box.addEventListener("pointerleave", () => box.classList.remove("looking"));
+}
+
 // "Today's picks" rail: the arrows scroll it by most of a screen and grey out at the ends
 for (const btn of document.querySelectorAll("[data-rail]")) {
   const rail = document.getElementById(btn.getAttribute("aria-controls"));

@@ -157,7 +157,7 @@ export async function downloadBrief(task, p, idea, prompt) {
   kicker("Patent Yard brief · for Claude");
   text(idea?.name || p?.t || "My invention", { size: 22, style: "bold", after: 4, lead: 1.2 });
   if (p) text(`${p.n} · ${p.status} · Title as filed: ${p.ot}`, { size: 10, color: [75, 81, 96] });
-  text(`Task: ${taskName}`, { size: 10, color: [15, 107, 79], style: "bold", after: 10 });
+  text(`Task: ${taskName}`, { size: 10, color: [214, 38, 28], style: "bold", after: 10 });
   text("How to use this brief: open Claude (claude.ai), attach this PDF to a new chat, and paste the prompt below (it is also on your clipboard if you copied it on Patent Yard). Claude will work through it with you.", { size: 10, color: [75, 81, 96] });
 
   head("Prompt for Claude");
