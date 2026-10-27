@@ -117,5 +117,17 @@ export async function notFound(ctx) {
   return new Response(ctx.request.method === "HEAD" ? null : await page.text(), { status: 404, headers: h });
 }
 
+// every Function's entry point: a failure (a slow subrequest, a bad shard read) answers with a short "try again" page
+// and a 503 that browsers and crawlers retry, never Cloudflare's error screen
+export const safe = handler => async ctx => {
+  try { return await handler(ctx); }
+  catch (e) {
+    console.error(e);
+    const h = new Headers(SITE.headers);
+    h.set("content-type", "text/html; charset=utf-8"); h.set("cache-control", "no-store"); h.set("retry-after", "30");
+    return new Response('<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Patent Yard</title><body style="font:16px/1.5 system-ui;max-width:32em;margin:15vh auto;padding:0 20px"><h1 style="font-size:22px">This page didn\'t load</h1><p>Patent Yard couldn\'t fetch this record just now. Please try again in a moment.</p><p><a href="/">Back to Patent Yard</a></p>',
+      { status: 503, headers: h });
+  }
+};
 export const segments = ctx => [].concat(ctx.params.path || []).filter(Boolean).map(decodeURIComponent);
 export const readOnly = ctx => (["GET", "HEAD"].includes(ctx.request.method) ? null : new Response(null, { status: 405, headers: { allow: "GET, HEAD" } }));

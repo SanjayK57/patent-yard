@@ -5,6 +5,8 @@
 //   /v/<v>/c/<n>.json   card text for patents n*block .. n*block+block-1
 //   /v/<v>/s/<ab>.json  search index: word -> patents it appears in, for words starting with "ab"
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// a patent with no drawing on file: its field's line symbol and its number in a blueprint frame (site.css .fig.plate)
+export const plateHTML = (field, n, tag, over = "") => `<div class="fig plate" data-tag="${esc(tag)}">${over ? `<span class="over">${over}</span>` : ""}<svg class="fglyph" aria-hidden="true"><use href="#f-${esc(field || "other")}"/></svg><span class="numart">${esc(n)}</span></div>`;
 const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 export const STATUS = { lapsed: "Lapsed, fee not paid", expired: "Expired, full term", abandoned: "Likely abandoned" };
 const ST = ["lapsed", "expired", "abandoned"];
@@ -129,7 +131,7 @@ export function cardHTML(c, names, i = 9) {
   const badge = `<span class="badge ${c.st}">${STATUS[c.st]}</span>`;
   const fig = c.fig
     ? `<div class="fig"><img src="/img/p/${c.id}/1.png" alt="Drawing from ${esc(n)}" loading="${i < 4 ? "eager" : "lazy"}" decoding="async"><span class="over">${badge}</span>${c.sh ? `<span class="sheets">${icon("sheet")}${c.sh} ${c.sh === 1 ? "drawing" : "drawings"}</span>` : ""}</div>`
-    : `<div class="fig blank"><span class="over">${badge}</span><span class="numart">${esc(n)}</span></div>`;
+    : plateHTML(c.ind, n, "No drawing", badge);
   const freed = c.st === "abandoned" ? ["Published", fmtDay(c.freed, { year: "numeric" })] : [c.st === "lapsed" ? "Lapsed" : "Term ended", fmtDay(c.freed, { month: "short", year: "numeric" })];
   const first = c.b ? `<div><small>Build</small><span>${meter(c.b)}${BUILD[c.b]}</span></div>` : `<div><small>Filed</small><span>${fmtDay(c.filed, { year: "numeric" })}</span></div>`;
   return `<article class="card" data-id="${esc(c.id)}">${fig}<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)} · <span class="num-id">${esc(n)}</span></span>`
@@ -191,8 +193,8 @@ const AKIND = { S: ["Expired design", "expired", "Granted", "Design"], A: ["Like
   AU: ["Expired, Australia", "expired", "Year", "Australian"] };
 export function archiveCardHTML(c, names) {
   const n = numberLabel(c.id), owner = c.a || (c.k === "A" ? "Inventors" : "Solo inventor"), K = AKIND[c.k] || AKIND[""];
-  // archive patents have no drawing on file, so their cards lead with the text instead of an empty picture
-  return `<article class="card acard" data-id="${esc(c.id)}"><div class="ahead"><span class="badge ${K[1]}">${K[0]}</span><span class="num-id">${esc(n)}</span></div>`
-    + `<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)}</span><h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3></div>`
+  // archive patents have no drawing on file, so their cards show their field's symbol in a blueprint frame
+  return `<article class="card acard" data-id="${esc(c.id)}">${plateHTML(c.ind, n, `${c.id.slice(0, 2)} · no drawing`, `<span class="badge ${K[1]}">${K[0]}</span>`)}`
+    + `<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)} · <span class="num-id">${esc(n)}</span></span><h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3></div>`
     + `<div class="cmeta"><div><small>${K[2]}</small><span>${c.year}</span></div><div><small>Kind</small><span>${K[3]}</span></div><div><small>Owner</small><span title="${esc(owner)}">${esc(owner)}</span></div></div></article>`;
 }

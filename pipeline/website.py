@@ -309,7 +309,8 @@ def figure_lines(figs):
 # ---------------------------------------------------------------- layout
 
 SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="true">
-<symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+<symbol id="f-software" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 9h18M10 12.5l-2 2 2 2M14 12.5l2 2-2 2"/></symbol><symbol id="f-ai" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="12" cy="12" r="2.2"/><circle cx="12" cy="19" r="2"/><path d="M7.6 7.3l2.7 3.1M16.4 7.3l-2.7 3.1M12 14.2V17"/></symbol><symbol id="f-medical" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v9M7.5 12h9"/></symbol><symbol id="f-electronics" viewBox="0 0 24 24"><path d="M2 12h4l1.5-4.5 3 9 3-9 3 9L18 12h4"/></symbol><symbol id="f-imaging" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7l1.5-3h5L16 7"/><circle cx="12" cy="13.5" r="3.5"/></symbol><symbol id="f-telecom" viewBox="0 0 24 24"><path d="M12 21v-9"/><circle cx="12" cy="9.5" r="1.6"/><path d="M8.3 5.8a5.3 5.3 0 0 0 0 7.4M15.7 5.8a5.3 5.3 0 0 1 0 7.4M5.6 3.2a9 9 0 0 0 0 12.6M18.4 3.2a9 9 0 0 1 0 12.6"/></symbol><symbol id="f-chips" viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12" rx="1.5"/><rect x="9.5" y="9.5" width="5" height="5"/><path d="M9 2.5v3.5M15 2.5v3.5M9 18v3.5M15 18v3.5M2.5 9H6M2.5 15H6M18 9h3.5M18 15h3.5"/></symbol><symbol id="f-industrial" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9 7 7M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/></symbol><symbol id="f-consumer" viewBox="0 0 24 24"><path d="M5 8h14l-1.2 12H6.2z"/><path d="M9 8V6.5a3 3 0 0 1 6 0V8"/></symbol><symbol id="f-robotics" viewBox="0 0 24 24"><path d="M3 21h9M7.5 21v-4"/><circle cx="7.5" cy="15.5" r="1.6"/><circle cx="13" cy="9" r="1.6"/><path d="M8.6 14.3l3.3-4.1M14.5 8.6l4.5.6M19 9.2l2-2M19 9.2l2 2"/></symbol><symbol id="f-tools" viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5 5L3.5 17.5l3 3 6.2-6.2a4 4 0 0 0 5-5l-2.4 2.4-2.6-.5-.5-2.6z"/></symbol><symbol id="f-agrifood" viewBox="0 0 24 24"><path d="M12 21V11"/><path d="M12 11c0-4.2 3-7 8-7 0 5-3 7.6-8 7z"/><path d="M12 14.5c0-3-2.2-5.2-6.5-5.2 0 3.3 2.2 5.3 6.5 5.2z"/></symbol><symbol id="f-biotech" viewBox="0 0 24 24"><path d="M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9M9 6h6M9 18h6M10 12h4"/></symbol><symbol id="f-materials" viewBox="0 0 24 24"><path d="M12 3l7.5 4.3v8.6L12 20.2l-7.5-4.3V7.3z"/><path d="M12 3v8.6M12 11.6l7.5-4.3M12 11.6l-7.5-4.3"/></symbol><symbol id="f-energy" viewBox="0 0 24 24"><path d="M13 2L4.5 13.5H11L10 22l8.5-11.5H12z"/></symbol><symbol id="f-mobility" viewBox="0 0 24 24"><path d="M3.5 16.5V13l2.2-5h12.6l2.2 5v3.5z"/><circle cx="7.5" cy="16.5" r="2"/><circle cx="16.5" cy="16.5" r="2"/><path d="M3.5 13h17"/></symbol><symbol id="f-sports" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M5.6 5.6c3.5 3.5 3.5 9.3 0 12.8M18.4 5.6c-3.5 3.5-3.5 9.3 0 12.8"/></symbol><symbol id="f-defense" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8.2-8 9-4.5-.8-8-4-8-9V6z"/></symbol><symbol id="f-designs" viewBox="0 0 24 24"><circle cx="12" cy="4.5" r="1.5"/><path d="M12 6 6.5 21M12 6l5.5 15M8 16.5h8"/></symbol><symbol id="f-other" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.9.7 1.6 1.6 1.6 2.7v.5h4v-.5c0-1.1.7-2 1.6-2.7A6 6 0 0 0 12 3z"/></symbol>
+<symbol id="i-grid" viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></symbol><symbol id="i-rows" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
 <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4 4"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
 <symbol id="i-ext" viewBox="0 0 24 24"><path d="M14 5h5v5M19 5l-8 8M18 14v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h4"/></symbol>
@@ -341,6 +342,10 @@ WSTATS = json.loads((WEB / "world" / "stats.json").read_text()) if WORLD and (WE
 COUNTRY = dict(re.findall(r'(\b[A-Z]{2}): "([^"]+)"', (WEB / "functions" / "_world.js").read_text().split("export const COUNTRY")[1].split("};")[0]))
 NAV = ([("/browse/", "Free to use"), ("/all/", "All patents"), ("/opportunities/", "Opportunities")] if WORLD else
        [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields")]) + [("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
+# card view or a dense table view of a result grid; app.js remembers the choice
+VIEWTOG = ('<div class="viewtog" role="group" aria-label="View"><button type="button" data-view="cards" data-for="{grid}" aria-pressed="true" title="Cards">'
+           '<svg class="i" aria-hidden="true"><use href="#i-grid"/></svg><span class="sr">Cards</span></button><button type="button" data-view="table" data-for="{grid}" aria-pressed="false" title="Table">'
+           '<svg class="i" aria-hidden="true"><use href="#i-rows"/></svg><span class="sr">Table</span></button></div>')
 LOGO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20V9l8-5 8 5v11"/><path d="M9 20v-6h6v6"/></svg>'
 
 
@@ -364,6 +369,9 @@ class Site:
         full_title = f"{title} · Patent Yard" if title != "Patent Yard" else ("Patent Yard: search 122.8 million patents, and the free ones" if WORLD else "Patent Yard: free-to-use patents from four patent offices")
         cur = ' aria-current="page"'
         nav = "".join(f'<a href="{href}"{cur if section == href else ""}>{label}</a>' for href, label in NAV)
+        crumb = {**{href: label for href, label in NAV}, "/fields/": "Fields", "/account/": "Account", "/about/": "About"}.get(section)
+        if crumb:
+            body = body.replace('<div class="sechead"><div>', f'<div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> {E(crumb)}</span>', 1)
         og = og_image or self.default_og
         ld_json = json.dumps(jsonld, separators=(",", ":")).replace("</", "<\\/") if jsonld else ""
         ld = f'<script type="application/ld+json">{ld_json}</script>' if jsonld else ""
@@ -386,8 +394,8 @@ class Site:
 <meta property="og:image" content="{SITE}{og}">
 <meta name="twitter:card" content="summary_large_image">
 {'' if index else '<meta name="robots" content="noindex">'}
-<meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#FAFAFB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#070709" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -395,7 +403,7 @@ class Site:
 <link rel="alternate" type="application/atom+xml" title="New on Patent Yard" href="/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..700;1,14..32,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="{self.css}">
 {ld}
 </head>
@@ -452,7 +460,7 @@ class Site:
         fig = (f'<div class="fig"><img src="{self.img(e["id"])}" alt="Drawing from {E(e["n"])}" loading="{"eager" if i < 4 else "lazy"}" decoding="async">'
                f'<span class="over">{badge(e["st"])}</span>'
                + (f'<span class="sheets">{icon("sheet")}{e["sh"]} {"drawing" if e["sh"] == 1 else "drawings"}</span>' if e["sh"] else "") + "</div>") \
-            if e["fig"] else f'<div class="fig blank"><span class="over">{badge(e["st"])}</span><span class="numart">{E(e["n"])}</span></div>'
+            if e["fig"] else f'<div class="fig plate" data-tag="No drawing"><span class="over">{badge(e["st"])}</span><svg class="fglyph" aria-hidden="true"><use href="#f-{e["ind"]}"/></svg><span class="numart">{E(e["n"])}</span></div>'
         body = (f'<div class="cbody"><span class="fieldname">{E(self.fields.get(e["ind"], e["ind"]))} · <span class="num-id">{E(e["n"])}</span></span>'
                 f'<h3><a href="{purl(e["id"])}">{E(e["t"])}</a></h3><p>{E(e["h"])}</p>'
                 + (f'<div class="angle"><b>Modern angle</b>{E(e["tw"])}</div>' if feat and e["tw"] else "") + "</div>")
@@ -488,14 +496,15 @@ class Site:
         m = self.meta
         total = m["count"] + m.get("archive", 0)
         by_field = m.get("archiveByField", {})
-        chips = "".join(f'<a class="fchip" href="/fields/{k}/"><span>{E(n)}</span><small class="num">{len(self.by_field[k]) + by_field.get(k, 0):,}</small></a>'
+        chips = "".join(f'<a class="fchip" href="/fields/{k}/"><svg class="fglyph" aria-hidden="true"><use href="#f-{k}"/></svg><span>{E(n)}</span><small class="num">{len(self.by_field[k]) + by_field.get(k, 0):,}</small></a>'
                         for k, n in self.fields.items())
         tries = "".join(f'<a class="chip" href="/browse/?q={quote(t)}">{E(t)}</a>' for t in ("drone", "solar charger", "robot arm", "kitchen", "bicycle", "hearing aid"))
         span = {n: b - a for n, a, b in m.get("archiveSpans", [])}
         sources = [(m["count"] + span.get("US", 0), "United States", "USPTO", "US"), (span.get("Europe", 0), "Europe", "European Patent Office", "Europe"),
                    (span.get("Canada", 0), "Canada", "CIPO", "Canada"), (span.get("Australia", 0), "Australia", "IP Australia", "Australia")]
-        statband = (f'<a href="/all/"><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patents worldwide, from 106 offices</span></a>' if WORLD else "") + "".join(
-            f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{big_number(c)}</b><span>free to use in {E(place)}</span></a>'
+        week = sum(1 for r in self.rows if (r["added"] or "") >= (TODAY - dt.timedelta(days=7)).isoformat())
+        statband = (f'<a href="/all/"><em>106 offices</em><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patents worldwide</span></a>' if WORLD else "") + "".join(
+            f'<a href="/browse/?in=archive&amp;region={quote(r)}">{f"<em class=up>+{week:,} this week</em>" if place == "United States" and week else ""}<b class="num" data-count="{c}">{big_number(c)}</b><span>free to use in {E(place)}</span></a>'
             for c, place, office, r in sources if c)
         he = hero
         ended = full_date(he["x"]) if he["st"] == "lapsed" else full_date(he.get("te")) if he["st"] == "expired" else ""
@@ -503,12 +512,12 @@ class Site:
 <section class="ahero">
   <h1 class="rise" style="--d:0">Build on inventions nobody owns anymore.</h1>
   <p class="lede rise" style="--d:1">Find inventions anyone may now build on for free, check what already exists anywhere in the world, and make them yours with Claude.</p>
-  <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or numbers"><button class="btn primary" type="submit">Search</button></form>
+  <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or numbers"><span class="kbd" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span><button class="btn primary" type="submit">Search</button></form>
   <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button>{'<a class="allpat" href="/all/">Or search all patents worldwide ›</a>' if WORLD else ""}</div>
 </section>
 <section class="specimen rise" style="--d:3" aria-labelledby="plateTitle">
   <figure class="plotter">
-    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}"><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
+    <div class="plotbox blueprint" id="plotbox" data-src="{self.img(he["id"])}"><span class="figbar" aria-hidden="true"><i></i><i></i><i></i><b>FIG. 1 · {E(he["n"])}</b></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
       <div class="lmark" aria-hidden="true"></div><div class="loupe" aria-hidden="true"></div></div>
   </figure>
   <div class="platefacts">
@@ -520,10 +529,9 @@ class Site:
 <nav class="statband{" five" if WORLD else ""}" aria-label="Patents by collection and office">{statband}</nav>
 
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
-<section class="section band reveal" id="today">
-  <div class="sechead"><div><h2>Today's picks</h2><p>Twelve patents worth a look, refreshed every day. Each one is free to make, use and sell in the US.</p></div>
-    <div class="railnav"><button class="iconbtn" type="button" data-rail="-1" aria-controls="todayRail" aria-label="Scroll back">{icon("left")}</button><button class="iconbtn" type="button" data-rail="1" aria-controls="todayRail" aria-label="Scroll forward">{icon("right")}</button></div></div>
-  <div class="rail" id="todayRail">{"".join(self.card(r, i) for i, r in enumerate(picks))}</div>
+<section class="section reveal" id="today">
+  <div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> Today's picks</span><h2>Worth a look today</h2><p>Refreshed every day. Each one is free to make, use and sell in the US.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
+  <div class="bento">{self.card(picks[0], 0, feat=True)}{"".join(self.card(r, i) for i, r in enumerate(picks[1:9], 1))}</div>
 </section>
 <section class="section reveal">
   <div class="sechead"><div><h2>Explore by field</h2><p>Every patent is filed under the field of its main classification.</p></div><a class="btn quiet" href="/fields/">All fields</a></div>
@@ -532,14 +540,14 @@ class Site:
 <section class="section reveal">
   <div class="sechead"><div><h2>How it works</h2></div><a class="btn quiet" href="/how-it-works/">The details</a></div>
   <div class="steps3">
-    <div><h3>Find</h3><p>Search millions of patents whose protection has ended. Each one links to the official USPTO record it came from.</p></div>
-    <div><h3>Reinvent with Claude</h3><p>One click writes a prompt and a PDF brief for your own Claude: modern directions, a novelty screen and a provisional draft.</p></div>
-    <div><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement. Reserving doesn't stop anyone else from using it.</p></div>
+    <div><span class="n">01</span><h3>Find</h3><p>Search millions of patents whose protection has ended. Each one links to the official USPTO record it came from.</p></div>
+    <div><span class="n">02</span><h3>Reinvent with Claude</h3><p>One click writes a prompt and a PDF brief for your own Claude: modern directions, a novelty screen and a provisional draft.</p></div>
+    <div><span class="n">03</span><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement. Reserving doesn't stop anyone else from using it.</p></div>
   </div>
 </section>
 <section class="section reveal">
   <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a novelty screen and a provisional patent draft. Free.</p></div>
-    <figure class="promptcard"><blockquote>I'm an independent inventor. I want to build a new, patentable product based on my own idea. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.</blockquote><figcaption>The opening of the prompt the studio writes for your Claude</figcaption></figure><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
+    <figure class="promptcard"><span class="figbar" aria-hidden="true"><i></i><i></i><i></i><b>Invention studio · prompt</b></span><blockquote>I'm an independent inventor. I want to build a new, patentable product based on my own idea. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.</blockquote><figcaption>The opening of the prompt the studio writes for your Claude</figcaption></figure><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
 </section>"""
         ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "Patent Yard", "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
@@ -559,7 +567,8 @@ class Site:
         return f'<img src="{self.img(r["entry"]["id"])}" alt="" loading="lazy">' if r else icon("sheet")
 
     def filters(self, field=None):
-        fields = "".join(f'<button class="chip" type="button" data-ind="{k}" aria-pressed="false">{E(n)}</button>' for k, n in self.fields.items())
+        fields = "".join(f'<button class="chip" type="button" data-ind="{k}" aria-pressed="false">{E(n)} <small>{len(self.by_field.get(k, [])):,}</small></button>' for k, n in self.fields.items())
+        st = collections.Counter(r["entry"]["st"] for r in self.rows)
         return f"""
 <form class="filters" id="filters" role="search">
   {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recently freed, US <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
@@ -568,9 +577,9 @@ class Site:
   {'' if field else f'<div class="frow scrollrow" id="fInd"><span class="lab">Field</span><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div>'}
   <div class="frow"><span class="lab">Status</span>
     <button class="chip" type="button" data-st="" aria-pressed="true">All</button>
-    <button class="chip" type="button" data-st="lapsed" aria-pressed="false">Lapsed</button>
-    <button class="chip" type="button" data-st="expired" aria-pressed="false">Expired, full term</button>
-    <button class="chip" type="button" data-st="abandoned" aria-pressed="false">Likely abandoned</button></div>
+    <button class="chip" type="button" data-st="lapsed" aria-pressed="false">Lapsed <small>{st["lapsed"]:,}</small></button>
+    <button class="chip" type="button" data-st="expired" aria-pressed="false">Expired, full term <small>{st["expired"]:,}</small></button>
+    <button class="chip" type="button" data-st="abandoned" aria-pressed="false">Likely abandoned <small>{st["abandoned"]:,}</small></button></div>
   <div class="frow"><span class="lab">Build</span>
     <button class="chip" type="button" data-b="" aria-pressed="true">Any</button>
     <button class="chip" type="button" data-b="2" aria-pressed="false">Weekend or garage</button>
@@ -588,7 +597,7 @@ class Site:
       <option value="old">Oldest filing first</option>
     </select></div>
 </form>
-<div class="count" id="count" aria-live="polite"></div><div class="archhint" id="archHint" hidden></div>"""
+<div class="countbar"><div class="count" id="count" aria-live="polite"></div>{VIEWTOG.format(grid="grid")}</div><div class="archhint" id="archHint" hidden></div>"""
 
     def listing(self, rows):
         """The first page of a list as plain HTML, for visitors without JavaScript and for search engines.
@@ -853,12 +862,12 @@ class Site:
   <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc" style="width:auto"><option value="">All countries</option></select>
     <button class="chip" type="button" id="wfree" aria-pressed="false">Past their term only</button></div>
 </form>
-<p class="muted" id="wcount" aria-live="polite">Loading…</p>
+<div class="countbar"><p class="count" id="wcount" aria-live="polite">Loading…</p>{VIEWTOG.format(grid="wgrid")}</div>
 <div class="grid" id="wgrid"></div>
 <div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div>
 <p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. "Past its term" means filed long enough ago that no patent from it can still be in force; every other status is as published, so confirm it with the official register before relying on it.</p>
 </div>"""
-        self.page("/all/", "All patents", f"Search {big_number(n)} patents and applications from more than 100 patent offices, with the ones past their term marked.",
+        self.page("/all/", "All patents", f"Search {big_number(n)} patents and applications from 106 patent offices, with the ones past their term marked.",
                   body, section="/all/", scripts=("all",))
 
     def opportunities(self):

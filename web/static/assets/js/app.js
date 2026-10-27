@@ -211,7 +211,7 @@ export function cardItem(card) {
     fld: card.querySelector(".fieldname")?.firstChild?.textContent.replace(/·\s*$/, "").trim() || "", img: !!img };
 }
 export function miniCard(x) {
-  return `<article class="card" data-id="${esc(x.id)}"><div class="fig${x.img ? "" : " blank"}">${x.img ? `<img src="/img/p/${esc(x.id)}/1.png" alt="Drawing from ${esc(x.n)}" loading="lazy" decoding="async">` : `<span class="numart">${esc(x.n)}</span>`}<span class="over"><span class="badge ${esc(x.st)}">${esc(STATUS[x.st] || "")}</span></span></div>`
+  return `<article class="card" data-id="${esc(x.id)}"><div class="fig${x.img ? "" : " plate"}" data-tag="No drawing">${x.img ? `<img src="/img/p/${esc(x.id)}/1.png" alt="Drawing from ${esc(x.n)}" loading="lazy" decoding="async">` : `<svg class="fglyph" aria-hidden="true"><use href="#f-other"/></svg><span class="numart">${esc(x.n)}</span>`}<span class="over"><span class="badge ${esc(x.st)}">${esc(STATUS[x.st] || "")}</span></span></div>`
     + `<div class="cbody"><span class="fieldname">${esc(x.fld)} · <span class="num-id">${esc(x.n)}</span></span><h3><a href="/patents/${esc(x.id)}/">${esc(x.t)}</a></h3></div></article>`;
 }
 // a bookmark on every card
@@ -334,3 +334,18 @@ function palette() {
 export function openPalette() { const p = palette(); p.showModal(); $("#cmdQ", p).value = ""; p.draw(); $("#cmdQ", p).focus(); }
 addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); pal?.open ? pal.close() : openPalette(); } });
 $("#cmdBtn")?.addEventListener("click", openPalette);
+
+// ---------------------------------------------------------------- card or table view for result grids (website.py VIEWTOG)
+function setView(id, view) {
+  const grid = document.getElementById(id);
+  if (!grid) return;
+  grid.classList.toggle("as-table", view === "table");
+  $$(`[data-for="${id}"]`).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
+}
+$$(".viewtog").forEach(t => { const b = t.querySelector("[data-for]"); try { setView(b.dataset.for, localStorage.getItem("patentyard.view." + b.dataset.for) || "cards"); } catch {} });
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-view][data-for]");
+  if (!b) return;
+  setView(b.dataset.for, b.dataset.view);
+  try { localStorage.setItem("patentyard.view." + b.dataset.for, b.dataset.view); } catch {}
+});
