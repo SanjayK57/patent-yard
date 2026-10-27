@@ -1,10 +1,10 @@
 #!/bin/bash
 # Installs the daily check (daily.sh) as a login item that runs at 9 AM, 9 PM and whenever the Mac starts up or wakes
 # after a missed run, so the website keeps itself up to date with nothing to remember. Run once:
-#   bash ~/Desktop/JARVIS/Foundling/pipeline/install-daily.sh
+#   bash ~/PatentYard/pipeline/install-daily.sh
 # Undo: launchctl bootout gui/$(id -u)/dev.patentyard.daily; rm ~/Library/LaunchAgents/dev.patentyard.daily.plist
 set -e
-here="$(cd "$(dirname "$0")" && pwd)"
+here="$(cd "$(dirname "$0")" && pwd -P)"  # the real path: macOS keeps background jobs out of ~/Desktop
 plist="$HOME/Library/LaunchAgents/dev.patentyard.daily.plist"
 mkdir -p "$HOME/Library/LaunchAgents"
 cat > "$plist" <<PLIST
