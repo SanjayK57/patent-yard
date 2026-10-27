@@ -145,6 +145,9 @@ textarea.field{resize:vertical;min-height:110px}
 .brand:hover{color:var(--ink);text-decoration:none}
 .brand .mark{width:28px;height:28px;border-radius:8px;background:var(--ink);color:var(--bg);display:grid;place-items:center}
 .brand .mark svg{width:18px;height:18px}
+.brand .mark{transition:transform .3s var(--ease)}
+.brand:hover .mark{transform:rotate(-6deg) scale(1.06)}
+.brand:active .mark{transform:rotate(-10deg) scale(.94)}
 .brand b{font:600 17px/1 var(--display);letter-spacing:-0.02em}
 .mainnav{display:flex;justify-content:center;gap:4px;flex:1;min-width:0}
 .mainnav a{padding:8px 11px;font:400 13.5px/1 var(--body);color:var(--ink-2);text-decoration:none;white-space:nowrap;transition:color .2s}
@@ -169,7 +172,7 @@ textarea.field{resize:vertical;min-height:110px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .iconbtn .sun{display:none}:root:not([data-theme="light"]) .iconbtn .moon{display:block}}
 .menu-btn{display:none;width:36px;height:36px;border-radius:50%;border:0;background:transparent;color:var(--ink);place-items:center;cursor:pointer}
 @media (max-width:1180px){.hsearch{display:none}}
-@media (max-width:900px){
+@media (max-width:1080px){
   .menu-btn{display:grid;margin-left:auto}
   .mainnav{display:none;position:absolute;left:0;right:0;top:52px;flex-direction:column;justify-content:flex-start;gap:0;padding:8px 24px 24px;background:var(--bg);border-bottom:1px solid var(--line)}
   .mainnav.open{display:flex;animation:fade .25s}
@@ -177,7 +180,7 @@ textarea.field{resize:vertical;min-height:110px}
   .acct .btn span{display:none}
 }
 @media (max-width:520px){.top .wrap{gap:6px}#themeBtn{display:none}}
-@media (max-width:900px){.cmdbtn{margin-left:auto}.menu-btn{margin-left:0}.acct .btn.secondary{background:transparent;padding:0;width:34px;height:34px;min-height:0;border-radius:50%}.acct .btn.secondary:hover{background:var(--surface-2)}}
+@media (max-width:1080px){.cmdbtn{margin-left:auto}.menu-btn{margin-left:0}.acct .btn.secondary{background:transparent;padding:0;width:34px;height:34px;min-height:0;border-radius:50%}.acct .btn.secondary:hover{background:var(--surface-2)}}
 
 /* ---------------------------------------------------------------- footer */
 footer.foot{margin-top:96px;margin-inline:-20px;padding:36px 20px 40px;background:var(--band);border-top:1px solid var(--line)}
@@ -616,7 +619,7 @@ kbd.hk{font:500 11.5px/1 var(--body);padding:3px 6px;border-radius:6px;backgroun
 .acctmenu .menu a,.acctmenu .menu button{display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px;border:0;border-radius:10px;background:none;color:var(--ink);font:400 14.5px/1.2 var(--body);text-decoration:none;cursor:pointer;text-align:left}
 .acctmenu .menu a:hover,.acctmenu .menu button:hover,.acctmenu .menu :focus-visible{background:var(--surface-2);text-decoration:none}
 .acctmenu .menu svg{color:var(--ink-3)}
-@media (max-width:900px){.acctmenu>button span:not(.avatar){display:none}.acctmenu>button{padding:0 3px}}
+@media (max-width:1080px){.acctmenu>button span:not(.avatar){display:none}.acctmenu>button{padding:0 3px}}
 .card.acard .ahead{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:16px 18px 0}
 .card.acard .ahead .num-id{font:500 13px/1.2 var(--body);color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card.acard .ahead .badge{flex:none}
