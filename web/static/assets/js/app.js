@@ -239,29 +239,19 @@ export async function surprise(btn) {
 }
 document.addEventListener("click", e => { const b = e.target.closest("[data-surprise]"); if (b) surprise(b); });
 
-// ---------------------------------------------------------------- numbers that count up when they come into view
-const easeOut = t => 1 - Math.pow(1 - t, 3);
+// ---------------------------------------------------------------- numbers that strike into place digit by digit, never tweened
 const counter = new IntersectionObserver(es => es.forEach(en => {
   if (!en.isIntersecting) return;
   counter.unobserve(en.target);
-  const el = en.target, end = +el.dataset.count, t0 = performance.now(), dur = 1100;
-  if (reducedMotion() || !end) return;
-  const tick = now => { const k = Math.min(1, (now - t0) / dur); el.textContent = Math.round(end * easeOut(k)).toLocaleString("en-US"); if (k < 1) requestAnimationFrame(tick); };
-  requestAnimationFrame(tick);
+  const el = en.target, text = el.textContent;
+  if (reducedMotion() || !/\d/.test(text)) return;
+  el.classList.add("strike");
+  el.innerHTML = [...text].map(c => (/\d/.test(c) ? `<i class="off">${c}</i>` : c)).join("");
+  const digits = [...el.querySelectorAll("i")];
+  digits.forEach((d, k) => setTimeout(() => d.classList.remove("off"), 90 + k * 55));
+  setTimeout(() => { el.textContent = text; el.classList.remove("strike"); }, 160 + digits.length * 55);
 }), { threshold: .4 });
 $$("[data-count]").forEach(el => counter.observe(el));
-
-// ---------------------------------------------------------------- a soft light that follows the pointer across cards
-let lightRaf = 0;
-document.addEventListener("pointermove", e => {
-  const card = e.target.closest?.(".card, .tile, .lcard");
-  if (!card || lightRaf) return;
-  lightRaf = requestAnimationFrame(() => {
-    lightRaf = 0;
-    const r = card.getBoundingClientRect();
-    card.style.setProperty("--mx", `${e.clientX - r.left}px`); card.style.setProperty("--my", `${e.clientY - r.top}px`);
-  });
-}, { passive: true });
 
 // ---------------------------------------------------------------- a burst of confetti for good news (reserving a patent)
 export function celebrate(x = innerWidth / 2, y = innerHeight / 3) {
@@ -270,7 +260,7 @@ export function celebrate(x = innerWidth / 2, y = innerHeight / 3) {
   const dpr = Math.min(2, devicePixelRatio || 1);
   cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; document.body.append(cv);
   const ctx = cv.getContext("2d"), css = getComputedStyle(document.documentElement);
-  const colors = ["--accent", "--reserved", "--aband", "--lapsed"].map(v => css.getPropertyValue(v).trim());
+  const colors = ["--accent", "--ink", "--line-strong", "--accent"].map(v => css.getPropertyValue(v).trim());
   const bits = Array.from({ length: 90 }, () => ({ x: x * dpr, y: y * dpr, vx: (Math.random() - .5) * 16 * dpr, vy: (-Math.random() * 13 - 4) * dpr,
     r: (3 + Math.random() * 4) * dpr, a: Math.random() * 6, va: (Math.random() - .5) * .4, c: colors[Math.floor(Math.random() * colors.length)] }));
   const t0 = performance.now();

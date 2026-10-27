@@ -79,6 +79,18 @@ export async function find(ctx, num, cc = "US") {
   return null;
 }
 
+// Patents the USPTO has reinstated since the last full build, kept daily by the patentyard-watch Worker (web/watch)
+// in KV; read at most once every 10 minutes per isolate. Empty when the binding is missing.
+let rein, reinAt = 0;
+export async function reinstated(ctx) {
+  if (!ctx.env.PY_KV) return new Set();
+  if (!rein || Date.now() - reinAt > 6e5) {
+    reinAt = Date.now();
+    rein = ctx.env.PY_KV.get("reinstated", "json").then(v => new Set(v?.numbers || [])).catch(() => new Set());
+  }
+  return rein;
+}
+
 export const gunzip = async bytes => new Response(new Response(bytes).body.pipeThrough(new DecompressionStream("gzip"))).text();
 export const archiveRecord = async (ctx, id) => { const b = await item(ctx, "a", id); return b ? JSON.parse(await gunzip(b)) : null; };
 let tpl;  // the archive page shell, read once per isolate

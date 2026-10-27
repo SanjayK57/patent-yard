@@ -193,3 +193,6 @@ document.addEventListener("click", async e => {
   $("#kPdf").addEventListener("click", e => briefButton(e.currentTarget, kit.task, patentData, ideaBox.value.trim() ? { desc: ideaBox.value.trim() } : null, $("#kPrompt").value));
 });
 kitDlg.addEventListener("click", e => { if (e.target === kitDlg || e.target.closest("[data-close]")) kitDlg.close(); });
+
+// a link ending in #kit (the home page plate) opens Reinvent with Claude straight away
+if (location.hash === "#kit") $('[data-kit="workshop"]')?.click();
