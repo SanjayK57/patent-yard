@@ -494,7 +494,7 @@ class Site:
         span = {n: b - a for n, a, b in m.get("archiveSpans", [])}
         sources = [(m["count"] + span.get("US", 0), "United States", "USPTO", "US"), (span.get("Europe", 0), "Europe", "European Patent Office", "Europe"),
                    (span.get("Canada", 0), "Canada", "CIPO", "Canada"), (span.get("Australia", 0), "Australia", "IP Australia", "Australia")]
-        statband = (f'<a href="/all/"><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patents worldwide, from 100+ offices</span></a>' if WORLD else "") + "".join(
+        statband = (f'<a href="/all/"><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patents worldwide, from 106 offices</span></a>' if WORLD else "") + "".join(
             f'<a href="/browse/?in=archive&amp;region={quote(r)}"><b class="num" data-count="{c}">{big_number(c)}</b><span>free to use in {E(place)}</span></a>'
             for c, place, office, r in sources if c)
         he = hero
@@ -502,10 +502,9 @@ class Site:
         body = f"""
 <section class="ahero">
   <h1 class="rise" style="--d:0">Build on inventions nobody owns anymore.</h1>
-  <p class="lede rise" style="--d:1">{f'Search {big_number(WORLD["n"])} patents worldwide, and find the {big_number(total)} you can use for free, from the US, Europe, Canada and Australia.' if WORLD else f'{big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record.'} Find one, then turn it into your own invention with Claude.</p>
-  <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search by idea, title, owner or number"><button class="btn primary" type="submit">Search</button></form>
+  <p class="lede rise" style="--d:1">Find inventions anyone may now build on for free, check what already exists anywhere in the world, and make them yours with Claude.</p>
+  <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or numbers"><button class="btn primary" type="submit">Search</button></form>
   <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
-  {f'<p class="allline rise" style="--d:4">Checking what already exists? <a href="/all/">Search all {big_number(WORLD["n"])} patents worldwide&nbsp;›</a></p>' if WORLD else ""}
 </section>
 <section class="specimen rise" style="--d:3" aria-labelledby="plateTitle">
   <figure class="plotter">
@@ -533,9 +532,9 @@ class Site:
 <section class="section reveal">
   <div class="sechead"><div><h2>How it works</h2></div><a class="btn quiet" href="/how-it-works/">The details</a></div>
   <div class="steps3">
-    <div><span class="n">1</span><h3>Find</h3><p>Search millions of patents whose protection has ended. Each one links to the official USPTO record it came from.</p></div>
-    <div><span class="n">2</span><h3>Reinvent with Claude</h3><p>One click writes a prompt and a PDF brief for your own Claude: modern directions, a novelty screen and a provisional draft.</p></div>
-    <div><span class="n">3</span><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement. Reserving doesn't stop anyone else from using it.</p></div>
+    <div><h3>Find</h3><p>Search millions of patents whose protection has ended. Each one links to the official USPTO record it came from.</p></div>
+    <div><h3>Reinvent with Claude</h3><p>One click writes a prompt and a PDF brief for your own Claude: modern directions, a novelty screen and a provisional draft.</p></div>
+    <div><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement. Reserving doesn't stop anyone else from using it.</p></div>
   </div>
 </section>
 <section class="section reveal">
@@ -808,8 +807,8 @@ class Site:
   <h1>{E(e["t"])}</h1><p class="asfiled">{asfiled}{owner}</p></div>
   <div class="pactions">
     {"" if e.get("arm") else f'<button class="btn primary" type="button" data-kit="workshop">{icon("spark")}Reinvent with Claude</button>'}
-    <button class="btn secondary" type="button" id="reserveBtn">{icon("flag")}Reserve</button>
-    <a class="btn secondary" href="{L["pdf"]}" {EXT}>{icon("file")}USPTO PDF</a>
+    <button class="btn quiet" type="button" id="reserveBtn">{icon("flag")}Reserve</button>
+    <a class="btn quiet" href="{L["pdf"]}" {EXT}>{icon("file")}USPTO PDF</a>
     <button class="btn quiet" type="button" id="saveBtn" aria-pressed="false">{icon("bookmark")}<span>Save</span></button>
     <button class="btn quiet" type="button" id="copyLink">{icon("link")}Copy link</button>
     <div class="resline" id="resline" aria-live="polite"></div>
@@ -1105,7 +1104,7 @@ class Site:
   <li><span class="n">6</span><b>European patents</b><p>Every European patent and application filed more than 20 years ago, so no European patent from it can still be in force; 25 and a half for medicines and crop protection, which a supplementary protection certificate can extend. From the EPO's linked open data (CC BY 4.0).</p><a href="https://data.epo.org/linked-data/" {EXT}>Linked open EP data</a></li>
   <li><span class="n">7</span><b>Canadian patents</b><p>Every Canadian patent and application whose term has certainly ended: filed from October 1, 1989 and more than 20 years ago (22 for drugs, which a certificate of supplementary protection can extend), or granted under the old law more than 17 years ago. From CIPO's patent data, under the Open Government Licence – Canada.</p><a href="https://open.canada.ca/data/en/dataset/fe1dfbb9-0fc3-42ca-b2a9-6ca4c05dbac9" {EXT}>CIPO patent data</a></li>
   <li><span class="n">8</span><b>Australian patents</b><p>Every Australian standard patent filed more than 21 years ago (26 for pharmaceuticals, which can get an extension), and every innovation and petty patent past its short term. From IP Australia's IPGOD (CC BY 2.5 AU).</p><a href="https://data.gov.au/data/dataset/ipgod2022" {EXT}>IPGOD</a></li>
-  {f'<li><span class="n">9</span><b>All patents</b><p>Every patent and published application in Google Patents Public Data, from more than 100 offices ({big_number(WORLD["n"])} records), searchable in <a href="/all/">All patents</a>. Ones filed long enough ago that no patent from them can still be in force are marked past their term; every other status is shown as published, unchecked.</p><a href="https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data" {EXT}>Google Patents Public Data</a></li>' if WORLD else ""}
+  {f'<li><span class="n">9</span><b>All patents</b><p>Every patent and published application in Google Patents Public Data, from 106 offices ({big_number(WORLD["n"])} records), searchable in <a href="/all/">All patents</a>. Ones filed long enough ago that no patent from them can still be in force are marked past their term; every other status is shown as published, unchecked.</p><a href="https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data" {EXT}>Google Patents Public Data</a></li>' if WORLD else ""}
   <li><span class="n">{10 if WORLD else 9}</span><b>Rechecked and growing</b><p>Each day recently lapsed patents are checked against the newest Gazette, and their families in rotation. New lapses join every week, and the site republishes every two hours.</p></li>
 </ol>
 <div class="section"><div class="sechead"><div><h2>Reinventing with Claude</h2></div></div>

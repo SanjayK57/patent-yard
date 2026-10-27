@@ -160,8 +160,8 @@ export function renderArchive(tpl, r) {
   <h1>${E(r.t)}</h1><p class="asfiled">${E(r.n)}${owner}</p></div>
   <div class="pactions">
     ${arm ? "" : `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>`}
-    <button class="btn secondary" type="button" id="reserveBtn">${icon("flag")}Reserve</button>
-    <a class="btn secondary" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a>
+    <button class="btn quiet" type="button" id="reserveBtn">${icon("flag")}Reserve</button>
+    <a class="btn quiet" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a>
     <button class="btn quiet" type="button" id="saveBtn" aria-pressed="false">${icon("bookmark")}<span>Save</span></button>
     <button class="btn quiet" type="button" id="copyLink">${icon("link")}Copy link</button>
     <div class="resline" id="resline" aria-live="polite"></div>
