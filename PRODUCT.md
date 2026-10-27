@@ -42,6 +42,7 @@ A free register of patents whose protection has ended, each one traced to the of
 ## Brand Commitments
 
 - The name **Patent Yard** stays. The logo and wordmark may change.
+- Visual reference: a clean, light modern product site in the manner of Apple (white and light-gray sections, big headlines, pill buttons, rounded tiles, the drawings shown large). Chosen by Sanjay on 2026-10-27; he rejected dark neon "AI-looking" styling and an engineering-manual look.
 - **Reinvent with Claude** (the kit) and the **Invention studio** stay as features.
 - The home page's **plotted drawing**: a real patent drawing redrawn cell by cell like a pen plotter. It stays as the signature animation.
 - A **light and dark** switch stays, alongside the existing reduced-motion, large-text and original-drawings settings.
