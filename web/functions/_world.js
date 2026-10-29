@@ -102,7 +102,7 @@ export function renderWorld(tpl, r) {
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/all/">All patents</a><span>/</span><span>${E(n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${cls}">${st}</span><span class="badge plain">${E(country)}</span><span class="badge ok" id="vbadge" hidden></span></div>
-  <h1>${E(r.t)}</h1><p class="asfiled">${E(n)}${owner}</p></div>
+  <h1>${E(r.t)}</h1><p class="asfiled"><span class="num">${E(n)}</span>${owner}</p></div>
   <div class="pactions">
     ${r.free ? `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>` : ""}
     <button class="btn quiet" type="button" id="reserveBtn"${r.free ? "" : " hidden"}>${icon("flag")}Reserve</button>

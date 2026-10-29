@@ -53,8 +53,10 @@ function intersect(lists) {
 
 const num = id => { const [c, n, k] = id.split("-"); return `${c} ${n}${k ? " " + k : ""}`; };
 function cardHTML(line) {
-  const [id, t, a, date, c, kind, flags, field] = line.split("\t"), past = +flags & 1, granted = +flags & 2;
-  return `<article class="card acard" data-id="${esc(id)}">${plateHTML(fields[+field] || "other", num(id), `${c} · ${date.slice(0, 4)}`, `<span class="badge ${past ? "expired" : "plain"}">${past ? "Past its term" : granted ? "Granted" : "Application"}</span>`)}`
+  const [id, t, a, date, c, kind, flags, field] = line.split("\t"), past = +flags & 1;
+  // kind codes B, C, E and S are granted patents and U a registered utility model in most offices, even without the flag
+  const granted = +flags & 2 || /^[BCES]/.test(kind), utility = /^U/.test(kind);
+  return `<article class="card acard" data-id="${esc(id)}">${plateHTML(fields[+field] || "other", num(id), `${c} · ${date.slice(0, 4)}`, `<span class="badge ${past ? "expired" : "plain"}">${past ? "Past its term" : utility ? "Registered" : granted ? "Granted" : "Application"}</span>`)}`
     + `<div class="cbody"><span class="fieldname">${esc(country(c))} · ${esc(names[fields[+field]] || "")}</span><h3><a href="/patents/${esc(id)}/">${esc(t)}</a></h3></div>`
     + `<div class="cmeta"><div><small>Published</small><span>${esc(date.slice(0, 4))}</span></div><div><small>Kind</small><span>${esc(kind)}</span></div><div><small>Owner</small><span title="${esc(a)}">${esc(a || "—")}</span></div></div></article>`;
 }

@@ -493,6 +493,8 @@ class Site:
         # the drawing plotted live in the hero: the coolest pick with a detailed drawing
         picks.sort(key=lambda r: -(coolness(r) + (1 if r["fig"].stat().st_size > 12000 else 0)))
         hero = picks[0]["entry"]
+        seen = set()  # one card per title: the same invention is sometimes patented twice
+        picks = [r for r in picks if not (r["entry"]["t"].lower() in seen or seen.add(r["entry"]["t"].lower()))]
         m = self.meta
         total = m["count"] + m.get("archive", 0)
         by_field = m.get("archiveByField", {})
@@ -531,7 +533,7 @@ class Site:
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">
   <div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> Today's picks</span><h2>Worth a look today</h2><p>Refreshed every day. Each one is free to make, use and sell in the US.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
-  <div class="bento">{self.card(picks[0], 0, feat=True)}{"".join(self.card(r, i) for i, r in enumerate(picks[1:9], 1))}</div>
+  <div class="bento">{self.card(picks[1], 1, feat=True)}{"".join(self.card(r, i) for i, r in enumerate(picks[2:10], 2))}</div>
 </section>
 <section class="section reveal">
   <div class="sechead"><div><h2>Explore by field</h2><p>Every patent is filed under the field of its main classification.</p></div><a class="btn quiet" href="/fields/">All fields</a></div>
@@ -809,7 +811,8 @@ class Site:
         rel = f'<section class="section noprint"><div class="sechead"><div><h2>More in {E(field)}</h2></div><a class="btn quiet" href="/fields/{e["ind"]}/">All {E(field)}</a></div><div class="grid">{"".join(self.card(x, 9) for x in related)}</div></section>' if related else ""
         toc = [("overview", "Overview", ""), ("drawings", "Drawings", e["sh"] or len(sheets) or ""), ("claims", "Claims", len(claims) or ""), ("description", "Description", ""), ("history", "Timeline & family", ""), ("sources", "Sources & verification", "")]
         build_badge = f'<span class="badge plain">{meter(e["b"])}{BUILD[e["b"]]} build</span>' if e["b"] else ""
-        asfiled = f"{E(e['n'])} · Title as filed: {E(e['ot'])}" if e["t"] != e["ot"] else E(e["n"])
+        num = f'<span class="num">{E(e["n"])}</span>'
+        asfiled = f"{num} · Title as filed: {E(e['ot'])}" if e["t"] != e["ot"] else num
         body = f"""<div class="page" id="patent" data-id="{pid}" data-n="{E(e["n"])}" data-sheets="{len(sheets)}" data-total="{e["sh"] or len(sheets)}" data-pdf="{L["pdf"]}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/{e["ind"]}/">{E(field)}</a><span>/</span><span>{E(e["n"])}</span></nav>
 <div class="phead">

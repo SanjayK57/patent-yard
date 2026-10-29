@@ -157,7 +157,7 @@ export function renderArchive(tpl, r) {
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/${fk}/">${E(field)}</a><span>/</span><span>${E(r.n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${K[1]}">${K[0]}</span><span class="badge plain">${R ? R.name : "Archive"}</span>${r.a ? "" : '<span class="badge plain">Solo inventor</span>'}<span class="badge ok" id="vbadge" hidden></span></div>
-  <h1>${E(r.t)}</h1><p class="asfiled">${E(r.n)}${owner}</p></div>
+  <h1>${E(r.t)}</h1><p class="asfiled"><span class="num">${E(r.n)}</span>${owner}</p></div>
   <div class="pactions">
     ${arm ? "" : `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>`}
     <button class="btn quiet" type="button" id="reserveBtn">${icon("flag")}Reserve</button>
