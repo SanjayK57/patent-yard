@@ -855,18 +855,43 @@ class Site:
         near = lst[max(0, i - k // 2):i] + lst[i + 1:i + 1 + k]
         return near[:k]
 
+    def world_first_cards(self, k=24):
+        """The newest patents worldwide as plain HTML, so the page reads without JavaScript (readers, AI tools, search
+        engines); assets/js/all.js draws the same markup (cardHTML) and replaces it with the live list."""
+        f = WEB / "world" / "cards" / "c" / "0.bin"
+        if not f.exists():
+            return ""
+        b = f.read_bytes()
+        n = struct.unpack_from("<I", b)[0]
+        offs = struct.unpack_from(f"<{min(n, k) + 1}I", b, 4)
+        base, keys, out = 4 + 4 * (n + 1), list(P.FIELDS), []
+        self.world_ids = set()
+        for i in range(min(n, k)):
+            pid, t, a, date, cc, kind, flags, field = b[base + offs[i]:base + offs[i + 1]].decode().split("\t")
+            past, utility = int(flags) & 1, kind.startswith("U")
+            granted = int(flags) & 2 or kind[:1] in "BCES"
+            label = "Past its term" if past else "Registered" if utility else "Granted" if granted else "Application"
+            fk = keys[int(field)] if field.isdigit() and int(field) < len(keys) else "other"
+            num = " ".join(x for x in pid.split("-") if x)
+            self.world_ids.add(pid)
+            out.append(f'<article class="card acard" data-id="{E(pid)}"><div class="fig plate" data-tag="{E(cc)} · {E(date[:4])}"><span class="over"><span class="badge {"expired" if past else "plain"}">{label}</span></span>'
+                       f'<svg class="fglyph" aria-hidden="true"><use href="#f-{fk}"/></svg><span class="numart">{E(num)}</span></div>'
+                       f'<div class="cbody"><span class="fieldname">{E(COUNTRY.get(cc, cc))} · {E(self.fields.get(fk, ""))}</span><h3><a href="/patents/{E(pid)}/">{E(t)}</a></h3></div>'
+                       f'<div class="cmeta"><div><small>Published</small><span>{E(date[:4])}</span></div><div><small>Kind</small><span>{E(kind)}</span></div><div><small>Owner</small><span title="{E(a)}">{E(a or "—")}</span></div></div></article>')
+        return "".join(out)
+
     def all_patents(self):
         n = WORLD["n"]
         body = f"""<div class="page">
 <div class="sechead"><div><h1>Search {big_number(n)} patents worldwide</h1>
-<p class="lede">Every patent and published application in Google's public patent data, from more than 100 patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
+<p class="lede">Every patent and published application in Google's public patent data, from 106 patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
 <form class="filters" id="wfilters" role="search">
   <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"></div>
   <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc" style="width:auto"><option value="">All countries</option></select>
     <button class="chip" type="button" id="wfree" aria-pressed="false">Past their term only</button></div>
 </form>
-<div class="countbar"><p class="count" id="wcount" aria-live="polite">Loading…</p>{VIEWTOG.format(grid="wgrid")}</div>
-<div class="grid" id="wgrid"></div>
+<div class="countbar"><p class="count" id="wcount" aria-live="polite">{n:,} patents worldwide, newest first.</p>{VIEWTOG.format(grid="wgrid")}</div>
+<div class="grid" id="wgrid">{self.world_first_cards()}</div>
 <div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div>
 <p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. "Past its term" means filed long enough ago that no patent from it can still be in force; every other status is as published, so confirm it with the official register before relying on it.</p>
 </div>"""
@@ -1383,7 +1408,8 @@ class Site:
         items = "".join(f"<sitemap><loc>{SITE}/sitemap-{k}.xml</loc></sitemap>" for k in range(1, maps + 1))
         (DIST / "sitemap.xml").write_text(f'<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{items}</sitemapindex>\n')
         never = "".join(f"Disallow: {p}\n" for p in ("/account/", "/shard/", "/v/", "/tpl/", "/img/p/", "/data/p/", "/api/"))
-        engines = "".join(f"User-agent: {b}\n" for b in ("Googlebot", "Bingbot", "Applebot", "DuckDuckBot"))
+        engines = "".join(f"User-agent: {b}\n" for b in ("Googlebot", "Bingbot", "Applebot", "DuckDuckBot",  # search engines
+                                                          "Google-Extended", "ChatGPT-User", "Claude-User", "Perplexity-User"))  # AI tools reading a page for a person
         (DIST / "robots.txt").write_text(f"{engines}Crawl-delay: 2\n{never}\nUser-agent: *\nCrawl-delay: 10\n{never}Disallow: /patents/\n\nSitemap: {SITE}/sitemap.xml\n")
 
     # -------------------------------------------------------- links
@@ -1392,7 +1418,7 @@ class Site:
         p = html.unescape(u).split("#")[0].split("?")[0]
         m = re.fullmatch(r"/patents/([^/]+)/", p)
         if m:
-            return m.group(1) in self.ids
+            return m.group(1) in self.ids or m.group(1) in getattr(self, "world_ids", ())  # All patents pages come from functions/_world.js
         m = re.fullmatch(r"/img/p/([^/]+)/(\d+)\.png", p)
         if m:
             return 1 <= int(m.group(2)) <= self.ids.get(m.group(1), 0)
