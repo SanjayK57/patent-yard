@@ -1,318 +1,359 @@
 ---
 name: Patent Yard
-description: A free register of expired patents, presented as a quiet modern product site where the patent drawing is the product shot.
+description: A free register of expired patents, built as a precise technical instrument; spatial dark, monospace data, every drawing in a blueprint frame.
 colors:
-  action-blue: "#0A66D8"
-  action-blue-hover: "#0758BD"
-  action-blue-soft: "#E8F1FD"
-  free-green: "#1E7B3C"
-  free-green-soft: "#E6F4EA"
-  abandoned-amber: "#8A5300"
-  abandoned-amber-soft: "#FDF2DE"
-  reserved-violet: "#5B46C9"
-  reserved-violet-soft: "#EFECFB"
-  alert-red: "#C4371F"
-  alert-red-soft: "#FCEBE7"
-  paper: "#FFFFFF"
-  band-gray: "#F5F5F7"
-  sunken-gray: "#EDEDF0"
-  hairline: "#E3E3E8"
-  hairline-strong: "#C9C9CF"
-  ink: "#1D1D1F"
-  ink-secondary: "#424245"
-  ink-tertiary: "#6E6E73"
-  dark-bg: "#000000"
-  dark-tile: "#1C1C1E"
-  dark-sunken: "#2C2C2E"
-  dark-band: "#0F0F10"
-  dark-hairline-strong: "#48484A"
-  dark-ink: "#F5F5F7"
-  dark-ink-secondary: "#D1D1D6"
-  dark-ink-tertiary: "#98989D"
-  dark-link-blue: "#4DA2FF"
-  dark-fill-hover: "#1C74E4"
-  dark-free-green: "#4CC774"
-  dark-abandoned-amber: "#F2B544"
-  dark-reserved-violet: "#A99BFF"
-  dark-alert-red: "#FF7A63"
+  indigo: "#4F46E5"
+  indigo-hover: "#4338CA"
+  indigo-soft: "#EEF0FF"
+  fill: "#0B0B0F"
+  fill-hover: "#26262E"
+  free-emerald: "#0E8A5F"
+  free-emerald-soft: "#E5F6EF"
+  inferred-amber: "#B45309"
+  inferred-amber-soft: "#FEF4E2"
+  reserved-violet: "#6D28D9"
+  reserved-violet-soft: "#F1EAFE"
+  alert-orange: "#C2410C"
+  alert-orange-soft: "#FFF1E8"
+  canvas: "#FAFAFB"
+  surface: "#FFFFFF"
+  surface-raised: "#F4F4F6"
+  sunken: "#ECECF0"
+  hairline: "#E4E4E9"
+  hairline-strong: "#CDCDD5"
+  hair: "rgba(10,10,14,.07)"
+  grid-line: "rgba(11,11,15,.055)"
+  glow: "rgba(99,102,241,.07)"
+  ink: "#0B0B0F"
+  ink-secondary: "#3B3B45"
+  ink-tertiary: "#5F5F6B"
+  dark-canvas: "#070709"
+  dark-surface: "#0F0F13"
+  dark-plate: "#0B0B0E"
+  dark-sunken: "#16161C"
+  dark-hairline: "#1E1E24"
+  dark-hairline-strong: "#2C2C35"
+  dark-hair: "rgba(255,255,255,.06)"
+  dark-grid-line: "rgba(255,255,255,.045)"
+  dark-glow: "rgba(99,102,241,.03)"
+  dark-ink: "#EDEDF1"
+  dark-ink-secondary: "#B9B9C3"
+  dark-ink-tertiary: "#8B8B97"
+  dark-indigo: "#8B8EF7"
+  dark-indigo-hover: "#A5A8FA"
+  dark-fill-hover: "#FFFFFF"
+  dark-free-emerald: "#34D399"
+  dark-inferred-amber: "#FBBF24"
+  dark-reserved-violet: "#C4B5FD"
+  dark-alert-orange: "#FB923C"
 typography:
   display:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(44px, 7vw, 84px)"
+    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
+    fontSize: "clamp(40px, 6.4vw, 76px)"
     fontWeight: 600
-    lineHeight: 1.04
-    letterSpacing: "-0.025em"
+    lineHeight: 1.02
+    letterSpacing: "-0.04em"
   headline:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(36px, 5vw, 56px)"
-    fontWeight: 600
-    lineHeight: 1.07
-    letterSpacing: "-0.022em"
-  section:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
     fontSize: "clamp(28px, 3.4vw, 40px)"
     fontWeight: 600
     lineHeight: 1.1
-    letterSpacing: "-0.02em"
-  title:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Display, Inter, Helvetica Neue, Arial, sans-serif"
-    fontSize: "19px"
+    letterSpacing: "-0.028em"
+  section:
+    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
+    fontSize: "clamp(22px, 2.3vw, 28px)"
     fontWeight: 600
-    lineHeight: 1.22
+    lineHeight: 1.15
     letterSpacing: "-0.022em"
-  lede:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Text, Inter, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(19px, 1.9vw, 24px)"
-    fontWeight: 400
-    lineHeight: 1.38
-    letterSpacing: "-0.016em"
-  body:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Text, Inter, Helvetica Neue, Arial, sans-serif"
-    fontSize: "17px"
-    fontWeight: 400
-    lineHeight: 1.47
-    letterSpacing: "-0.011em"
-    fontFeature: "\"cv11\", \"ss01\""
-  label:
-    fontFamily: "-apple-system, BlinkMacSystemFont, SF Pro Text, Inter, Helvetica Neue, Arial, sans-serif"
-    fontSize: "13px"
+  title:
+    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
+    fontSize: "16.5px"
     fontWeight: 600
-    lineHeight: 1.2
-    letterSpacing: "0"
-  mono:
-    fontFamily: "ui-monospace, SF Mono, Menlo, Consolas, monospace"
-    fontSize: "13px"
+    lineHeight: 1.28
+    letterSpacing: "-0.012em"
+  lede:
+    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
+    fontSize: "clamp(17px, 1.6vw, 19px)"
     fontWeight: 400
-    lineHeight: 1.6
+    lineHeight: 1.5
+  body:
+    fontFamily: "Inter, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.55
+    letterSpacing: "0"
+    fontFeature: "\"cv11\", \"ss01\", \"ss03\""
+  data:
+    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
+    fontSize: "clamp(19px, 1.75vw, 25px)"
+    fontWeight: 600
+    lineHeight: 1.1
+    letterSpacing: "-0.045em"
+    fontFeature: "\"tnum\""
+  code:
+    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
+    fontSize: "11.5px"
+    fontWeight: 500
+    lineHeight: 1.2
+    letterSpacing: "0.01em"
+  label:
+    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
+    fontSize: "10.5px"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "0.08em"
+  eyebrow:
+    fontFamily: "JetBrains Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
+    fontSize: "11.5px"
+    fontWeight: 500
+    lineHeight: 1
+    letterSpacing: "0.12em"
 rounded:
-  sm: "12px"
-  md: "18px"
-  card-lg: "24px"
-  plate: "28px"
-  pill: "980px"
+  micro: "5px"
+  xs: "6px"
+  sm: "8px"
+  md: "12px"
 spacing:
-  gap: "20px"
-  page-inline: "20px"
-  page-inline-wide: "40px"
-  section: "96px"
-  band-block: "64px 72px"
-  container: "1180px"
+  gap: "16px"
+  gutter-mobile: "20px"
+  gutter-desktop: "40px"
+  grid-cell: "20px"
+  fig-bar: "30px"
+  card-body: "14px 16px 12px"
+  panel: "22px"
+  section: "80px"
 components:
   button-primary:
-    backgroundColor: "{colors.action-blue}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.pill}"
-    padding: "8px 18px"
+    backgroundColor: "{colors.fill}"
+    textColor: "{colors.surface}"
+    rounded: "{rounded.sm}"
+    padding: "8px 16px"
     height: "38px"
   button-primary-hover:
-    backgroundColor: "{colors.action-blue-hover}"
-  button-primary-lg:
-    backgroundColor: "{colors.action-blue}"
-    textColor: "{colors.paper}"
-    rounded: "{rounded.pill}"
-    padding: "12px 26px"
-    height: "48px"
+    backgroundColor: "{colors.fill-hover}"
+    textColor: "{colors.surface}"
   button-secondary:
-    backgroundColor: "transparent"
-    textColor: "{colors.action-blue}"
-    rounded: "{rounded.pill}"
-    padding: "8px 18px"
-    height: "38px"
-  button-link:
-    backgroundColor: "transparent"
-    textColor: "{colors.action-blue}"
-    padding: "8px 6px"
-  chip:
-    backgroundColor: "{colors.band-gray}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.pill}"
-    padding: "0 14px"
-    height: "32px"
-  chip-pressed:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-  badge-free:
-    backgroundColor: "{colors.free-green-soft}"
-    textColor: "{colors.free-green}"
-    rounded: "{rounded.pill}"
-    padding: "0 10px"
-    height: "24px"
-  input-field:
-    backgroundColor: "{colors.paper}"
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.sm}"
-    padding: "10px 14px"
-    height: "44px"
-  search-pill:
-    backgroundColor: "{colors.paper}"
+    padding: "8px 16px"
+    height: "38px"
+  button-quiet:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-secondary}"
+    rounded: "{rounded.sm}"
+    padding: "8px 10px"
+    height: "38px"
+  button-quiet-hover:
+    backgroundColor: "{colors.sunken}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.pill}"
-    padding: "6px 6px 6px 20px"
-    width: "640px"
+  chip:
+    backgroundColor: "transparent"
+    textColor: "{colors.ink-secondary}"
+    rounded: "{rounded.sm}"
+    padding: "0 11px"
+    height: "30px"
+  chip-pressed:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+  badge:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink-secondary}"
+    rounded: "{rounded.xs}"
+    padding: "0 8px"
+    height: "22px"
+  input:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.sm}"
+    padding: "9px 12px"
+    height: "40px"
   card:
-    backgroundColor: "{colors.paper}"
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     rounded: "{rounded.md}"
-  tile:
-    backgroundColor: "{colors.band-gray}"
+    padding: "{spacing.card-body}"
+  stat-block:
+    backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.md}"
-    padding: "24px"
-  drawing-plate:
-    backgroundColor: "{colors.paper}"
-    rounded: "{rounded.plate}"
-  brand-mark:
-    backgroundColor: "{colors.ink}"
-    textColor: "{colors.paper}"
-    rounded: "8px"
-    size: "28px"
+    typography: "{typography.data}"
+    padding: "18px 20px"
+  view-toggle:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink-tertiary}"
+    rounded: "{rounded.sm}"
+    padding: "2px"
+    height: "30px"
 ---
 
 # Design System: Patent Yard
 
 ## Overview
 
-**Creative North Star: "The Drawing Is the Product Shot"**
+**Creative North Star: "The Drafting Instrument"**
 
-Patent Yard is a modern product site in the Apple manner. White pages alternate with full-bleed light gray bands, headlines are large and semibold, controls are pills, and containers are softly rounded tiles. Everything recedes so the real USPTO line drawings can be shown big, the way a product site shows its hardware. The home page plots one patent drawing live inside a large rounded frame, with a round magnifier that follows the pointer.
+Patent Yard reads like a precision tool laid over the patent record: a deep spatial dark (#070709 base, light mode mirrors it on #FAFAFB), words in Inter, every number, code and date in JetBrains Mono, hairline borders in place of filled boxes, and every patent drawing pinned inside a blueprint frame with a window bar, a FIG tag and a 20px grid. The drawing is the specimen; the chrome around it is the instrument.
 
-Density is generous on persuasive surfaces (home, how it works) and tighter on working surfaces (browse filters, patent pages, account), but it stays one world: the same tokens, radii and pill controls everywhere, including the archive and worldwide patent pages served by the edge functions. Dark mode follows the system and goes to true black with #1C1C1E tiles; drawings are inverted and screen-blended so they read as white line art.
+Density is calm on the home page (centered hero, command-palette search, one large plotted drawing) and dense on working pages (left-aligned headings, grouped segmented filters with micro-counters, cards that collapse into a table). Motion is spring-like and short: cards lift with a border-luminance shift, numbers strike into place digit by digit, sections reveal once on scroll, and every motion honors both the OS reduced-motion preference and the site's own setting.
 
-The user rejected an earlier standards-manual direction for this one. The confirmed refusals: no neon on black, no glows, no gradient text, no eyebrow labels, no icon-card grids.
+The system was set by Sanjay's Gemini-sourced brief of 2026-10-27, which replaced an earlier Apple-style light pass he rejected as still "AI-looking". It is a dark technical instrument, not neon: the indigo glow behind the hero and search sits at 3% opacity in dark.
 
 **Key Characteristics:**
-- White and #F5F5F7 bands; one blue for links and filled buttons; color otherwise reserved for status.
-- System SF type, semibold, tightly tracked at large sizes.
-- Pills for every control, 18px tiles, a 28px frame for the hero drawing.
-- Real patent drawings, multiply-blended on white, inverted in dark mode.
-- Thin translucent sticky header; flat surfaces, soft shadows only on lift and overlays.
+- Spatial dark by default with a true light mirror; theme follows the system unless the visitor picks.
+- Inter for words, JetBrains Mono for numbers, codes, dates and short uppercase instrument labels.
+- Hairline borders (1px) and hairline dividers inside containers; shadows only on hover and floating layers.
+- Blueprint frame (30px window bar with three dots, FIG tag, 20px grid) around every patent drawing.
+- One filled button per action group: white in dark, black in light.
+- Honest data only: every figure on screen is counted from the catalog.
 
 ## Colors
 
-A near-monochrome Apple palette: white, cool grays and near-black ink, with a single blue as the action color and four muted status hues.
+A near-monochrome instrument palette: graphite surfaces, one indigo voice for links and focus, and status colors that only ever mean status.
 
 ### Primary
-- **Action Blue** (action-blue): links, filled pill buttons, focus rings, the selected command-palette row, chart bars and the reading-progress bar. Hover deepens to action-blue-hover. In dark mode, links lift to dark-link-blue while filled buttons keep action-blue so white labels stay legible.
-- **Pale Blue Wash** (action-blue-soft): highlighted claims, the selected task tile, the archive hint strip and the source link card.
+- **Signal Indigo** (light `indigo`, dark `dark-indigo`): links, focus rings, the `//` in eyebrows, active TOC rail, claim numbers of independent claims, selected task outlines, bar-chart fills. Never a button fill.
+- **Indigo Wash** (`indigo-soft`, in dark an indigo at 14%): focus halo around inputs and search, highlighted claims, archive hint strip.
+- **Instrument Fill** (`fill` / `fill-hover`; in dark it inverts to `dark-ink` with `dark-fill-hover`): the one filled primary button, the brand mark tile, the skip link.
 
 ### Secondary
-- **Free Green** (free-green, on free-green-soft): only for the "free to use" status (lapsed and expired badges), success ticks and success toasts.
+- **Free Emerald** (`free-emerald`, dark `dark-free-emerald`): the status dot for lapsed and expired patents (free to use), success toasts, check marks in "Is it free to use?", the "+N this week" stat tag.
 
 ### Tertiary
-- **Abandoned Amber** (abandoned-amber, on its soft wash): abandoned status, warnings and reservation notes.
-- **Reserved Violet** (reserved-violet, on its soft wash): reserved status and the reserved mark on cards.
-- **Alert Red** (alert-red, on its soft wash): errors and the reinstated-patent notice. Never used for lapsed status.
+- **Inferred Amber** (`inferred-amber`, dark `dark-inferred-amber`): "Likely abandoned" (an inference, not a fact) and warnings.
+- **Reserved Violet** (`reserved-violet`, dark `dark-reserved-violet`): the reserved marker on cards.
+- **Alert Orange** (`alert-orange`, dark `dark-alert-orange`): errors, the password meter, "pulled from the register" notices. (The CSS variable is named `--lapsed`; it is not used for lapsed patents, which are emerald.)
 
 ### Neutral
-- **Paper** (paper): page and card background; the plate behind every drawing.
-- **Band Gray** (band-gray): full-bleed alternating section bands, tiles, chips, panels and the footer.
-- **Sunken Gray** (sunken-gray): hover state for gray tiles and chips, empty chart tracks.
-- **Hairlines** (hairline, hairline-strong): card borders and section dividers; the strong line for input strokes and dependent-claim rules.
-- **Ink** (ink, ink-secondary, ink-tertiary): headlines and primary text; body prose; supporting and meta text.
-- **Dark set** (dark-*): black page, #1C1C1E tiles and cards, #2C2C2E sunken and hairlines. Shadows other than the overlay shadow are removed in dark mode.
+- **Canvas** (`canvas` / `dark-canvas`): page background.
+- **Surface** (`surface` / `dark-surface`): cards, panels, filter bar, dialogs, stat band.
+- **Plate** (`surface` / `dark-plate`): the paper under drawings; with the "original drawings" setting it is always white.
+- **Sunken** (`sunken` / `dark-sunken`): hover and pressed backgrounds for nav, quiet buttons, segmented controls, table rows.
+- **Hairline / Hairline Strong** (`hairline`, `hairline-strong` and dark pairs): container borders; pressed-chip, input and specimen-frame borders.
+- **Hair** (`hair` / `dark-hair`): the 6-7% dividers inside a container (stat cells, card meta cells, facts grid).
+- **Grid Line** (`grid-line` / `dark-grid-line`): the 20px blueprint grid.
+- **Ink, Ink Secondary, Ink Tertiary**: headings and values, body copy, captions and labels.
 
 ### Named Rules
-**The One Blue Rule.** Blue is the only interactive color. Status hues never act as buttons, and blue never marks a status.
+**The Status-Only Color Rule.** Emerald, amber, violet and orange appear only as status: a dot, a check, a tag, a notice. They never decorate.
 
-**The Green Means Free Rule.** Green appears only where a patent is free to use or an action succeeded.
+**The Faint Glow Rule.** The indigo glow is ambient and near invisible (7% light, 3% dark), placed only behind the hero, the hero search, the plotter, the sign-in card and the CTA band. It is never a neon edge.
 
 ## Typography
 
-**Display Font:** SF Pro Display via the system stack (Inter, Helvetica Neue, Arial fallbacks)
-**Body Font:** SF Pro Text via the system stack (same fallbacks)
-**Label/Mono Font:** ui-monospace / SF Mono, only for the generated Claude prompt
+**Display Font:** Inter (with -apple-system, Helvetica Neue, Arial)
+**Body Font:** Inter, with stylistic sets cv11, ss01, ss03
+**Label/Mono Font:** JetBrains Mono (with ui-monospace, SF Mono, Menlo)
 
-**Character:** One family in two optical sizes, semibold for every heading, negative tracking that grows with size. Numbers use tabular figures wherever they align or count.
+**Character:** Inter carries every word at tight negative tracking for headings; JetBrains Mono is the instrument readout, reserved for what a machine would print.
 
 ### Hierarchy
-- **Display** (600, clamp(44px, 7vw, 84px), 1.04, -0.025em): the home hero headline only, max 13ch, centered.
-- **Headline** (600, clamp(36px, 5vw, 56px), 1.07): page titles; patent titles use clamp(32px, 4.4vw, 50px) at max 22ch.
-- **Section** (600, clamp(28px, 3.4vw, 40px), 1.1): section heads, paired with a tertiary-ink paragraph at max 62ch.
-- **Title** (600, 16 to 24px, 1.2 to 1.3): card titles (19px, 17.5px in grids), tile and step titles.
-- **Lede** (400, clamp(19px, 1.9vw, 24px), 1.38, tertiary ink): the subhead under the hero and page heads.
-- **Body** (400, 17px, 1.47; long prose 16.5 to 17px at 1.6 to 1.7, max 76ch).
-- **Label** (600, 12 to 13px, no tracking, sentence case): badges, block headings on patent pages, footer column labels.
-- **Stat figures** (600, clamp(26px, 2.7vw, 38px), tabular): the statband numbers.
+- **Display** (600, clamp(40px, 6.4vw, 76px), 1.02, -0.04em): the home hero headline only, max 15ch, centered.
+- **Headline** (600, clamp(28px, 3.4vw, 40px), 1.1): page titles in the left-aligned section head; patent titles run slightly larger (clamp(28px, 3.6vw, 42px), max 24ch).
+- **Section** (600, clamp(22px, 2.3vw, 28px), 1.15): section heads; the lead card title uses clamp(22px, 2.2vw, 28px).
+- **Title** (600, 16.5px, 1.28): card titles.
+- **Lede** (400, clamp(17px, 1.6vw, 19px), 1.5, ink-tertiary): hero subhead, max 56-58ch.
+- **Body** (400, 16px, 1.55): prose at 1.7 line height, descriptions at 15.5px / 1.75, max 68-80ch.
+- **Data** (Mono 600, clamp(19px, 1.75vw, 25px), -0.045em, tabular): metric block figures.
+- **Code** (Mono 500, 11.5px): patent numbers, claim numbers, counts, dates, keyboard keys.
+- **Label** (Mono 500, 10-10.5px, 0.06-0.1em, uppercase): filter row labels, card meta labels, fact labels, FIG tags, block headings.
+- **Eyebrow** (Mono 500, 11.5px, 0.12em, uppercase): "PATENT YARD // SECTION" above page headings, with the `//` in indigo.
 
 ### Named Rules
-**The Semibold Headline Rule.** Every heading is weight 600. Tracking runs from -0.011em at body size to -0.025em at display size and never tighter.
+**The Mono-For-Machines Rule.** JetBrains Mono is for numbers, patent numbers and codes, dates, counts, keyboard keys, and short uppercase instrument labels. Never for names (patent titles, field names, owners) or sentences. Exception: a prompt shown as terminal input (`$ ` prefix, prompt textarea) counts as code.
 
-**The Sentence Case Rule.** Labels are sentence case at zero tracking. No uppercase tracked labels.
+**The Tabular Rule.** Every number set in mono uses tabular figures so columns and counters do not jitter.
 
 ## Layout
 
-A single centered column, max 1180px (820px for narrow reading pages), with 20px side padding, 40px from 900px up. Sections sit 96px apart; full-bleed gray bands extend to the viewport edges behind the column (64px top, 72px bottom padding) while content stays in the column. The grid gap is 20px everywhere.
+Fluid page with a 20px gutter (40px from 900px), content capped at 1240px (820px for narrow reading pages). A sticky 56px header blurs the canvas beneath it. Sections stack at 80px; working pages start 36px under the header with left-aligned section heads (eyebrow, headline, 68ch subhead, action on the right). Only the home hero is centered.
 
-Cards flow in auto-fill grids (min 250px), a horizontal snap rail on home (4 across, 3 below 1100px, 1.6 below 760px, 82% on phones), and a 1/2/3 column wall with a full-width featured card. Patent pages use a 190px sticky contents rail beside the reading column, collapsing to a horizontal scroller below 980px. Breakpoints observed: 520, 640, 700, 820, 900, 980, 1100, 1180px. Below 900px the header nav moves into a full-width dropdown; below 720px dialogs go full screen.
+- **Bento:** four columns (three under 1100px, two under 820px, one under 520px), 16px gap, dense flow. The lead card spans the full row as a split card: text and meta on the left, the blueprint drawing on the right (flex 1.15); under 640px it stacks with the drawing on top.
+- **Card grid:** auto-fill columns of at least 250px; the view toggle flips the same grid into a table (one row per card, drawing hidden, field name 200px, meta 340px; both hide under 860px). The choice is remembered per grid.
+- **Metric band:** auto-fit columns of at least 170px in one bordered container, cells divided by hair lines; two columns under 820px, the first cell spanning when there are five.
+- **Patent page:** 190px sticky TOC beside the content (becomes a horizontal tab strip under 980px); the overview splits drawing and facts.
+- **Filters:** one bordered panel of labeled rows (84px mono label + chips); under 700px only the search row shows until "Filters" opens the rest.
+- Scroll padding is 72px so anchors clear the sticky header.
 
 ## Elevation & Depth
 
-Flat by default. Depth comes from tone (white on gray, gray on white) and 1px hairlines. Shadows appear on the hero search pill, on cards when they lift, and on overlays (menus, suggestions, dialogs, toasts). Dark mode drops all shadows except the overlay shadow.
+Flat at rest, separated by hairlines and tonal steps (canvas, surface, sunken). Shadows appear in three places only: a card or tile on hover, floating layers (menus, suggestions, dialogs, toasts, magnifier), and the framed hero specimens (plotter, hero search, sign-in card) where a soft glow sits under them. In dark the small shadow is removed entirely and the larger ones become pure black falloffs.
 
 ### Shadow Vocabulary
-- **Soft lift** (`0 2px 6px rgba(0,0,0,.04), 0 12px 32px -12px rgba(0,0,0,.12)`): the hero search pill, the drawing frame, card hover.
-- **Overlay** (`0 4px 12px rgba(0,0,0,.06), 0 30px 70px -20px rgba(0,0,0,.28)`): menus, suggestions, dialogs, toasts, the magnifier.
-- **Hairline ring** (`0 0 0 1px` hairline): framing the drawing plate and big figures instead of a border.
+- **Rest hint** (`box-shadow: 0 1px 2px rgba(11,11,15,.04)`; none in dark): pressed chips.
+- **Lift** (`box-shadow: 0 1px 2px rgba(11,11,15,.04), 0 12px 32px -16px rgba(11,11,15,.18)`; dark `0 16px 40px -20px rgba(0,0,0,.8)`): card, tile, gallery and opportunity hover.
+- **Float** (`box-shadow: 0 2px 6px rgba(11,11,15,.06), 0 32px 72px -24px rgba(11,11,15,.32)`; dark `0 32px 80px -24px rgba(0,0,0,.9)`): menus, suggestions, dialogs, toasts, magnifier.
+- **Specimen glow** (`box-shadow: 0 40px 100px -40px var(--glow), var(--shadow)`): the plotter frame and the sign-in card.
 
 ### Named Rules
-**The Lift on Intent Rule.** A surface gains a shadow only when it floats (overlays) or responds to the pointer (cards). Resting tiles are flat.
+**The Lift-On-Touch Rule.** Containers rest flat. On hover a card rises 4px (tiles 2px) and its border brightens toward ink at 20%; the shadow follows the lift, never the reverse.
 
 ## Shapes
 
-Continuous soft rounding. Controls are full pills (980px); tiles, cards, panels and filters 18px; inputs, small tiles and fees 12px; the auth card and prompt card 24px; the hero drawing frame 28px; dialogs 22px. Thumbnails inside rows use 10px. Avatars, step numbers, icon buttons, the magnifier and status dots are circles. Icons are 16 to 18px stroked SVG (1.7 stroke, round caps) from one sprite.
+Gently squared: 12px for containers (cards, panels, filter bar, metric band, dialogs, frames), 8px for controls (buttons, chips, inputs, toggles, small cards), 6px for badges and inner pressed segments, 5px for kbd keys, stat tags and dependent-claim chips. Circles only for status dots, avatars and spinners. Borders are always 1px; dashed only for empty states. Containers clip their contents so inner dividers meet the rounded edge.
 
 ## Components
 
 ### Buttons
-Quiet pills with one filled call to action per group.
-- **Shape:** full pill (980px), 38px tall; small 30px; large 48px.
-- **Primary:** action-blue fill, white 15px medium label; hover deepens; press scales to 0.97.
-- **Secondary:** blue 1px outline and blue label; fills blue on hover.
-- **Link / quiet:** blue text with a trailing "›" where it leads on; underlines on hover.
-- **Loading:** label hidden, a 15px spinning ring centered.
+Quiet, compact, one loud button per group.
+- **Shape:** 8px radius, 38px tall (sm 30px, lg 46px), Inter 500 14px.
+- **Primary:** Instrument Fill with its inverse ink (black on light, white on dark), a 1px inner top highlight; hover lifts 1px and shifts to fill-hover. Press scales to .97. Loading swaps the label for a spinner.
+- **Secondary:** surface with a hairline-strong border; hover darkens the border and lifts 1px.
+- **Quiet:** transparent, ink-secondary; hover takes the sunken background. **Link:** the quiet button in indigo, usually ending in "›".
+- **Focus:** 2px indigo outline, 2px offset, everywhere.
 
-### Chips
-- **Style:** band-gray pill, 32px, ink 14px medium; hover goes to sunken gray. On gray filter panels chips flip to white.
-- **State:** pressed chips invert to ink fill with page-color text. Field chips on home carry a tabular count in tertiary ink.
+### Chips (segmented filters)
+- **Style:** text buttons without a border, 30px, Inter 500 13.5px, ink-secondary, each followed by a mono 11px micro-counter in ink-tertiary.
+- **State:** hover takes sunken; pressed (`aria-pressed="true"`) takes surface, a hairline-strong border and the rest hint, like a selected segment. Rows of chips sit after a mono uppercase row label. Small chips (22px, mono) are read-only tags.
 
-### Status badges
-24px pills, 12px semibold, a 6px currentColor dot, status hue on its soft wash (free green, abandoned amber, reserved violet; plain and info badges drop the dot).
+### Status Badges
+22px, 6px radius, hairline border over a 92% surface with a 6px blur, Inter 500 11.5px, led by a 6px solid dot with a 3px soft ring in the status color (emerald for lapsed and expired, amber for likely abandoned, violet for reserved).
 
 ### Cards / Containers
-- **Corner Style:** 18px.
-- **Background:** white with a 1px hairline (borderless on gray bands); the drawing sits on a white plate at 4:3 with 18px inset.
-- **Shadow Strategy:** lifts 3px with the soft-lift shadow on hover; the drawing scales to 1.04.
-- **Internal Padding:** 16px 18px body, a three-column meta row below in 12 to 13px.
-- **Featured card:** drawing and text side by side, 420px minimum height, a pale "Modern angle" note.
-- **Tiles and panels:** band-gray fill, 18px radius, 24px padding, no border.
+- **Corner Style:** 12px.
+- **Background:** surface; the drawing area sits on plate.
+- **Shadow Strategy:** flat at rest, Lift on hover (see Elevation).
+- **Border:** hairline; hover brightens it toward ink.
+- **Internal Padding:** body 14px 16px 12px; the meta row below is three hair-divided cells (mono uppercase 10px labels over Inter 500 values: Build or Filed, Lapsed or Term ended, Owner).
+- **Drawing:** a blueprint frame (see Signature) at 4:3, the status badge top-left and a sheet count bottom-right; the image scales 1.05 on hover.
+- **Lead card:** the same card split horizontally, title at section size, plus a "Modern angle" note (mono indigo label over surface-raised).
 
 ### Inputs / Fields
-- **Style:** white, 1px strong hairline, 12px radius, 44px minimum height.
-- **Focus:** blue border plus a 4px blue halo at 22% (the hero search pill uses 20%). Elsewhere a 3px focus outline at 55% blue.
+- **Style:** surface, hairline-strong border, 8px radius, 40px tall (42px in the filter search). Inside the filter panel inputs sit on canvas.
+- **Focus:** border turns indigo with a 3px indigo-wash halo; no outline.
+- **Hero search:** a command palette: 12px radius, search icon, mono ⌘K keys, the primary Search button inside the right edge, faint glow beneath; focus adds a 4px indigo-wash ring.
 
 ### Navigation
-A 52px sticky header at 80% page color with saturate-and-blur behind it and a 70% hairline. Brand at left: the house mark (two strokes) on a 28px ink square with 8px corners, then "Patent Yard" in 17px semibold. Center links are 13.5px secondary ink, current page in semibold ink. A gray pill search field with a "/" hint sits right (hidden below 1180px), then the theme toggle and account pill. The footer is a band-gray block with sentence-case column labels and 12.5px tertiary links.
+Sticky 56px header on a 78% canvas with a 16px blur and a hairline bottom. Brand mark is a 28px fill tile that tilts on hover. Nav links are Inter 500 13.5px in ink-tertiary, 6px radius; hover and current page take sunken with ink. A compact search with a "/" key and an icon theme toggle sit right. Under 1080px the nav collapses into a full-width drawer of 17px rows divided by hairlines; the current page turns indigo.
 
-### Drawing plotter (signature)
-The home hero frame: a white plate with 28px corners and a hairline ring, 16:9 (square on phones, 660px max height). The patent drawing is plotted onto a canvas as if drawn by pen; on pointers wider than 900px a 220px circular magnifier at 3x follows the cursor with a 44px blue ring marking the spot.
+### Metric Blocks
+One bordered surface container split into hair-divided cells: a small mono tag (with an emerald dot, or emerald text for a counted weekly delta), the figure in Data type, and an Inter 13px caption. Figures carry a vertical ink gradient (ink at 30% to ink at 55%) clipped to the text, and strike into place digit by digit when they enter view. Cells are links; hover takes sunken.
 
-### Motion
-One easing curve, cubic-bezier(.25, 1, .5, 1). Hero elements rise 16px in sequence (80ms stagger, 0.9s). Sections ease up 28px as they scroll in. Cards lift on hover and enter grids with a 30ms stagger. Big numbers strike into place digit by digit, never tweened. Dialogs fade and rise with a dimmed backdrop; page navigations cross-fade. Everything collapses to static under reduced motion or the site's own motion setting.
+### View Toggle
+A 2px-padded segmented control (hairline border, surface) with two 30 x 26px icon buttons, cards and rows; the pressed one takes sunken and ink. It sits at the right of the count bar, opposite the mono result count.
+
+### Blueprint Frame (signature)
+Every patent drawing (home plotter, cards, patent page figure, gallery, opportunity cards, prompt card) sits on plate with a 1px grid-line lattice every 20px, under a 30px window bar: three 7px dots on the left, a mono 10px uppercase FIG tag on the right ("FIG. 1", "FIG. 1 · US 6,530,510 B2", "No drawing"), the bar at 86% surface with a hairline bottom. In dark the drawing is inverted and screened onto the plate; the "original drawings" setting restores white paper. On the home page the drawing is redrawn cell by cell like a pen plotter, with a magnifier loupe on hover (hidden under 700px).
+
+### Number Plate (no drawing on file)
+When a patent has no drawing, the blueprint frame stays and carries the patent's field glyph (a 30px 1.2-stroke line icon from the `#f-<field>` sprite, ink-tertiary, indigo and 1.08 scale on card hover) above its number in mono 15-18px. The FIG tag reads "No drawing" (archive cards: "US · no drawing").
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** show the real patent drawing large, on a white plate, multiply-blended (inverted and screen-blended in dark mode).
-- **Do** alternate white sections with full-bleed band-gray bands at 96px section spacing.
-- **Do** keep exactly one filled blue pill per action group; pair it with a link-style "›" action.
-- **Do** set every heading at weight 600 with tracking between -0.011em and -0.025em.
-- **Do** use tabular figures for counts, dates, claim numbers and stats.
-- **Do** keep green for "free to use" and success only.
+- **Do** set every patent number, code, count and date in JetBrains Mono with tabular figures, and every name and sentence in Inter.
+- **Do** put every patent drawing in the blueprint frame: window bar with three dots, FIG tag, 20px grid on plate.
+- **Do** use a single primary (filled) button per action group; everything else is secondary, quiet or link.
+- **Do** separate cells inside a container with hair lines (6-7%), not gaps or nested boxes.
+- **Do** show filter options as segmented chips with mono micro-counters of real counts, grouped under mono row labels.
+- **Do** offer the card/table toggle on every result grid and remember the choice.
+- **Do** keep the eyebrow "PATENT YARD // SECTION" above page headings on section pages; it is a recorded exception requested in the user's brief, limited to that one form.
+- **Do** honor reduced motion from both the OS and the site setting: no strike, no reveal, no plotting, no lift.
 
 ### Don't:
-- **Don't** use gradients on surfaces, buttons or text. Gradients appear only as functional fade masks on scrolling rows and in the loading shimmer.
-- **Don't** use glows, neon on black, or colored shadows.
-- **Don't** put eyebrow or kicker labels above headlines, and don't use uppercase tracked labels.
-- **Don't** track headlines tighter than -0.025em or set them heavier than 600.
-- **Don't** build icon-card grids; tiles carry drawings or text, not decorative icons.
-- **Don't** put two filled buttons side by side.
+- **Don't** set names, titles, owners or sentences in mono.
+- **Don't** invent trends, deltas, activity or "live" claims; a tag like "+N this week" appears only when counted from the catalog.
+- **Don't** invent or generate an image for a patent without a drawing; use its field glyph and number plate.
+- **Don't** fill buttons with indigo or status colors; the filled button is white in dark and black in light.
+- **Don't** use status colors decoratively, or raise the indigo glow above its faint ambient level.
+- **Don't** extend the gradient-filled figures beyond the metric blocks; they are a recorded exception from the user's brief, not a text treatment for headings or other numbers.
+- **Don't** center headings on working pages; only the home hero is centered.

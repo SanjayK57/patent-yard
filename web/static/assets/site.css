@@ -268,7 +268,7 @@ footer.foot .fine a{color:var(--ink-2)}
 .dimline{display:none}
 .platefacts{margin-top:22px;display:grid;justify-items:center;text-align:center;gap:6px}
 .platefacts h2{font-size:clamp(20px,2.2vw,26px)}
-.platefacts>p{font:400 13px/1.5 var(--mono);color:var(--ink-3)}
+.platefacts>p{font:400 15px/1.5 var(--body);color:var(--ink-3)}
 .platefacts .rowbtns{justify-content:center;margin-top:12px}
 @media (max-width:700px){.loupe{display:none}}
 /* metric blocks: hairline-separated telemetry */
@@ -791,7 +791,7 @@ textarea.prompt{min-height:240px;font:12.5px/1.65 var(--mono);color:var(--ink-2)
   background-color:var(--plate);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:20px 20px;transition:color .3s}
 .gallery figure.later a:hover{color:var(--accent)}
 .gallery figure.later b{font:600 15px/1.2 var(--display);color:var(--ink)}
-.gallery figure.later span:not(.pulse){font:400 11.5px var(--mono)}
+.gallery figure.later span:not(.pulse){font:400 13px var(--body)}
 .nofig.later b{display:flex;align-items:center}
 
 /* ---------------------------------------------------------------- features: palette, bookmarks, ticker, insights, viewer */

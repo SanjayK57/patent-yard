@@ -1,177 +1,222 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-27T17:42:34+00:00",
+  "generatedAt": "2026-10-29T17:37:46+00:00",
   "title": "Design System: Patent Yard",
   "extensions": {
     "colorMeta": {
-      "action-blue": {
+      "indigo": {
         "role": "primary",
-        "displayName": "Action Blue",
-        "canonical": "#0A66D8",
+        "displayName": "Signal Indigo",
+        "canonical": "#4F46E5",
         "tonalRamp": [
-          "#032349",
-          "#063E84",
-          "#095ABE",
-          "#1076F4",
-          "#4B97F7",
-          "#85B9F9",
-          "#BBD8FC",
-          "#E7F1FE"
+          "#0D0943",
+          "#171179",
+          "#2119AE",
+          "#2F24E0",
+          "#625AE8",
+          "#958FEF",
+          "#C3C0F6",
+          "#EAE9FC"
         ]
       },
-      "action-blue-hover": {
+      "indigo-hover": {
         "role": "primary",
-        "displayName": "Action Blue, Pressed",
-        "canonical": "#0758BD",
+        "displayName": "Signal Indigo, Pressed",
+        "canonical": "#4338CA",
         "tonalRamp": [
-          "#03224A",
-          "#053E85",
-          "#0759C0",
-          "#0E75F6",
-          "#4997F8",
-          "#84B9FA",
-          "#BAD8FC",
-          "#E6F1FE"
+          "#13103C",
+          "#231D6D",
+          "#332A9D",
+          "#453ACA",
+          "#726AD7",
+          "#A09AE4",
+          "#CAC7F0",
+          "#ECEBFA"
         ]
       },
-      "action-blue-soft": {
+      "indigo-soft": {
         "role": "primary",
-        "displayName": "Pale Blue Wash",
-        "canonical": "#E8F1FD",
+        "displayName": "Indigo Wash",
+        "canonical": "#EEF0FF",
         "tonalRamp": [
-          "#062246",
-          "#0B3D7F",
-          "#1058B7",
-          "#1973EB",
-          "#5195F0",
-          "#8AB8F5",
-          "#BDD7F9",
-          "#E8F1FD"
+          "#040C49",
+          "#071583",
+          "#0A1FBD",
+          "#122CF3",
+          "#4C60F6",
+          "#8693F9",
+          "#BBC3FB",
+          "#E7E9FE"
         ]
       },
-      "free-green": {
+      "fill": {
+        "role": "primary",
+        "displayName": "Instrument Fill",
+        "canonical": "#0B0B0F",
+        "tonalRamp": [
+          "#20202C",
+          "#3A3A4F",
+          "#545473",
+          "#6F6F95",
+          "#9292AF",
+          "#B5B5C9",
+          "#D6D6E1",
+          "#F0F0F4"
+        ]
+      },
+      "fill-hover": {
+        "role": "primary",
+        "displayName": "Instrument Fill, Hover",
+        "canonical": "#26262E",
+        "tonalRamp": [
+          "#23232A",
+          "#3E3E4B",
+          "#5A5A6D",
+          "#76768E",
+          "#9898AA",
+          "#B9B9C5",
+          "#D8D8DF",
+          "#F1F1F3"
+        ]
+      },
+      "free-emerald": {
         "role": "secondary",
-        "displayName": "Free Green",
-        "canonical": "#1E7B3C",
+        "displayName": "Free Emerald",
+        "canonical": "#0E8A5F",
         "tonalRamp": [
-          "#0F3E1E",
-          "#1B6F36",
-          "#27A04E",
-          "#36CE67",
-          "#67DA8C",
-          "#98E6B2",
-          "#C6F1D4",
-          "#EAFAF0"
+          "#074530",
+          "#0D7D56",
+          "#12B57C",
+          "#1CE8A1",
+          "#54EEB8",
+          "#8BF3CF",
+          "#BEF8E4",
+          "#E8FDF5"
         ]
       },
-      "free-green-soft": {
+      "free-emerald-soft": {
         "role": "secondary",
-        "displayName": "Free Green Wash",
-        "canonical": "#E6F4EA",
+        "displayName": "Free Emerald Wash",
+        "canonical": "#E5F6EF",
         "tonalRamp": [
-          "#173520",
-          "#2A6039",
-          "#3D8A53",
-          "#51B36D",
-          "#7CC591",
-          "#A6D8B5",
-          "#CDE9D5",
-          "#EDF7F0"
+          "#14392A",
+          "#23664B",
+          "#33946C",
+          "#45BF8D",
+          "#73CEA9",
+          "#A0DEC5",
+          "#CAEDDE",
+          "#ECF8F3"
         ]
       },
-      "abandoned-amber": {
+      "inferred-amber": {
         "role": "tertiary",
-        "displayName": "Abandoned Amber",
-        "canonical": "#8A5300",
+        "displayName": "Inferred Amber",
+        "canonical": "#B45309",
         "tonalRamp": [
-          "#4C2E00",
-          "#8A5300",
-          "#C77800",
-          "#FF9B05",
-          "#FFB442",
-          "#FFCC80",
-          "#FFE3B8",
-          "#FFF5E5"
+          "#492204",
+          "#833D07",
+          "#BD570A",
+          "#F37312",
+          "#F6954C",
+          "#F9B886",
+          "#FBD7BB",
+          "#FEF1E7"
         ]
       },
-      "abandoned-amber-soft": {
+      "inferred-amber-soft": {
         "role": "tertiary",
-        "displayName": "Amber Wash",
-        "canonical": "#FDF2DE",
+        "displayName": "Inferred Amber Wash",
+        "canonical": "#FEF4E2",
         "tonalRamp": [
-          "#483004",
-          "#825708",
-          "#BC7D0B",
-          "#F1A213",
-          "#F4B94D",
-          "#F8D087",
-          "#FBE4BC",
+          "#493004",
+          "#835707",
+          "#BD7D0A",
+          "#F3A212",
+          "#F6B94C",
+          "#F9D086",
+          "#FBE4BB",
           "#FEF6E7"
         ]
       },
       "reserved-violet": {
         "role": "tertiary",
         "displayName": "Reserved Violet",
-        "canonical": "#5B46C9",
+        "canonical": "#6D28D9",
         "tonalRamp": [
-          "#18113B",
-          "#2B1F6B",
-          "#3E2D9A",
-          "#543EC7",
-          "#7E6DD4",
-          "#A89CE2",
-          "#CEC8EF",
-          "#EEEBF9"
+          "#200B41",
+          "#3A1575",
+          "#541EA9",
+          "#6F2BD9",
+          "#925FE3",
+          "#B593EC",
+          "#D6C2F4",
+          "#F0E9FB"
         ]
       },
       "reserved-violet-soft": {
         "role": "tertiary",
-        "displayName": "Violet Wash",
-        "canonical": "#EFECFB",
+        "displayName": "Reserved Violet Wash",
+        "canonical": "#F1EAFE",
         "tonalRamp": [
-          "#170D3F",
-          "#2A1872",
-          "#3D23A4",
-          "#5131D4",
-          "#7C63DE",
-          "#A696E9",
-          "#CDC4F3",
-          "#EDEAFB"
+          "#1C0449",
+          "#320783",
+          "#490ABD",
+          "#6012F3",
+          "#874CF6",
+          "#AE86F9",
+          "#D2BBFB",
+          "#EFE7FE"
         ]
       },
-      "alert-red": {
+      "alert-orange": {
         "role": "tertiary",
-        "displayName": "Alert Red",
-        "canonical": "#C4371F",
+        "displayName": "Alert Orange",
+        "canonical": "#C2410C",
         "tonalRamp": [
-          "#42130A",
-          "#772113",
-          "#AC301B",
-          "#DD4227",
-          "#E5705C",
-          "#EE9E91",
-          "#F5C9C1",
-          "#FCECE9"
+          "#481804",
+          "#822B08",
+          "#BB3F0C",
+          "#F05414",
+          "#F47E4D",
+          "#F8A887",
+          "#FBCEBC",
+          "#FEEEE7"
         ]
       },
-      "alert-red-soft": {
+      "alert-orange-soft": {
         "role": "tertiary",
-        "displayName": "Red Wash",
-        "canonical": "#FCEBE7",
+        "displayName": "Alert Orange Wash",
+        "canonical": "#FFF1E8",
         "tonalRamp": [
-          "#441408",
-          "#7A240F",
-          "#B13416",
-          "#E34621",
-          "#EA7357",
-          "#F1A18E",
-          "#F7CAC0",
-          "#FCECE8"
+          "#491F04",
+          "#833707",
+          "#BD500A",
+          "#F36A12",
+          "#F68E4C",
+          "#F9B386",
+          "#FBD4BB",
+          "#FEF0E7"
         ]
       },
-      "paper": {
+      "canvas": {
         "role": "neutral",
-        "displayName": "Paper",
+        "displayName": "Drafting Paper",
+        "canonical": "#FAFAFB",
+        "tonalRamp": [
+          "#22222A",
+          "#3D3D4C",
+          "#58586E",
+          "#747490",
+          "#9696AB",
+          "#B8B8C6",
+          "#D7D7DF",
+          "#F1F1F4"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface White",
         "canonical": "#FFFFFF",
         "tonalRamp": [
           "#262626",
@@ -184,25 +229,220 @@
           "#F2F2F2"
         ]
       },
-      "band-gray": {
+      "surface-raised": {
         "role": "neutral",
-        "displayName": "Band Gray",
-        "canonical": "#F5F5F7",
+        "displayName": "Raised Gray",
+        "canonical": "#F4F4F6",
         "tonalRamp": [
           "#22222A",
-          "#3D3D4C",
-          "#58586E",
-          "#747490",
-          "#9696AB",
-          "#B8B8C6",
+          "#3E3E4C",
+          "#5A5A6D",
+          "#76768F",
+          "#9797AA",
+          "#B9B9C6",
+          "#D8D8DF",
+          "#F1F1F4"
+        ]
+      },
+      "sunken": {
+        "role": "neutral",
+        "displayName": "Sunken Gray",
+        "canonical": "#ECECF0",
+        "tonalRamp": [
+          "#22222B",
+          "#3D3D4D",
+          "#58586F",
+          "#737391",
+          "#9696AC",
+          "#B8B8C7",
           "#D7D7DF",
           "#F1F1F4"
         ]
       },
-      "sunken-gray": {
+      "hairline": {
         "role": "neutral",
-        "displayName": "Sunken Gray",
-        "canonical": "#EDEDF0",
+        "displayName": "Hairline",
+        "canonical": "#E4E4E9",
+        "tonalRamp": [
+          "#22222A",
+          "#3E3E4C",
+          "#59596E",
+          "#75758F",
+          "#9797AA",
+          "#B9B9C6",
+          "#D8D8DF",
+          "#F1F1F4"
+        ]
+      },
+      "hairline-strong": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "#CDCDD5",
+        "tonalRamp": [
+          "#23232A",
+          "#3F3F4B",
+          "#5B5B6C",
+          "#77778D",
+          "#9898A9",
+          "#BABAC5",
+          "#D8D8DE",
+          "#F1F1F3"
+        ]
+      },
+      "hair": {
+        "role": "neutral",
+        "displayName": "Hair Divider",
+        "canonical": "rgba(10,10,14,.07)",
+        "tonalRamp": [
+          "#20202D",
+          "#393950",
+          "#535374",
+          "#6D6D97",
+          "#9191B0",
+          "#B5B5CA",
+          "#D5D5E1",
+          "#F0F0F4"
+        ]
+      },
+      "grid-line": {
+        "role": "neutral",
+        "displayName": "Blueprint Grid",
+        "canonical": "rgba(11,11,15,.055)",
+        "tonalRamp": [
+          "#20202C",
+          "#3A3A4F",
+          "#545473",
+          "#6F6F95",
+          "#9292AF",
+          "#B5B5C9",
+          "#D6D6E1",
+          "#F0F0F4"
+        ]
+      },
+      "glow": {
+        "role": "primary",
+        "displayName": "Ambient Indigo Glow",
+        "canonical": "rgba(99,102,241,.07)",
+        "tonalRamp": [
+          "#060846",
+          "#0B0E7E",
+          "#1014B7",
+          "#1A1EEA",
+          "#5255EF",
+          "#8A8CF4",
+          "#BDBFF9",
+          "#E8E8FD"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Instrument Ink",
+        "canonical": "#0B0B0F",
+        "tonalRamp": [
+          "#20202C",
+          "#3A3A4F",
+          "#545473",
+          "#6F6F95",
+          "#9292AF",
+          "#B5B5C9",
+          "#D6D6E1",
+          "#F0F0F4"
+        ]
+      },
+      "ink-secondary": {
+        "role": "neutral",
+        "displayName": "Ink Secondary",
+        "canonical": "#3B3B45",
+        "tonalRamp": [
+          "#232329",
+          "#3F3F4A",
+          "#5C5C6B",
+          "#78788C",
+          "#9999A8",
+          "#BABAC4",
+          "#D9D9DE",
+          "#F1F1F3"
+        ]
+      },
+      "ink-tertiary": {
+        "role": "neutral",
+        "displayName": "Ink Tertiary",
+        "canonical": "#5F5F6B",
+        "tonalRamp": [
+          "#242429",
+          "#414149",
+          "#5E5E69",
+          "#7B7B89",
+          "#9B9BA6",
+          "#BBBBC3",
+          "#D9D9DD",
+          "#F1F1F3"
+        ]
+      },
+      "dark-canvas": {
+        "role": "neutral",
+        "displayName": "Dark Drafting Paper",
+        "canonical": "#070709",
+        "tonalRamp": [
+          "#21212B",
+          "#3C3C4D",
+          "#575770",
+          "#727292",
+          "#9595AC",
+          "#B7B7C7",
+          "#D7D7E0",
+          "#F1F1F4"
+        ]
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "Dark Surface White",
+        "canonical": "#0F0F13",
+        "tonalRamp": [
+          "#22222B",
+          "#3D3D4D",
+          "#58586F",
+          "#737391",
+          "#9696AC",
+          "#B8B8C7",
+          "#D7D7E0",
+          "#F1F1F4"
+        ]
+      },
+      "dark-plate": {
+        "role": "neutral",
+        "displayName": "Dark Plate",
+        "canonical": "#0B0B0E",
+        "tonalRamp": [
+          "#22222B",
+          "#3D3D4D",
+          "#58586F",
+          "#737391",
+          "#9595AC",
+          "#B8B8C7",
+          "#D7D7E0",
+          "#F1F1F4"
+        ]
+      },
+      "dark-sunken": {
+        "role": "neutral",
+        "displayName": "Dark Sunken Gray",
+        "canonical": "#16161C",
+        "tonalRamp": [
+          "#22222B",
+          "#3D3D4D",
+          "#58586F",
+          "#737391",
+          "#9595AC",
+          "#B8B8C7",
+          "#D7D7E0",
+          "#F1F1F4"
+        ]
+      },
+      "dark-hairline": {
+        "role": "neutral",
+        "displayName": "Dark Hairline",
+        "canonical": "#1E1E24",
         "tonalRamp": [
           "#23232A",
           "#3F3F4B",
@@ -214,85 +454,25 @@
           "#F1F1F3"
         ]
       },
-      "hairline": {
+      "dark-hairline-strong": {
         "role": "neutral",
-        "displayName": "Hairline",
-        "canonical": "#E3E3E8",
+        "displayName": "Dark Hairline Strong",
+        "canonical": "#2C2C35",
         "tonalRamp": [
-          "#22222A",
-          "#3E3E4C",
+          "#23232A",
+          "#3E3E4B",
           "#5A5A6D",
           "#76768E",
-          "#9797AA",
-          "#B9B9C6",
+          "#9898A9",
+          "#B9B9C5",
           "#D8D8DF",
           "#F1F1F3"
         ]
       },
-      "hairline-strong": {
+      "dark-hair": {
         "role": "neutral",
-        "displayName": "Strong Hairline",
-        "canonical": "#C9C9CF",
-        "tonalRamp": [
-          "#242428",
-          "#414149",
-          "#5E5E69",
-          "#7B7B89",
-          "#9B9BA6",
-          "#BCBCC3",
-          "#D9D9DD",
-          "#F2F2F3"
-        ]
-      },
-      "ink": {
-        "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "#1D1D1F",
-        "tonalRamp": [
-          "#252528",
-          "#434347",
-          "#606067",
-          "#7E7E86",
-          "#9E9EA4",
-          "#BDBDC1",
-          "#DADADC",
-          "#F2F2F3"
-        ]
-      },
-      "ink-secondary": {
-        "role": "neutral",
-        "displayName": "Secondary Ink",
-        "canonical": "#424245",
-        "tonalRamp": [
-          "#252527",
-          "#434346",
-          "#616166",
-          "#7F7F85",
-          "#9F9FA3",
-          "#BEBEC1",
-          "#DBDBDC",
-          "#F2F2F3"
-        ]
-      },
-      "ink-tertiary": {
-        "role": "neutral",
-        "displayName": "Tertiary Ink",
-        "canonical": "#6E6E73",
-        "tonalRamp": [
-          "#252527",
-          "#434346",
-          "#616166",
-          "#7F7F85",
-          "#9F9FA3",
-          "#BEBEC1",
-          "#DBDBDC",
-          "#F2F2F3"
-        ]
-      },
-      "dark-bg": {
-        "role": "neutral",
-        "displayName": "Dark Page",
-        "canonical": "#000000",
+        "displayName": "Dark Hair Divider",
+        "canonical": "rgba(255,255,255,.06)",
         "tonalRamp": [
           "#262626",
           "#454545",
@@ -304,199 +484,184 @@
           "#F2F2F2"
         ]
       },
-      "dark-tile": {
+      "dark-grid-line": {
         "role": "neutral",
-        "displayName": "Dark Tile",
-        "canonical": "#1C1C1E",
+        "displayName": "Dark Blueprint Grid",
+        "canonical": "rgba(255,255,255,.045)",
         "tonalRamp": [
-          "#252528",
-          "#424247",
-          "#606067",
-          "#7E7E86",
-          "#9D9DA4",
-          "#BDBDC1",
-          "#DADADD",
-          "#F2F2F3"
-        ]
-      },
-      "dark-sunken": {
-        "role": "neutral",
-        "displayName": "Dark Sunken",
-        "canonical": "#2C2C2E",
-        "tonalRamp": [
-          "#252527",
-          "#434346",
-          "#616166",
-          "#7F7F85",
-          "#9F9FA3",
-          "#BEBEC1",
-          "#DBDBDC",
-          "#F2F2F3"
-        ]
-      },
-      "dark-band": {
-        "role": "neutral",
-        "displayName": "Dark Band",
-        "canonical": "#0F0F10",
-        "tonalRamp": [
-          "#252527",
-          "#434347",
-          "#606067",
-          "#7E7E86",
-          "#9E9EA4",
-          "#BDBDC1",
-          "#DADADC",
-          "#F2F2F3"
-        ]
-      },
-      "dark-hairline-strong": {
-        "role": "neutral",
-        "displayName": "Dark Strong Hairline",
-        "canonical": "#48484A",
-        "tonalRamp": [
-          "#262627",
-          "#444446",
-          "#626265",
-          "#808084",
-          "#9F9FA2",
-          "#BEBEC0",
-          "#DBDBDC",
+          "#262626",
+          "#454545",
+          "#636363",
+          "#828282",
+          "#A1A1A1",
+          "#BFBFBF",
+          "#DBDBDB",
           "#F2F2F2"
+        ]
+      },
+      "dark-glow": {
+        "role": "primary",
+        "displayName": "Dark Ambient Indigo Glow",
+        "canonical": "rgba(99,102,241,.03)",
+        "tonalRamp": [
+          "#060846",
+          "#0B0E7E",
+          "#1014B7",
+          "#1A1EEA",
+          "#5255EF",
+          "#8A8CF4",
+          "#BDBFF9",
+          "#E8E8FD"
         ]
       },
       "dark-ink": {
         "role": "neutral",
-        "displayName": "Dark Ink",
-        "canonical": "#F5F5F7",
+        "displayName": "Dark Instrument Ink",
+        "canonical": "#EDEDF1",
         "tonalRamp": [
-          "#22222A",
-          "#3D3D4C",
-          "#58586E",
-          "#747490",
-          "#9696AB",
-          "#B8B8C6",
-          "#D7D7DF",
+          "#21212B",
+          "#3C3C4D",
+          "#575770",
+          "#727292",
+          "#9595AC",
+          "#B7B7C7",
+          "#D7D7E0",
           "#F1F1F4"
         ]
       },
       "dark-ink-secondary": {
         "role": "neutral",
-        "displayName": "Dark Secondary Ink",
-        "canonical": "#D1D1D6",
+        "displayName": "Dark Ink Secondary",
+        "canonical": "#B9B9C3",
+        "tonalRamp": [
+          "#232329",
+          "#40404A",
+          "#5C5C6B",
+          "#78788C",
+          "#9999A8",
+          "#BABAC4",
+          "#D9D9DE",
+          "#F1F1F3"
+        ]
+      },
+      "dark-ink-tertiary": {
+        "role": "neutral",
+        "displayName": "Dark Ink Tertiary",
+        "canonical": "#8B8B97",
         "tonalRamp": [
           "#242428",
           "#414149",
           "#5E5E69",
           "#7B7B89",
-          "#9B9BA6",
+          "#9C9CA6",
           "#BCBCC3",
           "#D9D9DD",
           "#F2F2F3"
         ]
       },
-      "dark-ink-tertiary": {
-        "role": "neutral",
-        "displayName": "Dark Tertiary Ink",
-        "canonical": "#98989D",
+      "dark-indigo": {
+        "role": "primary",
+        "displayName": "Dark Signal Indigo",
+        "canonical": "#8B8EF7",
         "tonalRamp": [
-          "#252527",
-          "#434347",
-          "#616166",
-          "#7F7F85",
-          "#9E9EA3",
-          "#BEBEC1",
-          "#DADADC",
-          "#F2F2F3"
+          "#050748",
+          "#090C81",
+          "#0D12BA",
+          "#151BEF",
+          "#4E53F3",
+          "#888BF7",
+          "#BCBEFA",
+          "#E7E8FD"
         ]
       },
-      "dark-link-blue": {
+      "dark-indigo-hover": {
         "role": "primary",
-        "displayName": "Dark Link Blue",
-        "canonical": "#4DA2FF",
+        "displayName": "Dark Signal Indigo, Pressed",
+        "canonical": "#A5A8FA",
         "tonalRamp": [
-          "#00254C",
-          "#00428A",
-          "#005FC7",
-          "#057CFF",
-          "#429CFF",
-          "#80BCFF",
-          "#B8DAFF",
-          "#E5F2FF"
+          "#040648",
+          "#070C82",
+          "#0A11BC",
+          "#121AF2",
+          "#4C52F5",
+          "#868AF8",
+          "#BBBEFB",
+          "#E7E8FE"
         ]
       },
       "dark-fill-hover": {
         "role": "primary",
-        "displayName": "Dark Fill Hover",
-        "canonical": "#1C74E4",
+        "displayName": "Dark Instrument Fill, Hover",
+        "canonical": "#FFFFFF",
         "tonalRamp": [
-          "#082344",
-          "#0F3E7B",
-          "#155AB2",
-          "#2076E4",
-          "#5698EB",
-          "#8DB9F1",
-          "#BFD8F7",
-          "#E8F1FC"
+          "#262626",
+          "#454545",
+          "#636363",
+          "#828282",
+          "#A1A1A1",
+          "#BFBFBF",
+          "#DBDBDB",
+          "#F2F2F2"
         ]
       },
-      "dark-free-green": {
+      "dark-free-emerald": {
         "role": "secondary",
-        "displayName": "Dark Free Green",
-        "canonical": "#4CC774",
+        "displayName": "Dark Free Emerald",
+        "canonical": "#34D399",
         "tonalRamp": [
-          "#123A1F",
-          "#216938",
-          "#2F9851",
-          "#41C36B",
-          "#6FD28F",
-          "#9EE1B4",
-          "#C9EED5",
-          "#ECF9F0"
+          "#0E3F2D",
+          "#197151",
+          "#23A375",
+          "#32D298",
+          "#64DDB1",
+          "#96E8CA",
+          "#C4F2E2",
+          "#EAFAF4"
         ]
       },
-      "dark-abandoned-amber": {
+      "dark-inferred-amber": {
         "role": "tertiary",
-        "displayName": "Dark Amber",
-        "canonical": "#F2B544",
+        "displayName": "Dark Inferred Amber",
+        "canonical": "#FBBF24",
         "tonalRamp": [
-          "#483005",
-          "#815709",
-          "#BA7D0D",
-          "#EFA315",
-          "#F3B94F",
-          "#F7D088",
-          "#FAE5BC",
-          "#FDF6E7"
+          "#493504",
+          "#836007",
+          "#BD8B0A",
+          "#F3B412",
+          "#F6C64C",
+          "#F9D986",
+          "#FBE9BB",
+          "#FEF7E7"
         ]
       },
       "dark-reserved-violet": {
         "role": "tertiary",
-        "displayName": "Dark Violet",
-        "canonical": "#A99BFF",
+        "displayName": "Dark Reserved Violet",
+        "canonical": "#C4B5FD",
         "tonalRamp": [
-          "#0B004C",
-          "#13008A",
-          "#1C00C7",
-          "#2805FF",
-          "#5D42FF",
-          "#9180FF",
-          "#C2B8FF",
-          "#E9E5FF"
+          "#120449",
+          "#210783",
+          "#2F0ABD",
+          "#4012F3",
+          "#6F4CF6",
+          "#9E86F9",
+          "#C9BBFB",
+          "#ECE7FE"
         ]
       },
-      "dark-alert-red": {
+      "dark-alert-orange": {
         "role": "tertiary",
-        "displayName": "Dark Alert Red",
-        "canonical": "#FF7A63",
+        "displayName": "Dark Alert Orange",
+        "canonical": "#FB923C",
         "tonalRamp": [
-          "#4C0B00",
-          "#8A1400",
-          "#C71D00",
-          "#FF2A05",
-          "#FF5E42",
-          "#FF9280",
-          "#FFC2B8",
-          "#FFE9E5"
+          "#492304",
+          "#833F07",
+          "#BD5B0A",
+          "#F37712",
+          "#F6984C",
+          "#F9BA86",
+          "#FBD8BB",
+          "#FEF1E7"
         ]
       }
     },
@@ -507,85 +672,98 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Page and patent titles."
+        "purpose": "Page titles in the left-aligned section head; patent titles."
       },
       "section": {
         "displayName": "Section",
-        "purpose": "Section heads with a tertiary-ink paragraph."
+        "purpose": "Section heads and the lead card title."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Card, tile and step titles."
+        "purpose": "Card titles."
       },
       "lede": {
         "displayName": "Lede",
-        "purpose": "Subhead under hero and page heads."
+        "purpose": "Hero subhead."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Running text and prose."
+        "purpose": "Running text, prose and descriptions."
+      },
+      "data": {
+        "displayName": "Data",
+        "purpose": "Metric block figures; gradient-filled and digit-struck."
+      },
+      "code": {
+        "displayName": "Code",
+        "purpose": "Patent numbers, claim numbers, counts, dates, keys."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Badges, block headings, footer column labels; sentence case."
+        "purpose": "Uppercase instrument labels: filter rows, card meta, facts, FIG tags."
       },
-      "mono": {
-        "displayName": "Mono",
-        "purpose": "Generated Claude prompt only."
+      "eyebrow": {
+        "displayName": "Eyebrow",
+        "purpose": "PATENT YARD // SECTION above page headings (recorded exception from the user's brief)."
       }
     },
     "shadows": [
       {
-        "name": "soft-lift",
-        "value": "0 2px 6px rgba(0,0,0,.04),0 12px 32px -12px rgba(0,0,0,.12)",
-        "purpose": "Hero search pill, drawing frame, card hover. None in dark mode."
+        "name": "rest-hint",
+        "value": "0 1px 2px rgba(11,11,15,.04)",
+        "purpose": "Pressed chips; none in dark."
       },
       {
-        "name": "overlay",
-        "value": "0 4px 12px rgba(0,0,0,.06),0 30px 70px -20px rgba(0,0,0,.28)",
-        "purpose": "Menus, suggestions, dialogs, toasts, magnifier. Dark: 0 30px 80px -20px rgba(0,0,0,.9)."
+        "name": "lift",
+        "value": "0 1px 2px rgba(11,11,15,.04),0 12px 32px -16px rgba(11,11,15,.18)",
+        "purpose": "Card, tile and gallery hover. Dark: 0 16px 40px -20px rgba(0,0,0,.8)."
       },
       {
-        "name": "hairline-ring",
-        "value": "0 0 0 1px #E3E3E8",
-        "purpose": "Frames the drawing plate and big figures."
+        "name": "float",
+        "value": "0 2px 6px rgba(11,11,15,.06),0 32px 72px -24px rgba(11,11,15,.32)",
+        "purpose": "Menus, suggestions, dialogs, toasts, magnifier. Dark: 0 32px 80px -24px rgba(0,0,0,.9)."
       },
       {
-        "name": "focus-halo",
-        "value": "0 0 0 4px rgba(10,102,216,.22)",
-        "purpose": "Focused inputs, alongside a blue border."
+        "name": "specimen-glow",
+        "value": "0 40px 100px -40px var(--glow), var(--shadow)",
+        "purpose": "Plotter frame and sign-in card."
+      },
+      {
+        "name": "primary-highlight",
+        "value": "inset 0 1px 0 rgba(255,255,255,.12)",
+        "purpose": "Top edge highlight on the filled primary button."
       }
     ],
     "motion": [
       {
-        "name": "ease",
-        "value": "cubic-bezier(.25,1,.5,1)",
-        "purpose": "The single easing for every transition."
+        "name": "ease-spring",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "Every transition and entrance."
       },
       {
-        "name": "rise",
-        "value": "translateY(16px) to none, 0.9s, 80ms stagger",
-        "purpose": "Hero elements on load."
+        "name": "state",
+        "value": ".3s",
+        "purpose": "Hover, press, border and background changes."
+      },
+      {
+        "name": "image-zoom",
+        "value": ".6s",
+        "purpose": "Drawing scale on card hover (1.05)."
       },
       {
         "name": "reveal",
-        "value": "opacity .25 and translateY(28px) to none, 0.9s",
-        "purpose": "Sections easing in on scroll."
-      },
-      {
-        "name": "card-lift",
-        "value": "translateY(-3px), 0.35s",
-        "purpose": "Card hover; drawing scales 1.04 over 0.6s."
+        "value": ".9s",
+        "purpose": "Sections fade up 20px once on scroll; hero items rise with 70ms stagger."
       },
       {
         "name": "digit-strike",
-        "value": "digits settle one by one, 55ms each",
-        "purpose": "Statband numbers; never tweened."
+        "value": "55ms per digit",
+        "purpose": "Metric figures strike into place digit by digit, never tweened."
       },
       {
-        "name": "press",
-        "value": "scale(.97), 0.2s",
-        "purpose": "Button press."
+        "name": "card-enter",
+        "value": ".55s, 30ms stagger",
+        "purpose": "Result cards entering after a filter change; skeleton shimmer 1.4s while loading."
       }
     ],
     "breakpoints": [
@@ -594,27 +772,31 @@
         "value": "520px"
       },
       {
-        "name": "sm",
+        "name": "compact",
         "value": "640px"
       },
       {
-        "name": "plot-square",
+        "name": "loupe-off",
         "value": "700px"
       },
       {
-        "name": "md",
+        "name": "tablet",
         "value": "820px"
       },
       {
-        "name": "nav-collapse",
+        "name": "gutter",
         "value": "900px"
       },
       {
-        "name": "toc-collapse",
+        "name": "toc",
         "value": "980px"
       },
       {
-        "name": "aside-collapse",
+        "name": "nav-drawer",
+        "value": "1080px"
+      },
+      {
+        "name": "bento-3",
         "value": "1100px"
       },
       {
@@ -628,135 +810,139 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one filled call to action in a group.",
+      "description": "The one filled action per group; black on light, white on dark.",
       "html": "<button class=\"ds-btn-primary\">Open the patent</button>",
-      "css": ".ds-btn-primary{display:inline-flex;align-items:center;min-height:38px;padding:8px 18px;border-radius:980px;border:1px solid transparent;background:#0A66D8;color:#fff;font:500 15px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif;letter-spacing:-0.01em;cursor:pointer;transition:background .2s,transform .2s cubic-bezier(.25,1,.5,1)} .ds-btn-primary:hover{background:#0758BD} .ds-btn-primary:active{transform:scale(.97)} .ds-btn-primary:focus-visible{outline:3px solid rgba(10,102,216,.55);outline-offset:2px}"
+      "css": ".ds-btn-primary{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:inline-flex;align-items:center;min-height:38px;padding:8px 16px;border-radius:8px;border:1px solid transparent;background:var(--fill,#0B0B0F);color:var(--fill-ink,#fff);font-weight:500;font-size:14px;line-height:1;box-shadow:inset 0 1px 0 rgba(255,255,255,.12);cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1)}.ds-btn-primary:hover{background:var(--fill-hover,#26262E);transform:translateY(-1px)}.ds-btn-primary:active{transform:scale(.97)}.ds-btn-primary:focus-visible{outline:2px solid var(--focus,#4F46E5);outline-offset:2px}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Blue outline pill; fills blue on hover.",
-      "html": "<button class=\"ds-btn-secondary\">Save</button>",
-      "css": ".ds-btn-secondary{display:inline-flex;align-items:center;min-height:38px;padding:8px 18px;border-radius:980px;border:1px solid #0A66D8;background:transparent;color:#0A66D8;font:500 15px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif;cursor:pointer;transition:background .2s,color .2s} .ds-btn-secondary:hover{background:#0A66D8;color:#fff} .ds-btn-secondary:focus-visible{outline:3px solid rgba(10,102,216,.55);outline-offset:2px}"
+      "description": "Bordered surface button for the second action.",
+      "html": "<button class=\"ds-btn-secondary\">Browse all</button>",
+      "css": ".ds-btn-secondary{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:inline-flex;align-items:center;min-height:38px;padding:8px 16px;border-radius:8px;border:1px solid var(--line-strong,#CDCDD5);background:var(--surface,#fff);color:var(--ink,#0B0B0F);font-weight:500;font-size:14px;line-height:1;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1)}.ds-btn-secondary:hover{border-color:rgba(11,11,15,.3);transform:translateY(-1px)}.ds-btn-secondary:focus-visible{outline:2px solid var(--focus,#4F46E5);outline-offset:2px}"
     },
     {
-      "name": "Link Action",
+      "name": "Quiet and Link Buttons",
       "kind": "button",
-      "refersTo": "button-link",
-      "description": "Text action paired with the filled button.",
-      "html": "<a class=\"ds-btn-link\" href=\"#\">Reinvent with Claude ›</a>",
-      "css": ".ds-btn-link{display:inline-flex;align-items:center;min-height:38px;padding:8px 6px;color:#0A66D8;font:500 15px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif;text-decoration:none} .ds-btn-link:hover{text-decoration:underline;text-underline-offset:3px}"
+      "refersTo": "button-quiet",
+      "description": "Transparent actions; link variant in indigo with a trailing chevron.",
+      "html": "<button class=\"ds-btn-quiet\">Save</button> <a class=\"ds-btn-quiet ds-link\" href=\"#\">Reinvent with Claude ›</a>",
+      "css": ".ds-btn-quiet{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:inline-flex;align-items:center;min-height:38px;padding:8px 10px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--ink-2,#3B3B45);font-weight:500;font-size:14px;line-height:1;text-decoration:none;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1)}.ds-btn-quiet:hover{background:var(--sunken,#ECECF0);color:var(--ink,#0B0B0F)}.ds-link{color:var(--accent,#4F46E5)}.ds-btn-quiet:focus-visible{outline:2px solid var(--focus,#4F46E5);outline-offset:2px}"
     },
     {
-      "name": "Hero Search",
+      "name": "Command Search",
       "kind": "input",
-      "refersTo": "search-pill",
-      "description": "Pill search field with an embedded primary button.",
-      "html": "<form class=\"ds-search\"><input placeholder=\"Search ideas, titles or numbers\"><button type=\"button\">Search</button></form>",
-      "css": ".ds-search{display:flex;align-items:center;gap:8px;max-width:640px;padding:6px 6px 6px 20px;border-radius:980px;background:#fff;border:1px solid #C9C9CF;box-shadow:0 2px 6px rgba(0,0,0,.04),0 12px 32px -12px rgba(0,0,0,.12);transition:border-color .2s,box-shadow .2s} .ds-search:focus-within{border-color:#0A66D8;box-shadow:0 0 0 4px rgba(10,102,216,.2),0 2px 6px rgba(0,0,0,.04)} .ds-search input{flex:1;border:0;outline:none;background:none;font:400 18px/1.3 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif;color:#1D1D1F;padding:10px 4px} .ds-search button{min-height:46px;padding:0 24px;border:0;border-radius:980px;background:#0A66D8;color:#fff;font:500 16px/1 -apple-system,BlinkMacSystemFont,sans-serif;cursor:pointer} .ds-search button:hover{background:#0758BD}"
+      "refersTo": "input",
+      "description": "Hero search as a command palette with mono key hints and the primary button inside.",
+      "html": "<form class=\"ds-search\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"M20 20l-3.5-3.5\"/></svg><input placeholder=\"Search ideas, titles or numbers\"><span class=\"ds-kbd\">⌘</span><span class=\"ds-kbd\">K</span><button type=\"button\">Search</button></form>",
+      "css": ".ds-search{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:flex;align-items:center;gap:10px;max-width:660px;padding:6px 6px 6px 16px;border-radius:12px;border:1px solid var(--line-strong,#CDCDD5);background:var(--surface,#fff);color:var(--ink-3,#5F5F6B);box-shadow:0 0 0 1px var(--hair,rgba(10,10,14,.07)),0 24px 60px -24px var(--glow,rgba(99,102,241,.07));transition:all .3s cubic-bezier(.16,1,.3,1)}.ds-search:focus-within{border-color:var(--accent,#4F46E5);box-shadow:0 0 0 4px var(--accent-soft,#EEF0FF)}.ds-search input{flex:1;min-width:0;border:0;background:none;outline:none;font:inherit;font-size:16.5px;color:var(--ink,#0B0B0F);padding:10px 2px}.ds-kbd{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;display:inline-grid;place-items:center;min-width:22px;height:22px;padding:0 5px;border-radius:5px;border:1px solid var(--line-strong,#CDCDD5);border-bottom-width:2px;font-size:11px}.ds-search button{min-height:40px;padding:0 18px;border:0;border-radius:8px;background:var(--fill,#0B0B0F);color:var(--fill-ink,#fff);font:inherit;font-size:14px;font-weight:500;cursor:pointer}.ds-search button:hover{background:var(--fill-hover,#26262E)}"
     },
     {
-      "name": "Text Field",
-      "kind": "input",
-      "refersTo": "input-field",
-      "description": "Form input on account, studio and settings.",
-      "html": "<input class=\"ds-field\" placeholder=\"you@example.com\">",
-      "css": ".ds-field{width:100%;min-height:44px;padding:10px 14px;border:1px solid #C9C9CF;border-radius:12px;background:#fff;color:#1D1D1F;font:400 17px/1.4 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif} .ds-field:focus{outline:none;border-color:#0A66D8;box-shadow:0 0 0 4px rgba(10,102,216,.22)}"
-    },
-    {
-      "name": "Chip",
+      "name": "Segmented Filter Row",
       "kind": "chip",
       "refersTo": "chip",
-      "description": "Suggestion and filter pill; inverts when pressed.",
-      "html": "<button class=\"ds-chip\">drone</button><button class=\"ds-chip\" aria-pressed=\"true\">Free to use</button>",
-      "css": ".ds-chip{display:inline-flex;align-items:center;height:32px;padding:0 14px;margin-right:6px;border:0;border-radius:980px;background:#F5F5F7;color:#1D1D1F;font:500 14px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif;cursor:pointer;transition:background .2s,color .2s} .ds-chip:hover{background:#EDEDF0} .ds-chip[aria-pressed=true]{background:#1D1D1F;color:#fff} .ds-chip:focus-visible{outline:3px solid rgba(10,102,216,.55);outline-offset:2px}"
+      "description": "Mono row label, borderless text chips with mono micro-counters; pressed chip becomes a bordered segment.",
+      "html": "<div class=\"ds-frow\"><span class=\"ds-lab\">Status</span><button class=\"ds-chip\" aria-pressed=\"true\">All</button><button class=\"ds-chip\" aria-pressed=\"false\">Lapsed <small>128,238</small></button><button class=\"ds-chip\" aria-pressed=\"false\">Likely abandoned <small>87</small></button></div>",
+      "css": ".ds-frow{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:flex;flex-wrap:wrap;gap:4px;align-items:center}.ds-lab{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;font-size:10.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3,#5F5F6B);min-width:84px}.ds-chip{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 11px;border-radius:8px;border:1px solid transparent;background:transparent;color:var(--ink-2,#3B3B45);font-size:13.5px;font-weight:500;cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1)}.ds-chip:hover{background:var(--sunken,#ECECF0);color:var(--ink,#0B0B0F)}.ds-chip[aria-pressed=true]{background:var(--surface,#fff);color:var(--ink,#0B0B0F);border-color:var(--line-strong,#CDCDD5);box-shadow:0 1px 2px rgba(11,11,15,.04)}.ds-chip small{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;font-size:11px;color:var(--ink-3,#5F5F6B);font-variant-numeric:tabular-nums}.ds-chip:focus-visible{outline:2px solid var(--focus,#4F46E5);outline-offset:2px}"
     },
     {
       "name": "Status Badge",
       "kind": "chip",
-      "refersTo": "badge-free",
-      "description": "Dotted status pill: free, abandoned, reserved.",
-      "html": "<span class=\"ds-badge\">Free to use</span>",
-      "css": ".ds-badge{display:inline-flex;align-items:center;gap:6px;height:24px;padding:0 10px;border-radius:980px;background:#E6F4EA;color:#1E7B3C;font:600 12px/1 -apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif} .ds-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}"
+      "refersTo": "badge",
+      "description": "Micro-badge led by a solid status dot with a soft ring.",
+      "html": "<span class=\"ds-badge\">Lapsed, fee not paid</span> <span class=\"ds-badge ds-ab\">Likely abandoned</span>",
+      "css": ".ds-badge{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:6px;border:1px solid var(--line,#E4E4E9);background:var(--surface,#fff);color:var(--ink-2,#3B3B45);font-size:11.5px;font-weight:500}.ds-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--free,#0E8A5F);box-shadow:0 0 0 3px var(--free-soft,#E5F6EF)}.ds-ab::before{background:var(--aband,#B45309);box-shadow:0 0 0 3px var(--aband-soft,#FEF4E2)}"
     },
     {
       "name": "Patent Card",
       "kind": "card",
       "refersTo": "card",
-      "description": "Drawing on a white plate over a title and meta row; lifts on hover.",
-      "html": "<article class=\"ds-card\"><div class=\"ds-fig\"><svg viewBox=\"0 0 120 80\" width=\"100%\" height=\"100%\" fill=\"none\" stroke=\"#1D1D1F\" stroke-width=\"1.2\"><rect x=\"30\" y=\"20\" width=\"60\" height=\"40\"/><circle cx=\"60\" cy=\"40\" r=\"12\"/><path d=\"M90 30l18-10M98 22h8\"/></svg></div><div class=\"ds-cbody\"><small>Mechanical · US 6,123,456</small><h3>Folding bicycle frame hinge</h3><p>A hinge that locks the frame rigid without tools.</p></div></article>",
-      "css": ".ds-card{max-width:300px;background:#fff;border:1px solid #E3E3E8;border-radius:18px;overflow:hidden;transition:transform .35s cubic-bezier(.25,1,.5,1),box-shadow .35s cubic-bezier(.25,1,.5,1)} .ds-card:hover{transform:translateY(-3px);box-shadow:0 2px 6px rgba(0,0,0,.04),0 12px 32px -12px rgba(0,0,0,.12)} .ds-fig{aspect-ratio:4/3;padding:18px;background:#fff} .ds-cbody{display:grid;gap:6px;padding:16px 18px 18px;border-top:1px solid #E3E3E8;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif} .ds-cbody small{font-size:13px;color:#6E6E73} .ds-cbody h3{margin:0;font:600 19px/1.22 -apple-system,BlinkMacSystemFont,'SF Pro Display',Inter,sans-serif;letter-spacing:-0.022em;color:#1D1D1F} .ds-cbody p{margin:0;font-size:15px;line-height:1.42;color:#6E6E73}"
+      "description": "Blueprint-framed drawing, field and mono number, title, hair-divided meta row; lifts on hover.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-fig\"><span class=\"ds-bar\"><i></i><i></i><i></i><b>FIG. 1</b></span><svg viewBox=\"0 0 120 70\" width=\"120\" height=\"70\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\"><rect x=\"20\" y=\"14\" width=\"80\" height=\"40\" rx=\"4\"/><path d=\"M20 34h80M60 14v40M8 8l12 6M112 62l-12-8\"/></svg></div><div class=\"ds-cbody\"><span class=\"ds-field\">Consumer Products · <span class=\"ds-num\">US 10,051,899 B2</span></span><h3>Magnetic split lap apron</h3></div><div class=\"ds-meta\"><div><small>Build</small><span>Weekend</span></div><div><small>Lapsed</small><span>Aug 2025</span></div><div><small>Owner</small><span>Solo inventor</span></div></div></article>",
+      "css": ".ds-card{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:flex;flex-direction:column;max-width:300px;background:var(--surface,#fff);border:1px solid var(--line,#E4E4E9);border-radius:12px;overflow:hidden;color:var(--ink,#0B0B0F);transition:transform .3s cubic-bezier(.16,1,.3,1),border-color .3s cubic-bezier(.16,1,.3,1),box-shadow .3s cubic-bezier(.16,1,.3,1)}.ds-card:hover{transform:translateY(-4px);border-color:rgba(11,11,15,.2);box-shadow:0 1px 2px rgba(11,11,15,.04),0 12px 32px -16px rgba(11,11,15,.18)}.ds-fig{position:relative;display:grid;place-items:center;aspect-ratio:4/3;padding:42px 16px 14px;color:var(--ink-3,#5F5F6B);border-bottom:1px solid var(--line,#E4E4E9);background-color:var(--plate,#fff);background-image:linear-gradient(var(--grid,rgba(11,11,15,.055)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(11,11,15,.055)) 1px,transparent 1px);background-size:20px 20px}.ds-bar{position:absolute;inset:0 0 auto 0;height:30px;display:flex;align-items:center;gap:5px;padding:0 12px;border-bottom:1px solid var(--line,#E4E4E9);background:rgba(255,255,255,.86)}.ds-bar i{width:7px;height:7px;border-radius:50%;background:var(--line-strong,#CDCDD5)}.ds-bar b{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;margin-left:auto;font-size:10px;font-weight:500;letter-spacing:.08em;color:var(--ink-3,#5F5F6B)}.ds-cbody{padding:14px 16px 12px;display:grid;gap:6px}.ds-field{font-size:12.5px;color:var(--ink-3,#5F5F6B)}.ds-num{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;font-size:11.5px;font-weight:500}.ds-cbody h3{margin:0;font-size:16.5px;font-weight:600;line-height:1.28;letter-spacing:-.012em}.ds-meta{display:grid;grid-template-columns:auto auto 1fr;border-top:1px solid var(--hair,rgba(10,10,14,.07));font-size:12.5px}.ds-meta>div{padding:9px 12px 10px;border-right:1px solid var(--hair,rgba(10,10,14,.07))}.ds-meta>div:last-child{border-right:0}.ds-meta small{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;display:block;font-size:10px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3,#5F5F6B);margin-bottom:3px}.ds-meta span{font-weight:500}"
     },
     {
-      "name": "Header",
-      "kind": "nav",
-      "refersTo": "brand-mark",
-      "description": "Thin translucent sticky header with the house mark.",
-      "html": "<header class=\"ds-top\"><a class=\"ds-brand\"><span class=\"ds-mark\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 20V9l8-5 8 5v11\"/><path d=\"M9 20v-6h6v6\"/></svg></span><b>Patent Yard</b></a><nav><a aria-current=\"page\">Free to use</a><a>All patents</a><a>How it works</a></nav></header>",
-      "css": ".ds-top{display:flex;align-items:center;gap:20px;min-height:52px;padding:0 20px;background:rgba(255,255,255,.8);backdrop-filter:saturate(1.8) blur(20px);border-bottom:1px solid rgba(227,227,232,.7);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif} .ds-brand{display:flex;align-items:center;gap:9px;color:#1D1D1F} .ds-mark{display:grid;place-items:center;width:28px;height:28px;border-radius:8px;background:#1D1D1F;color:#fff} .ds-mark svg{width:18px;height:18px} .ds-brand b{font:600 17px/1 -apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;letter-spacing:-0.02em} .ds-top nav{display:flex;gap:4px} .ds-top nav a{padding:8px 11px;font-size:13.5px;color:#424245;cursor:pointer;transition:color .2s} .ds-top nav a:hover{color:#1D1D1F} .ds-top nav a[aria-current=page]{color:#1D1D1F;font-weight:600}"
+      "name": "Number Plate",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Blueprint frame for a patent with no drawing: field glyph over the mono patent number; never an invented image.",
+      "html": "<div class=\"ds-plate\"><span class=\"ds-pbar\"><i></i><i></i><i></i><b>No drawing</b></span><svg viewBox=\"0 0 24 24\" width=\"30\" height=\"30\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M13 2L4.5 13.5H11L10 22l8.5-11.5H12z\"/></svg><span class=\"ds-numart\">US 7,312,904 B2</span></div>",
+      "css": ".ds-plate{position:relative;display:grid;place-items:center;align-content:center;gap:12px;width:300px;aspect-ratio:4/3;padding-top:30px;border:1px solid var(--line,#E4E4E9);border-radius:12px;overflow:hidden;color:var(--ink-3,#5F5F6B);background-color:var(--plate,#fff);background-image:linear-gradient(var(--grid,rgba(11,11,15,.055)) 1px,transparent 1px),linear-gradient(90deg,var(--grid,rgba(11,11,15,.055)) 1px,transparent 1px);background-size:20px 20px;transition:color .3s}.ds-plate:hover{color:var(--accent,#4F46E5)}.ds-plate:hover svg{transform:scale(1.08)}.ds-plate svg{transition:transform .6s cubic-bezier(.16,1,.3,1)}.ds-pbar{position:absolute;inset:0 0 auto 0;height:30px;display:flex;align-items:center;gap:5px;padding:0 12px;border-bottom:1px solid var(--line,#E4E4E9)}.ds-pbar i{width:7px;height:7px;border-radius:50%;background:var(--line-strong,#CDCDD5)}.ds-pbar b{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;margin-left:auto;font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase}.ds-numart{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;font-size:17px;font-weight:500;color:var(--ink,#0B0B0F);letter-spacing:-.01em}"
     },
     {
-      "name": "Gray Tile",
-      "kind": "card",
-      "refersTo": "tile",
-      "description": "Flat band-gray container for panels, steps and link cards.",
-      "html": "<a class=\"ds-tile\"><b>How it works</b><span>Search, reinvent with Claude, reserve and build.</span></a>",
-      "css": ".ds-tile{display:grid;gap:4px;max-width:320px;padding:16px 18px;border-radius:12px;background:#F5F5F7;color:#1D1D1F;cursor:pointer;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Text',Inter,sans-serif;transition:background .2s} .ds-tile:hover{background:#EDEDF0} .ds-tile b{font:600 15.5px/1.3 inherit} .ds-tile span{font-size:14px;color:#6E6E73}"
+      "name": "Metric Blocks",
+      "kind": "custom",
+      "refersTo": "stat-block",
+      "description": "Hairline-divided telemetry cells; gradient-filled mono figures are a recorded exception from the user's brief.",
+      "html": "<nav class=\"ds-stats\"><a href=\"#\"><em>106 offices</em><b>122.8 million</b><span>patents worldwide</span></a><a href=\"#\"><em class=\"up\">+5,142 this week</em><b>7.3 million</b><span>free to use in United States</span></a><a href=\"#\"><b>1.8 million</b><span>free to use in Europe</span></a></nav>",
+      "css": ".ds-stats{font-family:Inter,-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border:1px solid var(--line,#E4E4E9);border-radius:12px;background:var(--surface,#fff);overflow:hidden}.ds-stats a{display:flex;flex-direction:column;justify-content:flex-end;padding:18px 20px;border-right:1px solid var(--hair,rgba(10,10,14,.07));color:inherit;text-decoration:none;transition:background .3s cubic-bezier(.16,1,.3,1)}.ds-stats a:last-child{border-right:0}.ds-stats a:hover{background:var(--sunken,#ECECF0)}.ds-stats b{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;font-size:clamp(19px,1.75vw,25px);font-weight:600;line-height:1.1;letter-spacing:-.045em;font-variant-numeric:tabular-nums;white-space:nowrap;background:linear-gradient(180deg,var(--ink,#0B0B0F) 30%,rgba(11,11,15,.55));-webkit-background-clip:text;background-clip:text;color:transparent}.ds-stats span{margin-top:8px;font-size:13px;color:var(--ink-3,#5F5F6B)}.ds-stats em{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;align-self:flex-start;display:inline-flex;align-items:center;gap:5px;height:20px;margin-bottom:12px;padding:0 7px;border-radius:5px;border:1px solid var(--line,#E4E4E9);font-size:10px;font-style:normal;letter-spacing:.04em;color:var(--ink-3,#5F5F6B)}.ds-stats em::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--free,#0E8A5F)}.ds-stats em.up{color:var(--free,#0E8A5F)}.ds-stats em.up::before{display:none}"
+    },
+    {
+      "name": "View Toggle",
+      "kind": "custom",
+      "refersTo": "view-toggle",
+      "description": "Cards / table segmented toggle beside the mono result count.",
+      "html": "<div class=\"ds-countbar\"><span class=\"ds-count\">128,438 of 128,438 patents</span><div class=\"ds-tog\"><button aria-pressed=\"true\" title=\"Cards\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\"><rect x=\"4\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"4\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"4\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/><rect x=\"13\" y=\"13\" width=\"7\" height=\"7\" rx=\"1.5\"/></svg></button><button aria-pressed=\"false\" title=\"Table\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.7\" stroke-linecap=\"round\"><path d=\"M4 6h16M4 12h16M4 18h16\"/></svg></button></div></div>",
+      "css": ".ds-countbar{display:flex;align-items:center;justify-content:space-between;gap:12px}.ds-count{font-family:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;font-size:12.5px;color:var(--ink-3,#5F5F6B)}.ds-tog{display:inline-flex;padding:2px;border:1px solid var(--line,#E4E4E9);border-radius:8px;background:var(--surface,#fff)}.ds-tog button{display:grid;place-items:center;width:30px;height:26px;border:0;border-radius:6px;background:none;color:var(--ink-3,#5F5F6B);cursor:pointer;transition:all .3s cubic-bezier(.16,1,.3,1)}.ds-tog button:hover{color:var(--ink,#0B0B0F)}.ds-tog button[aria-pressed=true]{background:var(--sunken,#ECECF0);color:var(--ink,#0B0B0F)}.ds-tog button:focus-visible{outline:2px solid var(--focus,#4F46E5);outline-offset:2px}"
     }
   ],
   "narrative": {
-    "northStar": "The Drawing Is the Product Shot",
-    "overview": "Patent Yard is a modern product site in the Apple manner. White pages alternate with full-bleed light gray bands, headlines are large and semibold, controls are pills, and containers are softly rounded tiles. Everything recedes so the real USPTO line drawings can be shown big, the way a product site shows its hardware. The home page plots one patent drawing live inside a large rounded frame, with a round magnifier that follows the pointer.\n\nDensity is generous on persuasive surfaces (home, how it works) and tighter on working surfaces (browse filters, patent pages, account), but it stays one world: the same tokens, radii and pill controls everywhere, including the archive and worldwide patent pages served by the edge functions. Dark mode follows the system and goes to true black with #1C1C1E tiles; drawings are inverted and screen-blended so they read as white line art.\n\nThe user rejected an earlier standards-manual direction for this one. The confirmed refusals: no neon on black, no glows, no gradient text, no eyebrow labels, no icon-card grids.",
+    "northStar": "The Drafting Instrument",
+    "overview": "Patent Yard reads like a precision tool laid over the patent record: a deep spatial dark (#070709 base, light mode mirrors it on #FAFAFB), words in Inter, every number, code and date in JetBrains Mono, hairline borders in place of filled boxes, and every patent drawing pinned inside a blueprint frame with a window bar, a FIG tag and a 20px grid. The drawing is the specimen; the chrome around it is the instrument.\n\nDensity is calm on the home page (centered hero, command-palette search, one large plotted drawing) and dense on working pages (left-aligned headings, grouped segmented filters with micro-counters, cards that collapse into a table). Motion is spring-like and short: cards lift with a border-luminance shift, numbers strike into place digit by digit, sections reveal once on scroll, and every motion honors both the OS reduced-motion preference and the site's own setting.\n\nThe system was set by Sanjay's Gemini-sourced brief of 2026-10-27, which replaced an earlier Apple-style light pass he rejected as still \"AI-looking\". It is a dark technical instrument, not neon: the indigo glow behind the hero and search sits at 3% opacity in dark.",
     "keyCharacteristics": [
-      "White and #F5F5F7 bands; one blue for links and filled buttons; color otherwise reserved for status.",
-      "System SF type, semibold, tightly tracked at large sizes.",
-      "Pills for every control, 18px tiles, a 28px frame for the hero drawing.",
-      "Real patent drawings, multiply-blended on white, inverted in dark mode.",
-      "Thin translucent sticky header; flat surfaces, soft shadows only on lift and overlays."
+      "Spatial dark by default with a true light mirror; theme follows the system unless the visitor picks.",
+      "Inter for words, JetBrains Mono for numbers, codes, dates and short uppercase instrument labels.",
+      "Hairline borders (1px) and hairline dividers inside containers; shadows only on hover and floating layers.",
+      "Blueprint frame (30px window bar with three dots, FIG tag, 20px grid) around every patent drawing.",
+      "One filled button per action group: white in dark, black in light.",
+      "Honest data only: every figure on screen is counted from the catalog."
     ],
     "rules": [
       {
-        "name": "The One Blue Rule",
-        "body": "Blue is the only interactive color. Status hues never act as buttons, and blue never marks a status.",
+        "name": "The Status-Only Color Rule",
+        "body": "Emerald, amber, violet and orange appear only as status: a dot, a check, a tag, a notice. They never decorate.",
         "section": "colors"
       },
       {
-        "name": "The Green Means Free Rule",
-        "body": "Green appears only where a patent is free to use or an action succeeded.",
+        "name": "The Faint Glow Rule",
+        "body": "The indigo glow is ambient and near invisible (7% light, 3% dark), placed only behind the hero, the hero search, the plotter, the sign-in card and the CTA band. It is never a neon edge.",
         "section": "colors"
       },
       {
-        "name": "The Semibold Headline Rule",
-        "body": "Every heading is weight 600. Tracking runs from -0.011em at body size to -0.025em at display size and never tighter.",
+        "name": "The Mono-For-Machines Rule",
+        "body": "JetBrains Mono is for numbers, patent numbers and codes, dates, counts, keyboard keys, and short uppercase instrument labels. Never for names (patent titles, field names, owners) or sentences. Exception: a prompt shown as terminal input (`$ ` prefix, prompt textarea) counts as code.",
         "section": "typography"
       },
       {
-        "name": "The Sentence Case Rule",
-        "body": "Labels are sentence case at zero tracking. No uppercase tracked labels.",
+        "name": "The Tabular Rule",
+        "body": "Every number set in mono uses tabular figures so columns and counters do not jitter.",
         "section": "typography"
       },
       {
-        "name": "The Lift on Intent Rule",
-        "body": "A surface gains a shadow only when it floats (overlays) or responds to the pointer (cards). Resting tiles are flat.",
+        "name": "The Lift-On-Touch Rule",
+        "body": "Containers rest flat. On hover a card rises 4px (tiles 2px) and its border brightens toward ink at 20%; the shadow follows the lift, never the reverse.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** show the real patent drawing large, on a white plate, multiply-blended (inverted and screen-blended in dark mode).",
-      "**Do** alternate white sections with full-bleed band-gray bands at 96px section spacing.",
-      "**Do** keep exactly one filled blue pill per action group; pair it with a link-style \"›\" action.",
-      "**Do** set every heading at weight 600 with tracking between -0.011em and -0.025em.",
-      "**Do** use tabular figures for counts, dates, claim numbers and stats.",
-      "**Do** keep green for \"free to use\" and success only."
+      "**Do** set every patent number, code, count and date in JetBrains Mono with tabular figures, and every name and sentence in Inter.",
+      "**Do** put every patent drawing in the blueprint frame: window bar with three dots, FIG tag, 20px grid on plate.",
+      "**Do** use a single primary (filled) button per action group; everything else is secondary, quiet or link.",
+      "**Do** separate cells inside a container with hair lines (6-7%), not gaps or nested boxes.",
+      "**Do** show filter options as segmented chips with mono micro-counters of real counts, grouped under mono row labels.",
+      "**Do** offer the card/table toggle on every result grid and remember the choice.",
+      "**Do** keep the eyebrow \"PATENT YARD // SECTION\" above page headings on section pages; it is a recorded exception requested in the user's brief, limited to that one form.",
+      "**Do** honor reduced motion from both the OS and the site setting: no strike, no reveal, no plotting, no lift."
     ],
     "donts": [
-      "**Don't** use gradients on surfaces, buttons or text. Gradients appear only as functional fade masks on scrolling rows and in the loading shimmer.",
-      "**Don't** use glows, neon on black, or colored shadows.",
-      "**Don't** put eyebrow or kicker labels above headlines, and don't use uppercase tracked labels.",
-      "**Don't** track headlines tighter than -0.025em or set them heavier than 600.",
-      "**Don't** build icon-card grids; tiles carry drawings or text, not decorative icons.",
-      "**Don't** put two filled buttons side by side."
+      "**Don't** set names, titles, owners or sentences in mono.",
+      "**Don't** invent trends, deltas, activity or \"live\" claims; a tag like \"+N this week\" appears only when counted from the catalog.",
+      "**Don't** invent or generate an image for a patent without a drawing; use its field glyph and number plate.",
+      "**Don't** fill buttons with indigo or status colors; the filled button is white in dark and black in light.",
+      "**Don't** use status colors decoratively, or raise the indigo glow above its faint ambient level.",
+      "**Don't** extend the gradient-filled figures beyond the metric blocks; they are a recorded exception from the user's brief, not a text treatment for headings or other numbers.",
+      "**Don't** center headings on working pages; only the home hero is centered."
     ]
   }
 }
