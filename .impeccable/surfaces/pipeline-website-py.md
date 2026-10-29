@@ -11,14 +11,14 @@ Persuade on the home page; Operate on browse, All patents, saved, settings and a
 
 ## Direction contract
 
-THESIS: Patent Yard as a modern product site in the Apple manner, chosen by Sanjay on 2026-10-27 after rejecting the standards-manual direction: the patent drawing is the product shot, everything else gets out of its way. Refuses neon-on-black, glows, gradient text, eyebrow labels and icon-card grids.
+THESIS: Patent Yard as a precise technical instrument, following the brief Sanjay pasted from Gemini on 2026-10-27 (after rejecting the Apple-style pass as still "AI-looking"): spatial dark, monospace data, blueprint-framed drawings. Refuses generic rounded-card grids, plain pill filters and giant centered headers on internal pages.
 
-OWN-WORLD: White (#FFFFFF) alternating with light gray bands (#F5F5F7), ink #1D1D1F, secondary #6E6E73, one blue (#0A66D8) for links and filled pill buttons, green only for the free-to-use status. System SF type (Inter fallback) with tight tracking on large headlines. Rounded 18px tiles, 28px for the drawing frame, pill buttons and chips, a thin translucent header. Dark mode: black with #1C1C1E tiles, drawings inverted.
+OWN-WORLD: Dark #070709 base, #0F0F13 containers, #1E1E24 borders, a near-invisible indigo ambient glow (rgba(99,102,241,.03)) behind the hero and search; light mode mirrors it (#FAFAFB, white, #E4E4E9). Inter for words, JetBrains Mono for every patent number, code, date and label. Hairline borders, 12px radius, white primary buttons in dark (black in light), indigo links, emerald status dots for free, amber for inferred.
 
-STORY: A visitor sees at once that these inventions are free to build on, searches by number or idea, sees one real patent drawn live with its status, and goes deeper or into Reinvent with Claude.
+STORY: A visitor sees at once that these inventions are free to build on, searches from a command-palette field, sees a real drawing plotted in a blueprint frame with its number and status, and goes deeper or into Reinvent with Claude.
 
-FIRST VIEWPORT: Centered: an 88px headline, a two-line gray subhead, a pill search field with a blue Search button, suggestion chips, a link to search all patents worldwide. Below, the large framed drawing plotted live.
+FIRST VIEWPORT: Centered headline and subhead over the faint glow, the command-palette search with a ⌘K badge and a white Search button, suggestion chips, the worldwide link, and the top of the blueprint-framed drawing with its FIG tag.
 
-FORM: Category standard executed at full craft (canon path, Apple reference, chosen by the user over the rolled direction). seed:f4072c5c67787f3e. Signature interaction: the plotted drawing, with a round magnifier that enlarges the part under the pointer. Motion: soft rise on load, sections easing in on scroll, cards lifting on hover, digits striking into place.
+FORM: User-supplied brief (Gemini prompt) executed in the site's own HTML/CSS stack. seed:f4072c5c67787f3e (original roll, superseded by the user's brief). Signature interaction: the plotted drawing inside a blueprint frame, with a magnifier; cards lift with a border-luminance shift; digits strike into place; skeleton shimmer while loading. Honest data only: no invented trends or "live" claims.
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance

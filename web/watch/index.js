@@ -2,7 +2,7 @@
 // Worker reads the newest USPTO Official Gazette issues and adds every patent reinstated by a late fee payment to
 // the KV list "reinstated". Patent pages (functions/patents) show such a patent as no longer free, and browse hides
 // it, until the next full build on the Mac drops it from the register (pipeline/register.py verify does the same
-// check there). Free plan: one cron run a day, a few subrequests, one KV write when the list changes.
+// check there). Free plan: one cron run a day, a few subrequests, one KV write.
 const ISSUE = w => `https://patentsgazette.uspto.gov/week${String(w).padStart(2, "0")}/OG/TOC.htm`;
 
 const isoWeek = d => {
@@ -29,8 +29,8 @@ async function run(env) {
   }
   const old = (await env.PY_KV.get("reinstated", "json")) || { numbers: [] };
   const all = [...new Set([...old.numbers, ...found])].sort();
-  if (all.length !== old.numbers.length)
-    await env.PY_KV.put("reinstated", JSON.stringify({ numbers: all.slice(-20000), checked: new Date().toISOString() }));
+  // written every run (one KV write a day) so "checked" shows the job is alive
+  await env.PY_KV.put("reinstated", JSON.stringify({ numbers: all.slice(-20000), checked: new Date().toISOString(), lastFound: found.length }));
   return { week, found: found.length, total: all.length };
 }
 
