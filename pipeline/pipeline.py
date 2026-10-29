@@ -24,6 +24,37 @@ from pathlib import Path
 import register
 
 
+INDEXNOW_KEY = "b6c815479879568e2b34055b8d9df1c1"  # served at /<key>.txt (web/static) so search engines can check the pings are ours
+INDEXNOW_BATCH = 2000   # pages announced per publish; Bing crawls with a 2-second delay (robots.txt), well inside the free Functions limit
+
+
+def indexnow():
+    """Tell Bing, DuckDuckGo and Yandex (IndexNow) about pages not announced before, a batch at a time, so the site gets
+    found without an account anywhere. Google doesn't use IndexNow; it reads the sitemap."""
+    import re
+    import urllib.request
+    here = Path(__file__).resolve().parent
+    seen_file = here / "raw" / "indexnow.json"
+    seen = set(json.loads(seen_file.read_text())) if seen_file.exists() else set()
+    urls = []
+    for m in sorted((here.parent / "web" / "dist").glob("sitemap-*.xml"), key=lambda p: int(re.sub(r"\D", "", p.name) or 0)):
+        urls += [u for u in re.findall(r"<loc>([^<]+)</loc>", m.read_text()) if u not in seen]
+    batch = list(dict.fromkeys(urls))[:INDEXNOW_BATCH]
+    if not batch:
+        return
+    body = json.dumps({"host": "patentyard.pages.dev", "key": INDEXNOW_KEY, "keyLocation": f"https://patentyard.pages.dev/{INDEXNOW_KEY}.txt", "urlList": batch}).encode()
+    req = urllib.request.Request("https://api.indexnow.org/indexnow", data=body, headers={"Content-Type": "application/json; charset=utf-8"})
+    try:
+        with urllib.request.urlopen(req, timeout=60) as r:
+            ok = r.status in (200, 202)
+    except Exception as e:
+        print("IndexNow ping failed:", e, flush=True)
+        return
+    if ok:
+        seen_file.write_text(json.dumps(sorted(seen | set(batch))))
+        print(f"IndexNow: announced {len(batch)} pages", flush=True)
+
+
 def publish(every):
     """Rebuild and redeploy the website every `every` minutes, so new patents, text and drawings go live without
     waiting for the daily routine. Holds the build lock for build and deploy together, so nothing else rebuilds
@@ -40,8 +71,9 @@ def publish(every):
             env = {**os.environ, "PATENTYARD_LOCK_HELD": "1"}
             if subprocess.run([sys.executable, "-u", "pipeline.py", "web"], cwd=here, env=env).returncode == 0:
                 print(time.strftime("%Y-%m-%d %H:%M"), "deploying", flush=True)
-                subprocess.run(["npx", "--yes", "wrangler@4", "pages", "deploy", "dist", "--project-name", "patentyard",
-                                "--branch", "main", "--commit-dirty=true"], cwd=here.parent / "web")
+                if subprocess.run(["npx", "--yes", "wrangler@4", "pages", "deploy", "dist", "--project-name", "patentyard",
+                                   "--branch", "main", "--commit-dirty=true"], cwd=here.parent / "web").returncode == 0:
+                    indexnow()
             else:
                 print("build failed; the live site is unchanged", flush=True)
         time.sleep(max(60, every * 60 - (time.time() - started)))
