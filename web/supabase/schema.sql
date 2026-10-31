@@ -99,7 +99,7 @@ end $$;
 create table if not exists public.ideas (
   id uuid primary key,
   user_id uuid not null default auth.uid() references auth.users on delete cascade,
-  patent_id text check (patent_id is null or patent_id ~ '^US-[A-Z]*[0-9]{5,11}-[A-Z][0-9]?$'),
+  patent_id text check (patent_id is null or patent_id ~ '^[A-Z]{2}-[A-Z0-9]{1,24}(-[A-Z][0-9]?)?$'),  -- any office (functions/_lib.js worldId)
   data jsonb not null check (pg_column_size(data) < 100000),
   updated_at timestamptz not null default now()
 );
@@ -127,7 +127,7 @@ create trigger ideas_cap before insert on public.ideas for each row execute func
 create table if not exists public.messages (
   id bigint generated always as identity primary key,
   kind text not null check (kind in ('contact', 'report')),
-  patent_id text check (patent_id is null or patent_id ~ '^US-[A-Z]*[0-9]{5,11}-[A-Z][0-9]?$'),
+  patent_id text check (patent_id is null or patent_id ~ '^[A-Z]{2}-[A-Z0-9]{1,24}(-[A-Z][0-9]?)?$'),  -- any office (functions/_lib.js worldId)
   email text not null default '' check (char_length(email) <= 200),
   body text not null check (char_length(body) between 1 and 4000),
   user_id uuid default auth.uid() references auth.users on delete set null,

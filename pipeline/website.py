@@ -996,7 +996,7 @@ class Site:
                        f'{kinds.get("", 0):,} US utility patents past their full term, {kinds.get("S", 0):,} expired US designs, {kinds.get("A", 0):,} likely abandoned US applications, and {kinds.get("E", 0):,} European, {kinds.get("CA", 0):,} Canadian and {kinds.get("AU", 0):,} Australian patents and applications past their term, by the decade they were granted or published.</p>'
                        f'<div class="hbars">{dec_bars}</div></section>') if recs else ""
         body = f"""<div class="page">
-<div class="sechead"><div><h1>Insights</h1><p>{f"Patent Yard in numbers: all {big_number(WSTATS['n'])} patents worldwide by office, year, field and owner, then the free-to-use register: what lapses, when, and who used to own it." if WSTATS else "The register in numbers: what lapses, when, and who used to own it. Drawn from the same USPTO records as every patent page, updated with each refresh."}</p></div></div>
+<div class="sechead"><div><h1>Insights</h1><p>{f"Patent Yard in numbers: all {big_number(WSTATS['n'])} patent records worldwide (granted patents and published applications) by office, year, field and owner, then the free-to-use register: what lapses, when, and who used to own it." if WSTATS else "The register in numbers: what lapses, when, and who used to own it. Drawn from the same USPTO records as every patent page, updated with each refresh."}</p></div></div>
 {self.world_insights()}
 {'<section class="section"><div class="sechead"><div><h2>Free to use</h2><p>The register of patents whose protection has ended, drawn from the same office records as every patent page and updated with each refresh.</p></div></div>' if WSTATS else ""}
 <div class="statband reveal">
@@ -1014,7 +1014,7 @@ class Site:
 </div>
 {"</section>" if WSTATS else ""}
 </div>"""
-        self.page("/insights/", "Insights", (f"{big_number(WSTATS['n'])} patents worldwide by office, year, field and owner, " if WSTATS else "Patent Yard in numbers: ")
+        self.page("/insights/", "Insights", (f"{big_number(WSTATS['n'])} patent records worldwide by office, year, field and owner, " if WSTATS else "Patent Yard in numbers: ")
                   + "weekly USPTO lapses, fields, when owners stop paying and the companies behind them.", body, section="/insights/")
 
     def world_insights(self):
