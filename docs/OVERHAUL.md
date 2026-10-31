@@ -50,13 +50,13 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 ### Product and UX
 - [x] P1 Contact page and Account/Settings ship "being set up" / fallback text in the HTML (visible to no-JS readers and
       AI crawlers). Hydrated states are correct (checked headless 2026-10-31). Use `<noscript>` and a real failure state.
-- [~] P2 "Report a problem" on archive (EP/CA/AU) and world pages always fails: `messages.patent_id` CHECK accepts US ids only.
+- [x] P2 "Report a problem" on archive (EP/CA/AU) and world pages always fails: `messages.patent_id` CHECK accepts US ids only.
       Same for `ideas.patent_id` (studio started from a non-US patent can't be saved). Needs a DB migration.
 - [x] P3 Opportunities method needs an expandable "why it ranks" per pick, uncertainty visible.
 - [ ] P4 Contact form: global 60/hour flood guard only; document, consider per-sender limit.
 
 ### Security
-- [~] S1 `public.rls_auto_enable()` SECURITY DEFINER is executable by anon/authenticated (Supabase advisor). Revoke.
+- [x] S1 `public.rls_auto_enable()` SECURITY DEFINER is executable by anon/authenticated (Supabase advisor). Revoke.
 - [ ] S2 Leaked-password protection off (Supabase Auth setting; may need a paid plan). Sanjay's dashboard.
 - [x] S3 Self-host fonts, supabase-js and jsPDF; then drop Google Fonts / jsDelivr / cdnjs from the CSP.
 - [ ] S4 CSP keeps `style-src 'unsafe-inline'` (inline style attributes in templates). Assess removal cost.
@@ -96,15 +96,15 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 8. [ ] Reports: design system (DESIGN.md), security, data integrity, testing; deploy review
 
 ## 4b. Open after the 2026-10-31 session (resume here)
-- [ ] Run `web/supabase/migrations/2026-10-31-any-office-ids.sql` on production (S1, P2) once Sanjay approves.
-- [ ] Deploy branch `overhaul` (merge to main; the publisher ships it) once Sanjay approves; then re-run the live checks.
-- [ ] Patent page: report-a-problem categories (wrong status, wrong date, wrong assignee, missing family member,
+- [x] Migration run on production 2026-10-31 with Sanjay's approval; verified: anon report on EP-0500000-B1 accepted (rolled back, 0 rows left), rls_auto_enable not executable by anon/authenticated.
+- [~] Deploy approved 2026-10-31; main fast-forwarded to 177648c; waiting for the publisher's next run, then re-run func.mjs, smoke.mjs (incl. studio) and shots on the live site.
+- [x] Patent page: report-a-problem categories (wrong status, wrong date, wrong assignee, missing family member,
       broken link, bad drawing, duplicate, other) with the id filled in automatically.
 - [ ] PDF brief: cover page, Plex-like typography, drawings sized per sheet, sources page (works today, plain).
-- [ ] Insights charts: axis labels, units, period and source on every chart; table equivalents.
+- [x] Insights charts (line charts): zero and peak lines, unit/period/source note. Bar panels already label units. Was: axis labels, units, period and source on every chart; table equivalents.
 - [ ] Opportunities and home picks layout polish (the editorial "picks" section is still a card grid).
-- [ ] Footer reorganisation (product, resources, fields, sources, legal) and copyright/licence line.
-- [ ] Cross-document view transitions (`@view-transition`) and a motion review page by page.
+- [x] Footer reorganisation (product, resources, fields, sources, legal) and copyright/licence line.
+- [x] Cross-document view transitions (`@view-transition`), off under reduced motion. [ ] motion review page by page.
 - [ ] Accessibility pass (keyboard through filters, dialogs, menus; contrast check of every token pair; WCAG 2.2 AA
       statement only after testing). Lighthouse / Core Web Vitals on the deployed preview.
 - [ ] Regenerate `.impeccable/design.json` for the new system (DESIGN.md is current).
@@ -135,3 +135,7 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
   no horizontal overflow, no script errors (only preview-only drawing 404s, /img/p/, whose shards the preview doesn't render).
 - 2026-10-31 World pages: US patents granted 2007-2008 now read "Granted, may be in force" (term-adjustment guard);
   utility models (kind U) read "Registered utility model", not "Published application".
+- 2026-10-31 (82fe02f) Light-mode accent text failed contrast (3.7-4.3:1); text now uses --link (all token pairs >= 4.5:1, script check).
+- 2026-10-31 (177648c) Smoke suites updated to current markup; on the preview with the mock backend: header 8/8, home 6/6,
+  browse 17/17, patent 24/24, account 2/2; studio 1/5 only because the preview lacks that patent's /data/p shard (live 200).
+  The same suites on the old live site had stale failures (rail, search list, field filter), now fixed in the tests.
