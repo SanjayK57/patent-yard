@@ -627,7 +627,7 @@ def verify(family_limit=3000):
     due = sorted(rows, key=lambda t: t[1].get("verified") or "")[:family_limit]
     try:
         fam = families(uspto.PatentPublicSearch(), [c["family"] for _, c, _ in due])
-    except Exception as e:  # e.g. Patent Public Search requires sign-in from 2026-11-07
+    except (Exception, uspto.SignInRequired) as e:  # Patent Public Search requires a sign-in from 2026-11-07
         print(f"Patent Public Search unavailable ({e}); only the Gazette and term checks ran")
         fam = None
     due = {c["guid"] for _, c, _ in due} if fam is not None else set()

@@ -38,6 +38,21 @@ def fetch(url, data=None, headers=None, tries=4):
         time.sleep(3 * 2 ** i)
 
 
+SIGN_IN_FLAG = Path(__file__).resolve().parent / "raw" / "ppubs_signin_required"
+
+
+class SignInRequired(SystemExit):
+    """Patent Public Search asked for a USPTO.gov sign-in (required from 2026-11-07). A SystemExit, so the long-running
+    jobs (bulk, enrich, harvest) stop instead of retrying every document; daily.sh starts them again twice a day and
+    they ask once more only after 24 hours (SIGN_IN_FLAG). verify catches it and keeps its Gazette and term checks."""
+
+
+def _signed_out(note):
+    SIGN_IN_FLAG.write_text(time.strftime("%Y-%m-%d %H:%M ") + note)
+    raise SignInRequired(f"Patent Public Search needs a USPTO.gov sign-in (HTTP Error 401/403: {note}); "
+                         "the pipeline needs a USPTO Open Data Portal API key. Asking again in 24 hours.")
+
+
 class PatentPublicSearch:
     """Client for ppubs.uspto.gov. It opens an anonymous session the way the public web app does.
     The access token is kept in memory only, never written to disk."""
@@ -49,7 +64,14 @@ class PatentPublicSearch:
         self.delay = 1.1  # seconds between calls; grows after rate-limit replies, shrinks back when calls succeed
 
     def _open(self):
-        body, hdrs = fetch(self.BASE + "users/me/session", b"-1", {"Content-Type": "application/json"})
+        if SIGN_IN_FLAG.exists() and time.time() - SIGN_IN_FLAG.stat().st_mtime < 86400:
+            raise SignInRequired("Patent Public Search needs a USPTO.gov sign-in (HTTP Error 401, seen in the last 24 hours)")
+        try:
+            body, hdrs = fetch(self.BASE + "users/me/session", b"-1", {"Content-Type": "application/json"})
+        except urllib.error.HTTPError as e:
+            if e.code in (401, 403):
+                _signed_out(f"session refused, HTTP {e.code}")
+            raise
         self.token = hdrs.get("x-access-token")
         self.case = json.loads(body)["userCase"]["caseId"]
         self.opened = time.time()
@@ -73,7 +95,14 @@ class PatentPublicSearch:
                 raise
             self._open()
             hdr["x-access-token"] = self.token
-            body = fetch(self.BASE + path, data, hdr)[0]
+            try:
+                body = fetch(self.BASE + path, data, hdr)[0]
+            except urllib.error.HTTPError as e2:
+                if e2.code in (401, 403):  # refused even with a fresh session: sign-in is required now
+                    _signed_out(f"call refused with a fresh session, HTTP {e2.code}")
+                raise
+        if SIGN_IN_FLAG.exists():
+            SIGN_IN_FLAG.unlink()  # working again
         # a slow answer means fetch() waited out rate limits: space calls further apart for a while
         self.delay = min(self.delay * 1.5, 12) if time.time() - started > 15 else max(1.1, self.delay * 0.95)
         return body
