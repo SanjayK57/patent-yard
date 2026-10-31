@@ -147,20 +147,24 @@ btn.addEventListener("click", async () => {
 dlg.addEventListener("click", e => { if (e.target === dlg || e.target.closest("[data-close]")) dlg.close(); });
 refreshRes();
 
-// ---------------------------------------------------------------- report a problem with this listing
+// ---------------------------------------------------------------- report a problem with this listing (the id goes with it)
+const REPORT_KINDS = ["Wrong legal status", "Wrong expiry or lapse date", "Wrong inventor, assignee or applicant", "Missing or wrong family member",
+  "Broken official link", "Drawing missing, cut off or corrupted", "Abstract, claims or description wrong", "Duplicate listing", "Something else"];
 const repBtn = $("#reportBtn"), repDlg = $("#repDlg");
 session.then(({ b }) => { if (b) repBtn.hidden = false; });
 repBtn.addEventListener("click", () => {
   repDlg.innerHTML = `<div class="dbar"><b id="repTitle">Report a problem</b><button class="x" type="button" data-close aria-label="Close">${icon("x")}</button></div>
-    <form class="dbody" id="repForm" novalidate><p class="muted">Is the status wrong, a drawing missing, or a summary off? Tell us what you found, ideally with a link to the record that shows it.</p>
-    <div class="fgroup"><label for="repBody">What's wrong</label><textarea class="field" id="repBody" maxlength="4000" required></textarea></div>
+    <form class="dbody" id="repForm" novalidate><p class="muted">About <span class="num">${esc(P.dataset.n)}</span>. We check every report against the source record.</p>
+    <div class="fgroup"><label for="repKind">What's wrong</label><select class="field" id="repKind">${REPORT_KINDS.map(k => `<option>${k}</option>`).join("")}</select></div>
+    <div class="fgroup"><label for="repBody">Details <span class="opt">optional, but a link to the record that shows it helps</span></label><textarea class="field" id="repBody" maxlength="3800"></textarea></div>
     <div class="fgroup"><label for="repEmail">Your email (optional, if you'd like a reply)</label><input class="field" id="repEmail" type="email" maxlength="200" autocomplete="email"></div>
     <div class="rowbtns"><button class="btn primary" type="submit">Send report</button><button class="btn quiet" type="button" data-close>Cancel</button><span class="status" id="repStatus" aria-live="polite"></span></div></form>`;
-  repDlg.showModal(); $("#repBody").focus();
+  repDlg.showModal(); $("#repKind").focus();
   $("#repForm").addEventListener("submit", async e => {
     e.preventDefault();
-    const body = $("#repBody").value.trim(), st = $("#repStatus");
-    if (!body) { st.className = "status err"; st.textContent = "Describe the problem first."; return; }
+    const kind = $("#repKind").value, detail = $("#repBody").value.trim(), st = $("#repStatus");
+    if (kind === "Something else" && !detail) { st.className = "status err"; st.textContent = "Describe the problem first."; return; }
+    const body = `[${kind}] ${detail}`.trim();
     const { b } = await session;
     try { await b.sendMessage({ kind: "report", patent: id, email: $("#repEmail").value.trim(), body }); repDlg.close(); toast("Thanks. We'll check it against the source record.", 4600, "ok"); }
     catch { st.className = "status err"; st.textContent = "It didn't send. Try again."; }

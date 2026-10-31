@@ -377,7 +377,6 @@ class Site:
         ld_json = json.dumps(jsonld, separators=(",", ":")).replace("</", "<\\/") if jsonld else ""
         ld = f'<script type="application/ld+json">{ld_json}</script>' if jsonld else ""
         js = "".join(f'<script type="module" src="/assets/js/{s}.js"></script>' for s in ("app",) + tuple(scripts))  # unversioned: modules import each other by plain path
-        fields_nav = "".join(f'<a href="/fields/{k}/">{E(n)}</a>' for k, n in self.fields.items())
         doc = f"""<!doctype html>
 <html lang="en">
 <head>
@@ -426,10 +425,10 @@ class Site:
 <footer class="foot">
   <div class="wrap">
     <div><b>Patent Yard</b><p style="margin-top:10px;max-width:44ch">A free register of expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, traced to patent office records, with tools for developing new inventions from them.</p><p class="num" id="footStat" style="margin-top:10px">Recently lapsed US patents are rechecked for reinstatement daily</p></div>
-    <nav aria-label="Explore"><span class="kicker">Explore</span><a href="/browse/">Browse all</a><a href="/opportunities/">Opportunities</a><a href="/fields/">Fields</a><a href="/studio/">Invention studio</a><a href="/insights/">Insights</a><a href="/saved/">Saved patents</a><a href="/account/">My bench</a><a href="/feed.xml">New patents feed</a></nav>
-    <nav aria-label="Fields"><span class="kicker">Fields</span>{fields_nav}</nav>
-    <nav aria-label="Sources"><span class="kicker">Sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>USPTO Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a><a href="https://patentcenter.uspto.gov/" {EXT}>Patent Center</a><a href="https://data.epo.org/linked-data/" {EXT}>EPO linked open data</a></nav>
-    <nav aria-label="Company"><span class="kicker">Patent Yard</span><a href="/about/">About</a><a href="/how-it-works/">How it works</a><a href="/how-it-works/#faq">FAQ</a><a href="/contact/">Contact</a><a href="/settings/">Settings</a><a href="/legal/terms/">Terms</a><a href="/legal/privacy/">Privacy</a><a href="/legal/disclaimer/">Disclaimer</a><a href="/legal/copyright/">Copyright</a><a href="/legal/accessibility/">Accessibility</a></nav>
+    <nav aria-label="Product"><span class="kicker">Product</span><a href="/browse/">Free to use</a><a href="/all/">All patents</a><a href="/opportunities/">Opportunities</a><a href="/studio/">Invention studio</a><a href="/insights/">Insights</a><a href="/fields/">Fields</a></nav>
+    <nav aria-label="Your work"><span class="kicker">Your work</span><a href="/account/">My bench</a><a href="/saved/">Saved patents</a><a href="/settings/">Settings</a><a href="/feed.xml">New patents feed (RSS)</a></nav>
+    <nav aria-label="Data sources"><span class="kicker">Data sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>USPTO Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>USPTO Patent Public Search</a><a href="https://patentcenter.uspto.gov/" {EXT}>USPTO Patent Center</a><a href="https://data.epo.org/linked-data/" {EXT}>EPO linked open data</a><a href="https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en" {EXT}>CIPO</a><a href="https://www.ipaustralia.gov.au/" {EXT}>IP Australia IPGOD</a><a href="https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data" {EXT}>Google Patents Public Data</a></nav>
+    <nav aria-label="About and legal"><span class="kicker">Patent Yard</span><a href="/about/">About</a><a href="/how-it-works/">How it works</a><a href="/how-it-works/#faq">FAQ</a><a href="/contact/">Contact</a><a href="/legal/terms/">Terms</a><a href="/legal/privacy/">Privacy</a><a href="/legal/disclaimer/">Disclaimer</a><a href="/legal/copyright/">Copyright and takedown</a><a href="/legal/accessibility/">Accessibility</a></nav>
     <p class="fine">Patent data comes from the United States Patent and Trademark Office; the European Patent Office's Linked open EP data, used under <a href="https://creativecommons.org/licenses/by/4.0/" {EXT}>CC BY 4.0</a>; the Canadian Intellectual Property Office, and contains information licensed under the <a href="https://open.canada.ca/en/open-government-licence-canada" {EXT}>Open Government Licence – Canada</a>; and IP Australia's IPGOD, used under <a href="https://creativecommons.org/licenses/by/2.5/au/" {EXT}>CC BY 2.5 AU</a>.{" All patents uses Google Patents Public Data, under CC BY 4.0." if WORLD else ""} Patent Yard is not affiliated with any of these offices and does not give legal advice. Plain-English names, summaries, modern angles and build levels are Patent Yard's notes, drafted with Claude (an AI model) from each patent's text.</p>
   </div>
 </footer>
@@ -964,7 +963,8 @@ class Site:
         weeks = sorted((o["date"], len(o["lapsed"]), len(o["reinstated"])) for o in issues if (TODAY - d(o["date"])).days <= 372)
         hi = max((w[1] for w in weeks), default=1)
         chart = line_chart([w[1] for w in weeks], [short_date(w[0]) for w in weeks], max(1, len(weeks) // 6), f"{hi:,} a week",
-                           f"Patents lapsed each week, past year: {min((w[1] for w in weeks), default=0):,} to {hi:,} a week")
+                           f"Patents lapsed each week, past year: {min((w[1] for w in weeks), default=0):,} to {hi:,} a week",
+                           f"Patents per weekly issue of the USPTO Official Gazette listed as expired for an unpaid maintenance fee, {short_date(weeks[0][0])} to {short_date(weeks[-1][0])}. Source: USPTO." if weeks else "")
         # when patents lapse: the fee missed at 3.5, 7.5 or 11.5 years
         lap = [r["entry"] for r in rows if r["entry"]["st"] == "lapsed" and r["entry"]["p"] and r["entry"]["x"]]
         at = {4: 0, 8: 0, 12: 0}
@@ -1039,7 +1039,8 @@ class Site:
         hi = max(c for _, c in years)
         peak = max(years, key=lambda t: t[1])[0]
         chart = line_chart([c for _, c in years], [y for y, _ in years], 20, f"{big_number(hi)} a year",
-                           f"Patents and applications published each year, 1900 to {years[-1][0]}, peaking at {hi:,} in {peak}")
+                           f"Patents and applications published each year, 1900 to {years[-1][0]}, peaking at {hi:,} in {peak}",
+                           f"Patent records (granted patents and published applications) by year of publication, all offices, 1900 to {years[-1][0]}. Source: Google Patents Public Data, CC BY 4.0.")
         return f"""<section class="section"><div class="sechead"><div><h2>All patents worldwide</h2><p>Every patent and published application in <a href="/all/">All patents</a>, from Google Patents Public Data.</p></div></div>
 <div class="statband reveal">
   <div><b class="num" data-count="{w["n"]}">{w["n"]:,}</b><span>patents and applications</span></div>
@@ -1461,8 +1462,9 @@ class Site:
 OWNER_NOISE = re.compile(r"\b(the|inc|incorporated|corp|corporation|co|company|ltd|limited|llc|l\.?l\.?c|lp|l\.?p|plc|gmbh|ag|kk|kabushiki|kaisha|sa|bv|nv|ab|oy|spa|srl)\b|[.,&']")
 
 
-def line_chart(vals, labels, every, top, aria):
-    """The animated line chart on Insights: vals left to right, every `every`th label under the axis."""
+def line_chart(vals, labels, every, top, aria, note=""):
+    """The animated line chart on Insights: vals left to right, every `every`th label under the axis, a zero line and a
+    dashed line at the peak (labeled `top`), and `note` (source, period, unit) under the chart."""
     W, H, pad = 760, 220, 34
     hi = max(vals, default=1) or 1
     pts = [(pad + i / max(1, len(vals) - 1) * (W - 2 * pad), H - pad - v / hi * (H - 2 * pad)) for i, v in enumerate(vals)]
@@ -1470,8 +1472,10 @@ def line_chart(vals, labels, every, top, aria):
     area = f"{line} L{pts[-1][0]:.1f},{H - pad} L{pts[0][0]:.1f},{H - pad} Z" if pts else ""
     ticks = "".join(f'<text class="muted" x="{x:.1f}" y="{H - 10}" text-anchor="middle">{E(t)}</text>' for (x, _), t in list(zip(pts, labels))[::every])
     return (f'<svg class="chart linechart" viewBox="0 0 {W} {H}" role="img" aria-label="{E(aria)}">'
-            f'<line class="axis" x1="{pad}" y1="{H - pad}" x2="{W - pad}" y2="{H - pad}"/><text class="muted" x="{pad}" y="{pad - 12}">{E(top)}</text>'
-            f'<path class="area" d="{area}"/><path class="line" d="{line}" pathLength="1"/>{ticks}</svg>')
+            f'<line class="axis" x1="{pad}" y1="{H - pad}" x2="{W - pad}" y2="{H - pad}"/><line class="peak" x1="{pad}" y1="{pad}" x2="{W - pad}" y2="{pad}"/>'
+            f'<text class="muted" x="{pad}" y="{pad - 8}">Peak: {E(top)}</text><text class="muted" x="{pad - 6}" y="{H - pad + 4}" text-anchor="end">0</text>'
+            f'<path class="area" d="{area}"/><path class="line" d="{line}" pathLength="1"/>{ticks}</svg>'
+            + (f'<p class="chartsrc">{note}</p>' if note else ""))
 
 
 # Google's owner names, title-cased by world.py tidy(), with their acronyms and legal forms put back
