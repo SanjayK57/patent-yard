@@ -84,7 +84,7 @@ addEventListener("storage", e => { if (e.key === "patentyard." + SETTINGS) { app
 // ---------------------------------------------------------------- register totals in the footer (pages stay the same from day to day)
 latest().then(L => {
   const el = $("#footStat");
-  if (el && L.verified) el.textContent = `${L.count.toLocaleString("en-US")} patents · last checked ${fmtDate(L.verified, { month: "long", day: "numeric", year: "numeric" })}`;
+  if (el && L.verified) el.textContent = `${L.count.toLocaleString("en-US")} recently lapsed or expired US patents · status last checked ${fmtDate(L.verified, { month: "long", day: "numeric", year: "numeric" })}`;
 }).catch(() => {});
 
 // ---------------------------------------------------------------- header shadow once the page scrolls, and sections that slide in

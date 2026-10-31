@@ -47,7 +47,7 @@ $("#saveIdea").addEventListener("click", async () => {
   const i = idea(), st = $("#studioStatus");
   if (!i.name && !patent) { st.className = "status err"; st.textContent = "Give your invention a name or pick a patent first."; return; }
   const { b, user } = await session;
-  if (!b) { st.className = "status"; st.textContent = "Saved in this browser. Accounts are being set up."; return; }
+  if (!b) { st.className = "status"; st.textContent = "Saved in this browser. Your account didn't load, so it isn't on your bench yet."; return; }
   if (!user) { location.href = signInUrl(); return; }
   ideaId ||= crypto.randomUUID();
   try {

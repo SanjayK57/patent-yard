@@ -53,12 +53,14 @@ function intersect(lists) {
 
 const num = id => { const [c, n, k] = id.split("-"); return `${c} ${n}${k ? " " + k : ""}`; };
 function cardHTML(line) {
-  const [id, t, a, date, c, kind, flags, field] = line.split("\t"), past = +flags & 1;
+  const [id, t, a, date, c, kind, flags, field] = line.split("\t");
+  // a US grant may carry a term adjustment for USPTO delay (functions/_world.js pastTerm); within 20 years of grant it may be in force
+  const past = +flags & 1 && !(c === "US" && Date.parse(`${+date.slice(0, 4) + 20}${date.slice(4)}`) > Date.now());
   // kind codes B, C, E and S are granted patents and U a registered utility model in most offices, even without the flag
   const granted = +flags & 2 || /^[BCES]/.test(kind), utility = /^U/.test(kind);
   return `<article class="card acard" data-id="${esc(id)}">${plateHTML(fields[+field] || "other", num(id), `${c} · ${date.slice(0, 4)}`, `<span class="badge ${past ? "expired" : "plain"}">${past ? "Past its term" : utility ? "Registered" : granted ? "Granted" : "Application"}</span>`)}`
     + `<div class="cbody"><span class="fieldname">${esc(country(c))} · ${esc(names[fields[+field]] || "")}</span><h3><a href="/patents/${esc(id)}/">${esc(t)}</a></h3></div>`
-    + `<div class="cmeta"><div><small>Published</small><span>${esc(date.slice(0, 4))}</span></div><div><small>Kind</small><span>${esc(kind)}</span></div><div><small>Owner</small><span title="${esc(a)}">${esc(a || "—")}</span></div></div></article>`;
+    + `<div class="cmeta"><div><small>Published</small><span>${esc(date.slice(0, 4))}</span></div><div><small>Kind</small><span>${esc(kind)}</span></div><div><small>Assignee</small><span title="${esc(a)}">${esc(a || "—")}</span></div></div></article>`;
 }
 
 // a patent number goes straight to its page: "CN 112345678 A", "JP2005-123456", "US 10,000,000 B2"
@@ -102,9 +104,9 @@ async function run() {
   const word = w => (S.free ? postings(w, "f") : old ? Promise.all([postings(w, "s"), postings(w, "f")]).then(([a, b]) => union(a, b)) : postings(w, "s"));
   const lists = key && !k ? null : await Promise.all([...ws.map(word), ...(key ? [filterList(key)] : [])]).catch(() => null);
   if (my !== seq) return;
-  if (!lists) { docs = []; count.textContent = `No patents ${[S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ")} in the data.`; return; }
+  if (!lists) { docs = []; count.textContent = `No patents ${[S.cc && `from ${country(S.cc)}`, S.free && "filed 20+ years ago"].filter(Boolean).join(", ")} in the data.`; return; }
   docs = lists.length ? intersect(lists) : null;
-  const n = docs ? docs.length : meta.n, q_ = S.q.trim(), what = [S.cc && `from ${country(S.cc)}`, S.free && "past their term"].filter(Boolean).join(", ");
+  const n = docs ? docs.length : meta.n, q_ = S.q.trim(), what = [S.cc && `from ${country(S.cc)}`, S.free && "filed 20+ years ago"].filter(Boolean).join(", ");
   const total = k ? k[0] : meta.n, newest = `newest ${meta.cap.toLocaleString("en-US")}`;
   count.textContent = (!ws.length ? (key ? `${total.toLocaleString("en-US")} patents ${what}${k[1] ? `; showing the ${newest}` : ""}, newest first.` : `${n.toLocaleString("en-US")} patents worldwide, newest first.`)
     : `${n.toLocaleString("en-US")} ${n === 1 ? "patent matches" : "patents match"} “${q_}”${what ? ` ${what}` : ""}, newest first.${cut ? ` A common word or a big filter keeps only its ${newest} patents, so older matches can be missing.` : ""}`);

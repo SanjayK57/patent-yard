@@ -2,7 +2,7 @@
 import { $, session } from "./app.js";
 
 const form = $("#contactForm"), st = $("#cStatus");
-session.then(({ b }) => { if (!b) { form.hidden = true; $("#cOff").hidden = false; } });
+session.then(({ b }) => { if (b) form.hidden = false; else $("#cOff").hidden = false; });
 form.addEventListener("submit", async e => {
   e.preventDefault();
   const { b } = await session, body = $("#cBody").value.trim(), email = $("#cEmail").value.trim();

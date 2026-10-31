@@ -65,14 +65,20 @@ export async function worldRecord(id) {
   for (let i = lo; i < x.byteLength / 8 && dv.getUint32(i * 8 + 4, true) === k; i++) {
     const doc = dv.getUint32(i * 8, true), b = (await records(`d/${Math.floor(doc / W.per)}.bin`, [doc % W.per]))[doc % W.per];
     const r = b && JSON.parse(await inflate(b));
-    if (r && r.pn.split("-").slice(0, 2).join("-") === key) return r;
+    if (r && r.pn.split("-").slice(0, 2).join("-") === key) return { ...r, free: pastTerm(r) };
   }
   return null;
 }
 
 export const label = r => { const [cc, num, kind] = r.pn.split("-"); return `${cc} ${num}${kind ? " " + kind : ""}`; };
+const drug = r => r.cpc.some(c => /^(A61K|A61P|A01N|A01P|C07|C12)/.test(c));
+// world.py marks a record past its term 20 years from filing (26 for medicines). A US patent filed after May 28, 2000 can run longer
+// by a term adjustment for USPTO delay, which these records don't hold; the delay falls inside its pendency, so until that many years
+// after grant it may still be in force.
+export const pastTerm = r => !!r.free && !(r.cc === "US" && r.f >= "2000-05-29" && (!r.g || Date.parse(`${+r.g.slice(0, 4) + (drug(r) ? 26 : 20)}${r.g.slice(4)}`) > Date.now()));
+
 export function status(r) {
-  if (r.free) return ["Past its term", "expired", [`Filed ${full(r.f)}. A patent lasts at most 20 years from filing, so no patent from this filing can still be in force${r.cpc.some(c => /^(A61K|A61P|A01N|A01P|C07|C12)/.test(c)) ? ", even with the up to six-year extensions medicine and crop-protection patents can get" : ""}.`]];
+  if (r.free) return ["Past its term", "expired", [`Filed ${full(r.f)}. A patent normally lasts at most 20 years from filing${drug(r) ? ", and medicines and crop treatments can get up to about six years more" : ""}, so its term has ended${r.cc === "US" && r.f >= "2000-05-29" ? `, and more than ${drug(r) ? 26 : 20} years have passed since it was granted, so no US term adjustment can still extend it` : ""}.`, "Check the official register of its country before relying on it."]];
   if (r.g) return ["Granted, may be in force", "plain", [`Granted ${full(r.g)}. It may still be in force: owners keep patents alive by paying renewal fees, and many stop.`, "Check its status in the official register of its country before relying on it."]];
   return ["Published application", "plain", ["This application was published, but its outcome is not recorded here: it may have been granted, refused or withdrawn.", "Check the official register of its country for its status."]];
 }
@@ -95,7 +101,7 @@ export function renderWorld(tpl, r) {
   const timeline = timelineSection([[r.pr !== r.f && r.pr, "Priority date"], [r.f, "Application filed"], [r.p, "Published"], [r.g, "Granted"],
     r.free && [end, "20 years from filing", "bad"]], "Google Patents");
   const lc = x => `<a class="lcard" href="${x[0]}" ${EXT}><b>${E(x[1])}${icon("ext")}</b><span>${E(x[2])}</span><small>${E(x[3])}</small></a>`;
-  const owner = (r.a ? ` · Owner: ${E(r.a)}` : "") + (r.i ? ` · Inventor: ${E(r.i)}` : "");
+  const owner = (r.a ? ` · Assignee: ${E(r.a)}` : "") + (r.i ? ` · Inventor: ${E(r.i)}` : "");
   const facts = [["Country", country], ["Filed", full(r.f)], ["Published", full(r.p)], ["Granted", r.g ? full(r.g) : "Not recorded"], ["Priority", full(r.pr)],
     ["Application", r.app || "—"], ["Classification (CPC)", r.cpc.join(", ") || "—"], ["Family", r.fam ? `Google family ${r.fam}` : "—"]];
   const body = `<div class="page" id="patent" data-source="world"${r.free ? "" : ' data-noreserve="1"'} data-id="${E(r.pn)}" data-n="${E(n)}" data-sheets="0" data-total="0" data-pdf="${main}">

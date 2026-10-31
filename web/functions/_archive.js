@@ -13,7 +13,7 @@ const fieldOf = r => [SITE.fieldKeys[r.ind] || "other", SITE.fields[SITE.fieldKe
 
 // what kind of document an archive record is: "S" design patent, "A" published application, "" utility patent,
 // or a patent office outside the US (REGIONS)
-const KIND = { S: ["Expired design patent", "expired"], A: ["Likely abandoned", "abandoned"], "": ["Expired, full term", "expired"] };
+const KIND = { S: ["Expired design patent", "expired"], A: ["Likely abandoned application", "abandoned"], "": ["Expired, full term", "expired"] };
 const addYears = (s, y) => { const d = new Date(s + "T12:00:00Z"); d.setUTCMonth(d.getUTCMonth() + Math.round(y * 12)); return d.toISOString().slice(0, 10); };
 const passed = (s, y) => addYears(s, y) < new Date().toISOString().slice(0, 10);
 const GOOGLE = "Full text, worldwide family, citing patents and legal events.";
@@ -41,7 +41,7 @@ const REGIONS = {
     facts: r => [["Filed", full(r.f)], ["Published", full(r.p)], ["Granted", r.g ? full(r.g) : "Never granted"], ["Term ended", full(r.te)], ["Application number", `EP ${r.app || "—"}`]],
   },
   CA: {
-    name: "Canada", adj: "Canadian", office: "CIPO", party: "Owner", ipc: "IPC", credit: "Contains information licensed under the Open Government Licence – Canada.",
+    name: "Canada", adj: "Canadian", office: "CIPO", party: "Owner on the CIPO record", ipc: "IPC", credit: "Contains information licensed under the Open Government Licence – Canada.",
     granted: r => !!r.g,
     links: (num, kind) => {
       const rec = `https://brevets-patents.ic.gc.ca/opic-cipo/cpd/eng/patent/${num}/summary.html`, google = `https://patents.google.com/patent/CA${num}${kind}/en`;
@@ -156,7 +156,7 @@ export function renderArchive(tpl, r) {
   const body = `<div class="page" id="patent" data-source="archive" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="0" data-total="${r.sh || 0}" data-pdf="${doc}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/${fk}/">${E(field)}</a><span>/</span><span>${E(r.n)}</span></nav>
 <div class="phead">
-  <div><div class="badges"><span class="badge ${K[1]}">${K[0]}</span><span class="badge plain">${R ? R.name : "Archive"}</span>${r.a ? "" : '<span class="badge plain">Solo inventor</span>'}<span class="badge ok" id="vbadge" hidden></span></div>
+  <div><div class="badges"><span class="badge ${K[1]}">${K[0]}</span><span class="badge plain">${R ? R.name : "Archive"}</span>${r.a || r.k === "A" ? "" : '<span class="badge plain">No assignee recorded</span>'}<span class="badge ok" id="vbadge" hidden></span></div>
   <h1>${E(r.t)}</h1><p class="asfiled"><span class="num">${E(r.n)}</span>${owner}</p></div>
   <div class="pactions">
     ${arm ? "" : `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>`}

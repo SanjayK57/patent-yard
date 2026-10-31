@@ -162,7 +162,7 @@ repBtn.addEventListener("click", () => {
     const body = $("#repBody").value.trim(), st = $("#repStatus");
     if (!body) { st.className = "status err"; st.textContent = "Describe the problem first."; return; }
     const { b } = await session;
-    try { await b.sendMessage({ kind: "report", patent: id, email: $("#repEmail").value.trim(), body }); repDlg.close(); toast("Thanks. We'll check it against the USPTO record.", 4600, "ok"); }
+    try { await b.sendMessage({ kind: "report", patent: id, email: $("#repEmail").value.trim(), body }); repDlg.close(); toast("Thanks. We'll check it against the source record.", 4600, "ok"); }
     catch { st.className = "status err"; st.textContent = "It didn't send. Try again."; }
   });
 });

@@ -237,3 +237,10 @@ class Website(unittest.TestCase):
         checks, warn = self.W.why_free(self.entry())
         self.assertIn("May 2, 2021", checks[0])
         self.assertIn("July 6, 2021", checks[0])
+
+    def test_opportunity_rank_is_its_listed_factors(self):
+        e = self.entry(ind="medical", a="Acme Corp", ia=False, ni=3, w1=40, cl=20, x="2025-05-02", t="Cup", ot="Cup", h="A cup")
+        sig = self.W.signals(e, fig=True)
+        self.assertEqual(round(self.W.potential({"entry": {**e, "arm": False}, "fig": True}), 6), round(sum(v for _, v in sig), 6))
+        self.assertFalse(any("claim" in t.lower() or "word" in t.lower() for t, _ in sig))  # claim length is no measure of breadth
+        self.assertEqual(sig[0][1], max(v for _, v in sig))

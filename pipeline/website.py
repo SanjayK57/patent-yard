@@ -36,8 +36,11 @@ DIST = WEB / "dist"
 STATIC = WEB / "static"
 CONFIG = json.loads((WEB / "config.json").read_text())
 SITE = CONFIG["site_url"].rstrip("/")
-STATUS = {"lapsed": "Lapsed, fee not paid", "expired": "Expired, full term", "abandoned": "Likely abandoned"}
+STATUS = {"lapsed": "Lapsed, fee not paid", "expired": "Expired, full term", "abandoned": "Likely abandoned application"}
 BUILD = ["", "Weekend", "Garage", "Workshop", "Lab", "Industrial"]
+# what each level means (How it works, and the title on every build label); an editorial estimate for a first working prototype
+BUILD_MEANS = ["", "a first prototype from off-the-shelf parts and hand tools, in a few days", "basic power tools, simple electronics or 3D printing, in a few weeks",
+              "machining, custom circuit boards or careful assembly", "lab equipment, special materials or controlled processes", "factory equipment or large-scale processes"]
 EXT = 'target="_blank" rel="noopener noreferrer"'
 FIELD_NOTES = {
     "software": "Apps, web services, interfaces and business systems.",
@@ -339,6 +342,7 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 # All patents (pipeline/world.py) lives in its own Pages projects; web/world/live.json names them once they are deployed
 WORLD = json.loads((WEB / "world" / "live.json").read_text()) if (WEB / "world" / "live.json").exists() else None
 WSTATS = json.loads((WEB / "world" / "stats.json").read_text()) if WORLD and (WEB / "world" / "stats.json").exists() else None  # world.py stats
+OFFICES = len(WSTATS["countries"]) if WSTATS else 106  # patent offices in the world data
 COUNTRY = dict(re.findall(r'(\b[A-Z]{2}): "([^"]+)"', (WEB / "functions" / "_world.js").read_text().split("export const COUNTRY")[1].split("};")[0]))
 NAV = ([("/browse/", "Free to use"), ("/all/", "All patents"), ("/opportunities/", "Opportunities")] if WORLD else
        [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields")]) + [("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
@@ -366,7 +370,7 @@ class Site:
 
     # -------------------------------------------------------- shell
     def page(self, path, title, desc, body, *, section="", og_image=None, jsonld=None, scripts=(), lastmod=None, index=True, write=True):
-        full_title = f"{title} · Patent Yard" if title != "Patent Yard" else ("Patent Yard: search 122.8 million patents, and the free ones" if WORLD else "Patent Yard: free-to-use patents from four patent offices")
+        full_title = f"{title} · Patent Yard" if title != "Patent Yard" else (f"Patent Yard: expired and lapsed patents to build on, and {big_number(WORLD['n'])} records worldwide" if WORLD else "Patent Yard: free-to-use patents from four patent offices")
         cur = ' aria-current="page"'
         nav = "".join(f'<a href="{href}"{cur if section == href else ""}>{label}</a>' for href, label in NAV)
         crumb = {**{href: label for href, label in NAV}, "/fields/": "Fields", "/account/": "Account", "/about/": "About"}.get(section)
@@ -426,12 +430,12 @@ class Site:
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div><b>Patent Yard</b><p style="margin-top:10px;max-width:44ch">A free register of patents from the US, Europe, Canada and Australia whose protection has ended, traced to official records, with tools to turn them into new inventions.</p><p class="num" id="footStat" style="margin-top:10px">Rechecked against USPTO records every day</p></div>
+    <div><b>Patent Yard</b><p style="margin-top:10px;max-width:44ch">A free register of expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, traced to patent office records, with tools for developing new inventions from them.</p><p class="num" id="footStat" style="margin-top:10px">Recently lapsed US patents are rechecked for reinstatement daily</p></div>
     <nav aria-label="Explore"><span class="kicker">Explore</span><a href="/browse/">Browse all</a><a href="/opportunities/">Opportunities</a><a href="/fields/">Fields</a><a href="/studio/">Invention studio</a><a href="/insights/">Insights</a><a href="/saved/">Saved patents</a><a href="/account/">My bench</a><a href="/feed.xml">New patents feed</a></nav>
     <nav aria-label="Fields"><span class="kicker">Fields</span>{fields_nav}</nav>
     <nav aria-label="Sources"><span class="kicker">Sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>USPTO Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>Patent Public Search</a><a href="https://patentcenter.uspto.gov/" {EXT}>Patent Center</a><a href="https://data.epo.org/linked-data/" {EXT}>EPO linked open data</a></nav>
     <nav aria-label="Company"><span class="kicker">Patent Yard</span><a href="/about/">About</a><a href="/how-it-works/">How it works</a><a href="/how-it-works/#faq">FAQ</a><a href="/contact/">Contact</a><a href="/settings/">Settings</a><a href="/legal/terms/">Terms</a><a href="/legal/privacy/">Privacy</a><a href="/legal/disclaimer/">Disclaimer</a><a href="/legal/copyright/">Copyright</a><a href="/legal/accessibility/">Accessibility</a></nav>
-    <p class="fine">Patent data comes from the United States Patent and Trademark Office; the European Patent Office's Linked open EP data, used under <a href="https://creativecommons.org/licenses/by/4.0/" {EXT}>CC BY 4.0</a>; the Canadian Intellectual Property Office, and contains information licensed under the <a href="https://open.canada.ca/en/open-government-licence-canada" {EXT}>Open Government Licence – Canada</a>; and IP Australia's IPGOD, used under <a href="https://creativecommons.org/licenses/by/2.5/au/" {EXT}>CC BY 2.5 AU</a>.{" All patents uses Google Patents Public Data, under CC BY 4.0." if WORLD else ""} Patent Yard is not affiliated with any of these offices and does not give legal advice. Plain-English names, summaries and modern angles are Patent Yard's editorial notes.</p>
+    <p class="fine">Patent data comes from the United States Patent and Trademark Office; the European Patent Office's Linked open EP data, used under <a href="https://creativecommons.org/licenses/by/4.0/" {EXT}>CC BY 4.0</a>; the Canadian Intellectual Property Office, and contains information licensed under the <a href="https://open.canada.ca/en/open-government-licence-canada" {EXT}>Open Government Licence – Canada</a>; and IP Australia's IPGOD, used under <a href="https://creativecommons.org/licenses/by/2.5/au/" {EXT}>CC BY 2.5 AU</a>.{" All patents uses Google Patents Public Data, under CC BY 4.0." if WORLD else ""} Patent Yard is not affiliated with any of these offices and does not give legal advice. Plain-English names, summaries, modern angles and build levels are Patent Yard's notes, drafted with Claude (an AI model) from each patent's text.</p>
   </div>
 </footer>
 <div id="toast" role="status" aria-live="polite"></div>
@@ -455,7 +459,8 @@ class Site:
     def card(self, r, i=0, feat=False):
         """A patent card. assets/js/catalog.js draws the same markup from the catalog data; keep them in step."""
         e = r["entry"]
-        owner = "Solo inventor" if e["ia"] else (e["a"] or "—")
+        owner = e["a"] if e["st"] == "abandoned" or not e["ia"] else "None recorded"
+        owner = owner or "Not recorded"
         lab, val = freed_line(e)
         fig = (f'<div class="fig"><img src="{self.img(e["id"])}" alt="Drawing from {E(e["n"])}" loading="{"eager" if i < 4 else "lazy"}" decoding="async">'
                f'<span class="over">{badge(e["st"])}</span>'
@@ -464,10 +469,10 @@ class Site:
         body = (f'<div class="cbody"><span class="fieldname">{E(self.fields.get(e["ind"], e["ind"]))} · <span class="num-id">{E(e["n"])}</span></span>'
                 f'<h3><a href="{purl(e["id"])}">{E(e["t"])}</a></h3><p>{E(e["h"])}</p>'
                 + (f'<div class="angle"><b>Modern angle</b>{E(e["tw"])}</div>' if feat and e["tw"] else "") + "</div>")
-        first = (f'<div><small>Build</small><span>{meter(e["b"])}{BUILD[e["b"]]}</span></div>' if e["b"]
+        first = (f'<div><small>Build</small><span title="Estimate: {BUILD_MEANS[e["b"]]}">{meter(e["b"])}{BUILD[e["b"]]}</span></div>' if e["b"]
                  else f'<div><small>Filed</small><span>{E((e["e"] or e["f"] or "—")[:4])}</span></div>')
         meta = (f'<div class="cmeta">{first}<div><small>{lab}</small><span>{E(val)}</span></div>'
-                f'<div><small>{"Applicant" if e["st"] == "abandoned" else "Owner"}</small><span title="{E(owner)}">{E(owner)}</span></div></div>')
+                f'<div><small>{"Applicant" if e["st"] == "abandoned" else "Assignee"}</small><span title="{E(owner)}">{E(owner)}</span></div></div>')
         inner = f'{fig}<div class="side">{body}{meta}</div>' if feat else f"{fig}{body}{meta}"
         return f'<article class="card{" feat" if feat else ""}" data-id="{e["id"]}">{inner}</article>'
 
@@ -505,15 +510,15 @@ class Site:
         sources = [(m["count"] + span.get("US", 0), "United States", "USPTO", "US"), (span.get("Europe", 0), "Europe", "European Patent Office", "Europe"),
                    (span.get("Canada", 0), "Canada", "CIPO", "Canada"), (span.get("Australia", 0), "Australia", "IP Australia", "Australia")]
         week = sum(1 for r in self.rows if (r["added"] or "") >= (TODAY - dt.timedelta(days=7)).isoformat())
-        statband = (f'<a href="/all/"><em>106 offices</em><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patents worldwide</span></a>' if WORLD else "") + "".join(
-            f'<a href="/browse/?in=archive&amp;region={quote(r)}">{f"<em class=up>+{week:,} this week</em>" if place == "United States" and week else ""}<b class="num" data-count="{c}">{big_number(c)}</b><span>free to use in {E(place)}</span></a>'
+        statband = (f'<a href="/all/"><em>{OFFICES} offices</em><b class="num" data-count="{WORLD["n"]}">{big_number(WORLD["n"])}</b><span>patent records worldwide, granted and published applications</span></a>' if WORLD else "") + "".join(
+            f'<a href="/browse/?in=archive&amp;region={quote(r)}">{f"<em class=up>+{week:,} added this week</em>" if place == "United States" and week else ""}<b class="num" data-count="{c}">{big_number(c)}</b><span>{E(place)}: {"expired, lapsed or abandoned" if place == "United States" else "past their term"}</span></a>'
             for c, place, office, r in sources if c)
         he = hero
         ended = full_date(he["x"]) if he["st"] == "lapsed" else full_date(he.get("te")) if he["st"] == "expired" else ""
         body = f"""
 <section class="ahero">
-  <h1 class="rise" style="--d:0">Build on inventions nobody owns anymore.</h1>
-  <p class="lede rise" style="--d:1">Find inventions anyone may now build on for free, check what already exists anywhere in the world, and make them yours with Claude.</p>
+  <h1 class="rise" style="--d:0">Build on inventions whose patents have ended.</h1>
+  <p class="lede rise" style="--d:1">Search expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, with their original drawings and claims. Check what else exists among {big_number(WORLD['n']) if WORLD else 'millions of'} records worldwide, then develop your own version with Claude.</p>
   <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or numbers"><span class="kbd" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span><button class="btn primary" type="submit">Search</button></form>
   <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button>{'<a class="allpat" href="/all/">Or search all patents worldwide ›</a>' if WORLD else ""}</div>
 </section>
@@ -532,7 +537,7 @@ class Site:
 
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">
-  <div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> Today's picks</span><h2>Worth a look today</h2><p>Refreshed every day. Each one is free to make, use and sell in the US.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
+  <div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> Today's picks</span><h2>Worth a look today</h2><p>Picked each day from US patents that have expired or lapsed. A patent ending frees its own claims, not every right in a product, so check before you build.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
   <div class="bento">{self.card(picks[1], 1, feat=True)}{"".join(self.card(r, i) for i, r in enumerate(picks[2:10], 2))}</div>
 </section>
 <section class="section reveal">
@@ -542,19 +547,19 @@ class Site:
 <section class="section reveal">
   <div class="sechead"><div><h2>How it works</h2></div><a class="btn quiet" href="/how-it-works/">The details</a></div>
   <div class="steps3">
-    <div><span class="n">01</span><h3>Find</h3><p>Search millions of patents whose protection has ended. Each one links to the official USPTO record it came from.</p></div>
-    <div><span class="n">02</span><h3>Reinvent with Claude</h3><p>One click writes a prompt and a PDF brief for your own Claude: modern directions, a novelty screen and a provisional draft.</p></div>
-    <div><span class="n">03</span><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build and file your own improvement. Reserving doesn't stop anyone else from using it.</p></div>
+    <div><span class="n">01</span><h3>Find</h3><p>Search patents that have expired, lapsed or been abandoned. Each one links to the patent office record it came from.</p></div>
+    <div><span class="n">02</span><h3>Reinvent with Claude</h3><p>The studio writes a prompt and a PDF brief for your own Claude account: modern directions, a first prior-art search and a rough provisional draft to review with a professional.</p></div>
+    <div><span class="n">03</span><h3>Reserve and build</h3><p>Reserve a patent for 30 days so other builders know you're on it, then build it, and file on your improvement if it's new. Reserving doesn't stop anyone else from using it.</p></div>
   </div>
 </section>
 <section class="section reveal">
-  <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a novelty screen and a provisional patent draft. Free.</p></div>
+  <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a first prior-art search and a rough provisional draft. Free.</p></div>
     <figure class="promptcard"><span class="figbar" aria-hidden="true"><i></i><i></i><i></i><b>Invention studio · prompt</b></span><blockquote>I'm an independent inventor. I want to build a new, patentable product based on my own idea. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.</blockquote><figcaption>The opening of the prompt the studio writes for your Claude</figcaption></figure><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
 </section>"""
         ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "Patent Yard", "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
               {"@context": "https://schema.org", "@type": "Organization", "name": "Patent Yard", "url": SITE + "/", "logo": SITE + "/favicon.svg"}]
-        self.page("/", "Patent Yard", f"Search {big_number(total)} patents from the US, Europe, Canada and Australia whose protection has ended, each traced to its official record, with tools to reinvent them with Claude.",
+        self.page("/", "Patent Yard", f"Search {big_number(total)} expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, each traced to its patent office record, with tools to develop new inventions from them with Claude.",
                   body, og_image=self.img(hero["id"]), jsonld=ld, scripts=("home",))
 
     def ticker(self):
@@ -581,14 +586,14 @@ class Site:
     <button class="chip" type="button" data-st="" aria-pressed="true">All</button>
     <button class="chip" type="button" data-st="lapsed" aria-pressed="false">Lapsed <small>{st["lapsed"]:,}</small></button>
     <button class="chip" type="button" data-st="expired" aria-pressed="false">Expired, full term <small>{st["expired"]:,}</small></button>
-    <button class="chip" type="button" data-st="abandoned" aria-pressed="false">Likely abandoned <small>{st["abandoned"]:,}</small></button></div>
-  <div class="frow"><span class="lab">Build</span>
+    <button class="chip" type="button" data-st="abandoned" aria-pressed="false">Likely abandoned applications <small>{st["abandoned"]:,}</small></button></div>
+  <div class="frow"><span class="lab" title="Our estimate of the effort for a first working prototype, not for production">Build</span>
     <button class="chip" type="button" data-b="" aria-pressed="true">Any</button>
     <button class="chip" type="button" data-b="2" aria-pressed="false">Weekend or garage</button>
     <button class="chip" type="button" data-b="3" aria-pressed="false">Up to workshop</button></div>
   <div class="frow"><span class="lab">Options</span>
     <button class="chip" type="button" id="fFig" aria-pressed="false">With drawings</button>
-    <button class="chip" type="button" id="fSolo" aria-pressed="false">Solo inventors</button>
+    <button class="chip" type="button" id="fSolo" aria-pressed="false" title="Granted with no assignee recorded, usually to individual inventors">No assignee</button>
     <button class="chip" type="button" id="fFree" aria-pressed="false">Hide reserved</button>
     <label class="sr" for="sort">Sort</label>
     <select class="field" id="sort" style="width:auto">
@@ -678,7 +683,7 @@ class Site:
 <div class="stack">
   {KIT_OFF if e.get("arm") else ""}
   {plain or abstract}
-  <div class="panel soft"><div class="block"><h3>Why it's free to use</h3><ul class="checks">{"".join(f"<li>{E(c)}</li>" for c in checks)}<li class="warn">{E(warn)}</li></ul></div></div>
+  <div class="panel soft"><div class="block"><h3>Why it's listed</h3><ul class="checks">{"".join(f"<li>{E(c)}</li>" for c in checks)}<li class="warn">{E(warn)}</li></ul></div></div>
   {f'<div class="angle"><b>Modern angle · Patent Yard idea</b>{E(e["tw"])}</div>' if e["tw"] else ""}
   <div class="facts">
     <div><small>Filed</small><b>{E(full_date(e["f"]))}</b></div>
@@ -724,7 +729,7 @@ class Site:
         gap = claims[0][0] - 1 if claims else 0
         gap_note = f'<p class="muted sublead">{"Claim 1 was" if gap == 1 else f"Claims 1 to {gap} were"} canceled before publication.</p>' if gap > 0 else ""
         claims_sec = f"""<section class="psec" id="claims"><h2>Claims <small>{len(claims)} total, {ind_n} independent</small></h2>
-{gap_note}<p class="muted sublead">What the {kind} claimed, word for word. All of it is now free to use.</p>
+{gap_note}<p class="muted sublead">What the {kind} claimed, word for word. {"It was never granted, so these claims were never enforceable." if e["st"] == "abandoned" else "These claims are no longer enforceable in the US, unless the patent is reinstated." if e["st"] == "lapsed" else "These claims are no longer enforceable in the US."} Other patents and rights can still cover a product built from them.</p>
 <div class="withaside">{claim_list(claims)}{claim_map(claims)}</div></section>""" if claims else f"""<section class="psec" id="claims"><h2>Claims</h2>
 <div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>On their way</h3><p class="prose">The claims are {later}</p></div></div></section>"""
 
@@ -799,7 +804,7 @@ class Site:
 <div class="panel"><div class="block"><h3>Confirm it yourself</h3><ol class="prose" style="padding-left:18px;margin:0;font-size:14.5px"><li>Open the <a href="{L["center"]}" {EXT}>file history on Patent Center</a>.</li><li>{confirm}</li><li>Check the documents for any later petition to revive or reinstate.</li></ol></div></div></div>
 <div class="cols2 links2"><div class="block"><h3>Official USPTO records</h3><div class="linklist">{"".join(lc(x, "src" if i == 0 else "") for i, x in enumerate(origin + official))}</div></div>
 <div class="block"><h3>Cross-check elsewhere</h3><div class="linklist">{"".join(lc(x) for x in cross)}</div></div></div>
-<p class="muted" style="font-size:13px">{"Names, summaries, modern angles and build ratings are Patent Yard's editorial notes. Everything else" if not e["auto"] else "Everything"} on this page comes from the documents linked above.</p>
+<p class="muted" style="font-size:13px">{"The name, summary, modern angle and build rating are Patent Yard's notes, drafted with Claude (an AI model) from the patent's text. Everything else" if not e["auto"] else "Everything"} on this page comes from the documents linked above.</p>
 <div class="rowbtns noprint"><button class="btn secondary sm" type="button" id="reportBtn" hidden>Report a problem with this listing</button></div>
 </div></section>"""
 
@@ -810,13 +815,13 @@ class Site:
         pnav = f'<nav class="pnav noprint" aria-label="More patents in this field">{step(prev_, "← Previous in " + field, "prev")}{step(next_, "Next in " + field + " →", "next")}</nav>' 
         rel = f'<section class="section noprint"><div class="sechead"><div><h2>More in {E(field)}</h2></div><a class="btn quiet" href="/fields/{e["ind"]}/">All {E(field)}</a></div><div class="grid">{"".join(self.card(x, 9) for x in related)}</div></section>' if related else ""
         toc = [("overview", "Overview", ""), ("drawings", "Drawings", e["sh"] or len(sheets) or ""), ("claims", "Claims", len(claims) or ""), ("description", "Description", ""), ("history", "Timeline & family", ""), ("sources", "Sources & verification", "")]
-        build_badge = f'<span class="badge plain">{meter(e["b"])}{BUILD[e["b"]]} build</span>' if e["b"] else ""
+        build_badge = f'<a class="badge plain" href="/how-it-works/#build" title="Estimate: {BUILD_MEANS[e["b"]]}">{meter(e["b"])}{BUILD[e["b"]]} build</a>' if e["b"] else ""
         num = f'<span class="num">{E(e["n"])}</span>'
         asfiled = f"{num} · Title as filed: {E(e['ot'])}" if e["t"] != e["ot"] else num
         body = f"""<div class="page" id="patent" data-id="{pid}" data-n="{E(e["n"])}" data-sheets="{len(sheets)}" data-total="{e["sh"] or len(sheets)}" data-pdf="{L["pdf"]}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/{e["ind"]}/">{E(field)}</a><span>/</span><span>{E(e["n"])}</span></nav>
 <div class="phead">
-  <div><div class="badges">{badge(e["st"])}{build_badge}{'<span class="badge plain">Solo inventor</span>' if e["ia"] else ""}<span class="badge ok" id="vbadge" hidden></span></div>
+  <div><div class="badges">{badge(e["st"])}{build_badge}{'<span class="badge plain">No assignee recorded</span>' if e["ia"] and e["st"] != "abandoned" else ""}<span class="badge ok" id="vbadge" hidden></span></div>
   <h1>{E(e["t"])}</h1><p class="asfiled">{asfiled}{owner}</p></div>
   <div class="pactions">
     {"" if e.get("arm") else f'<button class="btn primary" type="button" data-kit="workshop">{icon("spark")}Reinvent with Claude</button>'}
@@ -877,61 +882,71 @@ class Site:
             out.append(f'<article class="card acard" data-id="{E(pid)}"><div class="fig plate" data-tag="{E(cc)} · {E(date[:4])}"><span class="over"><span class="badge {"expired" if past else "plain"}">{label}</span></span>'
                        f'<svg class="fglyph" aria-hidden="true"><use href="#f-{fk}"/></svg><span class="numart">{E(num)}</span></div>'
                        f'<div class="cbody"><span class="fieldname">{E(COUNTRY.get(cc, cc))} · {E(self.fields.get(fk, ""))}</span><h3><a href="/patents/{E(pid)}/">{E(t)}</a></h3></div>'
-                       f'<div class="cmeta"><div><small>Published</small><span>{E(date[:4])}</span></div><div><small>Kind</small><span>{E(kind)}</span></div><div><small>Owner</small><span title="{E(a)}">{E(a or "—")}</span></div></div></article>')
+                       f'<div class="cmeta"><div><small>Published</small><span>{E(date[:4])}</span></div><div><small>Kind</small><span>{E(kind)}</span></div><div><small>Assignee</small><span title="{E(a)}">{E(a or "—")}</span></div></div></article>')
         return "".join(out)
 
     def all_patents(self):
         n = WORLD["n"]
         body = f"""<div class="page">
 <div class="sechead"><div><h1>Search {big_number(n)} patents worldwide</h1>
-<p class="lede">Every patent and published application in Google's public patent data, from 106 patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
+<p class="lede">Every patent and published application in Google's public patent data, from {OFFICES} patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
 <form class="filters" id="wfilters" role="search">
   <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"></div>
   <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc" style="width:auto"><option value="">All countries</option></select>
-    <button class="chip" type="button" id="wfree" aria-pressed="false">Past their term only</button></div>
+    <button class="chip" type="button" id="wfree" aria-pressed="false" title="Filed more than 20 years ago (26 for medicines). US patents granted in the past 20 years can still carry a term adjustment, so their pages say may be in force">Filed 20+ years ago</button></div>
 </form>
 <div class="countbar"><p class="count" id="wcount" aria-live="polite">{n:,} patents worldwide, newest first.</p>{VIEWTOG.format(grid="wgrid")}</div>
 <div class="grid" id="wgrid">{self.world_first_cards()}</div>
 <div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div>
 <p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. "Past its term" means filed long enough ago that no patent from it can still be in force; every other status is as published, so confirm it with the official register before relying on it.</p>
 </div>"""
-        self.page("/all/", "All patents", f"Search {big_number(n)} patents and applications from 106 patent offices, with the ones past their term marked.",
+        self.page("/all/", "All patents", f"Search {big_number(n)} patents and applications from {OFFICES} patent offices, with the ones past their term marked.",
                   body, section="/all/", scripts=("all",))
 
     def opportunities(self):
-        # ties: the broader first claim, then more claims
         scored = sorted(((p, r) for r in self.rows if (p := potential(r)) is not None),
-                        key=lambda t: (-t[0], t[1]["entry"].get("w1") or 999, -(t[1]["entry"].get("cl") or 0), t[1]["entry"]["id"]))
+                        key=lambda t: (-t[0], -(t[1]["entry"].get("cl") or 0), t[1]["entry"]["id"]))  # ties: more claims, then number
         by_id = {r["entry"]["id"]: r for _, r in scored}
         picks = [(by_id[k], v) for k, v in ANALYSIS.items() if k in by_id]
         top = [r for _, r in scored if r["entry"]["id"] not in ANALYSIS][:96]
-        chips = lambda e: "".join(f'<span class="chip sm">{E(x)}</span>' for x in signals(e))
+
+        def why(r):  # every factor and its points, so the order can be checked by hand
+            sig = signals(r["entry"], bool(r["fig"]))
+            rows_ = "".join(f"<li><span>{E(t)}</span><b class=\"num\">+{v:.1f}</b></li>" for t, v in sig)
+            return (f'<details class="why"><summary>Why it ranks here <span class="num">{sum(v for _, v in sig):.1f} points</span></summary>'
+                    f'<ul>{rows_}</ul></details>')
         pick_html = "".join(f"""<article class="oppick reveal" data-of="{r["entry"]["ind"]}">
   <a class="ofig" href="{purl(r["entry"]["id"])}">{f'<img src="{self.img(r["entry"]["id"])}" alt="Drawing from {E(r["entry"]["n"])}" loading="lazy">' if r["fig"] else ""}<span class="rank">{i}</span></a>
-  <div class="otext"><span class="fieldname">{E(self.fields.get(r["entry"]["ind"], r["entry"]["ind"]))} · <span class="num-id">{E(r["entry"]["n"])}</span></span>
+  <div class="otext"><span class="fieldname">{E(self.fields.get(r["entry"]["ind"], r["entry"]["ind"]))} · <span class="num-id">{E(r["entry"]["n"])}</span> · lapsed {E(short_date(r["entry"]["x"]))}</span>
     <h3><a href="{purl(r["entry"]["id"])}">{E(r["entry"]["t"])}</a></h3>
-    <dl><div><dt>Now free to use</dt><dd>{E(a["open"])}</dd></div><div><dt>Who would buy it</dt><dd>{E(a["buyers"])}</dd></div>
-    <div><dt>Why now</dt><dd>{E(a["now"])}</dd></div><div><dt>Check first</dt><dd>{E(a["watch"])}</dd></div></dl>
-    <div class="chips">{chips(r["entry"])}</div>
+    <dl><div><dt>What lapsed</dt><dd>{E(a["open"])}</dd></div><div><dt>Who might be interested</dt><dd>{E(a["buyers"])}</dd></div>
+    <div><dt>Why it could matter now</dt><dd>{E(a["now"])}</dd></div><div><dt>Check before building</dt><dd>{E(a["watch"])}</dd></div></dl>
+    {why(r)}
     <div class="rowbtns"><a class="btn primary sm" href="{purl(r["entry"]["id"])}">Open patent</a><a class="btn secondary sm" href="/studio/?patent={quote(r["entry"]["id"])}">{icon("spark")}Reinvent with Claude</a></div></div>
 </article>""" for i, (r, a) in enumerate(picks, 1))
-        top_html = "".join(f'<div class="opp" data-of="{r["entry"]["ind"]}"><span class="rank">{i}</span>{self.card(r, i)}<div class="chips">{chips(r["entry"])}</div></div>'
+        top_html = "".join(f'<div class="opp" data-of="{r["entry"]["ind"]}"><span class="rank">{i}</span>{self.card(r, i)}{why(r)}</div>'
                            for i, r in enumerate(top, len(picks) + 1))
         fields = sorted({r["entry"]["ind"] for r, _ in picks} | {r["entry"]["ind"] for r in top}, key=lambda k: list(self.fields).index(k) if k in self.fields else 99)
         filt = '<button class="chip" type="button" data-of="" aria-pressed="true">All</button>' + "".join(
             f'<button class="chip" type="button" data-of="{k}" aria-pressed="false">{E(self.fields.get(k, k))}</button>' for k in fields)
         body = f"""<div class="page">
-<div class="sechead"><div><h1>The biggest openings in the register</h1>
-<p class="lede">Recently freed patents ranked by the signals that track commercial value: how long the owner kept paying to protect it, how broad its claims are, who owned it and the size of the market it sells into. The top {len(picks)} come with Claude's analysis of what is now free, who would buy it and why now.</p></div></div>
-<ul class="omethod"><li><b>Kept up for years</b><span>An owner paying maintenance fees for 8 to 12 years thought it was worth protecting.</span></li><li><b>Broad claims</b><span>A short independent claim covered more ground, and all of it is free now.</span></li><li><b>Company-owned</b><span>A business filed and paid for it, usually for a product.</span></li><li><b>Large market</b><span>Its field sells into a big market: medical, energy, AI, robotics, vehicles.</span></li></ul>
+<div class="sechead"><div><h1>Opportunities</h1>
+<p class="lede">US patents that lapsed for an unpaid maintenance fee in the past year, ordered by a few facts from their records that suggest someone once invested in them. It's a starting point for research, not a valuation: nothing here measures the legal scope of the claims or predicts sales.</p></div></div>
+<ul class="omethod">
+<li><b>Fees paid for years</b><span>The owner paid maintenance fees for 7.5 or 11.5 years before letting the patent lapse. They thought it worth paying for; that says nothing about sales.</span></li>
+<li><b>A company assignee</b><span>A company was the assignee when it was granted. Companies usually file for products they mean to make, but not always, and today's owner may differ.</span></li>
+<li><b>Field weighting</b><span>Our judgment of where product development is busiest now (medical, energy, AI, robotics, vehicles weigh most). It is not market data.</span></li>
+<li><b>Inventors and drawings</b><span>Several named inventors, and drawings on file to work from.</span></li>
+</ul>
+<p class="muted fine-print">Each patent's factors and points are under "Why it ranks here". Claim length is not used: a short claim isn't necessarily a broad one.</p>
 <div class="frow ofilter" role="group" aria-label="Filter by field"><span class="lab">Field</span>{filt}</div>
-<section class="section"><div class="sechead"><div><h2>Claude's analysis</h2><p>Read from each patent's abstract and claims. Market notes are general, with no figures we can't source.</p></div></div>
+<section class="section"><div class="sechead"><div><h2>Researched notes on the top {len(picks)}</h2><p>Drafted with Claude (an AI model) from each patent's abstract and claims while the register was prepared, not reviewed by a patent professional. Who might be interested and why now are leads to check, not findings. No market figures are given because we can't source them.</p></div></div>
 <div class="opicks">{pick_html}</div></section>
-<section class="section"><div class="sechead"><div><h2>Next {len(top)} by score</h2><p>Ranked by the same signals. Open any one for its claims, drawings and the Claude kit.</p></div></div>
+<section class="section"><div class="sechead"><div><h2>The next {len(top)}</h2><p>Same factors, without written notes. Open any one for its claims, drawings and the Claude kit.</p></div></div>
 <div class="grid ogrid">{top_html}</div></section>
-<p class="muted fine-print">Rankings are estimates from public patent records, not a valuation, investment advice or a promise of sales. A lapsed patent's own claims are free to use in the US, but newer patents, regulations and other rights can still apply. Check before you build, and see the <a href="/legal/disclaimer/">disclaimer</a>.</p>
+<p class="muted fine-print">A lapsed US patent can be reinstated if the owner later shows the missed payment was unintentional, and its own claims are only one of the rights a product can touch: newer patents, design patents, trademarks, regulations and patents in other countries can still apply. See the <a href="/legal/disclaimer/">disclaimer</a>.</p>
 </div>"""
-        self.page("/opportunities/", "Opportunities", f"The {len(picks) + len(top)} recently freed patents with the most commercial potential, ranked by owner investment, claim breadth and market, with Claude's analysis of the top {len(picks)}.",
+        self.page("/opportunities/", "Opportunities", f"{len(picks) + len(top)} recently lapsed US patents in an explainable research order, with notes on the top {len(picks)} drafted with Claude.",
                   body, section="/opportunities/", scripts=("opps",))
 
     def insights(self, issues, recs=()):
@@ -972,7 +987,7 @@ class Site:
             best = spell[k].most_common()
             return next((o for o, _ in best if not o.isupper()), best[0][0].title())
         own = "".join(f'<li><span>{E(shown(k))}</span><b class="num">{c:,}</b></li>' for k, c in names.most_common(10))
-        rein = sum(w[2] for w in weeks)
+        rein = m["reinstatedYear"]  # the same figure as About: unique numbers in the Gazette issues of the past 365 days
         # the archive, by the decade its patents were granted
         dec = collections.Counter(r[4] // 10 * 10 for r in recs)
         kinds = collections.Counter(r[5] for r in recs)
@@ -988,9 +1003,9 @@ class Site:
 {'<section class="section"><div class="sechead"><div><h2>Free to use</h2><p>The register of patents whose protection has ended, drawn from the same office records as every patent page and updated with each refresh.</p></div></div>' if WSTATS else ""}
 <div class="statband reveal">
   <div><b class="num" data-count="{n + len(recs)}">{n + len(recs):,}</b><span>patents listed: {n + kinds.get("", 0) + kinds.get("S", 0) + kinds.get("A", 0):,} US, {kinds.get("E", 0):,} European, {kinds.get("CA", 0):,} Canadian and {kinds.get("AU", 0):,} Australian</span></div>
-  <div><b class="num" data-count="{m["lapsedYear"]}">{m["lapsedYear"]:,}</b><span>US patents lapsed in the past year</span></div>
-  <div><b class="num" data-count="{rein}">{rein:,}</b><span>reinstated after a late payment, and left out</span></div>
-  <div><b class="num" data-count="{round(solo / max(1, n + len(recs)) * 100)}">{solo / max(1, n + len(recs)) * 100:.0f}</b><span>percent from solo inventors, with no company named</span></div>
+  <div><b class="num" data-count="{m["lapsedYear"]}">{m["lapsedYear"]:,}</b><span>US patents the Official Gazette listed as expired for an unpaid fee in the past 365 days</span></div>
+  <div><b class="num" data-count="{rein}">{rein:,}</b><span>listed as reinstated after a late payment in the same issues, and left out of the register</span></div>
+  <div><b class="num" data-count="{round(solo / max(1, n + len(recs)) * 100)}">{solo / max(1, n + len(recs)) * 100:.0f}</b><span>percent granted with no assignee recorded, usually to individual inventors</span></div>
 </div>
 <div class="ins">
   <section class="panel reveal span2"><h2>Lapses every week</h2><p class="muted">Patents the Official Gazette listed as expired for an unpaid maintenance fee, issue by issue.</p><div class="chartbox">{chart}</div></section>
@@ -1032,7 +1047,7 @@ class Site:
   <div><b class="num" data-count="{w["n"]}">{w["n"]:,}</b><span>patents and applications</span></div>
   <div><b class="num" data-count="{len(w["countries"])}">{len(w["countries"])}</b><span>patent offices</span></div>
   <div><b class="num" data-count="{w["granted"]}">{w["granted"]:,}</b><span>granted patents; the rest are applications</span></div>
-  <div><b class="num" data-count="{w["free"]}">{w["free"]:,}</b><span>past their term, so no patent from them can still be in force</span></div>
+  <div><b class="num" data-count="{w["free"]}">{w["free"]:,}</b><span>filed more than 20 years ago (26 for medicines), past the usual maximum term</span></div>
 </div>
 <div class="ins">
   <section class="panel reveal span2"><h2>Published each year</h2><p class="muted">Patents and applications by the year they were published, across every office, from 1900 to {years[-1][0]}.</p><div class="chartbox">{chart}</div></section>
@@ -1126,7 +1141,7 @@ class Site:
     <div class="list"><header><h2>Inventions</h2><span class="badge plain" id="ideaCount">0</span></header><div id="ideaList"></div></div>
   </div>
 </div>
-<div id="offView" hidden><div class="empty">Accounts are being set up. Browsing, the patent files and the invention studio work without one.</div></div>
+<div id="offView" hidden><div class="empty"><b>Your account didn't load</b><p>Check your connection or any content blocker, then reload. Browsing, the patent files and the invention studio work without an account.</p></div></div>
 </div>"""
         self.page("/account/", "My account", "Sign in to reserve patents and keep your inventions on your Patent Yard bench.", body, section="/account/", scripts=("account",), index=False)
 
@@ -1142,7 +1157,7 @@ class Site:
   <li><span class="n">6</span><b>European patents</b><p>Every European patent and application filed more than 20 years ago, so no European patent from it can still be in force; 25 and a half for medicines and crop protection, which a supplementary protection certificate can extend. From the EPO's linked open data (CC BY 4.0).</p><a href="https://data.epo.org/linked-data/" {EXT}>Linked open EP data</a></li>
   <li><span class="n">7</span><b>Canadian patents</b><p>Every Canadian patent and application whose term has certainly ended: filed from October 1, 1989 and more than 20 years ago (22 for drugs, which a certificate of supplementary protection can extend), or granted under the old law more than 17 years ago. From CIPO's patent data, under the Open Government Licence – Canada.</p><a href="https://open.canada.ca/data/en/dataset/fe1dfbb9-0fc3-42ca-b2a9-6ca4c05dbac9" {EXT}>CIPO patent data</a></li>
   <li><span class="n">8</span><b>Australian patents</b><p>Every Australian standard patent filed more than 21 years ago (26 for pharmaceuticals, which can get an extension), and every innovation and petty patent past its short term. From IP Australia's IPGOD (CC BY 2.5 AU).</p><a href="https://data.gov.au/data/dataset/ipgod2022" {EXT}>IPGOD</a></li>
-  {f'<li><span class="n">9</span><b>All patents</b><p>Every patent and published application in Google Patents Public Data, from 106 offices ({big_number(WORLD["n"])} records), searchable in <a href="/all/">All patents</a>. Ones filed long enough ago that no patent from them can still be in force are marked past their term; every other status is shown as published, unchecked.</p><a href="https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data" {EXT}>Google Patents Public Data</a></li>' if WORLD else ""}
+  {f'<li><span class="n">9</span><b>All patents</b><p>Every patent and published application in Google Patents Public Data, from {OFFICES} offices ({big_number(WORLD["n"])} records), searchable in <a href="/all/">All patents</a>. Ones filed long enough ago that no patent from them can still be in force are marked past their term; every other status is shown as published, unchecked.</p><a href="https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data" {EXT}>Google Patents Public Data</a></li>' if WORLD else ""}
   <li><span class="n">{10 if WORLD else 9}</span><b>Rechecked and growing</b><p>Each day recently lapsed patents are checked against the newest Gazette, and their families in rotation. New lapses join every week, and the site republishes every two hours.</p></li>
 </ol>
 <div class="section"><div class="sechead"><div><h2>Reinventing with Claude</h2></div></div>
@@ -1153,13 +1168,14 @@ class Site:
   <div class="panel"><h3>Fine print</h3><ul><li><b>Lapsed</b> patents can be reinstated if the owner shows the missed payment was unintentional. Anyone who started using the invention during the lapse keeps limited "intervening rights" under 35 U.S.C. 41(c)(2).</li><li><b>Likely abandoned</b> status is inferred from USPTO records. Confirm it on Patent Center before relying on it.</li><li>Patent Yard is not legal advice. For anything with real money behind it, talk to a registered patent attorney or agent.</li></ul></div>
 </div></div>
 <div class="section" id="faq"><div class="sechead"><div><h2>Questions</h2></div></div><div class="faq">
-  <details><summary>What is a lapsed patent?</summary><p>US patents need maintenance fees 3.5, 7.5 and 11.5 years after grant, with a six-month grace period. If the owner doesn't pay, the patent expires at the 4th, 8th or 12th anniversary of its grant, and the USPTO lists it in the Official Gazette. From then on nobody can enforce it.</p></details>
+  <details><summary>What is a lapsed patent?</summary><p>US patents need maintenance fees 3.5, 7.5 and 11.5 years after grant, with a six-month grace period. If the owner doesn't pay, the patent expires at the 4th, 8th or 12th anniversary of its grant, and the USPTO lists it in the Official Gazette. From then on it can't be enforced, unless the owner has it reinstated by showing the missed payment was unintentional. Anyone who started using the invention in between may keep limited intervening rights (35 U.S.C. 41(c)).</p></details>
   <details><summary>What does "expired, full term" mean?</summary><p>A US utility patent filed after June 8, 1995 lasts 20 years from its earliest non-provisional filing date. Patents filed before May 29, 2000 can't receive a term adjustment for USPTO delays, and other extensions are capped at five years, so all of them have ended. Patents filed before June 8, 1995 lasted 17 years from grant or 20 from filing, whichever was longer; those are listed once both have passed. Everything granted before 1976 has long expired.</p></details>
-  <details><summary>Can I really build and sell these?</summary><p>In the US, yes: an expired or abandoned patent gives no one the right to stop you. Two cautions. Other, newer patents might cover parts of a product you build, and foreign patents in the same family might still be alive. Check both before you invest serious money.</p></details>
+  <details><summary>Can I really build and sell these?</summary><p>Once a US patent has expired, its own claims can't stop you in the US, and a lapsed one can't unless it is reinstated. An abandoned application never became a patent, so it gives no rights at all. That isn't the same as being clear to sell a product: newer patents may cover parts of your design, design patents and trademarks can cover how it looks or what it's called, family members in other countries or still pending may be alive, and regulations still apply. Before you invest serious money, get a freedom-to-operate opinion from a patent attorney.</p></details>
+  <details id="build"><summary>What do Weekend, Garage and Workshop mean?</summary><p>They are our estimate of the effort for a first working prototype, made while writing each patent's summary. {" ".join(f"<b>{BUILD[i]}</b>: {BUILD_MEANS[i]}." for i in range(1, 6))} They say nothing about producing or selling it: a product that works on a workbench may still need certification, safety testing, special materials or tooling.</p></details>
   <details><summary>Can I patent one of these?</summary><p>Not as it is. The published document is prior art. You can patent a genuine improvement that is new and not obvious, which is what the invention studio helps you find.</p></details>
   <details><summary>What does reserving do?</summary><p>It holds a patent for you on Patent Yard for 30 days so other builders here can see someone is working on it. It is a courtesy between users, not a legal right: it doesn't stop anyone, on Patent Yard or anywhere else, from using the patent. You can hold 5 at a time and renew in the last week.</p></details>
   <details><summary>Where do the drawings come from?</summary><p>Every drawing is a page of the patent's own published document, cropped to the drawing and scaled down. We never add to them. If a patent has no drawings, Claude can sketch it from the text, clearly marked as not part of the patent.</p></details>
-  <details><summary>How current is the data?</summary><p>New lapses are added every week after the Official Gazette publishes, and the site republishes every two hours. Recently freed patents are rechecked against USPTO records daily; the date of the last check is on each patent's page. Patents in the archive, from every office, can't come back to life, so they don't need rechecking.</p></details>
+  <details><summary>How current is the data?</summary><p>New lapses are added every week after the Official Gazette publishes, and the site republishes every two hours. Recently freed patents are rechecked against USPTO records daily; the date of the last check is on each patent's page. Patents in the archive are past their full term and can't come back. Abandoned applications can occasionally be revived on petition, which is one reason they are marked "likely abandoned".</p></details>
   <details><summary>Is it really free?</summary><p>Yes. Browsing, reserving and the invention studio are free. The AI work happens in your own Claude account, which has a free plan, and the USPTO charges its own filing fee (from $65 for a micro entity provisional).</p></details>
 </div></div></div>"""
         self.page("/how-it-works/", "How it works", "Where Patent Yard's patents come from, how they are checked every day, and what you can legally do with them.", body, section="/how-it-works/")
@@ -1167,14 +1183,19 @@ class Site:
     def about(self):
         m = self.meta
         body = f"""<div class="page narrow" style="margin-inline:auto">
-<div class="sechead"><div><h1>About Patent Yard</h1><p>A free register of inventions that anyone in the US may now build.</p></div></div>
+<div class="sechead"><div><h1>About Patent Yard</h1><p>A free register of patents and applications that are no longer in force, for people who build things.</p></div></div>
 <div class="prose">
-<p>Every week, thousands of US patents stop being enforceable: owners stop paying maintenance fees, terms run out, and applications are quietly abandoned. The inventions in them become free for anyone to make, use and sell in the US. The same happens in Europe, Canada, Australia and everywhere else. Most are never looked at again.</p>
-<p>Patent Yard collects them into one searchable register, traces each to its official USPTO record, shows the full file of recently freed ones with their original drawings, and explains the best of them in plain English. Builders can reserve a patent so others know it's taken, and take it to Claude to turn it into a new, patentable invention.</p>
+<p>Every week, thousands of US patents stop being enforceable: owners stop paying maintenance fees and terms run out. Other applications are abandoned before they are ever granted. Once that happens, the patent's own claims no longer stop anyone in the US from making, using or selling what they describe, although other rights can still apply to a product. The same happens in Europe, Canada, Australia and everywhere else. Most of these inventions are never looked at again.</p>
+<p>Patent Yard collects them into one searchable register, traces each to its patent office record, shows the full file of recently lapsed US patents with their original drawings, and explains them in plain English. Builders can reserve a patent so others here know someone is working on it, and take it to Claude to develop an improvement of their own.</p>
 <h2>What we promise</h2>
-<ul><li><b>Sources first.</b> Every status comes from an official USPTO record, and every patent page links to it and to independent places to cross-check.</li><li><b>Nothing invented.</b> Drawings, claims and descriptions are the patent's own. Our names, summaries and modern angles are labeled as ours.</li><li><b>Free.</b> No ads, no paywall, no tracking. AI work runs in your own Claude account.</li></ul>
-<h2>Today</h2>
-<p>{m["count"] + m.get("archive", 0):,} free-to-use patents and applications from the US, Europe, Canada and Australia, across {len(self.fields)} fields: {m["count"]:,} US patents freed in the past year with their full files ({m["bySource"]["lapsed"]:,} lapsed for an unpaid fee), and {m.get("archive", 0):,} in the archive: US patents past their full term, expired designs, likely abandoned applications, and {", ".join(f"{c:,} from {k}" for k, c in m.get("archiveRegions", {}).items())} past their term. In the past year the Official Gazette recorded {m["lapsedYear"]:,} fee lapses and {m["reinstatedYear"]:,} reinstatements.</p>
+<ul><li><b>Sources first.</b> Each status comes from a patent office record (the USPTO, the EPO, CIPO or IP Australia) or, for likely abandoned applications, from rules we apply to those records, labeled as inferred. Every patent page links to its source and to independent places to cross-check.</li><li><b>Nothing invented.</b> Drawings, claims and descriptions are the patent's own. Names, summaries, modern angles, build levels and the Opportunities notes are ours: drafted with Claude, an AI model, while the register was prepared, and labeled as ours.</li><li><b>Free and private.</b> No ads, no paywall, no tracking. The site runs no AI on its servers and sends nothing you type to one; studio prompts run in your own Claude account when you paste them there.</li></ul>
+<h2>Today's numbers</h2>
+<dl class="defs">
+<div><dt class="num">{m["count"] + m.get("archive", 0):,}</dt><dd>records in the free-to-use register, across {len(self.fields)} fields.</dd></div>
+<div><dt class="num">{m["count"]:,}</dt><dd>recently lapsed or expired US patents with their full files (claims, description, drawings), {m["bySource"]["lapsed"]:,} of them lapsed for an unpaid maintenance fee. Rechecked for reinstatement daily.</dd></div>
+<div><dt class="num">{m.get("archive", 0):,}</dt><dd>in the archive: {m.get("archive", 0) - sum(c for k, c in m.get("archiveRegions", {}).items() if k != "US"):,} from the US (patents past their full term, expired designs and likely abandoned applications) and {", ".join(f"{c:,} from {k}" for k, c in m.get("archiveRegions", {}).items() if k != "US")}, past their term.</dd></div>
+<div><dt class="num">{m["lapsedYear"]:,}</dt><dd>patents the USPTO's Official Gazette listed as expired for an unpaid fee in the issues of the past 365 days, and <span class="num">{m["reinstatedYear"]:,}</span> it listed as reinstated. The register is smaller than the first figure because it leaves out reinstated patents, patents whose family may still be in force, and patents still being checked.</dd></div>
+</dl>
 <h2>Not legal advice</h2>
 <p>Patent Yard is not a law firm and is not affiliated with the United States Patent and Trademark Office. Read the <a href="/legal/disclaimer/">disclaimer</a> before relying on anything here.</p>
 </div></div>"""
@@ -1197,7 +1218,7 @@ class Site:
     <div class="setrow"><div><b>Default order</b><p>How the register is sorted when you aren't searching. Recommended puts patents with a written summary and an easy build first.</p></div>{seg("sort", [("build", "Recommended"), ("recent", "Recently freed"), ("added", "Newly added")])}</div>
   </section>
   <section class="panel" aria-labelledby="sAcct"><h2 id="sAcct">Account</h2>
-    <div id="acctOff" hidden><p class="muted" style="padding:6px 0">Accounts are being set up.</p></div>
+    <div id="acctOff" hidden><p class="muted" style="padding:6px 0">Account settings didn't load. Reload the page to try again.</p></div>
     <div id="acctOut" hidden><div class="setrow"><div><b>Not signed in</b><p>Sign in to reserve patents and keep inventions on your bench.</p></div><a class="btn primary" href="/account/?next=/settings/">Sign in</a></div></div>
     <div id="acctIn" hidden>
       <div class="setrow"><div><b>Email</b><p id="setEmail"></p></div></div>
@@ -1218,12 +1239,12 @@ class Site:
     def contact(self):
         body = f"""<div class="page narrow" style="margin-inline:auto">
 <div class="sechead"><div><h1>Contact</h1><p>Questions, corrections or ideas for Patent Yard. To report a problem with a particular patent, use "Report a problem" on its page so we know which one.</p></div></div>
-<div class="panel"><form id="contactForm" class="stack" novalidate>
+<div class="panel"><noscript><p class="muted">The contact form needs JavaScript turned on.</p></noscript><form id="contactForm" class="stack" novalidate hidden>
   <div class="fgroup"><label for="cEmail">Your email (optional, if you'd like a reply)</label><input class="field" id="cEmail" type="email" maxlength="200" autocomplete="email"></div>
   <div class="fgroup"><label for="cBody">Message</label><textarea class="field" id="cBody" maxlength="4000" required style="min-height:160px"></textarea></div>
-  <div class="sr" aria-hidden="true"><label for="cWebsite">Leave this empty</label><input id="cWebsite" tabindex="-1" autocomplete="off"></div>
+  <input class="trap" id="cWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="rowbtns"><button class="btn primary" type="submit">Send message</button><span class="status" id="cStatus" aria-live="polite"></span></div>
-</form><p id="cOff" class="muted" hidden>The contact form is being set up. Please check back soon.</p></div>
+</form><p id="cOff" class="muted" hidden>The contact form didn't load. Check your connection or any content blocker, then reload the page.</p></div>
 <p class="muted" style="margin-top:14px;font-size:14px">We read every message. Patent Yard can't give legal advice; for that, talk to a registered patent attorney or agent. Please don't send confidential details of your own inventions. Messages are handled as described in our <a href="/legal/privacy/">Privacy Policy</a>.</p>
 </div>"""
         self.page("/contact/", "Contact", "Get in touch with Patent Yard: questions, corrections and ideas.", body, scripts=("contact",))
@@ -1503,36 +1524,35 @@ def coolness(r):
             + (5 - (e["b"] or 5)) * .2 + (.3 if e["tw"] else 0))
 
 
-# Opportunities: how much commercial ground a recently freed patent opened, from signals patent-value research relies on:
-# how long the owner kept paying to protect it, how broad its claims are, who owned it, and the market its field sells into.
-MARKET = {"medical": 1.0, "energy": 1.0, "ai": 1.0, "robotics": .9, "mobility": .9, "electronics": .8, "consumer": .8, "software": .7, "imaging": .7,
-          "agrifood": .7, "telecom": .6, "chips": .6, "industrial": .6, "biotech": .6, "tools": .6, "sports": .6, "materials": .5}
-ANALYSIS = json.loads((Path(__file__).parent / "opportunities.json").read_text())  # Claude's write-ups, in ranked order
+# Opportunities: an editorial ranking of recently lapsed patents from facts in their records. Every factor is listed on the
+# page with its points (signals below), and none of them is a claim about legal scope, value or sales.
+# ponytail: hand-set weights; replace with a fitted model if licensing or sales outcomes ever become available.
+FOCUS = {"medical": 1.0, "energy": 1.0, "ai": 1.0, "robotics": .9, "mobility": .9, "electronics": .8, "consumer": .8, "software": .7, "imaging": .7,
+         "agrifood": .7, "telecom": .6, "chips": .6, "industrial": .6, "biotech": .6, "tools": .6, "sports": .6, "materials": .5}
+ANALYSIS = json.loads((Path(__file__).parent / "opportunities.json").read_text())  # notes drafted with Claude, in ranked order
 
 
 def kept_years(e):
     return (d(e["x"]) - d(e["p"])).days / 365.25 if e.get("x") and e.get("p") else 0
 
 
+def signals(e, fig=False):
+    """The factors behind a patent's Opportunities rank, as (label, points), largest first."""
+    y, ni = kept_years(e), e.get("ni") or 0
+    out = [(f"Field weighting: {P.FIELDS.get(e['ind'], (e['ind'],))[0]}", FOCUS.get(e["ind"], .3) * 2),
+           (f"Maintenance fees paid for {y:.0f} years" if y > 7 else "", 1.8 if y > 11 else .9 if y > 7 else 0),
+           (f"Assignee at grant: {e['a']}" if not e["ia"] and e["a"] else "", 0 if e["ia"] else .4),
+           (f"{ni} named inventors" if ni > 1 else "", min(.6, .15 * ni) if ni > 1 else 0),
+           ("Drawings on file" if fig else "", .3 if fig else 0)]
+    return sorted(((t, v) for t, v in out if t and v), key=lambda t: -t[1])
+
+
 def potential(r):
-    """A score for the Opportunities page, or None for patents it leaves out (weapons, unfit for a showcase, not lapsed).
-    ponytail: hand-set weights; replace with a fitted model if licensing or sales outcomes ever become available."""
+    """The Opportunities score, or None for patents the page leaves out (weapons, unfit for a showcase, not lapsed)."""
     e = r["entry"]
     if e.get("arm") or e["st"] != "lapsed" or UNCOOL_WORDS.search(f'{e["t"]} {e["ot"]} {e["h"]}'):
         return None
-    y, w1 = kept_years(e), e.get("w1") or 0
-    return (MARKET.get(e["ind"], .3) * 2 + (1.8 if y > 11 else .9 if y > 7 else 0) + (.8 if 0 < w1 <= 60 else .5 if 0 < w1 <= 100 else .2 if 0 < w1 <= 150 else 0)
-            + min(.6, .15 * (e.get("ni") or 0)) + (0 if e["ia"] else .4) + (.3 if r["fig"] else 0))
-
-
-def signals(e):
-    """The reasons a patent ranks, in plain words."""
-    y = kept_years(e)
-    out = [f"Owner paid to keep it {y:.0f} years" if y > 7 else ""]
-    out.append(f'Broad claim, {e["w1"]} words' if 0 < (e.get("w1") or 0) <= 100 else "")
-    out.append(f'{e["cl"]} claims' if e.get("cl") else "")
-    out.append("Solo inventor" if e["ia"] else f'Owned by {e["a"]}' if e["a"] else "")
-    return [x for x in out if x]
+    return sum(v for _, v in signals(e, bool(r["fig"])))
 
 
 def reserved_ids():

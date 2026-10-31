@@ -26,7 +26,7 @@ export function patentContext(p) {
   if (p.expired) dates.push(`Expired for an unpaid maintenance fee: ${fmt(p.expired)}`);
   if (p.termEnd) dates.push(`20-year term ended: ${fmt(p.termEnd)}`);
   return [
-    `SOURCE PATENT (free to make, use and sell in ${where(p)}; its published text is prior art)`,
+    `SOURCE PATENT (${p.st === "abandoned" ? "an abandoned application that never became an enforceable patent" : `no longer in force in ${where(p)}${p.st === "lapsed" ? ", unless the owner has it reinstated" : ""}`}; its own claims don't restrict making or using it there, but other rights may. Its published text is prior art)`,
     `Number: ${p.n}`,
     `Title as filed: ${p.ot}`,
     `Status: ${p.status}. ${p.why.join(" ")}`,
@@ -59,7 +59,7 @@ export function buildPrompt(task, p, idea) {
   const tail = [p ? ATTACH : "", p ? FAITHFUL : "", ctx, mine].filter(Boolean).join("\n\n");
   const askIdea = have ? "" : " First ask me to describe my invention (name, how it works, what's new), then continue.";
   const T = {
-    workshop: `I'm an independent inventor. I want to build a new, patentable product based on ${p ? `a ${p.adj || "US"} patent whose protection has ended, so anyone may now make, use and sell what it describes in ${where(p)}. Its published text is prior art, so I can't patent it as it is` : "my own idea"}. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.
+    workshop: `I'm an independent inventor. I want to build a new, patentable product based on ${p ? `${p.st === "abandoned" ? "an abandoned patent application, which never became an enforceable patent" : `a ${p.adj || "US"} patent whose protection has ended`}, so its own claims no longer stop anyone making, using or selling what it describes in ${where(p)} (other rights, such as newer patents, design rights, trademarks and regulations, may still apply). Its published text is prior art, so I can't patent it as it is` : "my own idea"}. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.
 
 Step 1, modern directions. ${have ? "Start from my invention below and suggest how to strengthen it, plus three alternative directions." : `Propose four distinct product directions based on ${src}.`} Each should use something that became cheap, possible or in demand since ${p ? "the patent was filed" : "recently"} (for example low-cost sensors, phones, AI models, 3D printing, better batteries, new materials, subscriptions or new regulations) and contain a concrete new element that could be claimed, not just "add an app". For each give: a 2-4 word name, a one-sentence pitch, what is concretely new, who pays and why, what a first prototype needs, and the element that could be claimed.
 

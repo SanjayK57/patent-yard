@@ -24,7 +24,7 @@
       check("no matches says so", !!(await until(() => q("#hqList .none"))));
       hq.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "/", bubbles: true })); check("slash focuses search", document.activeElement === hq || !hq.offsetParent, hq.offsetParent ? "" : "search box hidden at this width");
-      check("footer totals", !!(await until(() => /patents · last checked/.test(q("#footStat").textContent))), q("#footStat").textContent);
+      check("footer totals", !!(await until(() => /US patents · status last checked/.test(q("#footStat").textContent))), q("#footStat").textContent);
     },
     async home(check) {
       check("12 picks in the rail", qa("#todayRail .card").length === 12);
