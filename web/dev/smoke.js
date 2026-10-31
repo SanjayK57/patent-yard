@@ -16,7 +16,7 @@
       check("search suggestions", !!(await until(() => !q("#hqList").hidden && q("#hqList a[href^='/patents/']"))));
       hq.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
       check("arrow keys select", q("#hqList a").getAttribute("aria-selected") === "true");
-      check("see all results link", /\/browse\/\?q=wrench/.test(q("#hqList li:last-child a").getAttribute("href")));
+      check("see all results link", qa("#hqList li a").some(a => /\/browse\/\?q=wrench/.test(a.getAttribute("href"))));
       hq.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true })); check("escape closes", q("#hqList").hidden);
       hq.value = "US 11,112,282"; hq.dispatchEvent(new Event("input"));
       check("patent number jumps", !!(await until(() => q("#hqList a[href='/patents/11112282']"))));
@@ -27,13 +27,10 @@
       check("footer totals", !!(await until(() => /US patents · status last checked/.test(q("#footStat").textContent))), q("#footStat").textContent);
     },
     async home(check) {
-      check("12 picks in the rail", qa("#todayRail .card").length === 12);
+      check("today's picks", qa("#today .bento .card").length >= 6 && !!q("#today .bento .card.feat"));
       check("stat band filled", qa(".statband b").every(b => b.textContent.trim()));
       check("field chips", qa(".fchips .fchip").length >= 10);
       check("hero search goes to browse", q(".bigsearch").getAttribute("action") === "/browse/" && !!q("#heroQ"));
-      const rail = q("#todayRail"), back = q('[data-rail="-1"]');
-      check("rail starts at the left", back.disabled);
-      q('[data-rail="1"]').click(); await wait(700); check("rail scrolls", rail.scrollLeft > 0 || document.hidden);
       await wait(3200);
       const cv = q("#plot"), px = cv.getContext("2d").getImageData(0, 0, cv.width, cv.height).data;
       let ink = 0; for (let i = 3; i < px.length; i += 400) ink += px[i] > 0;
@@ -85,9 +82,9 @@
       q('#filters [data-st=""]').click(); await settle();
       q('#filters [data-b="2"]').click(); await settle(); check("build filter", cards().length && cards().every(c => /Weekend|Garage/.test(c.querySelector(".cmeta").textContent))); q('#filters [data-b=""]').click(); await settle();
       const before = location.search; cards()[0].querySelector(".cmeta").click(); await wait(30); check("clicking a card doesn't change filters", location.search === before);
-      q("#fSolo").click(); await settle(); check("solo filter", cards().every(c => /Solo inventor/.test(c.querySelector(".cmeta").textContent))); q("#fSolo").click(); await settle();
+      q("#fSolo").click(); await settle(); check("solo filter", cards().every(c => /None recorded/.test(c.querySelector(".cmeta").textContent))); q("#fSolo").click(); await settle();
       q("#fFig").click(); await settle(); check("with drawings", cards().every(c => c.querySelector(".fig img"))); q("#fFig").click(); await settle();
-      const f = qa("#fInd [data-ind]")[2]; f.click(); await settle(); check("field filter", cards().every(c => c.querySelector(".fieldname").textContent.startsWith(f.textContent)) && location.search.includes("field=" + f.dataset.ind)); q('#fInd [data-ind=""]').click(); await settle();
+      const f = qa("#fInd [data-ind]")[2]; f.click(); await settle(); check("field filter", cards().every(c => c.querySelector(".fieldname").textContent.startsWith(f.childNodes[0].textContent.trim())) && location.search.includes("field=" + f.dataset.ind)); q('#fInd [data-ind=""]').click(); await settle();
       const box = q("#q"); box.value = "wrench"; box.dispatchEvent(new Event("input")); await wait(260); await settle();
       check("search", n() >= 1 && n() < 200 && location.search.includes("q=wrench") && /match/.test(q("#count").textContent), n());
       box.value = "wrenches"; box.dispatchEvent(new Event("input")); await wait(260); await settle(); check("plural finds the same", n() >= 1);
@@ -123,7 +120,7 @@
       check("kit opens", !!(await until(() => qa("#kit .task").length === 7)));
       const prompt = () => q("#kPrompt").value, num = q("#patent").dataset.n;
       check("workshop prompt names the patent", prompt().includes(num) && /Step 1/.test(prompt()));
-      q('#kit [data-task="novelty"]').click(); check("task switch", /novelty screen/i.test(prompt()));
+      q('#kit [data-task="novelty"]').click(); check("task switch", /prior-art check/i.test(prompt()));
       q("#kIdea").value = "Add a phone app that logs each use"; q("#kIdea").dispatchEvent(new Event("input")); check("idea in prompt", prompt().includes("logs each use"));
       q("#kOpen").click(); await wait(100); check("opens Claude", window.__opened.some(u => u.startsWith("https://claude.ai/new")), window.__opened.at(-1));
       // jsPDF saves through a temporary <a download>; capture that instead of downloading
