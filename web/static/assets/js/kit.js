@@ -109,13 +109,12 @@ export async function openClaude(prompt) {
 }
 
 // ---------------------------------------------------------------- PDF brief
-const JSPDF = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js";
-const JSPDF_SRI = "sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==";
+const JSPDF = "/assets/vendor/jspdf-4.2.1.umd.min.js";  // served from this site (assets/vendor/README.md)
 let jspdfReady;
 function loadJsPDF() {
   return jspdfReady ||= new Promise((ok, err) => {
     if (window.jspdf) return ok(window.jspdf.jsPDF);
-    const s = Object.assign(document.createElement("script"), { src: JSPDF, integrity: JSPDF_SRI, crossOrigin: "anonymous", referrerPolicy: "no-referrer" });
+    const s = Object.assign(document.createElement("script"), { src: JSPDF });
     s.onload = () => ok(window.jspdf.jsPDF);
     s.onerror = () => { jspdfReady = null; err(new Error("PDF tool didn't load")); };
     document.head.append(s);

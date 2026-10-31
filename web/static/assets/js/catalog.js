@@ -139,7 +139,7 @@ export function cardHTML(c, names, i = 9) {
     + `<div class="cmeta">${first}<div><small>${freed[0]}</small><span>${freed[1]}</span></div><div><small>${c.st === "abandoned" ? "Applicant" : "Assignee"}</small><span title="${esc(owner)}">${esc(owner)}</span></div></div></article>`;
 }
 
-export const skeletons = n => Array.from({ length: n }, () => `<div class="card skel" aria-hidden="true"><div class="fig"></div><div class="cbody"><i></i><i></i><i></i></div></div>`).join("");
+export const skeletons = n => Array.from({ length: n }, () => `<div class="card skel" aria-hidden="true"><div class="fig"></div><div class="cbody"></div></div>`).join("");
 
 // ---------------------------------------------------------------- the full-term archive (latest.json "archive")
 //   /v/<av>/s/<n>.json  word -> archive patents, for words whose crc32 % buckets is n (exact words, the commonest left out)

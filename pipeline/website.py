@@ -373,9 +373,6 @@ class Site:
         full_title = f"{title} · Patent Yard" if title != "Patent Yard" else (f"Patent Yard: expired and lapsed patents to build on, and {big_number(WORLD['n'])} records worldwide" if WORLD else "Patent Yard: free-to-use patents from four patent offices")
         cur = ' aria-current="page"'
         nav = "".join(f'<a href="{href}"{cur if section == href else ""}>{label}</a>' for href, label in NAV)
-        crumb = {**{href: label for href, label in NAV}, "/fields/": "Fields", "/account/": "Account", "/about/": "About"}.get(section)
-        if crumb:
-            body = body.replace('<div class="sechead"><div>', f'<div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> {E(crumb)}</span>', 1)
         og = og_image or self.default_og
         ld_json = json.dumps(jsonld, separators=(",", ":")).replace("</", "<\\/") if jsonld else ""
         ld = f'<script type="application/ld+json">{ld_json}</script>' if jsonld else ""
@@ -405,9 +402,7 @@ class Site:
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="alternate" type="application/atom+xml" title="New on Patent Yard" href="/feed.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="preload" href="/assets/fonts/plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{self.css}">
 {ld}
 </head>
@@ -516,28 +511,31 @@ class Site:
         he = hero
         ended = full_date(he["x"]) if he["st"] == "lapsed" else full_date(he.get("te")) if he["st"] == "expired" else ""
         body = f"""
+<div class="lead">
 <section class="ahero">
   <h1 class="rise" style="--d:0">Build on inventions whose patents have ended.</h1>
   <p class="lede rise" style="--d:1">Search expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, with their original drawings and claims. Check what else exists among {big_number(WORLD['n']) if WORLD else 'millions of'} records worldwide, then develop your own version with Claude.</p>
   <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or numbers"><span class="kbd" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span><button class="btn primary" type="submit">Search</button></form>
   <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button>{'<a class="allpat" href="/all/">Or search all patents worldwide ›</a>' if WORLD else ""}</div>
 </section>
-<section class="specimen rise" style="--d:3" aria-labelledby="plateTitle">
+<section class="specimen rise" style="--d:2" aria-labelledby="plateTitle">
   <figure class="plotter">
-    <div class="plotbox blueprint" id="plotbox" data-src="{self.img(he["id"])}"><span class="figbar" aria-hidden="true"><i></i><i></i><i></i><b>FIG. 1 · {E(he["n"])}</b></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
+    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}"><span class="figbar" aria-hidden="true"><b>FIG. 1 · {E(he["n"])}</b></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
       <div class="lmark" aria-hidden="true"></div><div class="loupe" aria-hidden="true"></div></div>
   </figure>
   <div class="platefacts">
-    <h2 id="plateTitle">{E(he["t"])}</h2>
-    <p>{E(he["n"])} · {STATUS[he["st"]]}{f" {ended}" if ended else ""} · {E(self.fields[he["ind"]])}</p>
-    <div class="rowbtns"><a class="btn primary" href="{purl(he["id"])}">Open the patent</a><a class="btn link" href="{purl(he["id"])}#kit">Reinvent with Claude ›</a></div>
+    <div class="badges">{badge(he["st"])}<span class="badge plain">{E(self.fields[he["ind"]])}</span></div>
+    <h2 id="plateTitle"><a href="{purl(he["id"])}">{E(he["t"])}</a></h2>
+    <p><span class="num">{E(he["n"])}</span>{f" · {'lapsed' if he['st'] == 'lapsed' else 'term ended'} {ended}" if ended else ""}</p>
+    <div class="rowbtns"><a class="btn secondary sm" href="{purl(he["id"])}">Open the patent</a><a class="btn link sm" href="{purl(he["id"])}#kit">Reinvent with Claude ›</a></div>
   </div>
 </section>
+</div>
 <nav class="statband{" five" if WORLD else ""}" aria-label="Patents by collection and office">{statband}</nav>
 
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">
-  <div class="sechead"><div><span class="eyebrow">Patent Yard <b>//</b> Today's picks</span><h2>Worth a look today</h2><p>Picked each day from US patents that have expired or lapsed. A patent ending frees its own claims, not every right in a product, so check before you build.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
+  <div class="sechead"><div><h2>Worth a look today</h2><p>Picked each day from US patents that have expired or lapsed. A patent ending frees its own claims, not every right in a product, so check before you build.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
   <div class="bento">{self.card(picks[1], 1, feat=True)}{"".join(self.card(r, i) for i, r in enumerate(picks[2:10], 2))}</div>
 </section>
 <section class="section reveal">
@@ -554,7 +552,7 @@ class Site:
 </section>
 <section class="section reveal">
   <div class="ctaband"><div><h2>Have your own idea?</h2><p>The invention studio turns it into a prompt and brief for Claude, with a first prior-art search and a rough provisional draft. Free.</p></div>
-    <figure class="promptcard"><span class="figbar" aria-hidden="true"><i></i><i></i><i></i><b>Invention studio · prompt</b></span><blockquote>I'm an independent inventor. I want to build a new, patentable product based on my own idea. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.</blockquote><figcaption>The opening of the prompt the studio writes for your Claude</figcaption></figure><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
+    <figure class="promptcard"><span class="figbar" aria-hidden="true"><b>Invention studio · prompt</b></span><blockquote>I'm an independent inventor. I want to build a new, patentable product based on my own idea. Act as my product strategist and patent coach and work through these four steps with me, one at a time. After each step, stop and wait for my reply.</blockquote><figcaption>The opening of the prompt the studio writes for your Claude</figcaption></figure><div class="rowbtns"><a class="btn primary lg" href="/studio/">Open the studio</a><a class="btn link lg" href="/how-it-works/">How it works ›</a></div></div>
 </section>"""
         ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": "Patent Yard", "url": SITE + "/",
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
@@ -673,8 +671,8 @@ class Site:
                    f'<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button></div>')
         cpc = dd.get("cpc", [])
         cpc_html = (E(cpc[0]) + (f' <span class="muted" title="{E(", ".join(cpc))}">+{len(cpc) - 1} more</span>' if len(cpc) > 1 else "")) if cpc else "—"
-        abstract = (f'<div class="block"><h3>Abstract <span class="src">Excerpt, from Google Patents</span></h3><p class="prose">{E(dd["abs"])}</p><p class="muted" style="margin-top:8px;font-size:13.5px">The full abstract, claims and description are {later}</p></div>' if dd.get("abx") else
-                    f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose">{E(dd["abs"])}</p></div>' if dd["abs"] else
+        abstract = (f'<div class="block"><h3>Abstract <span class="src">Excerpt, from Google Patents</span></h3><p class="prose source">{E(dd["abs"])}</p><p class="muted" style="margin-top:8px;font-size:13.5px">The full abstract, claims and description are {later}</p></div>' if dd.get("abx") else
+                    f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose source">{E(dd["abs"])}</p></div>' if dd["abs"] else
                     f'<div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>Full text on its way</h3><p class="prose">This {kind} is listed from its USPTO record because it passed every check. Its abstract, claims and description are {later}</p></div></div>')
         plain = "" if e["auto"] else f'<div class="block"><h3>In plain English <span class="src">Patent Yard summary</span></h3><p class="lead">{E(e["h"])}</p></div>'
         overview = f"""
@@ -1280,7 +1278,7 @@ class Site:
             ("collect", "What we collect", """<p><b>Account.</b> Your email address and a password, which our authentication provider (Supabase) stores only as a secure hash. If you choose "Continue with Google", Google shares your name, email address and profile picture with us; we use the email and name.</p><p><b>Display name and reservations.</b> The patents you reserve, when, and your optional note. Your display name and notes are shown publicly next to what you reserved.</p><p><b>Saved inventions.</b> The names, descriptions and tasks you save from the studio, private to your account.</p><p><b>Messages.</b> What you send through the contact form or "Report a problem", the optional email address you give us, and the patent concerned.</p><p><b>Technical data.</b> Our hosting provider (Cloudflare) and database provider (Supabase) process your IP address and basic request information to deliver the site and keep it secure. Fonts load from Google Fonts and some code libraries from jsDelivr and cdnjs, which receive your IP address when they serve those files.</p><p><b>On your device.</b> Your browser keeps your sign-in session, display settings, saved patents, recently viewed patents and your unsent studio draft in local storage. We don't read these unless you use the feature, and you can clear them in <a href="/settings/">Settings</a>.</p>"""),
             ("use", "How we use it", """<p>To run your account and its features, show reservations, keep your saved inventions, answer your messages, check reported problems, keep the service secure and prevent abuse. We don't build profiles of you, show ads, or sell or share personal information for cross-context behavioral advertising.</p>"""),
             ("ai", "AI", """<p>Prompts and PDF briefs are created in your browser. Nothing is sent to an AI service unless you paste it there yourself, and then that service's privacy policy applies (for Claude, Anthropic's).</p>"""),
-            ("providers", "Service providers", """<p>Supabase (accounts and database), Cloudflare (hosting and delivery), Google (sign-in if you choose it, and fonts), and jsDelivr and cdnjs (code libraries). They process data for us or under their own policies. We share personal information otherwise only when the law requires it, to protect people's rights or safety, or as part of a transfer of the service, in which case this policy continues to apply to it.</p>"""),
+            ("providers", "Service providers", """<p>Supabase (accounts and database), Cloudflare (hosting and delivery), and Google (only if you choose to sign in with Google). Fonts and code libraries are served from Patent Yard itself, so pages make no requests to other font or code hosts. These providers process data for us or under their own policies. We share personal information otherwise only when the law requires it, to protect people's rights or safety, or as part of a transfer of the service, in which case this policy continues to apply to it.</p>"""),
             ("retention", "How long we keep it", """<p>Account data, reservations and saved inventions stay until you delete them or your account. Messages are kept as long as we need them to handle what you asked, then deleted. Providers keep server logs for their usual short periods.</p>"""),
             ("rights", "Your choices and rights", """<p>You can change your display name and password and delete your account in <a href="/settings/">Settings</a>; deleting it removes your account, reservations and saved inventions. Depending on where you live, including California and the EU or UK, you may have rights to access, correct, delete or export your personal information and to object to some uses. Ask through the <a href="/contact/">contact form</a>; we'll respond within the time the law requires and won't treat you differently for asking.</p>"""),
             ("children", "Children", """<p>Patent Yard isn't directed to children under 13, and we don't knowingly collect their personal information. If you believe a child under 13 has given us information, contact us and we'll delete it.</p>"""),

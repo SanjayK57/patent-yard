@@ -173,7 +173,7 @@ export function renderArchive(tpl, r) {
   <section class="psec" id="overview"><h2>Overview</h2>
   <div class="ov"><div>${draw}</div>
   <div class="stack">${arm ? KIT_OFF : ""}
-    ${r.ab ? `<div class="block"><h3>Abstract <span class="src">From the ${R ? R.adj + " " : ""}patent</span></h3><p class="prose">${E(r.ab)}</p></div>` : ""}
+    ${r.ab ? `<div class="block"><h3>Abstract <span class="src">From the ${R ? R.adj + " " : ""}patent</span></h3><p class="prose source">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its ${office} record in Patent Yard's ${R ? `archive of ${R.adj} patents past their term` : "full-term archive"}. Its claims, description and drawings are in the <a href="${doc}" ${EXT}>${R ? L.docLabel : "USPTO PDF"}</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>${arm ? "" : ", and the Claude kit works from them"}.</p>
       <div class="rowbtns" style="margin-top:12px"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a></div></div></div>
     <div class="panel soft"><div class="block"><h3>Why it's free to use</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>

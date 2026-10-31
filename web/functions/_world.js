@@ -126,7 +126,7 @@ export function renderWorld(tpl, r) {
     ? `<p class="muted">Published ${full(r.p)}, so Google Patents may not have its page yet. Espacenet, the European Patent Office's worldwide search, has the claims, description and drawings.</p><div class="rowbtns"><a class="btn secondary sm" href="${esp}" ${EXT}>${icon("file")}Open on Espacenet</a><a class="btn quiet sm" href="${g}" ${EXT}>Try Google Patents</a></div>`
     : `<p class="muted">The claims, description and drawings are on Google Patents${r.tl && r.tl !== "en" ? ", with a machine translation" : ""}, and on Espacenet.</p><div class="rowbtns"><a class="btn secondary sm" href="${g}" ${EXT}>${icon("file")}Open on Google Patents</a><a class="btn quiet sm" href="${esp}" ${EXT}>Espacenet</a></div>`}</div></div>
   <div class="stack">
-    ${r.ab ? `<div class="block"><h3>Abstract</h3><p class="prose">${E(r.ab)}</p></div>` : ""}
+    ${r.ab ? `<div class="block"><h3>Abstract</h3><p class="prose source">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Is it free to use?</h3><ul class="checks">${checks.map((c, i) => `<li${!r.free && i === checks.length - 1 ? ' class="warn"' : ""}>${E(c)}</li>`).join("")}</ul>
       ${r.free ? "" : `<p class="muted" style="margin-top:8px">Looking for inventions you can use now? <a href="/browse/">Browse the free-to-use register</a>.</p>`}</div></div>
     <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("")}</div>

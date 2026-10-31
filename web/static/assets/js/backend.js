@@ -10,7 +10,7 @@ export function backend() {
     if (window.__PY_MOCK) return window.__PY_MOCK;
     if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) return null;
     try {  // a stalled download counts as no accounts after 10 s, so no page waits on it forever
-      const { createClient } = await Promise.race([import("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.117.2/+esm"),
+      const { createClient } = await Promise.race([import("/assets/vendor/supabase-js-2.117.3.min.js"),
         new Promise((_, no) => setTimeout(() => no(new Error("timeout")), 10000))]);
       return wrap(createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }));
     } catch {
