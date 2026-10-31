@@ -158,7 +158,7 @@ export async function downloadBrief(task, p, idea, prompt) {
   kicker("Patent Yard brief · for Claude");
   text(idea?.name || p?.t || "My invention", { size: 22, style: "bold", after: 4, lead: 1.2 });
   if (p) text(`${p.n} · ${p.status} · Title as filed: ${p.ot}`, { size: 10, color: [75, 81, 96] });
-  text(`Task: ${taskName}`, { size: 10, color: [214, 38, 28], style: "bold", after: 10 });
+  text(`Task: ${taskName} · prepared ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} from Patent Yard's copy of the public record`, { size: 10, color: [179, 58, 12], style: "bold", after: 10 });
   text("How to use this brief: open Claude (claude.ai), attach this PDF to a new chat, and paste the prompt below (it is also on your clipboard if you copied it on Patent Yard). Claude will work through it with you.", { size: 10, color: [75, 81, 96] });
 
   head("Prompt for Claude");
@@ -174,7 +174,7 @@ export async function downloadBrief(task, p, idea, prompt) {
       ["Expired (fee not paid)", fmt(p.expired)], ["20-year term ended", fmt(p.termEnd)], ["Assignee", p.assignee], ["Inventors", p.inventors],
       ["Application", p.app], ["Classification", p.cpc.slice(0, 4).join(", ")]]) if (v) text(`${k}: ${v}`, { size: 10, after: 1 });
     y += 6;
-    kicker("Why it's free to use"); for (const w of p.why) text("• " + w, { size: 10, after: 2 }); text("Caution: " + p.warn, { size: 10, color: [154, 75, 6] });
+    kicker("Why it's listed"); for (const w of p.why) text("• " + w, { size: 10, after: 2 }); text("Caution: " + p.warn, { size: 10, color: [154, 75, 6] });
     kicker("Abstract"); text(p.abs);
     if (p.fieldText) { kicker("Field"); text(p.fieldText); }
     if (p.bg) { kicker("Background"); text(p.bg); }
@@ -183,7 +183,8 @@ export async function downloadBrief(task, p, idea, prompt) {
     for (const [n, c] of p.claims) text(`${n}. ${c}`, { size: 9.6, style: isDep(c) ? "normal" : "bold", after: 5 });
     head("Sources");
     text(`Patent Yard record: ${p.url}`, { size: 10, after: 2 }); text(`Official ${office(p)} document: ${p.pdf}`, { size: 10, after: 2 }); text(`Google Patents: ${p.google}`, { size: 10 });
-    text(`Names, summaries and modern angles are Patent Yard's editorial notes. Patent Yard is not legal advice; confirm status with the ${office(p)} before relying on it.`, { size: 9, color: [110, 116, 130] });
+    head("Limits");
+    text(`The abstract, claims, figure list and drawing sheets are the patent's own; the dates and status come from patent office records; the plain-English title is Patent Yard's, drafted with Claude, an AI model. A patent ending frees its own claims only; newer patents, design rights, trademarks, regulations and patents in other countries can still apply to a product. Patent Yard is not legal advice: confirm the status with the ${office(p)} before relying on it, and get a freedom-to-operate opinion before investing.`, { size: 9, color: [110, 116, 130] });
     if (p.sheets.length) {
       const imgs = await Promise.all(p.sheets.map(sheetData));
       imgs.forEach((im, i) => {
