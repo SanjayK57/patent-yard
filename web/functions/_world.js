@@ -79,6 +79,7 @@ export const pastTerm = r => !!r.free && !(r.cc === "US" && r.f >= "2000-05-29" 
 
 export function status(r) {
   if (r.free) return ["Past its term", "expired", [`Filed ${full(r.f)}. A patent normally lasts at most 20 years from filing${drug(r) ? ", and medicines and crop treatments can get up to about six years more" : ""}, so its term has ended${r.cc === "US" && r.f >= "2000-05-29" ? `, and more than ${drug(r) ? 26 : 20} years have passed since it was granted, so no US term adjustment can still extend it` : ""}.`, "Check the official register of its country before relying on it."]];
+  if (/^U/.test(r.pn.split("-")[2] || "")) return ["Registered utility model", "plain", [`A utility model${r.g ? ` registered ${full(r.g)}` : ""}. Utility models usually last up to 10 years from filing, and owners must keep paying fees, so it may or may not still be in force.`, "Check its status in the official register of its country before relying on it."]];
   if (r.g) return ["Granted, may be in force", "plain", [`Granted ${full(r.g)}. It may still be in force: owners keep patents alive by paying renewal fees, and many stop.`, "Check its status in the official register of its country before relying on it."]];
   return ["Published application", "plain", ["This application was published, but its outcome is not recorded here: it may have been granted, refused or withdrawn.", "Check the official register of its country for its status."]];
 }

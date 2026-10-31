@@ -50,13 +50,13 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 ### Product and UX
 - [x] P1 Contact page and Account/Settings ship "being set up" / fallback text in the HTML (visible to no-JS readers and
       AI crawlers). Hydrated states are correct (checked headless 2026-10-31). Use `<noscript>` and a real failure state.
-- [ ] P2 "Report a problem" on archive (EP/CA/AU) and world pages always fails: `messages.patent_id` CHECK accepts US ids only.
+- [~] P2 "Report a problem" on archive (EP/CA/AU) and world pages always fails: `messages.patent_id` CHECK accepts US ids only.
       Same for `ideas.patent_id` (studio started from a non-US patent can't be saved). Needs a DB migration.
 - [x] P3 Opportunities method needs an expandable "why it ranks" per pick, uncertainty visible.
 - [ ] P4 Contact form: global 60/hour flood guard only; document, consider per-sender limit.
 
 ### Security
-- [ ] S1 `public.rls_auto_enable()` SECURITY DEFINER is executable by anon/authenticated (Supabase advisor). Revoke.
+- [~] S1 `public.rls_auto_enable()` SECURITY DEFINER is executable by anon/authenticated (Supabase advisor). Revoke.
 - [ ] S2 Leaked-password protection off (Supabase Auth setting; may need a paid plan). Sanjay's dashboard.
 - [x] S3 Self-host fonts, supabase-js and jsPDF; then drop Google Fonts / jsDelivr / cdnjs from the CSP.
 - [ ] S4 CSP keeps `style-src 'unsafe-inline'` (inline style attributes in templates). Assess removal cost.
@@ -95,6 +95,22 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 7. [ ] QA: screenshots desktop/mobile light/dark, smoke suite, unit tests, link check, overflow check, a11y, CWV
 8. [ ] Reports: design system (DESIGN.md), security, data integrity, testing; deploy review
 
+## 4b. Open after the 2026-10-31 session (resume here)
+- [ ] Run `web/supabase/migrations/2026-10-31-any-office-ids.sql` on production (S1, P2) once Sanjay approves.
+- [ ] Deploy branch `overhaul` (merge to main; the publisher ships it) once Sanjay approves; then re-run the live checks.
+- [ ] Patent page: report-a-problem categories (wrong status, wrong date, wrong assignee, missing family member,
+      broken link, bad drawing, duplicate, other) with the id filled in automatically.
+- [ ] PDF brief: cover page, Plex-like typography, drawings sized per sheet, sources page (works today, plain).
+- [ ] Insights charts: axis labels, units, period and source on every chart; table equivalents.
+- [ ] Opportunities and home picks layout polish (the editorial "picks" section is still a card grid).
+- [ ] Footer reorganisation (product, resources, fields, sources, legal) and copyright/licence line.
+- [ ] Cross-document view transitions (`@view-transition`) and a motion review page by page.
+- [ ] Accessibility pass (keyboard through filters, dialogs, menus; contrast check of every token pair; WCAG 2.2 AA
+      statement only after testing). Lighthouse / Core Web Vitals on the deployed preview.
+- [ ] Regenerate `.impeccable/design.json` for the new system (DESIGN.md is current).
+- [ ] Editorial pass over every page (legal pages formatting only; substantive legal edits flagged for review).
+- [ ] Patent-family explorer, comparison, saved searches: evaluate after the above (27.x); none started.
+
 ## 5. Could not verify / needs Sanjay
 - Google sign-in, sign-up email, password reset (would create accounts or send email; not done by Claude).
 - Production DB changes (migration) need approval.
@@ -112,3 +128,10 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
   Not yet verified in a browser: PDF download with jsPDF 4 and sign-in with the bundled supabase-js.
 - 2026-10-31 (2141a28) V2 started: tokens, badges by status, no glow/gradient/grid/window-dots/eyebrows, split home hero.
   Checked: home desktop light and mobile dark screenshots, no horizontal overflow.
+- 2026-10-31 Functional checks on the preview (headless Chromium, wrangler pages dev, func.mjs): bundled supabase-js loads
+  and the sign-in form shows; contact form appears only after the backend loads; Studio prompt carries the patent and the new
+  rights wording; prior-art task has no score; the PDF brief downloads with jsPDF 4.2.1 (13 pages, %PDF); no third-party
+  hosts except our Supabase project; CSP header served on Function pages. 17 routes at 390 px and 4 at 1440 px dark:
+  no horizontal overflow, no script errors (only preview-only drawing 404s, /img/p/, whose shards the preview doesn't render).
+- 2026-10-31 World pages: US patents granted 2007-2008 now read "Granted, may be in force" (term-adjustment guard);
+  utility models (kind U) read "Registered utility model", not "Published application".
