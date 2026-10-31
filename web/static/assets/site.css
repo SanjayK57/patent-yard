@@ -139,7 +139,7 @@ button.chip:hover,a.chip:hover{color:var(--ink);background:var(--sunken)}
 .badge.abandoned::before{background:transparent;border:1.5px solid var(--aband);width:5px;height:5px}
 .badge.reserved{color:var(--reserved)}
 .badge.reserved::before{background:var(--reserved)}
-.badge.ok{color:var(--accent);border-color:color-mix(in srgb,var(--accent) 35%,transparent)}
+.badge.ok{color:var(--free);border-color:color-mix(in srgb,var(--free) 35%,transparent)}
 .badge.plain::before,.badge.ok::before{display:none}
 .field-input,input.field,select.field,textarea.field{width:100%;min-height:40px;padding:9px 12px;border:1px solid var(--line-strong);border-radius:var(--radius-sm);background:var(--surface);line-height:1.4;transition:border-color .3s var(--ease),box-shadow .3s var(--ease)}
 input.field:focus,select.field:focus,textarea.field:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 3px var(--accent-soft)}
@@ -242,8 +242,8 @@ footer.foot .fine a{color:var(--ink-2)}
 .lead{font-size:18px;line-height:1.55;color:var(--ink)}
 
 /* ---------------------------------------------------------------- home: hero and command center */
-.lead{display:grid;gap:clamp(32px,4vw,64px);padding-top:clamp(28px,5vw,72px);align-items:center}
-@media (min-width:1000px){.lead{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)}}
+.homelead{display:grid;gap:clamp(32px,4vw,64px);padding-top:clamp(28px,5vw,72px);align-items:center}
+@media (min-width:1000px){.homelead{grid-template-columns:minmax(0,1fr) minmax(0,1.08fr)}}
 .ahero{position:relative;display:grid;justify-items:start;text-align:left}
 .ahero h1{font-size:clamp(36px,4.4vw,58px);line-height:1.04;font-weight:600;letter-spacing:-0.025em;max-width:14ch}
 .ahero .lede{margin-top:18px;max-width:52ch;text-align:left}
@@ -978,3 +978,16 @@ a.hrow:hover{background:var(--sunken)}
 /* the patent's own words (abstract, claims, description) are set in the serif; everything Patent Yard writes is in the sans */
 .source,.claimlist li,.desc p{font-family:var(--serif)}
 .source{font-size:16px;line-height:1.7}
+/* opportunities: every factor behind a rank, one click away */
+.omethod+.fine-print{margin:14px 0 22px}
+.why{margin-top:14px;border-top:1px solid var(--line);padding-top:10px}
+.why summary{cursor:pointer;display:flex;align-items:center;gap:8px;list-style:none;font:500 13px/1.4 var(--body);color:var(--ink-2)}
+.why summary::-webkit-details-marker{display:none}
+.why summary::before{content:"+";width:12px;font:400 15px/1 var(--mono);color:var(--ink-3)}
+.why[open] summary::before{content:"\2212"}
+.why summary .num{margin-left:auto;font-size:12px;color:var(--ink-3)}
+.why ul{list-style:none;margin:8px 0 0;padding:0 0 0 20px;display:grid;gap:4px}
+.why li{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink-2)}
+.why li b{font:500 12px/1.6 var(--mono);color:var(--ink-3)}
+.opp>.why{margin:10px 4px 0}
+.opt{font-weight:400;color:var(--ink-3);font-size:12.5px;margin-left:4px}

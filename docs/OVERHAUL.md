@@ -26,39 +26,39 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 ## 2. Audit findings
 
 ### Data integrity and trust (highest priority)
-- [ ] D1 Reinstatements: About says 2,693, Insights 2,699. Cause: About uses unique patent numbers in Gazette issues of
+- [x] D1 Reinstatements: About says 2,693, Insights 2,699. Cause: About uses unique patent numbers in Gazette issues of
       the last 365 days (`build.py`), Insights sums per-issue counts over 372 days (`website.py insights`). One definition, one source.
-- [ ] D2 Insights "US patents lapsed in the past year" (`lapsedYear`) vs the register's 130,843 lapsed: different populations
+- [x] D2 Insights "US patents lapsed in the past year" (`lapsedYear`) vs the register's 130,843 lapsed: different populations
       (all Gazette fee lapses vs those still clear after family and reinstatement checks). Label both.
-- [ ] D3 Home stat "+7,784 this week" sits on the US figure but counts patents *added to the register* in 7 days. Say so.
-- [ ] D4 "122.8 million patents worldwide": 74.1 M are granted, the rest published applications. "106 offices" is hardcoded
+- [x] D3 Home stat "+7,784 this week" sits on the US figure but counts patents *added to the register* in 7 days. Say so.
+- [x] D4 "122.8 million patents worldwide": 74.1 M are granted, the rest published applications. "106 offices" is hardcoded
       in 5 places; derive from `stats.json`.
-- [ ] D5 Ownership: "Owner: Solo inventor" shown whenever no assignee is recorded (`ia`), and "Owner: X" for the original
+- [x] D5 Ownership: "Owner: Solo inventor" shown whenever no assignee is recorded (`ia`), and "Owner: X" for the original
       assignee. Replace with "No assignee recorded" / "Original assignee: X". Insights "percent from solo inventors" likewise.
-- [ ] D6 Opportunities "Broad claim, N words": word count is not legal breadth. Remove the inference and the
+- [x] D6 Opportunities "Broad claim, N words": word count is not legal breadth. Remove the inference and the
       "Broad claims" method copy; show first-claim length only as neutral metadata, if at all. Re-explain the ranking.
-- [ ] D7 AI provenance: "Claude's analysis" heading vs "AI work runs in your own Claude account". Disclose that names,
+- [x] D7 AI provenance: "Claude's analysis" heading vs "AI work runs in your own Claude account". Disclose that names,
       summaries, modern angles, build levels and Opportunities write-ups were drafted with Claude during data preparation.
-- [ ] D8 Rights language: "nobody owns anymore", "make them yours", "free to make, use and sell in the US",
+- [x] D8 Rights language: "nobody owns anymore", "make them yours", "free to make, use and sell in the US",
       "become free for anyone": soften to what one patent's status means; freedom-to-operate note at decision points.
-- [ ] D9 About "Every status comes from an official USPTO record": false for EP/CA/AU and for inferred abandonment.
-- [ ] D10 "Rechecked against USPTO records every day" (footer): true only for the recently-freed US register. Scope it.
-- [ ] D11 Build levels (Weekend/Garage/Workshop) undefined on the page; define as prototype-effort estimates.
-- [ ] D12 Likely abandoned applications must never read as expired patents (check badges, cards, copy).
+- [x] D9 About "Every status comes from an official USPTO record": false for EP/CA/AU and for inferred abandonment.
+- [x] D10 "Rechecked against USPTO records every day" (footer): true only for the recently-freed US register. Scope it.
+- [x] D11 Build levels (Weekend/Garage/Workshop) undefined on the page; define as prototype-effort estimates.
+- [x] D12 Likely abandoned applications must never read as expired patents (check badges, cards, copy).
 - [ ] D13 Data freshness: distinguish source date, last status check, page build on patent pages and footer.
 
 ### Product and UX
-- [ ] P1 Contact page and Account/Settings ship "being set up" / fallback text in the HTML (visible to no-JS readers and
+- [x] P1 Contact page and Account/Settings ship "being set up" / fallback text in the HTML (visible to no-JS readers and
       AI crawlers). Hydrated states are correct (checked headless 2026-10-31). Use `<noscript>` and a real failure state.
 - [ ] P2 "Report a problem" on archive (EP/CA/AU) and world pages always fails: `messages.patent_id` CHECK accepts US ids only.
       Same for `ideas.patent_id` (studio started from a non-US patent can't be saved). Needs a DB migration.
-- [ ] P3 Opportunities method needs an expandable "why it ranks" per pick, uncertainty visible.
+- [x] P3 Opportunities method needs an expandable "why it ranks" per pick, uncertainty visible.
 - [ ] P4 Contact form: global 60/hour flood guard only; document, consider per-sender limit.
 
 ### Security
 - [ ] S1 `public.rls_auto_enable()` SECURITY DEFINER is executable by anon/authenticated (Supabase advisor). Revoke.
 - [ ] S2 Leaked-password protection off (Supabase Auth setting; may need a paid plan). Sanjay's dashboard.
-- [ ] S3 Self-host fonts, supabase-js and jsPDF; then drop Google Fonts / jsDelivr / cdnjs from the CSP.
+- [x] S3 Self-host fonts, supabase-js and jsPDF; then drop Google Fonts / jsDelivr / cdnjs from the CSP.
 - [ ] S4 CSP keeps `style-src 'unsafe-inline'` (inline style attributes in templates). Assess removal cost.
 - [ ] S5 Review every Function for escaping of record text (titles, abstracts, owners) and for cache headers.
 - [x] S6 RLS reviewed against the deployed database (pg_policies, constraints, grants match schema.sql). Cross-account reads of
@@ -86,9 +86,9 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 
 ## 4. Stages
 
-1. [ ] Data integrity and trust copy (D1-D13, P1)
+1. [x] Data integrity and trust copy (D1-D13, P1)
 2. [ ] Security (S1-S5, P2 migration with Sanjay's approval)
-3. [ ] Design tokens and shared components (V2)
+3. [~] Design tokens and shared components (V2)
 4. [ ] Pages: home, browse, all, patent (register/archive/world), opportunities, insights, fields, studio, account, settings, saved, legal
 5. [ ] Motion pass
 6. [ ] Editorial pass (every sentence)
@@ -101,3 +101,14 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 
 ## 6. Log
 - 2026-10-31: audit; worktree + branch `overhaul` created.
+- 2026-10-31 (66576e9) Stage 1. Verified by rebuilding the preview and reading the generated About, Insights and Opportunities
+  text: About and Insights both show 2,693 reinstatements and 181,815 Gazette fee lapses; Opportunities shows each factor and
+  its points; unit tests 31/31 (new test: rank = sum of listed factors, no claim-length factor).
+- 2026-10-31 New finding D14 (fixed in _world.js / all.js): world records called US patents "past their term" 20 years from
+  filing, but US patents filed after 2000-05-29 can carry a term adjustment. Now only 20 years after grant (26 for medicines).
+  The stats.json "free" count still uses the 20-years-from-filing rule; Insights labels it literally ("filed more than 20 years ago").
+- 2026-10-31 (2141a28) S3: fonts (IBM Plex, OFL), supabase-js 2.117.3 (esbuild bundle) and jsPDF 4.2.1 served from the site;
+  CSP now script/font 'self', connect to our Supabase project and patentyard-cards only. npm audit: 0 vulnerabilities.
+  Not yet verified in a browser: PDF download with jsPDF 4 and sign-in with the bundled supabase-js.
+- 2026-10-31 (2141a28) V2 started: tokens, badges by status, no glow/gradient/grid/window-dots/eyebrows, split home hero.
+  Checked: home desktop light and mobile dark screenshots, no horizontal overflow.

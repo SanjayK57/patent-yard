@@ -3,11 +3,11 @@
 import { $, $$, esc, toast, copyText } from "./app.js";
 
 export const TASKS = [
-  { id: "workshop", name: "Full reinvention workshop", desc: "Modern directions, then your idea, a novelty screen and a provisional draft, one step at a time.", rec: true },
+  { id: "workshop", name: "Full reinvention workshop", desc: "Modern directions, then your idea, a first prior-art search and a rough provisional draft, one step at a time.", rec: true },
   { id: "explain", name: "Explain this patent", desc: "How it works part by part, and what each independent claim covers.", patent: true },
   { id: "directions", name: "Modern directions", desc: "Four new product directions using what became cheap or possible since filing.", patent: true },
-  { id: "novelty", name: "Novelty screen", desc: "A first-pass check of your idea against what already exists, with searches to run." },
-  { id: "provisional", name: "Provisional draft", desc: "A provisional patent application you can edit and file yourself." },
+  { id: "novelty", name: "Prior-art check", desc: "A first look for similar inventions, with sources and searches to run. It can't prove your idea is new." },
+  { id: "provisional", name: "Provisional draft", desc: "A rough draft of a provisional application, to check and finish with a patent professional before filing." },
   { id: "sketch", name: "Concept sketches", desc: "Patent-style line drawings of the invention." },
   { id: "prototype", name: "Prototype plan", desc: "Parts list with rough costs, tools, build steps and tests." },
 ];
@@ -51,7 +51,9 @@ export function ideaBlock(i) {
 
 const ATTACH = "If I attached a Patent Yard brief (PDF), it has the patent's full claims and its original drawing sheets; use them.";
 const FAITHFUL = "When you describe the original patent, stick to what its text and drawings show; don't add features it doesn't have.";
-const DRAFT = `Draft a United States provisional patent application specification in Markdown with these sections: Title; Field; Background (describe the problem; cite the source patent, if any, as prior art and say what it leaves unsolved); Summary; Brief Description of the Drawings (propose FIG. 1 to FIG. 5 for me to prepare); Detailed Description (enough for a skilled person to make and use it: components with reference numerals 100, 102, 104..., how they connect, step-by-step operation, materials, ranges, and at least three alternative embodiments); Example Claims (1 independent and 6 dependent claims, optional in a provisional but useful later); Abstract (under 150 words). Write formally but plainly. Never invent test data, and put facts only I know in [square brackets].`;
+const DRAFT = `Draft a United States provisional patent application specification in Markdown with these sections: Title; Field; Background (describe the problem; cite the source patent, if any, as prior art and say what it leaves unsolved); Summary; Brief Description of the Drawings (propose FIG. 1 to FIG. 5 for me to prepare); Detailed Description (enough for a skilled person to make and use it: components with reference numerals 100, 102, 104..., how they connect, step-by-step operation, materials, ranges, and at least three alternative embodiments); Example Claims (1 independent and 6 dependent claims, optional in a provisional but useful later); Abstract (under 150 words). Write formally but plainly. Never invent test data, and put facts only I know in [square brackets]. Start the document with a note that this is an unreviewed draft: before filing, its facts, drawings and claims need checking, ideally by a registered patent attorney or agent, and it must meet the USPTO's filing requirements (cover sheet, fee, drawings).`
+// what a prior-art check may and may not claim (workshop step 3 and the stand-alone task)
+const NOVELTY = `This is a first look, not a search report or a legal opinion, and it can't establish that anything is new. If you can search the web or patent databases, do, and cite every result with its number or URL. Then give: (1) prior art you found, each with its source and how it overlaps; (2) things you think exist but couldn't verify, marked as unverified; (3) the new elements that look most distinct and why, and the ones most likely already known; (4) specific changes that would make it more distinct; (5) 3 to 5 searches for me to run, written as links like https://patents.google.com/?q=(your+keywords); (6) what evidence is missing. Keep three things apart: facts from the patent text, what I told you, and your own assumptions. Say plainly that you can't see everything filed recently or unpublished applications.`;
 
 export function buildPrompt(task, p, idea) {
   const ctx = patentContext(p), mine = ideaBlock(idea), have = hasIdea(idea);
@@ -65,7 +67,7 @@ Step 1, modern directions. ${have ? "Start from my invention below and suggest h
 
 Step 2, shape it. When I pick a direction or describe my own, help me write an invention name, a one-line pitch, how it works (parts, how they connect, how it is used) and what is new.
 
-Step 3, novelty screen. A quick first-pass screen, not a legal opinion: a verdict (promising, crowded or weak), a score from 1 to 10 (higher is more likely patentable), overlaps with existing products, patents or techniques and how each overlaps, specific changes that would make it more distinct, and 3 to 5 keyword searches for me to run on Google Patents. Remember ${p ? "the source patent is prior art and " : ""}you can't see patents filed after your training data.
+Step 3, prior-art check. ${NOVELTY}
 
 Step 4, provisional draft. ${DRAFT}
 
@@ -80,9 +82,9 @@ ${tail}`,
     directions: `I'm an independent inventor looking for a new, patentable product based on ${src}. Propose four distinct product directions. Each should use something that became cheap, possible or in demand since the patent was filed (for example low-cost sensors, phones, AI models, 3D printing, better batteries, new materials, subscriptions or new regulations), be buildable by a small team, and contain a concrete new element that could be claimed, not just "add an app". For each give: a 2-4 word name, a one-sentence pitch, what is concretely new versus the original, who pays and why, what a first prototype needs, and the element that could be claimed. End by asking which direction I want to develop.
 
 ${tail}`,
-    novelty: `Act as a patent searcher doing a quick first-pass novelty screen of my invention for me, an independent inventor. This is not a legal opinion.${askIdea}
+    novelty: `Act as a patent searcher doing a first prior-art check of my invention for me, an independent inventor.${askIdea}
 
-Judge how likely the new elements are to be novel and non-obvious${p ? ", remembering that the source patent below is prior art" : ""}. Give: a verdict (promising, crowded or weak); a score from 1 to 10, higher meaning more likely patentable; a two-sentence summary; the closest existing products, patents or techniques and how each overlaps; specific changes that would make my invention more distinct; and 3 to 5 keyword searches to run on Google Patents, written as links like https://patents.google.com/?q=(your+keywords). Say plainly how your training cutoff limits the screen.
+${NOVELTY}${p ? " The source patent below is prior art." : ""}
 
 ${tail}`,
     provisional: `Help me draft a provisional patent application for my invention.${askIdea}

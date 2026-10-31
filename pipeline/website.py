@@ -163,7 +163,7 @@ def cite_ref(raw):
 
 def why_free(e):
     fam = e["fam"]
-    rel = f"Its {fam - 1} US {'relative has' if fam - 1 == 1 else 'relatives have'} also lapsed, expired or never issued." if fam > 1 \
+    rel = ("Its one US relative has also lapsed, expired or never issued." if fam == 2 else f"All {fam - 1} of its US relatives have also lapsed, expired or never issued.") if fam > 1 \
         else "It has no other US patents or pending applications in its family."
     if e["st"] == "lapsed":
         og = f" of {full_date(e['og']['d'])}" if e.get("og") else ""
@@ -511,7 +511,7 @@ class Site:
         he = hero
         ended = full_date(he["x"]) if he["st"] == "lapsed" else full_date(he.get("te")) if he["st"] == "expired" else ""
         body = f"""
-<div class="lead">
+<div class="homelead">
 <section class="ahero">
   <h1 class="rise" style="--d:0">Build on inventions whose patents have ended.</h1>
   <p class="lede rise" style="--d:1">Search expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, with their original drawings and claims. Check what else exists among {big_number(WORLD['n']) if WORLD else 'millions of'} records worldwide, then develop your own version with Claude.</p>
@@ -576,7 +576,7 @@ class Site:
         st = collections.Counter(r["entry"]["st"] for r in self.rows)
         return f"""
 <form class="filters" id="filters" role="search">
-  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recently freed, US <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
+  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recent, US <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
   <div class="frow qrow"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">Filters</button></div>
   {'' if field or len(self.meta.get("archiveSpans", [])) < 2 else '<div class="frow regrow"><span class="lab">From</span><button class="chip" type="button" data-reg="" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-reg="{n}" aria-pressed="false">{n} <small class="num">{b - a:,}</small></button>' for n, a, b in self.meta["archiveSpans"]) + '</div>'}
   {'' if field else f'<div class="frow scrollrow" id="fInd"><span class="lab">Field</span><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div>'}
@@ -614,7 +614,7 @@ class Site:
     def browse(self):
         n = len(self.rows)
         body = f"""<div class="page">
-<div class="sechead"><div><h1>Browse the register</h1><p>{n:,} US patents whose protection has ended. Every one passed the same checks: officially lapsed, past its full term, or long abandoned, with no live relative in its US family. Each is rechecked daily.</p></div></div>
+<div class="sechead"><div><h1>Browse the register</h1><p>{n:,} recent US patents and applications that are no longer in force: lapsed for an unpaid fee, past their full term, or likely abandoned. Each passed the same checks, including no live relative in its US family, and lapsed ones are rechecked for reinstatement daily. The archive adds {self.meta.get('archive', 0):,} older records from four offices.</p></div></div>
 {self.filters()}
 {self.listing(self.rows)}
 </div>"""
@@ -1072,15 +1072,15 @@ class Site:
 
     def studio(self):
         body = f"""<div class="page">
-<div class="sechead"><div><h1>Invention studio</h1><p>Turn a patent, or your own idea, into a ready-made prompt and a PDF brief for Claude. Claude then works with you on modern directions, a novelty screen, a provisional patent draft, sketches or a prototype plan. It runs on your own Claude account, free on Patent Yard.</p></div></div>
+<div class="sechead"><div><h1>Invention studio</h1><p>Turn a patent, or your own idea, into a ready-made prompt and a PDF brief for Claude. Claude then works with you on modern directions, a first prior-art search, a rough provisional draft, sketches or a prototype plan. It runs in your own Claude account, and nothing you type here leaves your browser until you paste it there.</p></div></div>
 <div class="howto" style="margin-bottom:22px"><div><b>Describe it.</b> Start from a patent here or from your own idea.</div><div><b>Pick a task.</b> We write the prompt and a PDF brief with the patent's claims and drawings.</div><div><b>Open Claude.</b> Paste the prompt, attach the brief, and work through it together.</div></div>
 <div class="studio">
   <div class="panel"><div class="stack" id="studioForm">
     <div class="fgroup picker"><label for="pq">Start from a patent (optional)</label><input class="field" id="pq" type="search" autocomplete="off" placeholder="Search by name or patent number"><ul id="pickList" role="listbox" hidden></ul><div id="picked"></div></div>
-    <div class="fgroup"><label for="iName">Invention name</label><input class="field" id="iName" maxlength="120" placeholder="Self-leveling camp stove"></div>
-    <div class="fgroup"><label for="iPitch">One-line pitch</label><input class="field" id="iPitch" maxlength="300" placeholder="What it does, for whom, in one sentence"></div>
-    <div class="fgroup"><label for="iDesc">How it works</label><textarea class="field" id="iDesc" maxlength="8000" placeholder="Parts, how they connect, how someone uses it. Rough notes are fine."></textarea></div>
-    <div class="fgroup"><label for="iNew">What's new</label><textarea class="field" id="iNew" maxlength="3000" style="min-height:80px" placeholder="The part nobody has done before."></textarea><small>Leave these blank to let Claude propose directions first.</small></div>
+    <div class="fgroup"><label for="iName">Invention name <span class="opt">optional</span></label><input class="field" id="iName" maxlength="120" placeholder="Self-leveling camp stove"></div>
+    <div class="fgroup"><label for="iPitch">One-line pitch <span class="opt">optional</span></label><input class="field" id="iPitch" maxlength="300" placeholder="What it does, for whom, in one sentence"></div>
+    <div class="fgroup"><label for="iDesc">How it works <span class="opt">optional</span></label><textarea class="field" id="iDesc" maxlength="8000" placeholder="Parts, how they connect, how someone uses it. Rough notes are fine."></textarea></div>
+    <div class="fgroup"><label for="iNew">What's new <span class="opt">optional</span></label><textarea class="field" id="iNew" maxlength="3000" style="min-height:80px" placeholder="The part nobody has done before."></textarea><small>Leave these blank to let Claude propose directions first.</small></div>
   </div></div>
   <div class="stack">
     <div class="block"><h2>Task</h2><div class="tasks" id="tasks"></div></div>
@@ -1089,7 +1089,7 @@ class Site:
     <div class="rowbtns"><button class="btn secondary sm" type="button" id="saveIdea">Save to my bench</button><span class="status" id="studioStatus" aria-live="polite"></span></div>
   </div>
 </div></div>"""
-        self.page("/studio/", "Invention studio", "Turn a free-to-use patent or your own idea into a ready-made prompt and PDF brief for Claude: modern directions, a novelty screen and a provisional patent draft.",
+        self.page("/studio/", "Invention studio", "Turn a free-to-use patent or your own idea into a ready-made prompt and PDF brief for Claude: modern directions, a first prior-art search and a rough provisional patent draft.",
                   body, section="/studio/", scripts=("studio",))
 
     def account(self):
