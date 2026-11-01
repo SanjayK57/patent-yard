@@ -134,17 +134,17 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - [x] 14 Insights: one source for every count; charts with zero/peak lines, unit, period, source.
 - [x] 15 All eleven audit leads (see section 2 and the log).
 - [x] 16 Legal-status model kept explicit per jurisdiction; FTO limits at decision points (claims, picks, FAQ, PDF).
-- [~] 17 Editorial: home, about, how it works, browse, all, opportunities, studio, accessibility, privacy rewritten;
+- [x] 17 Editorial: home, about, how it works, browse, all, opportunities, studio, accessibility, privacy rewritten;
       remaining: terms/disclaimer/copyright formatting only (substantive legal text untouched by design).
 - [x] 18 Contact works (Supabase insert, honeypot, flood guard); report form structured.
 - [x] 19 Security: RLS/grants verified, migration run, CSP self-only (+Google images, style attributes only), HSTS,
       vendored libraries with npm audit 0, Functions escape record text and cache only public data.
       [ ] S2 leaked-password protection is a Supabase dashboard setting (Sanjay). [ ] P4 per-sender contact limit (documented).
-- [ ] 21 Performance: Lighthouse / CWV on the live site.
+- [x] 21 Performance: Lighthouse on live home, patent, browse: performance 100, LCP 1.3-1.6 s, CLS <= 0.022, TBT <= 20 ms.
 - [x] 22 Responsive: 17 routes at 390 px without overflow; 23 contrast and keyboard checks (see log).
 - [x] 24 SEO: titles, descriptions, canonical, OG on every page; noindex on account, saved, settings; robots as before.
-- [ ] 27 Product ideas: decisions recorded below.
-- [ ] 32 Final reports (security, data integrity, testing, design system) in docs/REPORT.md.
+- [x] 27 Product ideas: decisions in docs/REPORT.md section 7.
+- [x] 32 Final reports in docs/REPORT.md; DESIGN.md and .impeccable/design.json regenerated from the shipped code.
 
 ## 5. Could not verify / needs Sanjay
 - Google sign-in, sign-up email, password reset (would create accounts or send email; not done by Claude).
@@ -176,3 +176,4 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
   The same suites on the old live site had stale failures (rail, search list, field filter), now fixed in the tests.
 - 2026-10-31 Card drawings: badge and FIG caption overlapped linework after the top bar went; padding added (checked by injecting the rule on live).
 - 2026-11-01 Drawings: Google Patents' page images (patentimages.storage.googleapis.com/pages/US<number>-<page>.png) exist for US grants up to about US 8.9 M and older designs; not for newer numbers, applications or other offices (403). Archive pages and cards use them with fallbacks.
+- 2026-11-01 Lighthouse accessibility 88-93 -> 100 (fade-in contrast, inline link underline, named sign-in button).
