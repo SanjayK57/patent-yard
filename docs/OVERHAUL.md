@@ -114,6 +114,38 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - [ ] Editorial pass over every page (legal pages formatting only; substantive legal edits flagged for review).
 - [ ] Patent-family explorer, comparison, saved searches: evaluate after the above (27.x); none started.
 
+## 4c. Directive walk-through, in its own order (2026-11-01)
+- [x] 6 Navigation: same destinations everywhere, active state, sticky solid header, `/` and Cmd/Ctrl-K, footer by purpose.
+- [x] 7 Home: accurate hero, split layout with a real drawing, search with real example queries, featured patent, ledger
+      numbers with source and date (7.4), recently viewed (browser-only, says so), picks as lead + cards + list, fields,
+      three steps, studio preview, closing call to action.
+- [x] 8 All patents: says records (granted + applications), data source and load month, not complete or current;
+      order explained (newest publication first); past-term rule with the US term-adjustment guard.
+      [!] Granted-vs-application, year and assignee filters: the world index (world.py) holds only country and
+      past-term lists; adding them means re-exporting 122.8 M records from BigQuery. Not faked in the browser (8.2).
+- [x] 9 Free to use: statuses kept distinct (lapsed amber, expired green, likely abandoned dashed), build levels defined,
+      assignee not owner, recent vs archive explained in the intro and How it works.
+- [x] 10 Opportunities: no claim-length breadth; factors and points per patent; notes labeled as drafted with Claude.
+- [x] 11 Patent pages: drawings now on-site for US archive patents (Google page images, viewer), front page for world US
+      grants; serif source text; claims tree; added/checked dates; report categories; sources section.
+- [x] 12 Studio: prompts separate facts / user input / assumptions, no score, drafts marked unreviewed; PDF has date and
+      limits; draft storage stated; optional fields marked.
+- [x] 13 Accounts: states fixed (no "being set up"), reservation is not a right (stated in dialog and FAQ), notes public.
+- [x] 14 Insights: one source for every count; charts with zero/peak lines, unit, period, source.
+- [x] 15 All eleven audit leads (see section 2 and the log).
+- [x] 16 Legal-status model kept explicit per jurisdiction; FTO limits at decision points (claims, picks, FAQ, PDF).
+- [~] 17 Editorial: home, about, how it works, browse, all, opportunities, studio, accessibility, privacy rewritten;
+      remaining: terms/disclaimer/copyright formatting only (substantive legal text untouched by design).
+- [x] 18 Contact works (Supabase insert, honeypot, flood guard); report form structured.
+- [x] 19 Security: RLS/grants verified, migration run, CSP self-only (+Google images, style attributes only), HSTS,
+      vendored libraries with npm audit 0, Functions escape record text and cache only public data.
+      [ ] S2 leaked-password protection is a Supabase dashboard setting (Sanjay). [ ] P4 per-sender contact limit (documented).
+- [ ] 21 Performance: Lighthouse / CWV on the live site.
+- [x] 22 Responsive: 17 routes at 390 px without overflow; 23 contrast and keyboard checks (see log).
+- [x] 24 SEO: titles, descriptions, canonical, OG on every page; noindex on account, saved, settings; robots as before.
+- [ ] 27 Product ideas: decisions recorded below.
+- [ ] 32 Final reports (security, data integrity, testing, design system) in docs/REPORT.md.
+
 ## 5. Could not verify / needs Sanjay
 - Google sign-in, sign-up email, password reset (would create accounts or send email; not done by Claude).
 - Production DB changes (migration) need approval.
@@ -143,3 +175,4 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
   browse 17/17, patent 24/24, account 2/2; studio 1/5 only because the preview lacks that patent's /data/p shard (live 200).
   The same suites on the old live site had stale failures (rail, search list, field filter), now fixed in the tests.
 - 2026-10-31 Card drawings: badge and FIG caption overlapped linework after the top bar went; padding added (checked by injecting the rule on live).
+- 2026-11-01 Drawings: Google Patents' page images (patentimages.storage.googleapis.com/pages/US<number>-<page>.png) exist for US grants up to about US 8.9 M and older designs; not for newer numbers, applications or other offices (403). Archive pages and cards use them with fallbacks.
