@@ -100,7 +100,11 @@ addEventListener("beforeprint", () => $$(".reveal").forEach(el => el.classList.a
 
 // ---------------------------------------------------------------- menu
 const menu = $("#menuBtn"), nav = $("#mainnav");
-menu?.addEventListener("click", () => { const open = nav.classList.toggle("open"); menu.setAttribute("aria-expanded", open); });
+// the phone menu: opening moves focus to its first link, Escape or a click outside closes it and returns focus to the button
+const setMenu = open => { nav.classList.toggle("open", open); menu.setAttribute("aria-expanded", open); if (open) $("a", nav)?.focus(); };
+menu?.addEventListener("click", () => setMenu(!nav.classList.contains("open")));
+addEventListener("keydown", e => { if (e.key === "Escape" && nav?.classList.contains("open")) { setMenu(false); menu.focus(); } });
+addEventListener("click", e => { if (nav?.classList.contains("open") && !nav.contains(e.target) && !menu.contains(e.target)) setMenu(false); });
 
 // ---------------------------------------------------------------- header search suggestions (Enter still opens the full results)
 const hq = $("#hq");
