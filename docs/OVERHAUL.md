@@ -177,3 +177,9 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - 2026-10-31 Card drawings: badge and FIG caption overlapped linework after the top bar went; padding added (checked by injecting the rule on live).
 - 2026-11-01 Drawings: Google Patents' page images (patentimages.storage.googleapis.com/pages/US<number>-<page>.png) exist for US grants up to about US 8.9 M and older designs; not for newer numbers, applications or other offices (403). Archive pages and cards use them with fallbacks.
 - 2026-11-01 Lighthouse accessibility 88-93 -> 100 (fade-in contrast, inline link underline, named sign-in button).
+- 2026-11-01 ~09:00 deploy (bded6168) verified live: smoke header 8/8, home 6/6, browse 17/17, patent 24/24, studio 6/6,
+  account 2/2; functional checks pass; Lighthouse live: home 100/100/100/100, browse 100/100/100/100, archive patent page
+  performance 95 (LCP 2.9 s: the first drawing sheet is a full-size image from Google's store and can't be resized),
+  accessibility/best practices/SEO 100. Archive pages show their drawing sheets on the site.
+- 2026-11-01 Documenter regenerated DESIGN.md and .impeccable/design.json; its 8 CSS findings fixed (96ef64d).
+- 2026-11-01 Phone menu keyboard: focus moves in on open; Escape and outside click close it (470820d).
