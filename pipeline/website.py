@@ -416,7 +416,7 @@ class Site:
     <form class="hsearch" action="/browse/" role="search"><svg class="i" aria-hidden="true"><use href="#i-search"/></svg><label class="sr" for="hq">Search patents</label><input id="hq" name="q" type="search" placeholder="Search patents"><kbd class="hk" aria-hidden="true">/</kbd></form>
     <button class="iconbtn cmdbtn" type="button" id="cmdBtn" aria-label="Search and jump (Ctrl K)" title="Search and jump (⌘K)">{icon("search")}</button>
     <button class="iconbtn" type="button" id="themeBtn" aria-label="Switch between light and dark mode" title="Light or dark mode">{icon("sun").replace('class="i"', 'class="i sun"')}{icon("moon").replace('class="i"', 'class="i moon"')}</button>
-    <span class="acct" id="acct"><a class="btn secondary sm" href="/account/">{icon("user")}<span>Sign in</span></a></span>
+    <span class="acct" id="acct"><a class="btn secondary sm" href="/account/" aria-label="Sign in">{icon("user")}<span>Sign in</span></a></span>
     <button class="menu-btn" id="menuBtn" aria-controls="mainnav" aria-expanded="false" aria-label="Menu">{icon("menu")}</button>
   </div>
 </header>

@@ -726,8 +726,8 @@ textarea.prompt{min-height:240px;font:12.5px/1.65 var(--mono);color:var(--ink-2)
 .grid.enter>.card:nth-child(n+9){animation-delay:240ms}
 @keyframes cardIn{from{opacity:0;transform:translateY(10px)}}
 .empty b{display:block;font:600 17px/1.3 var(--display);color:var(--ink);margin-bottom:4px}
-.js .reveal{opacity:.3;transform:translateY(20px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
-.reveal.in{opacity:1;transform:none}
+.js .reveal{transform:translateY(14px);transition:transform var(--t3) var(--ease)}
+.reveal.in{transform:none}
 :root[data-motion="reduce"] .reveal{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
 .scrollrow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
@@ -1027,3 +1027,6 @@ a.hrow:hover{background:var(--sunken)}
 .gfront figcaption{padding:8px 14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}
 .draftnote{font-size:12.5px;margin:-4px 0 4px}
 .statnote{margin-top:10px;font-size:12.5px;color:var(--ink-3);max-width:110ch}
+/* links inside running text are underlined, not told apart by color alone */
+:where(p,dd,.prose li,.checks li) a:not(.btn):not(.chip){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px;text-decoration-color:color-mix(in srgb,currentColor 45%,transparent)}
+:where(p,dd,.prose li,.checks li) a:not(.btn):not(.chip):hover{text-decoration-color:currentColor}

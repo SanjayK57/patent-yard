@@ -154,7 +154,7 @@ export const session = (async () => {
   const acct = $("#acct");
   if (acct && user) {
     const initial = (user.email || "?").trim().charAt(0).toUpperCase();
-    acct.innerHTML = `<div class="acctmenu"><button type="button" aria-haspopup="menu" aria-expanded="false" title="${esc(user.email)}"><span class="avatar" aria-hidden="true">${esc(initial)}</span><span>My bench</span></button>
+    acct.innerHTML = `<div class="acctmenu"><button type="button" aria-haspopup="menu" aria-expanded="false" aria-label="My bench, signed in as ${esc(user.email)}" title="${esc(user.email)}"><span class="avatar" aria-hidden="true">${esc(initial)}</span><span>My bench</span></button>
       <div class="menu" role="menu" hidden><div class="who"><b>Signed in</b><small>${esc(user.email)}</small></div>
       <a role="menuitem" href="/account/">${icon("flag")}My bench</a><a role="menuitem" href="/saved/">${icon("bookmark")}Saved patents</a><a role="menuitem" href="/studio/">${icon("spark")}Invention studio</a><a role="menuitem" href="/settings/">${icon("gear")}Settings</a>
       <button role="menuitem" type="button" data-signout>${icon("left")}Sign out</button></div></div>`;
