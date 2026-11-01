@@ -5,15 +5,22 @@ import { latest } from "./catalog.js";
 
 const P = $("#patent");
 const id = P.dataset.id, nSheets = +P.dataset.sheets, total = +P.dataset.total, pdf = P.dataset.pdf;
-const sheets = Array.from({ length: nSheets }, (_, k) => `/img/p/${id}/${k + 1}.png`);
+// drawing sheets: ours (/img/p/), or for archive US patents Google Patents' page images (functions/_archive.js gpage)
+const base = P.dataset.sheetbase, sheets = Array.from({ length: nSheets }, (_, k) => (base ? `${base}-${k + 1}.png` : `/img/p/${id}/${k + 1}.png`));
+// if Google doesn't have this patent's pages, show the PDF view instead of empty frames
+const firstSheet = $(".gsheets img");
+const noSheets = () => { $(".gsheets")?.remove(); const f = $(".gfail"); if (f) f.hidden = false; sheets.length = 0; };
+if (firstSheet) { if (firstSheet.complete && !firstSheet.naturalWidth) noSheets(); else firstSheet.addEventListener("error", noSheets, { once: true }); }
+const front = $(".gfront img");
+if (front) { const drop = () => front.closest(".gfront").remove(); if (front.complete && !front.naturalWidth) drop(); else front.addEventListener("error", drop, { once: true }); }
 
 // ---------------------------------------------------------------- drawing viewer: arrows, thumbnails, swipe, click to zoom and drag to pan
 const V = { i: 0 }, viewer = $("#viewer");
 function renderViewer() {
   viewer.innerHTML = `<div class="vbar"><span>${esc(P.dataset.n)} · Sheet ${V.i + 1} of ${sheets.length}${total > sheets.length ? ` (${total} in the PDF)` : ""}</span><span class="rowbtns"><a class="btn sm" href="${pdf}" target="_blank" rel="noopener noreferrer">USPTO PDF ${icon("ext")}</a><button class="x" type="button" data-close aria-label="Close viewer">${icon("x")}</button></span></div>
-    <div class="stage" id="vStage"><img src="${sheets[V.i]}" alt="Drawing sheet ${V.i + 1}" data-zoom draggable="false"></div>
+    <div class="stage" id="vStage"><img src="${sheets[V.i]}" alt="Drawing sheet ${V.i + 1}" data-zoom draggable="false" referrerpolicy="no-referrer"></div>
     <div class="vnav"><button class="btn sm" type="button" data-step="-1" ${V.i === 0 ? "disabled" : ""}>${icon("left")}Previous</button>
-      <div class="vthumbs">${sheets.map((src, k) => `<button type="button" data-goto="${k}" aria-label="Sheet ${k + 1}" aria-current="${k === V.i}"><img src="${src}" alt=""></button>`).join("")}</div>
+      <div class="vthumbs">${sheets.map((src, k) => `<button type="button" data-goto="${k}" aria-label="Sheet ${k + 1}" aria-current="${k === V.i}"><img src="${src}" alt="" loading="lazy" referrerpolicy="no-referrer"></button>`).join("")}</div>
       <button class="btn sm" type="button" data-step="1" ${V.i >= sheets.length - 1 ? "disabled" : ""}>Next${icon("right")}</button></div>`;
 }
 const show = i => { V.i = Math.max(0, Math.min(sheets.length - 1, i)); renderViewer(); };

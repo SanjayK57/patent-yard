@@ -94,6 +94,9 @@ export function worldKit(r) {
 const google = r => `https://patents.google.com/patent/${r.pn.replace(/-/g, "")}/en`;
 
 export function renderWorld(tpl, r) {
+  // a granted US patent's front page (abstract and main drawing) from Google Patents' page images; patent.js removes it if it doesn't load
+  const fp = r.cc === "US" && r.g ? `https://patentimages.storage.googleapis.com/pages/${r.pn.split("-").slice(0, 2).join("")}-0.png` : "";
+  const front = fp ? `<figure class="gfront"><a href="${fp}" ${EXT} aria-label="Open the front page full size"><img src="${fp}" alt="Front page of ${E(label(r))}, with its main drawing" decoding="async" referrerpolicy="no-referrer"></a><figcaption>Front page of the published patent, from Google Patents</figcaption></figure>` : "";
   const [st, cls, checks] = status(r), n = label(r), g = google(r), country = countryName(r.cc);
   const esp = `https://worldwide.espacenet.com/patent/search?q=pn%3D${r.pn.replace(/-/g, "")}`;
   // Google Patents adds a page some weeks after publication; until then its link is a 404, so very new ones lead with Espacenet
@@ -123,13 +126,13 @@ export function renderWorld(tpl, r) {
   <nav class="toc" aria-label="On this page"><a href="#overview">Overview</a>${timeline ? '<a href="#history">Timeline</a>' : ""}<a href="#sources">Sources</a></nav>
   <div>
   <section class="psec" id="overview"><h2>Overview</h2>
-  <div class="ov"><div><div class="nofig later"><b>Full text and drawings</b>${fresh
+  <div class="ov"><div>${front}<div class="nofig later"><b>Full text and drawings</b>${fresh
     ? `<p class="muted">Published ${full(r.p)}, so Google Patents may not have its page yet. Espacenet, the European Patent Office's worldwide search, has the claims, description and drawings.</p><div class="rowbtns"><a class="btn secondary sm" href="${esp}" ${EXT}>${icon("file")}Open on Espacenet</a><a class="btn quiet sm" href="${g}" ${EXT}>Try Google Patents</a></div>`
     : `<p class="muted">The claims, description and drawings are on Google Patents${r.tl && r.tl !== "en" ? ", with a machine translation" : ""}, and on Espacenet.</p><div class="rowbtns"><a class="btn secondary sm" href="${g}" ${EXT}>${icon("file")}Open on Google Patents</a><a class="btn quiet sm" href="${esp}" ${EXT}>Espacenet</a></div>`}</div></div>
   <div class="stack">
-    ${r.ab ? `<div class="block"><h3>Abstract</h3><p class="prose source">${E(r.ab)}</p></div>` : ""}
-    <div class="panel soft"><div class="block"><h3>Is it free to use?</h3><ul class="checks">${checks.map((c, i) => `<li${!r.free && i === checks.length - 1 ? ' class="warn"' : ""}>${E(c)}</li>`).join("")}</ul>
-      ${r.free ? "" : `<p class="muted" style="margin-top:8px">Looking for inventions you can use now? <a href="/browse/">Browse the free-to-use register</a>.</p>`}</div></div>
+    ${r.ab ? `<div class="block"><h3>Abstract${r.ab.length >= 320 ? " <span class=\"src\">Opening only</span>" : ""}</h3><p class="prose source">${E(r.ab)}${r.ab.length >= 320 ? "…" : ""}</p></div>` : ""}
+    <div class="panel soft"><div class="block"><h3>Is it still in force?</h3><ul class="checks">${checks.map((c, i) => `<li${!r.free && i === checks.length - 1 ? ' class="warn"' : ""}>${E(c)}</li>`).join("")}</ul>
+      ${r.free ? "" : `<p class="muted" style="margin-top:8px">Looking for patents that are no longer in force? <a href="/browse/">Browse the free-to-use register</a>.</p>`}</div></div>
     <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("")}</div>
   </div></div></section>
   ${timeline}

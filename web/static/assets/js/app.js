@@ -81,6 +81,9 @@ labelTheme();
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", labelTheme);
 addEventListener("storage", e => { if (e.key === "patentyard." + SETTINGS) { applySettings(); labelTheme(); } });  // other open tabs follow
 
+// ---------------------------------------------------------------- a card drawing from Google Patents that doesn't load falls back to its field symbol (catalog.js)
+addEventListener("error", e => { const f = e.target.closest?.(".gfig"); if (f) f.classList.add("failed"); }, true);
+
 // ---------------------------------------------------------------- register totals in the footer (pages stay the same from day to day)
 latest().then(L => {
   const el = $("#footStat");

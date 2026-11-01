@@ -1015,3 +1015,13 @@ a.hrow:hover{background:var(--sunken)}
 .ptext small{font-size:12.5px;color:var(--ink-3)}
 @media (max-width:520px){.pickrows a{grid-template-columns:56px minmax(0,1fr)}.pthumb{width:56px;height:44px}}
 .st-lapsed{color:var(--lapsed)}.st-expired{color:var(--expired)}.st-abandoned{color:var(--aband)}
+/* a US archive card's first drawing sheet from Google Patents; if it doesn't load (app.js adds .failed) the field symbol shows */
+.gfig .fglyph,.gfig .numart{display:none}
+.gfig.failed{display:grid;place-items:center;align-content:center;gap:12px}
+.gfig.failed img,.gfig.failed .sheets{display:none}
+.gfig.failed .fglyph,.gfig.failed .numart{display:block}
+.gsheets .cap{margin-top:10px;font-size:13px;color:var(--ink-3)}
+.gfront{margin:0 0 16px;border:1px solid var(--line-strong);border-radius:var(--radius);background:var(--plate);overflow:hidden}
+.gfront a{display:block;padding:16px;cursor:zoom-in}
+.gfront img{display:block;width:100%;max-height:640px;object-fit:contain;mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}
+.gfront figcaption{padding:8px 14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-3)}

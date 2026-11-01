@@ -185,7 +185,7 @@ export async function archiveSearch(q) {  // -> Map(archive position -> score), 
 export async function archiveCards(docs) {
   const A = await archiveInfo(), L = await latest();
   const blocks = Object.fromEntries(await Promise.all([...new Set(docs.map(d => Math.floor(d / A.block)))].map(async b => [b, await get(`/v/${A.v}/c/${b}.json`)])));
-  return docs.map(d => { const [id, t, a, ind, year, k] = blocks[Math.floor(d / A.block)][d % A.block]; return { doc: d, id, t, a, ind: L.fields[ind], year, k: k || "" }; });
+  return docs.map(d => { const [id, t, a, ind, year, k, sh] = blocks[Math.floor(d / A.block)][d % A.block]; return { doc: d, id, t, a, ind: L.fields[ind], year, sh: sh || 0, k: k || "" }; });
 }
 
 const AKIND = { S: ["Expired design patent", "expired", "Granted", "Design"], A: ["Likely abandoned application", "abandoned", "Published", "Application"], "": ["Expired, full term", "expired", "Granted", "Full term"],
@@ -193,8 +193,13 @@ const AKIND = { S: ["Expired design patent", "expired", "Granted", "Design"], A:
   AU: ["Expired, Australia", "expired", "Year", "Australian"] };
 export function archiveCardHTML(c, names) {
   const n = numberLabel(c.id), owner = c.a || (c.k === "A" ? "Inventors" : "None recorded"), K = AKIND[c.k] || AKIND[""];
-  // archive patents have no drawing on file, so their cards show their field's symbol in a blueprint frame
-  return `<article class="card acard" data-id="${esc(c.id)}">${plateHTML(c.ind, n, `${c.id.slice(0, 2)} · no drawing`, `<span class="badge ${K[1]}">${K[0]}</span>`)}`
+  // US archive patents show their first drawing sheet from Google Patents' page images (app.js falls back to the field symbol
+  // if it doesn't load); others have no drawing on file, so their cards show their field's symbol
+  const badge = `<span class="badge ${K[1]}">${K[0]}</span>`;
+  const fig = c.id.startsWith("US-") && c.k !== "A" && c.sh
+    ? `<div class="fig gfig"><img src="https://patentimages.storage.googleapis.com/pages/${c.id.split("-").slice(0, 2).join("")}-1.png" alt="Drawing sheet 1 of ${esc(n)}" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="over">${badge}</span><span class="sheets">${c.sh} ${c.sh === 1 ? "drawing" : "drawings"}</span><svg class="fglyph" aria-hidden="true"><use href="#f-${esc(c.ind)}"/></svg><span class="numart">${esc(n)}</span></div>`
+    : plateHTML(c.ind, n, `${c.id.slice(0, 2)} · no drawing`, badge);
+  return `<article class="card acard" data-id="${esc(c.id)}">${fig}`
     + `<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)} · <span class="num-id">${esc(n)}</span></span><h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3></div>`
     + `<div class="cmeta"><div><small>${K[2]}</small><span>${c.year}</span></div><div><small>Kind</small><span>${K[3]}</span></div><div><small>${c.k === "A" ? "Applicant" : "Assignee"}</small><span title="${esc(owner)}">${esc(owner)}</span></div></div></article>`;
 }

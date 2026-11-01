@@ -4,6 +4,9 @@
 import SITE from "./site.json";
 import { timelineSection } from "./_timeline.js";
 
+// a page of a US patent on Google Patents' image store: "US-6046565-A", 1 -> .../pages/US6046565-1.png (page 0 is the front page)
+export const gpage = (id, k) => `https://patentimages.storage.googleapis.com/pages/${id.split("-").slice(0, 2).join("")}${k === "" ? "" : `-${k}.png`}`;
+
 const E = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const icon = n => `<svg class="i" aria-hidden="true"><use href="#i-${n}"/></svg>`;
 const EXT = 'target="_blank" rel="noopener noreferrer"';
@@ -138,14 +141,22 @@ export function renderArchive(tpl, r) {
     [L.espacenet, "Espacenet", "Foreign family and legal status.", "European Patent Office"]];
   // the published document itself, inline: its first page has the abstract and main drawing (US and EPO PDFs allow framing)
   const embed = R ? L.embed : L.pdf;
-  const draw = embed
+  // US patents granted up to about 2014 have every page as an image on Google Patents' image store, so their drawing sheets
+  // show here; patent.js swaps in the PDF view below if the first sheet doesn't load (newer numbers aren't there)
+  const gsheets = !R && r.k !== "A" && r.sh ? Math.min(r.sh, 40) : 0;
+  const gallery = gsheets ? `<div class="gsheets"><div class="gallery">${Array.from({ length: gsheets }, (_, k) =>
+    `<figure><button type="button" data-sheet="${k}" aria-label="Enlarge sheet ${k + 1}"><img src="${gpage(r.id, k + 1)}" alt="Drawing sheet ${k + 1} of ${E(r.n)}" loading="${k < 4 ? "eager" : "lazy"}" decoding="async" referrerpolicy="no-referrer"></button>`
+    + `<figcaption><span>Sheet ${k + 1} of ${r.sh}</span></figcaption></figure>`).join("")}</div>
+    <p class="cap">${r.sh} drawing ${r.sh === 1 ? "sheet" : "sheets"} from the published patent, as page images from Google Patents. <a href="${L.pdf}" ${EXT}>Open the USPTO PDF</a></p></div>` : "";
+  const draw = gallery ? gallery + `<div class="gfail" hidden>${drawFallback()}</div>` : drawFallback();
+  function drawFallback() { return embed
     ? `<div class="docview"><iframe src="${embed}#view=FitH" title="Published document ${E(r.n)}" loading="lazy"></iframe><p class="cap">The published document from the ${office}: abstract, claims, description${r.k === "S" ? "" : " and drawings"}. <a href="${embed}" ${EXT}>Open it full size</a></p></div>`
     : R
     ? `<div class="nofig later"><b>Drawings and full text</b><p class="muted">${L.docNote}</p><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}Open the ${L.docLabel}</a></div>`
     : r.sh
     ? `<div class="nofig later"><b>${r.sh} drawing ${r.sh === 1 ? "sheet" : "sheets"}</b><p class="muted">Every sheet is in the USPTO PDF.</p><a class="btn secondary sm" href="${L.pdf}" ${EXT}>${icon("file")}Open the USPTO PDF</a></div>`
     : arm ? `<div class="nofig"><b>This document has no drawings.</b></div>`
-    : `<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">${icon("spark")}Sketch it with Claude</button></div>`;
+    : `<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">${icon("spark")}Sketch it with Claude</button></div>`; }
   const events = r.k === "S" ? [[r.p, "Design granted"], [r.te, "Term ended", "bad"]]
     : r.k === "A" ? [[r.f, "Application filed"], [r.p, "Application published"]]
     : r.k === "E" ? [[r.f, "Application filed"], [r.p, "Published"], [r.g, "Patent granted"], [r.te, "Term ended", "bad"]]
@@ -153,7 +164,7 @@ export function renderArchive(tpl, r) {
     : [[r.f, "Application filed"], [r.p, "Patent granted"], [r.te, "Term ended", "bad"]];
   const timeline = timelineSection(events, office);
   const cpc = (r.cpc || []).length ? E(r.cpc[0]) + (r.cpc.length > 1 ? ` <span class="muted" title="${E(r.cpc.join(", "))}">+${r.cpc.length - 1} more</span>` : "") : "—";
-  const body = `<div class="page" id="patent" data-source="archive" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="0" data-total="${r.sh || 0}" data-pdf="${doc}">
+  const body = `<div class="page" id="patent" data-source="archive" data-id="${E(r.id)}" data-n="${E(r.n)}" data-sheets="${gsheets}" data-total="${r.sh || 0}"${gsheets ? ` data-sheetbase="${gpage(r.id, "")}"` : ""} data-pdf="${doc}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/${fk}/">${E(field)}</a><span>/</span><span>${E(r.n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${K[1]}">${K[0]}</span><span class="badge plain">${R ? R.name : "Archive"}</span>${r.a || r.k === "A" ? "" : '<span class="badge plain">No assignee recorded</span>'}<span class="badge ok" id="vbadge" hidden></span></div>
@@ -176,7 +187,7 @@ export function renderArchive(tpl, r) {
     ${r.ab ? `<div class="block"><h3>Abstract <span class="src">From the ${R ? R.adj + " " : ""}patent</span></h3><p class="prose source">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its ${office} record in Patent Yard's ${R ? `archive of ${R.adj} patents past their term` : "full-term archive"}. Its claims, description and drawings are in the <a href="${doc}" ${EXT}>${R ? L.docLabel : "USPTO PDF"}</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>${arm ? "" : ", and the Claude kit works from them"}.</p>
       <div class="rowbtns" style="margin-top:12px"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a></div></div></div>
-    <div class="panel soft"><div class="block"><h3>Why it's free to use</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>
+    <div class="panel soft"><div class="block"><h3>Why it's listed</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>
     <div class="facts">
       ${R ? R.facts(r).map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("") + `<div><small>Classification (${R.ipc})</small><b>${cpc}</b></div>`
       : `<div><small>Filed</small><b>${E(full(r.f))}</b></div><div><small>${r.k === "A" ? "Published" : "Granted"}</small><b>${E(full(r.p))}</b></div><div><small>${r.k === "A" ? "Status" : "Term ended"}</small><b>${r.k === "A" ? "Abandoned (inferred)" : E(full(r.te))}</b></div>
