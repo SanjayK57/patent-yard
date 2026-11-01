@@ -133,6 +133,11 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
       current live lists. [!] Live only after the cards project is deployed (production deploy, needs Sanjay's OK):
       `cd ~/PatentYard/web/world && npx wrangler@4 pages deploy cards --project-name patentyard-cards --branch main`.
       Also fixed: on phones the All patents filters were hidden with no toggle; table view now shows each record's status.
+      8.1 number lookup fixed: "CN112345678A" (the search box's own example) folded the kind into the number and 404'd;
+      JP "2005-123456" and KR "10-2020-0012345" weren't recognised; US "2026/0281245" didn't match Google's US-2026281245.
+      Only offices in the data count as numbers ("MP3000" stays a search). Checked against live pages (200/301).
+      Inventor and classification search would need the s/ index rebuilt with those words (about 2 hours) and ~4,000 cards
+      files redeployed; not done.
 - [x] 9 Free to use: statuses kept distinct (lapsed amber, expired green, likely abandoned dashed), build levels defined,
       assignee not owner, recent vs archive explained in the intro and How it works.
 - [x] 10 Opportunities: no claim-length breadth; factors and points per patent; notes labeled as drafted with Claude.

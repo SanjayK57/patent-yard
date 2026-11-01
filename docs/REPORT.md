@@ -93,8 +93,9 @@ inferred and labeled so; family checks are US-only and say so.
   its listed factors and uses no claim-length factor.
 - Browser suites (`web/dev/smoke.js`, mock backend, headless Chromium): header 8/8, home 6/6, browse 17/17, patent
   24/24, studio 6/6 (live), account 2/2. Tests updated where the pages changed on purpose.
-- All patents filters (`allf.mjs`, preview with the new lists): 13/13, including exact year counts, word + year,
-  country + type, field, the "no matches in reach" case, URL state, table status column and the phone toggle.
+- All patents filters and number lookup (`allf.mjs`): 16/16, including exact year counts, word + year,
+  country + type, field, the "no matches in reach" case, URL state, table status column, the phone toggle, and
+  CN / KR / US application numbers typed the way their offices print them.
 - Card-to-patent drawing transition: checked on live pages with the new code injected, frame by frame.
 - Functional checks (`func.mjs`): bundled account library loads, contact form appears, Studio prompt carries the
   patent and careful rights wording, prior-art task has no score, the PDF brief downloads (jsPDF 4.2.1), no

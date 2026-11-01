@@ -66,10 +66,16 @@ function cardHTML(line) {
     + `<div class="cmeta"><div><small>Published</small><span>${esc(date.slice(0, 4))}</span></div><div><small>Kind</small><span>${esc(kind)}</span></div><div><small>Assignee</small><span title="${esc(a)}">${esc(a || "—")}</span></div></div></article>`;
 }
 
-// a patent number goes straight to its page: "CN 112345678 A", "JP2005-123456", "US 10,000,000 B2"
+// a patent number goes straight to its page, in Google Patents' form CC-NUMBER-KIND: "CN 112345678 A", "JP2005-123456A",
+// "KR 10-2020-0012345", "US 2020/0123456 A1", "DE 10 2020 123 456 A1", "USD900000S". Only for offices in the data, so a
+// model name like "MP3000" stays a search.
 function numberPath(s) {
-  const m = s.trim().toUpperCase().replace(/[\s,./]/g, "").match(/^([A-Z]{2})-?([A-Z]?\d{4,}[A-Z]?)-?([A-Z]\d?)?$/);
-  return m ? `/patents/${m[1]}-${m[2].replace(/-/g, "")}${m[3] ? "-" + m[3] : ""}` : null;
+  const m = s.trim().toUpperCase().replace(/[\s,./]/g, "").replace(/(\d)-(?=\d)/g, "$1").match(/^([A-Z]{2})-?([A-Z]{0,2}\d{4,})-?([A-Z]\d?)?$/);
+  if (!m || !meta?.countries[m[1]]) return null;
+  let [, cc, num, kind] = m;
+  if (cc === "KR" && /^[12]0\d{11}$/.test(num)) num = num.slice(2);  // KIPO's 10- (patent) or 20- (utility model) prefix isn't in Google's number
+  if (cc === "US" && /^(19|20)\d\d0\d{6}$/.test(num)) num = num.slice(0, 4) + num.slice(5);  // US 2026/0281245 is US-2026281245 there
+  return `/patents/${cc}-${num}${kind ? "-" + kind : ""}`;
 }
 
 async function page(my) {
