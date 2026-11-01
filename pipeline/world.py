@@ -17,7 +17,7 @@ A .bin of records is: uint32 count, uint32 offsets[count + 1], then the records 
   python3 world.py deploy      # upload web/world/cards and web/world/details to their Pages projects, then write
                                # web/world/live.json, which turns All patents on in the next website build
 """
-import array, collections, datetime as dt, gzip, hashlib, json, os, re, shutil, struct, sys, time, zlib
+import array, collections, datetime as dt, gzip, hashlib, json, os, shutil, struct, sys, time, zlib
 from pathlib import Path
 
 import patents as P

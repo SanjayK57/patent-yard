@@ -2,8 +2,8 @@
 // (catalog.js) one page of cards at a time. The server-rendered first page shows until the catalog is ready.
 // State lives in the URL (?q=&field=&status=&build=&fig=1&solo=1&free=1&sort=) so filtered views can be shared.
 // ?in=archive searches the archive instead: millions of US, European, Canadian and Australian patents past their term, with its own index, newest first.
-import { $, $$, esc, getSettings, reservations, markCards } from "./app.js";
-import { latest, keys, search, cards, cardHTML, skeletons, patentNumber, archiveInfo, archiveSearch, archiveTerms, archiveCards, archiveCardHTML } from "./catalog.js";
+import { $, $$, getSettings, reservations, markCards } from "./app.js";
+import { latest, keys, search, cards, cardHTML, skeletons, patentNumber, archiveSearch, archiveTerms, archiveCards, archiveCardHTML } from "./catalog.js";
 
 const grid = $("#grid");
 const fixedField = $("[data-field]")?.dataset.field || "";

@@ -106,8 +106,11 @@ inferred and labeled so; family checks are US-only and say so.
 - Keyboard: tab walk on five pages, every focusable control shows a focus ring.
 - Responsive: 17 routes at 390 px and key routes at 1440 px, light and dark: no horizontal overflow.
 - Database: migration verified with a rolled-back anonymous insert and privilege checks.
-- No type checker or linter exists in this project (plain JS and Python, no build step); `node --check` and Python
-  import checks were run on every changed file.
+- No type checker or linter is part of this project (plain JS and Python, no build step). One-off lint runs on
+  2026-11-01: ESLint 8 recommended rules over every browser script and Function (2 notes left, both intentional: a
+  function declared in a block, valid in modules; a field destructured out on purpose so it isn't saved) and pyflakes over
+  the pipeline (clean). Unused imports, an unused global and placeholder-less f-strings were removed. `node --check` and
+  Python import checks run on every changed file.
 
 ## 6. Visual review
 Screenshots from each pass are in the session scratchpad (`shots/`, `live/`); the live site is the reference:

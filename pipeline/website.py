@@ -754,7 +754,7 @@ class Site:
             words = sum(len(t.split()) for t in paras)
             long_ = sum(len(t) for t in paras) > 6000
             jump = "".join(f'<a href="#{a}">{E(lbl)}</a>' for a, lbl in heads[:14])
-            aside = (f'<div class="sidecard"><div class="panel"><div class="block"><h3>In this description</h3>'
+            aside = ('<div class="sidecard"><div class="panel"><div class="block"><h3>In this description</h3>'
                      + (f'<nav class="jump" aria-label="Description sections">{jump}</nav>' if jump else "")
                      + f'<p class="muted" style="font-size:13px;margin-top:10px">About {words:,} words. The <a href="{L["pdf"]}" {EXT}>USPTO PDF</a> has it with every drawing.</p></div></div></div>')
             desc = f"""<section class="psec" id="description"><h2>Description</h2>
@@ -1255,7 +1255,7 @@ class Site:
         self.page("/settings/", "Settings", "Appearance, browsing and account settings for Patent Yard.", body, scripts=("settings",), index=False)
 
     def contact(self):
-        body = f"""<div class="page narrow" style="margin-inline:auto">
+        body = """<div class="page narrow" style="margin-inline:auto">
 <div class="sechead"><div><h1>Contact</h1><p>Questions, corrections or ideas for Patent Yard. To report a problem with a particular patent, use "Report a problem" on its page so we know which one.</p></div></div>
 <div class="panel"><noscript><p class="muted">The contact form needs JavaScript turned on.</p></noscript><form id="contactForm" class="stack" novalidate hidden>
   <div class="fgroup"><label for="cEmail">Your email (optional, if you'd like a reply)</label><input class="field" id="cEmail" type="email" maxlength="200" autocomplete="email"></div>
@@ -1760,7 +1760,7 @@ def function_config():
 
 def build():
     """Builds into web/dist.new and swaps it in at the end, so web/dist is always a complete site for a deploy."""
-    global _SITE, DIST
+    global DIST
     lock = open(WEB / ".build.lock", "w")
     if not os.environ.get("PATENTYARD_LOCK_HELD"):  # the publisher holds it already for its own builds
         try:
