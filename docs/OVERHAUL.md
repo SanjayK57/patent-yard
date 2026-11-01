@@ -97,7 +97,10 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 
 ## 4b. Open after the 2026-10-31 session (resume here)
 - [x] Migration run on production 2026-10-31 with Sanjay's approval; verified: anon report on EP-0500000-B1 accepted (rolled back, 0 rows left), rls_auto_enable not executable by anon/authenticated.
-- [~] Deploy approved 2026-10-31; main fast-forwarded to 177648c; waiting for the publisher's next run, then re-run func.mjs, smoke.mjs (incl. studio) and shots on the live site.
+- [x] Deployed 2026-10-31 ~21:20 by the publisher (main 9f846a4, deployment a3440a07). Live checks: sign-in form loads the bundled
+      supabase-js; contact form; Studio prompt and PDF (jsPDF 4.2.1); only our host and Supabase contacted; CSP and HSTS on Function pages;
+      About and Insights both 2,693 reinstatements; smoke suites header 8/8, home 6/6, patent 24/24, studio 6/6, account 2/2,
+      browse 16/17 (empty state passes by hand; the suite waits only 260 ms); no overflow; real drawings render.
 - [x] Patent page: report-a-problem categories (wrong status, wrong date, wrong assignee, missing family member,
       broken link, bad drawing, duplicate, other) with the id filled in automatically.
 - [ ] PDF brief: cover page, Plex-like typography, drawings sized per sheet, sources page (works today, plain).
@@ -139,3 +142,4 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - 2026-10-31 (177648c) Smoke suites updated to current markup; on the preview with the mock backend: header 8/8, home 6/6,
   browse 17/17, patent 24/24, account 2/2; studio 1/5 only because the preview lacks that patent's /data/p shard (live 200).
   The same suites on the old live site had stale failures (rail, search list, field filter), now fixed in the tests.
+- 2026-10-31 Card drawings: badge and FIG caption overlapped linework after the top bar went; padding added (checked by injecting the rule on live).
