@@ -841,6 +841,11 @@
         "purpose": "The one curve for every transition and entry."
       },
       {
+        "name": "spring",
+        "value": "linear(0,.063 2.1%,.233 4.6%,.488 7.6%,.746 11%,.904 14.2%,1.006 17.9%,1.045 21.3%,1.053 24.6%,1.04 29.2%,1.012 36.6%,.998 45%,.997 55%,1)",
+        "purpose": "Damped spring for pressed or small arriving things: button release, pops, toasts."
+      },
+      {
         "name": "t1",
         "value": ".16s",
         "purpose": "Link color, buttons, ruled-list hover."
@@ -869,6 +874,11 @@
         "name": "reduced-motion",
         "value": "prefers-reduced-motion:reduce or :root[data-motion=\"reduce\"]",
         "purpose": "Disables all animation, transitions and view transitions; ticker stops; charts render final."
+      },
+      {
+        "name": "shared-drawing",
+        "value": "view-transition-name: pfig (card .fig -> patent .bigfig/.gfront)",
+        "purpose": "A clicked card's drawing carries into the patent page's drawing."
       }
     ],
     "breakpoints": [

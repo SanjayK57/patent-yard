@@ -417,12 +417,15 @@ bottom border. On phones (under 720px) dialogs go full-screen with no radius.
 Not a canonical DESIGN.md section in the spec's eight, kept here because the motion tokens are part of the system;
 the sidecar carries them as `extensions.motion`.
 
-- **Curve:** one, `--ease: cubic-bezier(.22,.8,.24,1)`.
+- **Curves:** `--ease: cubic-bezier(.22,.8,.24,1)` for every transition and entry; `--spring` (a `linear()` damped spring,
+  about 5% overshoot) only for things that are pressed or arrive small: button release, saved/reserved/copied pops, toasts.
 - **Durations:** `--t1` .16s (link color, buttons, ruled-list hover), `--t2` .24s (home search focus, page view
   transitions), `--t3` .42s (section reveal). Most hover transitions in the stylesheet use a literal .3s with
   `--ease`; drawing zoom on hover is .6s.
 - **Page to page:** cross-document view transitions (`@view-transition { navigation: auto }`), root cross-fade at
-  `--t2` with the header held still (`view-transition-name: top`).
+  `--t2` with the header held still (`view-transition-name: top`). Opening a patent from a card carries that card's
+  drawing into the patent page's drawing (`theme.js` names the pair `pfig` on `pageswap`/`pagereveal`, `--t3`), only
+  when the target drawing is on screen.
 - **Entry:** sections rise 14px once on scroll (`.reveal`); new card batches stagger in 30ms apart; charts draw in.
 - **Reduced motion:** under `prefers-reduced-motion: reduce` or the site's `data-motion="reduce"`, all animations,
   transitions and view transitions are disabled, the ticker stops and charts render at their final state.

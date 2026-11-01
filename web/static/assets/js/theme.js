@@ -12,5 +12,27 @@
   } catch (e) {}
 })();
 // Page-to-page transitions (site.css @view-transition): a skipped transition is normal, not an error.
-addEventListener("pagereveal", function (e) { if (e.viewTransition) { e.viewTransition.ready.catch(function () {}); e.viewTransition.finished.catch(function () {}); } });
-addEventListener("pageswap", function (e) { if (e.viewTransition) { e.viewTransition.ready.catch(function () {}); e.viewTransition.finished.catch(function () {}); } });
+// Opening a patent from a card carries the card's drawing into the patent page's drawing: both ends get the
+// view-transition name "pfig", one element per page, cleared again so a back-navigated page can't hold a stale one.
+(function () {
+  var named = null;
+  function name(el) { if (named) named.style.viewTransitionName = ""; named = el; if (el) el.style.viewTransitionName = "pfig"; }
+  function quiet(t) { t.ready.catch(function () {}); t.finished.catch(function () {}); }
+  addEventListener("pageswap", function (e) {
+    name(null);
+    if (!e.viewTransition) return;
+    quiet(e.viewTransition);
+    var to = e.activation && e.activation.entry && e.activation.entry.url;
+    if (!to) return;
+    var path = new URL(to).pathname, links = document.querySelectorAll(".card a[href]");
+    for (var i = 0; i < links.length; i++) if (links[i].pathname === path) { name(links[i].closest(".card").querySelector(".fig")); break; }
+  });
+  addEventListener("pagereveal", function (e) {
+    name(null);
+    if (!e.viewTransition) return;
+    quiet(e.viewTransition);
+    var fig = document.querySelector(".bigfig, .gfront, .gsheets figure");
+    if (fig && fig.getBoundingClientRect().top < innerHeight * 0.8) name(fig);
+    e.viewTransition.finished.then(function () { name(null); }, function () { name(null); });
+  });
+})();

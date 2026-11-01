@@ -35,6 +35,8 @@
   --serif:"IBM Plex Serif",Charter,Georgia,"Times New Roman",serif;
   --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
   --ease:cubic-bezier(.22,.8,.24,1); --t1:.16s; --t2:.24s; --t3:.42s;
+  /* a damped spring (about 5% overshoot) for things that are pressed or arrive small: buttons, badges, toasts */
+  --spring:linear(0,.063 2.1%,.233 4.6%,.488 7.6%,.746 11%,.904 14.2%,1.006 17.9%,1.045 21.3%,1.053 24.6%,1.04 29.2%,1.012 36.6%,.998 45%,.997 55%,1);
   --gap:16px;
   color-scheme:light;
 }
@@ -104,8 +106,8 @@ html{scrollbar-color:var(--line-strong) var(--bg)}
 
 /* ---------------------------------------------------------------- controls */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:8px 16px;border-radius:var(--radius-sm);border:1px solid transparent;font:500 14px/1 var(--body);cursor:pointer;text-decoration:none;white-space:nowrap;
-  transition:background-color var(--t1) var(--ease),border-color var(--t1) var(--ease),color var(--t1) var(--ease),transform var(--t1) var(--ease)}
-.btn:active{transform:scale(.97)}
+  transition:background-color var(--t1) var(--ease),border-color var(--t1) var(--ease),color var(--t1) var(--ease),transform var(--t3) var(--spring)}
+.btn:active{transform:scale(.96);transition-duration:var(--t1),var(--t1),var(--t1),60ms}
 .btn.loading{position:relative;color:transparent!important;pointer-events:none}
 .btn.loading>*{visibility:hidden}
 .btn.loading::after{content:"";position:absolute;inset:0;margin:auto;width:14px;height:14px;border:2px solid var(--fill-ink);border-right-color:transparent;border-radius:50%;animation:spin .7s linear infinite}
@@ -158,7 +160,7 @@ textarea.field{resize:vertical;min-height:110px}
 /* ---------------------------------------------------------------- motion */
 @keyframes rise{from{opacity:.35;transform:translateY(14px)}to{opacity:1;transform:none}}
 @keyframes fade{from{opacity:0}to{opacity:1}}
-@keyframes pop{0%{transform:scale(.85);opacity:0}100%{transform:scale(1);opacity:1}}
+@keyframes pop{0%{transform:scale(.85);opacity:0}30%{opacity:1}100%{transform:scale(1);opacity:1}}
 @keyframes spin{to{transform:rotate(360deg)}}
 .rise{animation:rise .9s var(--ease) both;animation-delay:calc(var(--d,0) * 70ms)}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
@@ -344,6 +346,7 @@ footer.foot .fine a{color:var(--ink-2)}
 .card{position:relative;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;min-width:0;
   transition:transform var(--t2) var(--ease),border-color var(--t2) var(--ease),box-shadow var(--t2) var(--ease)}
 .card:hover{transform:translateY(-2px);border-color:var(--line-strong);box-shadow:var(--shadow)}
+.card:active{transform:translateY(0) scale(.995);transition-duration:60ms}
 .card .fig{position:relative;display:block;aspect-ratio:4/3;padding:calc(var(--bar) + 12px) 16px 14px;overflow:hidden;border-bottom:1px solid var(--line)}
 .card .fig:not(.plate){background-color:var(--plate);}
 .card .fig::after{content:"FIG. 1";position:absolute;left:12px;bottom:9px;font:500 10px/1 var(--mono);letter-spacing:.06em;color:var(--ink-3);z-index:1}
@@ -376,7 +379,7 @@ footer.foot .fine a{color:var(--ink-2)}
 .angle{padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--line);background:var(--surface-2);font-size:14px;color:var(--ink-2)}
 .angle b{display:block;font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--link);margin-bottom:6px}
 @media (max-width:639px){.card.feat{flex-direction:column}.card.feat .fig{order:0;min-height:0;aspect-ratio:4/3;border-left:0;border-bottom:1px solid var(--line)}}
-.resmark{position:absolute;right:10px;top:calc(var(--bar,30px) + 10px);z-index:2;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:6px;background:var(--reserved);color:var(--bg);font:500 11.5px/1 var(--body);pointer-events:none;animation:pop .35s var(--ease) both}
+.resmark{position:absolute;right:10px;top:calc(var(--bar,30px) + 10px);z-index:2;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:6px;background:var(--reserved);color:var(--bg);font:500 11.5px/1 var(--body);pointer-events:none;animation:pop var(--t3) var(--spring) both}
 .resmark.mine{background:var(--accent);color:var(--accent-ink)}
 /* a patent with no drawing on file: its field's symbol and number on a blank sheet */
 .card .fig.plate{display:grid;place-items:center;align-content:center;gap:12px;background-color:var(--plate);}
@@ -642,7 +645,7 @@ textarea.prompt{min-height:240px;font:12.5px/1.65 var(--mono);color:var(--ink-2)
 .notfound h1{font:500 clamp(80px,14vw,160px)/.9 var(--mono);letter-spacing:-0.05em}
 
 #toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:90;display:grid;gap:8px;justify-items:center;width:max-content;max-width:calc(100% - 32px);pointer-events:none}
-.toast{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);font:500 14px/1.4 var(--body);box-shadow:var(--shadow-lg);overflow-wrap:anywhere;pointer-events:auto;animation:toastIn .4s var(--ease) both}
+.toast{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 12px;border-radius:var(--radius-sm);border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);font:500 14px/1.4 var(--body);box-shadow:var(--shadow-lg);overflow-wrap:anywhere;pointer-events:auto;animation:toastIn var(--t3) var(--spring) both}
 .toast.out{animation:toastOut .25s ease-in both}
 .toast .ti{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;flex:none;background:var(--sunken)}
 .toast .ti svg{width:13px;height:13px}
@@ -675,6 +678,10 @@ textarea.prompt{min-height:240px;font:12.5px/1.65 var(--mono);color:var(--ink-2)
 
 /* ---------------------------------------------------------------- motion and feedback */
 @view-transition{navigation:auto}
+/* a clicked card's drawing carries over into the patent page's drawing (theme.js names the pair "pfig") */
+::view-transition-group(pfig){animation-duration:var(--t3);animation-timing-function:var(--ease)}
+::view-transition-old(pfig){animation-duration:.2s}
+::view-transition-new(pfig){animation-duration:var(--t3)}
 .top{view-transition-name:top}
 ::view-transition-old(root){animation:vtOut .18s ease-in both}
 ::view-transition-new(root){animation:vtIn .35s var(--ease) both}
@@ -732,7 +739,7 @@ textarea.prompt{min-height:240px;font:12.5px/1.65 var(--mono);color:var(--ink-2)
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
 .scrollrow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
 .scrollrow::-webkit-scrollbar{display:none}
-.copied{animation:pop var(--t2) var(--ease)}
+.copied{animation:pop var(--t3) var(--spring)}
 .strike i{font-style:normal}
 .strike i.off{opacity:.2}
 .pulled{margin-top:20px;padding:14px 18px;border-radius:var(--radius);border:1px solid color-mix(in srgb,var(--danger) 40%,transparent);background:color-mix(in srgb,var(--danger) 8%,var(--surface));color:var(--ink);font-size:15px}
@@ -833,7 +840,7 @@ dialog.cmdk[open]{display:grid}
 .savebtn[aria-pressed="true"]{color:var(--accent-ink);background:var(--accent);border-color:var(--accent)}
 .savebtn[aria-pressed="true"] svg,#saveBtn[aria-pressed="true"] svg{fill:currentColor}
 #saveBtn[aria-pressed="true"]{color:var(--link)}
-.pop{animation:pop .35s var(--ease)}
+.pop{animation:pop var(--t3) var(--spring)}
 .card .resmark{top:calc(var(--bar,30px) + 46px)}
 .tile,.lcard{position:relative}
 .confetti{position:fixed;inset:0;width:100%;height:100%;z-index:95;pointer-events:none}
