@@ -588,7 +588,7 @@ class Site:
   {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recent, US <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
   <div class="frow qrow"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">Filters</button></div>
   {'' if field or len(self.meta.get("archiveSpans", [])) < 2 else '<div class="frow regrow"><span class="lab">From</span><button class="chip" type="button" data-reg="" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-reg="{n}" aria-pressed="false">{n} <small class="num">{b - a:,}</small></button>' for n, a, b in self.meta["archiveSpans"]) + '</div>'}
-  {'' if field else f'<div class="frow scrollrow" id="fInd"><span class="lab">Field</span><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div>'}
+  {'' if field else f'<div class="frow" id="fInd"><span class="lab">Field</span><div class="frow scrollrow"><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div></div>'}
   <div class="frow"><span class="lab">Status</span>
     <button class="chip" type="button" data-st="" aria-pressed="true">All</button>
     <button class="chip" type="button" data-st="lapsed" aria-pressed="false">Lapsed <small>{st["lapsed"]:,}</small></button>
@@ -881,7 +881,9 @@ class Site:
         self.world_ids = set()
         for i in range(min(n, k)):
             pid, t, a, date, cc, kind, flags, field = b[base + offs[i]:base + offs[i + 1]].decode().split("\t")
-            past, utility = int(flags) & 1, kind.startswith("U")
+            # a US grant may carry a term adjustment for USPTO delay, so within 20 years of grant it may be in force (all.js cardHTML)
+            past = int(flags) & 1 and not (cc == "US" and f"{int(date[:4]) + 20}{date[4:]}" > TODAY.strftime("%Y%m%d"))
+            utility = kind.startswith("U")
             granted = int(flags) & 2 or kind[:1] in "BCES"
             label = "Past its term" if past else "Registered" if utility else "Granted" if granted else "Application"
             fk = keys[int(field)] if field.isdigit() and int(field) < len(keys) else "other"
@@ -889,7 +891,7 @@ class Site:
             self.world_ids.add(pid)
             out.append(f'<article class="card acard" data-id="{E(pid)}"><div class="fig plate" data-tag="{E(cc)} · {E(date[:4])}"><span class="over"><span class="badge {"expired" if past else "plain"}">{label}</span></span>'
                        f'<svg class="fglyph" aria-hidden="true"><use href="#f-{fk}"/></svg><span class="numart">{E(num)}</span></div>'
-                       f'<div class="cbody"><span class="fieldname">{E(COUNTRY.get(cc, cc))} · {E(self.fields.get(fk, ""))}</span><h3><a href="/patents/{E(pid)}/">{E(t)}</a></h3></div>'
+                       f'<div class="cbody"><span class="fieldname">{E(COUNTRY.get(cc, cc))} · {E(self.fields.get(fk, ""))}</span><h3><a href="/patents/{E(pid)}/">{E(t)}</a></h3><span class="tstat"><span class="badge {"expired" if past else "plain"}">{label}</span></span></div>'
                        f'<div class="cmeta"><div><small>Published</small><span>{E(date[:4])}</span></div><div><small>Kind</small><span>{E(kind)}</span></div><div><small>Assignee</small><span title="{E(a)}">{E(a or "—")}</span></div></div></article>')
         return "".join(out)
 
@@ -897,16 +899,21 @@ class Site:
         n = WORLD["n"]
         body = f"""<div class="page">
 <div class="sechead"><div><h1>All patents</h1>
-<p class="lede">Search {big_number(n)} records from {OFFICES} patent offices to check what already exists before you build, buy or file. About {big_number(WSTATS['granted']) if WSTATS else 'most'} are granted patents and the rest published applications; it is Google's public patent data as loaded in {WORLD_AT:%B %Y}, not a complete or current register of every country. Status here is only granted or not: whether a patent is still in force isn't checked, except that very old filings are marked past their term. For patents we have checked, see <a href="/browse/">Free to use</a>.</p></div></div>
+<p class="lede">Search {big_number(n)} records from {OFFICES} patent offices to check what already exists before you build, buy or file. About {big_number(WSTATS['granted']) if WSTATS else 'most'} are granted patents or registered utility models and the rest published applications; it is Google's public patent data as loaded in {WORLD_AT:%B %Y}, not a complete or current register of every country. Status here is only granted or not: whether a patent is still in force isn't checked, except that very old filings are marked past their term. For patents we have checked, see <a href="/browse/">Free to use</a>.</p></div></div>
 <form class="filters" id="wfilters" role="search">
-  <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"></div>
-  <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc" style="width:auto"><option value="">All countries</option></select>
+  <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"><button class="chip ftoggle" type="button" id="wToggle" aria-expanded="false" aria-controls="wfilters">Filters</button></div>
+  <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc"><option value="">All countries</option></select>
     <button class="chip" type="button" id="wfree" aria-pressed="false" title="Filed more than 20 years ago (26 for medicines). US patents granted in the past 20 years can still carry a term adjustment, so their pages say may be in force">Filed 20+ years ago</button></div>
+  <div class="frow" role="group" aria-label="Document type"><span class="lab" title="Granted: a grant date in the data or a grant kind code (B, C, E, S; U for utility models)">Type</span>
+    <button class="chip" type="button" data-type="" aria-pressed="true">All</button><button class="chip" type="button" data-type="g" aria-pressed="false">Granted or registered</button><button class="chip" type="button" data-type="a" aria-pressed="false">Applications</button></div>
+  <div class="frow"><span class="lab">Field</span><label class="sr" for="wfld">Field</label><select class="field" id="wfld"><option value="">All fields</option></select></div>
+  <div class="frow"><span class="lab" title="The year the application was first published (or filed, if it never was)">Published</span><label class="sr" for="wy1">Published from</label><select class="field" id="wy1"><option value="">Any year</option></select>
+    <span class="muted" aria-hidden="true">to</span><label class="sr" for="wy2">Published to</label><select class="field" id="wy2"><option value="">Any year</option></select></div>
 </form>
 <div class="countbar"><p class="count" id="wcount" aria-live="polite">{n:,} records worldwide, newest publication first.</p>{VIEWTOG.format(grid="wgrid")}</div>
 <div class="grid" id="wgrid">{self.world_first_cards()}</div>
 <div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div>
-<p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. Results are listed newest publication first; a search matches words in titles and owner names, or a publication number. "Past its term" means filed more than 20 years ago (26 for medicines), except US patents granted within the past 20 years, which could carry a term adjustment. Every other status is as published, so confirm it with the official register before relying on it.</p>
+<p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. Results are listed newest first by first publication date; a search matches words in titles and owner names, or a publication number. A common word or a big filter keeps only its newest 250,000 records, and the count says so when that happens. Type and field come from the data: granted means a grant date or a grant kind code, and the field is Patent Yard's grouping of the first classification codes. "Past its term" means filed more than 20 years ago (26 for medicines), except US patents granted within the past 20 years, which could carry a term adjustment. Every other status is as published, so confirm it with the official register before relying on it.</p>
 </div>"""
         self.page("/all/", "All patents", f"Search {big_number(n)} patent records (granted patents and published applications) from {OFFICES} patent offices, with the ones past their term marked.",
                   body, section="/all/", scripts=("all",))
@@ -1056,7 +1063,7 @@ class Site:
 <div class="statband reveal">
   <div><b class="num" data-count="{w["n"]}">{w["n"]:,}</b><span>patents and applications</span></div>
   <div><b class="num" data-count="{len(w["countries"])}">{len(w["countries"])}</b><span>patent offices</span></div>
-  <div><b class="num" data-count="{w["granted"]}">{w["granted"]:,}</b><span>granted patents; the rest are applications</span></div>
+  <div><b class="num" data-count="{w["granted"]}">{w["granted"]:,}</b><span>granted patents or registered utility models; the rest are applications</span></div>
   <div><b class="num" data-count="{w["free"]}">{w["free"]:,}</b><span>filed more than 20 years ago (26 for medicines), past the usual maximum term</span></div>
 </div>
 <div class="ins">

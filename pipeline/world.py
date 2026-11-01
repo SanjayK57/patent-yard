@@ -185,12 +185,23 @@ def build():
     print(f"world: {doc:,} docs, {meta['free']:,} past their term ({time.time() - t0:.0f}s)", flush=True)
 
 
+def kind_of(kind, flags):
+    """"g" for a granted patent or registered utility model, "a" for an application. The same rule as the card badge in
+    assets/js/all.js: a grant date in the data, or a grant kind code (B, C, E, S; U for utility models)."""
+    return "g" if int(flags) & GRANTED or kind[:1] in "BCESU" else "a"
+
+
 def filters():
-    """Filter lists for All patents, read from the card packs (no export needed): for each country, every country's
-    patents past their term, and all patents past their term, the newest CAP docs as gzip varint steps in
-    cards/k/<key>.bin ("KR", "KR-free", "all-free"), with k/index.json {key: [docs in total, 1 if cut to CAP]}.
-    The browser intersects them with search words, so a country filter works without a query too."""
+    """Filter lists for All patents, read from the card packs (no export needed). Each list holds the newest CAP docs of
+    one filter as gzip varint steps in cards/k/<key>.bin, with k/index.json {key: [docs in total, 1 if cut to CAP]}:
+      KR, KR-free, all-free              a country; past their term (filed 20+ years ago)
+      KR-g, KR-free-a, all-g, all-free-a  ... and only granted/registered (g) or only applications (a)
+      fld-robotics, fld-robotics-free    a field (Patent Yard's grouping of the classification codes)
+    Combinations live in one list because two lists cut to their newest docs can't be intersected exactly.
+    k/years.json {year: [first doc, last doc + 1]}: docs are numbered newest first, so a first-publication year is one
+    exact range of docs. The browser intersects lists and ranges with search words, so filters work without a query too."""
     t0, lists, totals = time.time(), collections.defaultdict(lambda: array.array("I")), collections.Counter()
+    years = {}
     packs = sorted((OUT / "cards" / "c").glob("*.bin"), key=lambda f: int(f.stem))
     for f in packs:
         b = f.read_bytes()
@@ -198,13 +209,24 @@ def filters():
         offs, base, first = struct.unpack_from(f"<{n + 1}I", b, 4), 4 + 4 * (n + 1), int(f.stem) * PER
         for i in range(n):
             parts = b[base + offs[i]:base + offs[i + 1]].split(b"\t")
-            cc, free = parts[4].decode(), int(parts[6]) & FREE
-            for key in ((cc, f"{cc}-free", "all-free") if free else (cc,)):
+            cc, free, doc = parts[4].decode(), int(parts[6]) & FREE, first + i
+            t, fld, y = kind_of(parts[5].decode(), parts[6]), FIELDS[int(parts[7])], parts[3][:4].decode() or "0000"
+            keys = [cc, f"{cc}-{t}", f"all-{t}", f"fld-{fld}"]
+            if free:
+                keys += [f"{cc}-free", f"{cc}-free-{t}", "all-free", f"all-free-{t}", f"fld-{fld}-free"]
+            for key in keys:
                 totals[key] += 1
                 if len(lists[key]) < CAP:
-                    lists[key].append(first + i)
+                    lists[key].append(doc)
+            r = years.get(y)
+            if r is None:
+                years[y] = [doc, doc + 1]
+            else:
+                r[1] = doc + 1
         if int(f.stem) % 1000 == 999:
             print(f"filters: {int(f.stem) + 1}/{len(packs)} packs ({time.time() - t0:.0f}s)", flush=True)
+    spans = sorted(years.values())
+    assert all(a[1] <= b[0] for a, b in zip(spans, spans[1:])), "docs are not in date order"
     out = OUT / "cards" / "k"
     shutil.rmtree(out, ignore_errors=True)
     out.mkdir()
@@ -218,7 +240,8 @@ def filters():
             blob.append(v)
         (out / f"{key}.bin").write_bytes(gzip.compress(bytes(blob), 6, mtime=0))
     (out / "index.json").write_text(json.dumps({k: [totals[k], int(totals[k] > CAP)] for k in sorted(lists)}))
-    print(f"filters: {len(lists)} lists ({time.time() - t0:.0f}s)", flush=True)
+    (out / "years.json").write_text(json.dumps({y: years[y] for y in sorted(years) if y != "0000"}))
+    print(f"filters: {len(lists)} lists, {len(years)} years ({time.time() - t0:.0f}s)", flush=True)
 
 
 def free_index():
@@ -282,11 +305,11 @@ def stats():
         n = struct.unpack_from("<I", b)[0]
         offs, base = struct.unpack_from(f"<{n + 1}I", b, 4), 4 + 4 * (n + 1)
         for i in range(n):
-            pn, _, a, day_, c, _, flags, ind = b[base + offs[i]:base + offs[i + 1]].decode().split("\t")
+            pn, _, a, day_, c, kind, flags, ind = b[base + offs[i]:base + offs[i + 1]].decode().split("\t")
+            granted += kind_of(kind, flags) == "g"  # the All patents type filter's rule, so the counts agree
             flags = int(flags)
             cc[c] += 1
             free[c] += flags & FREE
-            granted += bool(flags & GRANTED)
             years[day_[:4]] += 1
             fields[FIELDS[int(ind)]] += 1
             if a:
@@ -331,6 +354,7 @@ if __name__ == "__main__":
         data = blob[4 + 4 * (n + 1):]
         assert [data[offs[i]:offs[i + 1]].decode() for i in range(n)] == ["ab", "", "çd"]
         assert zlib.decompress(deflate("héllo"), -15).decode() == "héllo" and number_key("CN-1-A") == number_key("CN-1-B")
+        assert kind_of("B2", "0") == "g" and kind_of("U", "0") == "g" and kind_of("A1", "2") == "g" and kind_of("A1", "1") == "a"
         print("ok")
     else:
         {"build": build, "deploy": deploy, "filters": filters, "free_index": free_index, "stats": stats}[sys.argv[1]]()

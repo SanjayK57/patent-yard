@@ -406,12 +406,15 @@ footer.foot .fine a{color:var(--ink-2)}
 .grid.as-table .cmeta>div{padding:6px 10px}
 .grid.as-table .cmeta small{display:none}
 .grid.as-table .savebtn{display:none}
+.tstat{display:none}
+.grid.as-table .cbody .tstat{display:block;order:3;flex:none;width:118px}
 @media (max-width:860px){.grid.as-table .cmeta,.grid.as-table .cbody .fieldname{display:none}}
 
 /* ---------------------------------------------------------------- browse: grouped filters */
 .filters{display:grid;gap:10px;padding:14px;border:1px solid var(--line);border-radius:var(--radius);background:var(--surface);margin-bottom:18px}
 .frow{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .frow .lab{font:500 10.5px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);min-width:84px}
+@media (max-width:700px){.filters .frow .lab{flex-basis:100%;margin:6px 0 2px}}
 .filters input.field,.filters select.field{background:var(--bg)}
 .filters .qrow input.field{min-height:42px;font-size:15px}
 .count{font:400 12.5px/1.4 var(--mono);color:var(--ink-3);margin-bottom:14px}
@@ -739,6 +742,7 @@ textarea.prompt{min-height:240px;font:12.5px/1.65 var(--mono);color:var(--ink-2)
 @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none}}
 .scrollrow{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
 .scrollrow::-webkit-scrollbar{display:none}
+.frow>.scrollrow{flex:1 1 0;width:0;min-width:0}
 .copied{animation:pop var(--t3) var(--spring)}
 .strike i{font-style:normal}
 .strike i.off{opacity:.2}
