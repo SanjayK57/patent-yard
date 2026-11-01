@@ -75,14 +75,14 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - Type: IBM Plex Sans for the interface and Patent Yard's words; IBM Plex Mono for identifiers, dates and data;
   IBM Plex Serif for original patent text (abstract, claims, description), so source text always reads differently from ours.
   Self-hosted woff2.
-- Color: warm drafting-paper light theme and graphite dark theme, ink text, one accent: redline (the drafting correction
-  red), used for primary actions, focus and the mark. Status colors fixed site-wide and always paired with a word:
-  expired = green, lapsed (can be reinstated) = amber, likely abandoned (inferred) = slate with a dashed edge,
-  no longer free = red.
+- Color: warm drafting-paper light theme and graphite dark theme, ink text, one accent: safety orange (#D9480F light,
+  #FF7A3D dark) for focus, links and the mark; primary buttons are ink-filled. Status colors fixed site-wide and always
+  paired with a word: expired = green, lapsed (can be reinstated) = amber, likely abandoned (inferred) = slate with a
+  dashed edge, reserved = blue; a reinstated "no longer free" notice uses the error red.
 - Surfaces: hairline borders, small radii (6 controls / 10 panels), no glow, no gradient text, no corner brackets.
   Drawings sit on a white sheet with a mono caption strip (FIG / sheet / number), the one place the patent-sheet idea shows.
 - Motion: one easing curve and three durations; cross-document view transitions; the home drawing plotter; card hover
-  is a border/shadow shift only; everything off under Reduce motion (OS or site setting).
+  is a border/shadow shift with a 2px lift; everything off under Reduce motion (OS or site setting).
 
 ## 4. Stages
 
