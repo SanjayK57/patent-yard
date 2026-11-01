@@ -144,8 +144,8 @@ export function renderArchive(tpl, r) {
   // US patents granted up to about 2014 have every page as an image on Google Patents' image store, so their drawing sheets
   // show here; patent.js swaps in the PDF view below if the first sheet doesn't load (newer numbers aren't there)
   const gsheets = !R && r.k !== "A" && r.sh ? Math.min(r.sh, 40) : 0;
-  const gallery = gsheets ? `<div class="gsheets"><div class="gallery">${Array.from({ length: gsheets }, (_, k) =>
-    `<figure><button type="button" data-sheet="${k}" aria-label="Enlarge sheet ${k + 1}"><img src="${gpage(r.id, k + 1)}" alt="Drawing sheet ${k + 1} of ${E(r.n)}" loading="${k < 4 ? "eager" : "lazy"}" decoding="async" referrerpolicy="no-referrer"></button>`
+  const gallery = gsheets ? `<link rel="preconnect" href="https://patentimages.storage.googleapis.com"><div class="gsheets"><div class="gallery">${Array.from({ length: gsheets }, (_, k) =>
+    `<figure><button type="button" data-sheet="${k}" aria-label="Enlarge sheet ${k + 1}"><img src="${gpage(r.id, k + 1)}" alt="Drawing sheet ${k + 1} of ${E(r.n)}" ${k === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async" referrerpolicy="no-referrer"></button>`
     + `<figcaption><span>Sheet ${k + 1} of ${r.sh}</span></figcaption></figure>`).join("")}</div>
     <p class="cap">${r.sh} drawing ${r.sh === 1 ? "sheet" : "sheets"} from the published patent, as page images from Google Patents. <a href="${L.pdf}" ${EXT}>Open the USPTO PDF</a></p></div>` : "";
   const draw = gallery ? gallery + `<div class="gfail" hidden>${drawFallback()}</div>` : drawFallback();
