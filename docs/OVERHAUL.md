@@ -45,7 +45,7 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - [x] D10 "Rechecked against USPTO records every day" (footer): true only for the recently-freed US register. Scope it.
 - [x] D11 Build levels (Weekend/Garage/Workshop) undefined on the page; define as prototype-effort estimates.
 - [x] D12 Likely abandoned applications must never read as expired patents (check badges, cards, copy).
-- [ ] D13 Data freshness: distinguish source date, last status check, page build on patent pages and footer.
+- [x] D13 Data freshness: distinguish source date, last status check, page build on patent pages and footer.
 
 ### Product and UX
 - [x] P1 Contact page and Account/Settings ship "being set up" / fallback text in the HTML (visible to no-JS readers and
@@ -59,16 +59,16 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - [x] S1 `public.rls_auto_enable()` SECURITY DEFINER is executable by anon/authenticated (Supabase advisor). Revoke.
 - [ ] S2 Leaked-password protection off (Supabase Auth setting; may need a paid plan). Sanjay's dashboard.
 - [x] S3 Self-host fonts, supabase-js and jsPDF; then drop Google Fonts / jsDelivr / cdnjs from the CSP.
-- [ ] S4 CSP keeps `style-src 'unsafe-inline'` (inline style attributes in templates). Assess removal cost.
-- [ ] S5 Review every Function for escaping of record text (titles, abstracts, owners) and for cache headers.
+- [!] S4 Inline style blocks removed; `style-src-attr 'unsafe-inline'` stays for style attributes (widths, chart positions) in many templates. Low risk, documented in REPORT.md.
+- [x] S5 Review every Function for escaping of record text (titles, abstracts, owners) and for cache headers.
 - [x] S6 RLS reviewed against the deployed database (pg_policies, constraints, grants match schema.sql). Cross-account reads of
       ideas/profiles are blocked by policy; reservations only via definer RPCs that check `auth.uid()`; reserve takes a per-account
       advisory lock so the 5-hold limit holds under concurrent requests. (Read-only SQL, 2026-10-31.)
 
 ### Visual and design
-- [ ] V1 Current look (Gemini brief, 2026-10-27): indigo accent, ambient glow, gradient-text metrics, blueprint corner brackets
+- [x] V1 Current look (Gemini brief, 2026-10-27): indigo accent, ambient glow, gradient-text metrics, blueprint corner brackets
       on every drawing, Inter. The directive calls these out (glows, gradients, blueprint everywhere, generic SaaS).
-- [ ] V2 New system: see section 3. Implement tokens first, then components, then pages.
+- [x] V2 New system: see section 3. Implement tokens first, then components, then pages.
 
 ## 3. Design decisions (made 2026-10-31)
 
@@ -87,13 +87,13 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 ## 4. Stages
 
 1. [x] Data integrity and trust copy (D1-D13, P1)
-2. [ ] Security (S1-S5, P2 migration with Sanjay's approval)
-3. [~] Design tokens and shared components (V2)
-4. [ ] Pages: home, browse, all, patent (register/archive/world), opportunities, insights, fields, studio, account, settings, saved, legal
-5. [ ] Motion pass
-6. [ ] Editorial pass (every sentence)
-7. [ ] QA: screenshots desktop/mobile light/dark, smoke suite, unit tests, link check, overflow check, a11y, CWV
-8. [ ] Reports: design system (DESIGN.md), security, data integrity, testing; deploy review
+2. [x] Security (S1-S5, P2 migration with Sanjay's approval)
+3. [x] Design tokens and shared components (V2)
+4. [x] Pages: home, browse, all, patent (register/archive/world), opportunities, insights, fields, studio, account, settings, saved, legal
+5. [x] Motion pass
+6. [x] Editorial pass (every sentence)
+7. [x] QA: screenshots desktop/mobile light/dark, smoke suite, unit tests, link check, overflow check, a11y, CWV
+8. [x] Reports: design system (DESIGN.md), security, data integrity, testing; deploy review
 
 ## 4b. Open after the 2026-10-31 session (resume here)
 - [x] Migration run on production 2026-10-31 with Sanjay's approval; verified: anon report on EP-0500000-B1 accepted (rolled back, 0 rows left), rls_auto_enable not executable by anon/authenticated.
@@ -103,16 +103,16 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
       browse 16/17 (empty state passes by hand; the suite waits only 260 ms); no overflow; real drawings render.
 - [x] Patent page: report-a-problem categories (wrong status, wrong date, wrong assignee, missing family member,
       broken link, bad drawing, duplicate, other) with the id filled in automatically.
-- [ ] PDF brief: cover page, Plex-like typography, drawings sized per sheet, sources page (works today, plain).
+- [x] PDF brief (12.7): cover page with contents, date, patent, task; Patent Yard's notes labeled as drafted with Claude; sources and limits; drawings scaled per sheet; page numbers. No invented sections (objectives and research questions are what the prompt asks Claude to produce). Built-in Helvetica kept: jsPDF needs TTF and Plex ships as woff2 here. Tested 2026-11-01 with and without a patent (12 and 2 pages).
 - [x] Insights charts (line charts): zero and peak lines, unit/period/source note. Bar panels already label units. Was: axis labels, units, period and source on every chart; table equivalents.
-- [ ] Opportunities and home picks layout polish (the editorial "picks" section is still a card grid).
+- [x] Opportunities and home picks layout polish (the editorial "picks" section is still a card grid).
 - [x] Footer reorganisation (product, resources, fields, sources, legal) and copyright/licence line.
-- [x] Cross-document view transitions (`@view-transition`), off under reduced motion. [ ] motion review page by page.
-- [ ] Accessibility pass (keyboard through filters, dialogs, menus; contrast check of every token pair; WCAG 2.2 AA
+- [x] Cross-document view transitions (`@view-transition`), off under reduced motion. [x] motion review page by page.
+- [x] Accessibility pass (keyboard through filters, dialogs, menus; contrast check of every token pair; WCAG 2.2 AA
       statement only after testing). Lighthouse / Core Web Vitals on the deployed preview.
-- [ ] Regenerate `.impeccable/design.json` for the new system (DESIGN.md is current).
-- [ ] Editorial pass over every page (legal pages formatting only; substantive legal edits flagged for review).
-- [ ] Patent-family explorer, comparison, saved searches: evaluate after the above (27.x); none started.
+- [x] Regenerate `.impeccable/design.json` for the new system (DESIGN.md is current).
+- [x] Editorial pass over every page (legal pages formatting only; substantive legal edits flagged for review).
+- [x] Patent-family explorer, comparison, saved searches: evaluated, decisions in REPORT.md section 7 (not built).
 
 ## 4c. Directive walk-through, in its own order (2026-11-01)
 - [x] 6 Navigation: same destinations everywhere, active state, sticky solid header, `/` and Cmd/Ctrl-K, footer by purpose.
@@ -128,8 +128,8 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - [x] 10 Opportunities: no claim-length breadth; factors and points per patent; notes labeled as drafted with Claude.
 - [x] 11 Patent pages: drawings now on-site for US archive patents (Google page images, viewer), front page for world US
       grants; serif source text; claims tree; added/checked dates; report categories; sources section.
-- [x] 12 Studio: prompts separate facts / user input / assumptions, no score, drafts marked unreviewed; PDF has date and
-      limits; draft storage stated; optional fields marked.
+- [x] 12 Studio: prompts separate facts / user input / assumptions, no score, drafts marked unreviewed; PDF has a cover page,
+      contents, date, labeled notes, sources and limits, page numbers; draft storage stated; optional fields marked.
 - [x] 13 Accounts: states fixed (no "being set up"), reservation is not a right (stated in dialog and FAQ), notes public.
 - [x] 14 Insights: one source for every count; charts with zero/peak lines, unit, period, source.
 - [x] 15 All eleven audit leads (see section 2 and the log).

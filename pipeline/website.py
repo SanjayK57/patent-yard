@@ -1360,7 +1360,7 @@ class Site:
         checks, warn = why_free(e)
         L = links(e, dd)
         n = (1 if r["fig"] else 0) + len(r["extra"])
-        return {"id": e["id"], "n": e["n"], "t": e["t"], "ot": e["ot"], "h": e["h"], "tw": e["tw"], "st": e["st"], "status": STATUS[e["st"]],
+        return {"id": e["id"], "n": e["n"], "t": e["t"], "ot": e["ot"], "h": e["h"], "auto": bool(e["auto"]), "tw": e["tw"], "st": e["st"], "status": STATUS[e["st"]],
                 "field": self.fields.get(e["ind"], e["ind"]), "filed": e["f"], "granted": e["p"], "expired": e.get("x"), "termEnd": e.get("te"),
                 "abs": dd["abs"], "claims": [c if isinstance(c, list) else [i + 1, c] for i, c in enumerate(doc["claims"])][:80], "figs": figure_lines(dd.get("figs") or []),
                 "fieldText": dd.get("field") or "", "bg": dd.get("bg") or "", "inventors": dd.get("inv"), "assignee": dd.get("asg"), "cpc": dd.get("cpc") or [],

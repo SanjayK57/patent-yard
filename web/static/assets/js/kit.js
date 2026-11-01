@@ -155,11 +155,23 @@ export async function downloadBrief(task, p, idea, prompt) {
   const kicker = s => text(s.toUpperCase(), { size: 8.5, style: "bold", color: [110, 116, 130], after: 2 });
   const taskName = (TASKS.find(t => t.id === task) || TASKS[0]).name;
 
-  kicker("Patent Yard brief · for Claude");
-  text(idea?.name || p?.t || "My invention", { size: 22, style: "bold", after: 4, lead: 1.2 });
-  if (p) text(`${p.n} · ${p.status} · Title as filed: ${p.ot}`, { size: 10, color: [75, 81, 96] });
-  text(`Task: ${taskName} · prepared ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} from Patent Yard's copy of the public record`, { size: 10, color: [179, 58, 12], style: "bold", after: 10 });
-  text("How to use this brief: open Claude (claude.ai), attach this PDF to a new chat, and paste the prompt below (it is also on your clipboard if you copied it on Patent Yard). Claude will work through it with you.", { size: 10, color: [75, 81, 96] });
+  // cover page
+  const notes = p && ((!p.auto && p.h) || p.tw);
+  const imgs = p?.sheets.length ? await Promise.all(p.sheets.map(sheetData)) : [];
+  const contents = ["Prompt for Claude", hasIdea(idea) && "My invention", notes && "Patent Yard's notes", p && "The source patent", p && `Claims (${p.claims.length})`,
+    p && "Sources and limits", imgs.some(Boolean) && "Drawing sheets"].filter(Boolean);
+  y = 168;
+  kicker("Patent Yard · invention brief");
+  text(idea?.name || p?.t || "My invention", { size: 26, style: "bold", after: 10, lead: 1.2 });
+  if (p) { text(`Based on ${p.n} · ${p.status}`, { size: 12, color: [75, 81, 96], after: 2 }); text(`Title as filed: ${p.ot}`, { size: 10, color: [75, 81, 96], after: 2 }); if (p.field) text(`Field: ${p.field}`, { size: 10, color: [75, 81, 96], after: 2 }); }
+  text(`Task: ${taskName} · prepared ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} from Patent Yard's copy of the public record`, { size: 10, color: [179, 58, 12], style: "bold", after: 24 });
+  kicker("Contents");
+  contents.forEach((s, i) => text(`${i + 1}. ${s}`, { size: 10.5, after: 1 }));
+  y += 20;
+  kicker("How to use this brief");
+  text("Open Claude (claude.ai), attach this PDF to a new chat, and paste the prompt on the next page (it is also on your clipboard if you copied it on Patent Yard). Claude will work through it with you.", { size: 10, color: [75, 81, 96], after: 10 });
+  text("Patent Yard is not legal advice. A patent ending frees its own claims only; check the Limits section before you invest.", { size: 9, color: [110, 116, 130] });
+  doc.addPage(); y = M;
 
   head("Prompt for Claude");
   text(prompt, { size: 8.6, font: "courier", lead: 1.32, color: [40, 44, 52] });
@@ -167,6 +179,12 @@ export async function downloadBrief(task, p, idea, prompt) {
   if (hasIdea(idea)) {
     head("My invention");
     for (const [k, v] of [["Name", idea.name], ["Pitch", idea.pitch], ["How it works", idea.desc], ["What's new", idea.change]]) if (v) { kicker(k); text(v); }
+  }
+  if (notes) {
+    head("Patent Yard's notes");
+    if (!p.auto && p.h) { kicker("In plain English"); text(p.h); }
+    if (p.tw) { kicker("Modern angle"); text(p.tw); }
+    text("Drafted with Claude, an AI model, while the register was prepared; not reviewed by a patent professional. Treat these as starting points, not facts.", { size: 9, color: [110, 116, 130] });
   }
   if (p) {
     head("The source patent");
@@ -181,12 +199,11 @@ export async function downloadBrief(task, p, idea, prompt) {
     if (p.figs.length) { kicker("Figures"); for (const f of p.figs) text("• " + f, { size: 10, after: 2 }); y += 4; }
     head(`Claims (${p.claims.length})`);
     for (const [n, c] of p.claims) text(`${n}. ${c}`, { size: 9.6, style: isDep(c) ? "normal" : "bold", after: 5 });
-    head("Sources");
+    head("Sources and limits");
     text(`Patent Yard record: ${p.url}`, { size: 10, after: 2 }); text(`Official ${office(p)} document: ${p.pdf}`, { size: 10, after: 2 }); text(`Google Patents: ${p.google}`, { size: 10 });
-    head("Limits");
+    y += 6; kicker("Limits");
     text(`The abstract, claims, figure list and drawing sheets are the patent's own; the dates and status come from patent office records; the plain-English title is Patent Yard's, drafted with Claude, an AI model. A patent ending frees its own claims only; newer patents, design rights, trademarks, regulations and patents in other countries can still apply to a product. Patent Yard is not legal advice: confirm the status with the ${office(p)} before relying on it, and get a freedom-to-operate opinion before investing.`, { size: 9, color: [110, 116, 130] });
     if (p.sheets.length) {
-      const imgs = await Promise.all(p.sheets.map(sheetData));
       imgs.forEach((im, i) => {
         if (!im) return;
         doc.addPage(); y = M;
