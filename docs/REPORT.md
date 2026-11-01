@@ -79,6 +79,11 @@ Remaining and not verified:
 - Build levels defined as prototype-effort estimates; statuses labeled "Likely abandoned application" and "Expired
   design patent".
 
+- All patents filters: type (granted or registered / applications), field and first-published year, built from the
+  data already loaded; the granted count on All patents and Insights uses the same rule as the filter and the badge
+  (81.3 M granted patents or registered utility models, 41.6 M applications). Where a filter list keeps only its newest
+  250,000 records, the count says "at least" or "no matches in reach" instead of showing a wrong total.
+
 Remaining limitations: the worldwide "past term" count in stats.json still uses the 20-years-from-filing rule (the
 label says exactly that); worldwide records carry no legal status beyond granted / not; likely-abandoned status is
 inferred and labeled so; family checks are US-only and say so.
@@ -88,6 +93,9 @@ inferred and labeled so; family checks are US-only and say so.
   its listed factors and uses no claim-length factor.
 - Browser suites (`web/dev/smoke.js`, mock backend, headless Chromium): header 8/8, home 6/6, browse 17/17, patent
   24/24, studio 6/6 (live), account 2/2. Tests updated where the pages changed on purpose.
+- All patents filters (`allf.mjs`, preview with the new lists): 13/13, including exact year counts, word + year,
+  country + type, field, the "no matches in reach" case, URL state, table status column and the phone toggle.
+- Card-to-patent drawing transition: checked on live pages with the new code injected, frame by frame.
 - Functional checks (`func.mjs`): bundled account library loads, contact form appears, Studio prompt carries the
   patent and careful rights wording, prior-art task has no score, the PDF brief downloads (jsPDF 4.2.1), no
   third-party hosts other than the project's Supabase.
@@ -116,6 +124,7 @@ https://patentyard.pages.dev
   done.
 
 ## 8. Final status
-Live and verified. Open: leaked-password protection (Sanjay's dashboard), a per-sender contact limit, worldwide
+Live and verified. Waiting on Sanjay: deploying the new filter lists to the cards project (a production deploy; the
+filter rows stay hidden until then). Open: leaked-password protection (Sanjay's dashboard), a per-sender contact limit, worldwide
 filters beyond country and age (needs a new world export), and the USPTO API key needed from 2026-11-07 for new
 patents to keep arriving.

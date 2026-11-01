@@ -115,14 +115,24 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
 - [x] Patent-family explorer, comparison, saved searches: evaluated, decisions in REPORT.md section 7 (not built).
 
 ## 4c. Directive walk-through, in its own order (2026-11-01)
+- [x] 5 Motion: spring curve for presses/pops/toasts; a clicked card's drawing carries into the patent page (view
+      transition "pfig", checked frame by frame on live pages); card press state; reduced motion turns it all off.
 - [x] 6 Navigation: same destinations everywhere, active state, sticky solid header, `/` and Cmd/Ctrl-K, footer by purpose.
 - [x] 7 Home: accurate hero, split layout with a real drawing, search with real example queries, featured patent, ledger
       numbers with source and date (7.4), recently viewed (browser-only, says so), picks as lead + cards + list, fields,
       three steps, studio preview, closing call to action.
 - [x] 8 All patents: says records (granted + applications), data source and load month, not complete or current;
       order explained (newest publication first); past-term rule with the US term-adjustment guard.
-      [!] Granted-vs-application, year and assignee filters: the world index (world.py) holds only country and
-      past-term lists; adding them means re-exporting 122.8 M records from BigQuery. Not faked in the browser (8.2).
+      [x] 8.2 filters built from the card packs, no new export needed (world.py filters, 5 min): type (granted or
+      registered / applications, same rule as the badge), field, first-published year (an exact doc range: docs are
+      numbered newest first). One list per country/past-term/type combination, since lists cut to their newest 250,000
+      can't be intersected exactly; the count says "at least" or "no matches in reach" when a cut list limits the result.
+      Old lists byte-identical; g + a totals = 122,826,228. Assignee stays a search word (owners are indexed).
+      Granted count on All patents and Insights now uses the same rule (74.1 M with a grant date -> 81.3 M granted or registered).
+      Tested on the preview with the new lists served locally: 13/13 (scratchpad cap/allf.mjs); degrades to hidden rows on the
+      current live lists. [!] Live only after the cards project is deployed (production deploy, needs Sanjay's OK):
+      `cd ~/PatentYard/web/world && npx wrangler@4 pages deploy cards --project-name patentyard-cards --branch main`.
+      Also fixed: on phones the All patents filters were hidden with no toggle; table view now shows each record's status.
 - [x] 9 Free to use: statuses kept distinct (lapsed amber, expired green, likely abandoned dashed), build levels defined,
       assignee not owner, recent vs archive explained in the intro and How it works.
 - [x] 10 Opportunities: no claim-length breadth; factors and points per patent; notes labeled as drafted with Claude.
