@@ -27,7 +27,7 @@
       check("footer totals", !!(await until(() => /US patents · status last checked/.test(q("#footStat").textContent))), q("#footStat").textContent);
     },
     async home(check) {
-      check("today's picks", qa("#today .bento .card").length >= 6 && !!q("#today .bento .card.feat"));
+      check("today's picks", qa("#today .bento .card").length >= 4 && qa("#today .pickrows li").length >= 4 && !!q("#today .bento .card.feat"));
       check("stat band filled", qa(".statband b").every(b => b.textContent.trim()));
       check("field chips", qa(".fchips .fchip").length >= 10);
       check("hero search goes to browse", q(".bigsearch").getAttribute("action") === "/browse/" && !!q("#heroQ"));
