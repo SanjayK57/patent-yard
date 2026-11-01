@@ -157,6 +157,8 @@ const pressType = () => $$("[data-type]").forEach(b => b.setAttribute("aria-pres
   }
   catch { count.textContent = "All patents didn't load. Reload to try again."; return; }
   stop = new Set(meta.stop);
+  const np = S.q && numberPath(S.q);  // the header search and ⌘K send numbers here too
+  if (np) { location.replace(np); return; }
   cc.insertAdjacentHTML("beforeend", Object.entries(meta.countries).slice(0, 60).map(([c, n]) => `<option value="${esc(c)}">${esc(country(c))} (${n.toLocaleString("en-US")})</option>`).join(""));
   // filters the index doesn't have yet (an older cards deploy) stay hidden rather than promise what they can't do
   const flds = fields.filter(f => kidx[`fld-${f}`]);
