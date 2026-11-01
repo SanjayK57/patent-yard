@@ -343,6 +343,7 @@ SPRITE = """<svg width="0" height="0" style="position:absolute" aria-hidden="tru
 WORLD = json.loads((WEB / "world" / "live.json").read_text()) if (WEB / "world" / "live.json").exists() else None
 WSTATS = json.loads((WEB / "world" / "stats.json").read_text()) if WORLD and (WEB / "world" / "stats.json").exists() else None  # world.py stats
 OFFICES = len(WSTATS["countries"]) if WSTATS else 106  # patent offices in the world data
+WORLD_AT = dt.date.fromtimestamp((WEB / "world" / "live.json").stat().st_mtime) if WORLD else None  # when the world data was loaded
 COUNTRY = dict(re.findall(r'(\b[A-Z]{2}): "([^"]+)"', (WEB / "functions" / "_world.js").read_text().split("export const COUNTRY")[1].split("};")[0]))
 NAV = ([("/browse/", "Free to use"), ("/all/", "All patents"), ("/opportunities/", "Opportunities")] if WORLD else
        [("/browse/", "Browse"), ("/opportunities/", "Opportunities"), ("/fields/", "Fields")]) + [("/insights/", "Insights"), ("/studio/", "Studio"), ("/how-it-works/", "How it works")]
@@ -538,6 +539,7 @@ class Site:
 </section>
 </div>
 <nav class="statband{" five" if WORLD else ""}" aria-label="Patents by collection and office">{statband}</nav>
+<p class="statnote">{f"Worldwide: Google Patents Public Data as loaded in {WORLD_AT:%B %Y}, granted patents and published applications together. " if WORLD else ""}US, Europe, Canada and Australia: patents and applications no longer in force, from USPTO, EPO, CIPO and IP Australia records, counted {full_date(TODAY.isoformat())}. <a href="/about/#numbers">What each number means</a></p>
 
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">
@@ -894,19 +896,19 @@ class Site:
     def all_patents(self):
         n = WORLD["n"]
         body = f"""<div class="page">
-<div class="sechead"><div><h1>Search {big_number(n)} patents worldwide</h1>
-<p class="lede">Every patent and published application in Google's public patent data, from {OFFICES} patent offices: check what already exists before you build, buy or file. Patents that may still be in force are marked; for inventions you can use freely, see <a href="/browse/">Free to use</a>.</p></div></div>
+<div class="sechead"><div><h1>All patents</h1>
+<p class="lede">Search {big_number(n)} records from {OFFICES} patent offices to check what already exists before you build, buy or file. About {big_number(WSTATS['granted']) if WSTATS else 'most'} are granted patents and the rest published applications; it is Google's public patent data as loaded in {WORLD_AT:%B %Y}, not a complete or current register of every country. Status here is only granted or not: whether a patent is still in force isn't checked, except that very old filings are marked past their term. For patents we have checked, see <a href="/browse/">Free to use</a>.</p></div></div>
 <form class="filters" id="wfilters" role="search">
   <div class="frow qrow"><label class="sr" for="wq">Search all patents</label><input class="field" id="wq" type="search" placeholder="Search titles and owners, or enter a number like CN112345678A" autocomplete="off"></div>
   <div class="frow"><span class="lab">Country</span><label class="sr" for="wcc">Country</label><select class="field" id="wcc" style="width:auto"><option value="">All countries</option></select>
     <button class="chip" type="button" id="wfree" aria-pressed="false" title="Filed more than 20 years ago (26 for medicines). US patents granted in the past 20 years can still carry a term adjustment, so their pages say may be in force">Filed 20+ years ago</button></div>
 </form>
-<div class="countbar"><p class="count" id="wcount" aria-live="polite">{n:,} patents worldwide, newest first.</p>{VIEWTOG.format(grid="wgrid")}</div>
+<div class="countbar"><p class="count" id="wcount" aria-live="polite">{n:,} records worldwide, newest publication first.</p>{VIEWTOG.format(grid="wgrid")}</div>
 <div class="grid" id="wgrid">{self.world_first_cards()}</div>
 <div class="rowbtns" style="justify-content:center;margin-top:18px"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div>
-<p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. "Past its term" means filed long enough ago that no patent from it can still be in force; every other status is as published, so confirm it with the official register before relying on it.</p>
+<p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. Results are listed newest publication first; a search matches words in titles and owner names, or a publication number. "Past its term" means filed more than 20 years ago (26 for medicines), except US patents granted within the past 20 years, which could carry a term adjustment. Every other status is as published, so confirm it with the official register before relying on it.</p>
 </div>"""
-        self.page("/all/", "All patents", f"Search {big_number(n)} patents and applications from {OFFICES} patent offices, with the ones past their term marked.",
+        self.page("/all/", "All patents", f"Search {big_number(n)} patent records (granted patents and published applications) from {OFFICES} patent offices, with the ones past their term marked.",
                   body, section="/all/", scripts=("all",))
 
     def opportunities(self):
@@ -1087,7 +1089,8 @@ class Site:
 <div class="studio">
   <div class="panel"><div class="stack" id="studioForm">
     <div class="fgroup picker"><label for="pq">Start from a patent (optional)</label><input class="field" id="pq" type="search" autocomplete="off" placeholder="Search by name or patent number"><ul id="pickList" role="listbox" hidden></ul><div id="picked"></div></div>
-    <div class="fgroup"><label for="iName">Invention name <span class="opt">optional</span></label><input class="field" id="iName" maxlength="120" placeholder="Self-leveling camp stove"></div>
+    <p class="muted draftnote">Your draft saves in this browser as you type. Nothing leaves it until you paste the prompt into Claude or save it to your bench.</p>
+<div class="fgroup"><label for="iName">Invention name <span class="opt">optional</span></label><input class="field" id="iName" maxlength="120" placeholder="Self-leveling camp stove"></div>
     <div class="fgroup"><label for="iPitch">One-line pitch <span class="opt">optional</span></label><input class="field" id="iPitch" maxlength="300" placeholder="What it does, for whom, in one sentence"></div>
     <div class="fgroup"><label for="iDesc">How it works <span class="opt">optional</span></label><textarea class="field" id="iDesc" maxlength="8000" placeholder="Parts, how they connect, how someone uses it. Rough notes are fine."></textarea></div>
     <div class="fgroup"><label for="iNew">What's new <span class="opt">optional</span></label><textarea class="field" id="iNew" maxlength="3000" style="min-height:80px" placeholder="The part nobody has done before."></textarea><small>Leave these blank to let Claude propose directions first.</small></div>
@@ -1197,7 +1200,7 @@ class Site:
 <p>Patent Yard collects them into one searchable register, traces each to its patent office record, shows the full file of recently lapsed US patents with their original drawings, and explains them in plain English. Builders can reserve a patent so others here know someone is working on it, and take it to Claude to develop an improvement of their own.</p>
 <h2>What we promise</h2>
 <ul><li><b>Sources first.</b> Each status comes from a patent office record (the USPTO, the EPO, CIPO or IP Australia) or, for likely abandoned applications, from rules we apply to those records, labeled as inferred. Every patent page links to its source and to independent places to cross-check.</li><li><b>Nothing invented.</b> Drawings, claims and descriptions are the patent's own. Names, summaries, modern angles, build levels and the Opportunities notes are ours: drafted with Claude, an AI model, while the register was prepared, and labeled as ours.</li><li><b>Free and private.</b> No ads, no paywall, no tracking. The site runs no AI on its servers and sends nothing you type to one; studio prompts run in your own Claude account when you paste them there.</li></ul>
-<h2>Today's numbers</h2>
+<h2 id="numbers">Today's numbers</h2>
 <dl class="defs">
 <div><dt class="num">{m["count"] + m.get("archive", 0):,}</dt><dd>records in the free-to-use register, across {len(self.fields)} fields.</dd></div>
 <div><dt class="num">{m["count"]:,}</dt><dd>recently lapsed or expired US patents with their full files (claims, description, drawings), {m["bySource"]["lapsed"]:,} of them lapsed for an unpaid maintenance fee. Rechecked for reinstatement daily.</dd></div>

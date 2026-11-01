@@ -104,12 +104,12 @@ async function run() {
   const word = w => (S.free ? postings(w, "f") : old ? Promise.all([postings(w, "s"), postings(w, "f")]).then(([a, b]) => union(a, b)) : postings(w, "s"));
   const lists = key && !k ? null : await Promise.all([...ws.map(word), ...(key ? [filterList(key)] : [])]).catch(() => null);
   if (my !== seq) return;
-  if (!lists) { docs = []; count.textContent = `No patents ${[S.cc && `from ${country(S.cc)}`, S.free && "filed 20+ years ago"].filter(Boolean).join(", ")} in the data.`; return; }
+  if (!lists) { docs = []; count.textContent = `No records ${[S.cc && `from ${country(S.cc)}`, S.free && "filed 20+ years ago"].filter(Boolean).join(", ")} in the data.`; return; }
   docs = lists.length ? intersect(lists) : null;
   const n = docs ? docs.length : meta.n, q_ = S.q.trim(), what = [S.cc && `from ${country(S.cc)}`, S.free && "filed 20+ years ago"].filter(Boolean).join(", ");
   const total = k ? k[0] : meta.n, newest = `newest ${meta.cap.toLocaleString("en-US")}`;
-  count.textContent = (!ws.length ? (key ? `${total.toLocaleString("en-US")} patents ${what}${k[1] ? `; showing the ${newest}` : ""}, newest first.` : `${n.toLocaleString("en-US")} patents worldwide, newest first.`)
-    : `${n.toLocaleString("en-US")} ${n === 1 ? "patent matches" : "patents match"} “${q_}”${what ? ` ${what}` : ""}, newest first.${cut ? ` A common word or a big filter keeps only its ${newest} patents, so older matches can be missing.` : ""}`);
+  count.textContent = (!ws.length ? (key ? `${total.toLocaleString("en-US")} records ${what}${k[1] ? `; showing the ${newest}` : ""}, newest first.` : `${n.toLocaleString("en-US")} records worldwide, newest first.`)
+    : `${n.toLocaleString("en-US")} ${n === 1 ? "record matches" : "records match"} “${q_}”${what ? ` ${what}` : ""}, newest first.${cut ? ` A common word or a big filter keeps only its ${newest} patents, so older matches can be missing.` : ""}`);
   if (!n) count.textContent += " Try fewer words or filters.";
   await page(my);
 }
