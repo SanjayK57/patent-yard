@@ -120,8 +120,7 @@ regenerate them at any time.
   the Functions changed only class names. No new third-party requests; fonts are self-hosted under the OFL.
 - Both card renderers escape every field; the sheet count is coerced to an integer.
 - `.wrangler/cache/wrangler-account.json`, which the public repository received on 2026-11-02, holds the Cloudflare
-  account id and an account label containing Sanjay's email address. An account id is not a credential, but the
-  email is personal. It is untracked from now on; it stays in the public history unless the history is rewritten
+  account id and the account's label. Neither is a credential, but the label is personal. It is untracked from now on; it stays in the public history unless the history is rewritten
   and force-pushed, which needs Sanjay's say-so.
 - Wording kept to the earlier data-integrity rules: worldwide counts are "patent records" (granted patents and
   published applications), statuses keep their sourced words, reservations still say they don't stop anyone, and AI
