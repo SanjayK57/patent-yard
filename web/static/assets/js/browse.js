@@ -189,3 +189,5 @@ if (ARCH) { $("#filters").classList.add("archive"); q.placeholder = "Search pate
     await update({ research: !!S.q.trim() });
   }
 })();
+// phones: a placeholder that fits the field
+if (matchMedia("(max-width: 520px)").matches) q.placeholder = ARCH ? "Search the archive" : "Search patents";

@@ -145,7 +145,7 @@ if (hq) {
     list.hidden = false; mark(-1);
   }
   addEventListener("keydown", e => {  // "/" jumps to search, like most sites
-    if (e.key === "/" && !(e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable]"))) { e.preventDefault(); hq.focus(); }
+    if (e.key === "/" && !(e.target instanceof Element && e.target.closest("input, textarea, select, [contenteditable]"))) { e.preventDefault(); ($("#heroQ") || $("#q") || $("#wq") || hq).focus(); }
   });
   hq.addEventListener("keydown", e => {
     const n = items().length;

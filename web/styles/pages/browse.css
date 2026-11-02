@@ -6,10 +6,8 @@
 .scrollrow{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
 .scrollrow::-webkit-scrollbar{display:none}
 .qrow{flex-wrap:nowrap;gap:var(--s2)}
-.filters .qrow input.field{min-height:44px;padding-left:40px;border-color:transparent;border-radius:10px;background:var(--sunken) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='6.5' fill='none' stroke='%237B8287' stroke-width='1.8'/%3E%3Cpath d='M16 16l4 4' stroke='%237B8287' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 13px center/18px;
+.filters .qrow input.field{min-height:44px;padding-left:40px;border-radius:10px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='6.5' fill='none' stroke='%237B8287' stroke-width='1.8'/%3E%3Cpath d='M16 16l4 4' stroke='%237B8287' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 13px center/18px;
   font-size:var(--fs-read)}
-.filters .qrow input.field:hover{border-color:var(--line)}
-.filters .qrow input.field:focus{border-color:var(--accent);background-color:var(--surface)}
 .filters select.field{width:auto;min-height:var(--control-h-sm);padding:0 32px 0 10px;border-color:transparent;background-color:var(--sunken);font-size:13.5px;font-weight:500;color:var(--ink-2)}
 .filters select.field:hover{border-color:var(--line)}
 .frow .seg{margin-right:var(--s2)}

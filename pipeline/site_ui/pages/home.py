@@ -7,6 +7,7 @@ from urllib.parse import quote
 from register import TODAY
 
 from ..base import E, OFFICES, SITE, WORLD, WORLD_AT, badge, big_number, full_date, icon, purl
+from .patent import png_size
 from ..ranking import coolness
 
 
@@ -31,7 +32,7 @@ class Home:
             k += 1
         # the drawing plotted live in the hero: the coolest pick with a detailed drawing
         picks.sort(key=lambda r: -(coolness(r) + (1 if r["fig"].stat().st_size > 12000 else 0)))
-        hero = picks[0]["entry"]
+        hero, hero_fig = picks[0]["entry"], picks[0]["fig"]
         seen = set()  # one card per title: the same invention is sometimes patented twice
         picks = [r for r in picks if not (r["entry"]["t"].lower() in seen or seen.add(r["entry"]["t"].lower()))]
         m = self.meta
@@ -50,6 +51,7 @@ class Home:
         ledger = "".join(f'<li><a href="{href}"><span><b>{E(name)}</b><small>{note}</small></span><span class="n num" data-count="{c}">{big_number(c)}</span>{icon("right")}</a></li>'
                          for c, name, note, href in rows)
         he = hero
+        ar = "{}/{}".format(*png_size(hero_fig))  # the sheet's own proportions, for phones
         ended = full_date(he["x"]) if he["st"] == "lapsed" else full_date(he.get("te")) if he["st"] == "expired" else ""
         body = f"""
 <section class="hero">
@@ -61,7 +63,7 @@ class Home:
 </section>
 <section class="stage rise" style="--d:4" aria-labelledby="plateTitle">
   <figure class="plotter">
-    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}"><span class="figbar" aria-hidden="true"><b>Sheet 1 · {E(he["n"])}</b></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}" fetchpriority="high"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
+    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}" style="--ar:{ar}"><span class="figbar" aria-hidden="true">Sheet 1 · <span class="num-id">{E(he["n"])}</span></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}" fetchpriority="high"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
       <div class="lmark" aria-hidden="true"></div><div class="loupe" aria-hidden="true"></div></div>
   </figure>
   <div class="platefacts">

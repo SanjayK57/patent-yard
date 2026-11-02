@@ -187,3 +187,5 @@ const pressType = () => $$("[data-type]").forEach(b => b.setAttribute("aria-pres
   more.addEventListener("click", async () => { more.disabled = true; await page(seq); more.disabled = false; });
   run();
 })();
+// phones: a placeholder that fits the field
+if (matchMedia("(max-width: 520px)").matches) $("#wq").placeholder = "Search or enter a number";

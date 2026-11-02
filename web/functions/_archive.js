@@ -168,7 +168,7 @@ export function renderArchive(tpl, r) {
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/${fk}/">${E(field)}</a><span>/</span><span>${E(r.n)}</span></nav>
 <div class="phead">
   <div><div class="badges"><span class="badge ${K[1]}">${K[0]}</span><span class="badge plain">${R ? R.name : "Archive"}</span>${r.a || r.k === "A" ? "" : '<span class="badge plain">No assignee recorded</span>'}<span class="badge ok" id="vbadge" hidden></span></div>
-  <h1>${E(r.t)}</h1><p class="asfiled"><span class="num">${E(r.n)}</span>${owner}</p></div>
+  <h1${r.t.length > 60 ? ' class="long"' : ""}>${E(r.t)}</h1><p class="asfiled"><span class="num">${E(r.n)}</span>${owner}</p></div>
   <div class="pactions">
     ${arm ? "" : `<button class="btn primary" type="button" data-kit="workshop">${icon("spark")}Reinvent with Claude</button>`}
     <button class="btn quiet" type="button" id="reserveBtn">${icon("flag")}Reserve</button>
@@ -186,7 +186,7 @@ export function renderArchive(tpl, r) {
   <div class="stack">${arm ? KIT_OFF : ""}
     ${r.ab ? `<div class="block"><h3>Abstract <span class="src">From the ${R ? R.adj + " " : ""}patent</span></h3><p class="prose source">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its ${office} record in Patent Yard's ${R ? `archive of ${R.adj} patents past their term` : "full-term archive"}. Its claims, description and drawings are in the <a href="${doc}" ${EXT}>${R ? L.docLabel : "USPTO PDF"}</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>${arm ? "" : ", and the Claude kit works from them"}.</p>
-      <div class="rowbtns gap-top"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a></div></div></div>
+      <div class="rowbtns gap-top"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a></div></div></div>
     <div class="panel soft"><div class="block"><h3>Why it's listed</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>
     <div class="facts">
       ${R ? R.facts(r).map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("") + `<div><small>Classification (${R.ipc})</small><b>${cpc}</b></div>`

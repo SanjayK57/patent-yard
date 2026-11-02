@@ -387,7 +387,7 @@ class PatentPage:
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/{e["ind"]}/">{E(field)}</a><span>/</span><span>{E(e["n"])}</span></nav>
 <div class="phead">
   <div><div class="badges">{badge(e["st"])}{build_badge}{'<span class="badge plain">No assignee recorded</span>' if e["ia"] and e["st"] != "abandoned" else ""}<span class="badge ok" id="vbadge" hidden></span></div>
-  <h1>{E(e["t"])}</h1><p class="asfiled">{asfiled}{owner}</p></div>
+  <h1{' class="long"' if len(e["t"]) > 60 else ""}>{E(e["t"])}</h1><p class="asfiled">{asfiled}{owner}</p></div>
   <div class="pactions">
     {"" if e.get("arm") else f'<button class="btn primary" type="button" data-kit="workshop">{icon("spark")}Reinvent with Claude</button>'}
     <button class="btn quiet" type="button" id="reserveBtn">{icon("flag")}Reserve</button>

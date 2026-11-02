@@ -52,7 +52,7 @@
       "accent-soft": {
         "role": "primary",
         "displayName": "Blueprint Wash",
-        "canonical": "#E1F1FC",
+        "canonical": "#E8F4FC",
         "tonalRamp": [
           "#070C0F",
           "#1E282F",
@@ -675,7 +675,7 @@
       "refersTo": "field",
       "description": "Text field: hairline border, accent border and halo on focus.",
       "html": "<input class=\"ds-field\" placeholder=\"Email address\">",
-      "css": ".ds-field{width:100%;min-height:38px;padding:8px 12px;border:1px solid var(--line-strong,#C6CBCE);border-radius:var(--r,8px);background:var(--surface,#fff);color:var(--ink,#161A1D);font:400 15px/1.4 var(--sans);transition:border-color .2s,box-shadow .2s} .ds-field:hover{border-color:color-mix(in srgb,var(--ink,#161A1D) 32%,transparent)} .ds-field:focus{outline:none;border-color:var(--accent,#116289);box-shadow:0 0 0 4px var(--accent-soft,#E1F1FC)}"
+      "css": ".ds-field{width:100%;min-height:38px;padding:8px 12px;border:1px solid var(--line-strong,#C6CBCE);border-radius:var(--r,8px);background:var(--surface,#fff);color:var(--ink,#161A1D);font:400 15px/1.4 var(--sans);transition:border-color .2s,box-shadow .2s} .ds-field:hover{border-color:color-mix(in srgb,var(--ink,#161A1D) 32%,transparent)} .ds-field:focus{outline:none;border-color:var(--accent,#116289);box-shadow:0 0 0 4px var(--accent-soft,#E8F4FC)}"
     },
     {
       "name": "Big Search",
@@ -683,7 +683,7 @@
       "refersTo": "field",
       "description": "The largest control on the site, on the home page.",
       "html": "<form class=\"ds-bigsearch\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M16 16l4 4\"/></svg><input placeholder=\"Search ideas, titles or patent numbers\"><button class=\"ds-bs-btn\" type=\"button\">Search</button></form>",
-      "css": ".ds-bigsearch{display:flex;align-items:center;gap:12px;max-width:640px;padding:6px 6px 6px 18px;border-radius:14px;background:var(--surface,#fff);box-shadow:0 0 0 1px var(--line-strong,#C6CBCE),var(--sh-2);color:var(--ink-3,#676E73);transition:box-shadow .2s} .ds-bigsearch:focus-within{box-shadow:0 0 0 1px var(--accent,#116289),0 0 0 5px var(--accent-soft,#E1F1FC),var(--sh-2)} .ds-bigsearch input{flex:1;min-width:0;padding:12px 2px;border:0;background:none;outline:none;font:400 17px var(--sans);color:var(--ink,#161A1D)} .ds-bs-btn{min-height:44px;padding:0 20px;border:0;border-radius:10px;background:var(--accent,#116289);color:var(--accent-ink,#fff);font:550 15px/1 var(--sans);cursor:pointer} .ds-bs-btn:hover{background:var(--accent-hover,#015477)}"
+      "css": ".ds-bigsearch{display:flex;align-items:center;gap:12px;max-width:640px;padding:6px 6px 6px 18px;border-radius:14px;background:var(--surface,#fff);box-shadow:0 0 0 1px var(--line-strong,#C6CBCE),var(--sh-2);color:var(--ink-3,#676E73);transition:box-shadow .2s} .ds-bigsearch:focus-within{box-shadow:0 0 0 1px var(--accent,#116289),0 0 0 5px var(--accent-soft,#E8F4FC),var(--sh-2)} .ds-bigsearch input{flex:1;min-width:0;padding:12px 2px;border:0;background:none;outline:none;font:400 17px var(--sans);color:var(--ink,#161A1D)} .ds-bs-btn{min-height:44px;padding:0 20px;border:0;border-radius:10px;background:var(--accent,#116289);color:var(--accent-ink,#fff);font:550 15px/1 var(--sans);cursor:pointer} .ds-bs-btn:hover{background:var(--accent-hover,#015477)}"
     },
     {
       "name": "Filter Chips",
@@ -691,7 +691,7 @@
       "refersTo": "chip-filter-on",
       "description": "Text buttons; pressed chips fill with the accent wash.",
       "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">Robotics <small>412</small></button><button class=\"ds-chip\" aria-pressed=\"false\">Medical <small>380</small></button></div>",
-      "css": ".ds-chips{display:flex;gap:6px} .ds-chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border:0;border-radius:var(--r,8px);background:transparent;color:var(--ink-2,#484E52);font:500 13.5px/1 var(--sans);cursor:pointer;transition:background-color .12s,color .12s} .ds-chip:hover{background:color-mix(in srgb,var(--ink,#161A1D) 6%,transparent);color:var(--ink,#161A1D)} .ds-chip[aria-pressed=true]{background:var(--accent-soft,#E1F1FC);color:var(--link,#005F88);font-weight:600} .ds-chip small{font-size:12px;color:var(--ink-3,#676E73)} .ds-chip:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px}"
+      "css": ".ds-chips{display:flex;gap:6px} .ds-chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border:0;border-radius:var(--r,8px);background:transparent;color:var(--ink-2,#484E52);font:500 13.5px/1 var(--sans);cursor:pointer;transition:background-color .12s,color .12s} .ds-chip:hover{background:color-mix(in srgb,var(--ink,#161A1D) 6%,transparent);color:var(--ink,#161A1D)} .ds-chip[aria-pressed=true]{background:var(--accent-soft,#E8F4FC);color:var(--link,#005F88);font-weight:600} .ds-chip small{font-size:12px;color:var(--ink-3,#676E73)} .ds-chip:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px}"
     },
     {
       "name": "Segmented Control",

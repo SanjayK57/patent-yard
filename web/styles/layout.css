@@ -48,6 +48,9 @@ kbd.hk{display:inline-grid;place-items:center;min-width:20px;height:20px;padding
 .menu-btn .i{width:20px;height:20px}
 
 @media (max-width:1180px){.hsearch{display:none}.cmdbtn{display:grid}}
+/* pages with their own search field (home, browse, All patents) don't repeat it in the header */
+body:has(.bigsearch,#filters,#wfilters) .hsearch{display:none}
+body:has(.bigsearch,#filters,#wfilters) .cmdbtn{display:grid}
 @media (max-width:1080px){
   .menu-btn{display:grid}
   .cmdbtn{margin-left:auto}
@@ -74,6 +77,8 @@ footer.foot nav a:hover{color:var(--ink)}
 footer.foot .fine{grid-column:1/-1;padding-top:var(--s5);border-top:1px solid var(--line);font-size:var(--fs-xs);line-height:1.6}
 footer.foot .fine a{color:var(--ink-2)}
 #footStat{margin-top:var(--s3);font-size:var(--fs-xs)}
+/* a page that ends on a full-bleed band (the home page's studio band) meets the footer directly */
+main:has(> .studioband:last-child)+footer.foot{margin-top:0}
 @media (max-width:980px){footer.foot .wrap{grid-template-columns:1fr 1fr}footer.foot .wrap>div:first-child{grid-column:1/-1}}
 @media (max-width:520px){footer.foot .wrap{grid-template-columns:minmax(0,1fr)}}
 

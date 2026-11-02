@@ -14,7 +14,7 @@
 /* no drawing on file: the field's symbol and the number on a blank sheet */
 .card .fig.plate{display:grid;place-items:center;align-content:center;gap:var(--s3);background:var(--surface-2)}
 .card:hover .fglyph{transform:scale(1.08);stroke:var(--ink-2)}
-.card .numart{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em;color:var(--ink-2);white-space:nowrap}
+.card .numart{font-family:var(--mono);font-size:13px;font-weight:400;letter-spacing:-.01em;color:var(--ink-3);white-space:nowrap}
 .card.acard .fig.plate{aspect-ratio:16/9}
 
 .cbody{display:flex;flex-direction:column;gap:5px;flex:1;padding:var(--s4) 2px 0}

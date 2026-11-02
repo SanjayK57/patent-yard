@@ -5,7 +5,7 @@ colors:
   accent: "#116289"
   accent-hover: "#015477"
   accent-ink: "#FFFFFF"
-  accent-soft: "#E1F1FC"
+  accent-soft: "#E8F4FC"
   link: "#005F88"
   focus: "#1F7FB0"
   bg: "#F5F7F8"
@@ -235,10 +235,11 @@ Cool, low-chroma neutrals with one saturated blue and four muted status hues, ea
 
 A centered page of 1200px (header 1320px) with a fluid gutter of 16 to 40px, on a 4px spacing scale (`s1` to `s12`). Sections sit 112px apart (80px under 700px). The header is 52px (`--header-h`) and sticky. Reading columns cap at 68ch.
 
-- **Home:** centered hero and a 640px search, then a 1080px drawing sheet at 16:9 (4:3 under 700px). Below: the collections as a ruled ledger beside its intro, today's picks as one lead card plus four across, a ruled list of more picks, a compact field index, three steps, and one dark Studio band.
+- **Home:** centered hero and a 640px search, then a 1080px drawing sheet at 16:9 (the sheet's own proportions under 700px). Below: the collections as a ruled ledger beside its intro, today's picks as one lead card plus four across, a ruled list of more picks, a compact field index, three steps, and one dark Studio band.
 - **Browse:** a filter toolbar panel over a card grid (`minmax(240px, 1fr)`) that can switch to a dense table view.
 - **Patent page:** title and actions over a 184px sticky contents list and one reading column. Under 980px the contents become a sticky horizontal tab row.
-- Navigation collapses to a menu sheet under 1080px; header search becomes a palette button under 1180px.
+- Navigation collapses to a menu sheet under 1080px; header search becomes a palette button under 1180px, and on pages with their own search (home, browse, All patents) the header shows only the palette button, so there is one search field on screen.
+- **Patent page head:** badges, the title (smaller and balanced when it runs past 60 characters), the identifier line, then one toolbar row of actions. The contents list marks the current section with a raised pill only.
 
 **The Page, Not the Box Rule.** Most content sits directly on the page. Panels group related rows; they are not wrapped around every section.
 

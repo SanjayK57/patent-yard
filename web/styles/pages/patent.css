@@ -1,25 +1,24 @@
 /* Patent pages (register, archive and worldwide share this markup): title and actions, a sticky contents list,
    then the drawing, the facts, the claims and the description in the patent's own serif. */
-.phead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s5) var(--s8);align-items:end;padding-bottom:var(--s7);box-shadow:0 1px 0 var(--line)}
+.phead{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--s5);align-items:start;padding-bottom:var(--s7);box-shadow:0 1px 0 var(--line)}
 .phead>div:first-child{display:flex;flex-direction:column}
 .phead>div:first-child>.badges{order:-1;margin-bottom:var(--s4)}
-.phead h1{max-width:26ch;margin:0 0 var(--s3);font-size:clamp(30px,3.8vw,46px);line-height:1.06;letter-spacing:-.032em}
+.phead h1{max-width:26ch;margin:0 0 var(--s3);font-size:clamp(30px,3.8vw,46px);line-height:1.06;letter-spacing:-.032em;text-wrap:balance}
+.phead h1.long{max-width:34ch;font-size:clamp(26px,2.8vw,34px);line-height:1.12;letter-spacing:-.024em}
 .phead .asfiled{font-size:15px;line-height:1.5;color:var(--ink-3)}
-.phead .asfiled .num,.phead .asfiled .num-id{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
-.pactions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:var(--s1) var(--s1);max-width:480px}
+.phead .asfiled .num,.phead .asfiled .num-id{font-family:var(--mono);font-size:.92em;letter-spacing:-.01em;color:var(--ink-2)}
+.pactions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s1)}
 .pactions .btn.primary{margin-right:var(--s2)}
-.resline{flex-basis:100%;display:flex;justify-content:flex-end;align-items:center;gap:var(--s2);font-size:var(--fs-sm);color:var(--ink-3)}
+.resline{flex-basis:100%;display:flex;align-items:center;gap:var(--s2);font-size:var(--fs-sm);color:var(--ink-3)}
 .resline:empty{display:none}
 .resnote{margin:0 0 var(--s3);padding:var(--s3) var(--s4);border-radius:var(--r-md);background:var(--aband-soft);font-size:var(--fs-ui);line-height:1.5}
 .resnote b{color:var(--ink)}
-@media (max-width:860px){.phead{grid-template-columns:minmax(0,1fr);align-items:start}.pactions{justify-content:flex-start;max-width:none}.resline{justify-content:flex-start}}
 
 .playout{display:grid;grid-template-columns:184px minmax(0,1fr);gap:var(--s10);margin-top:var(--s8)}
 .toc{position:sticky;top:calc(var(--header-h) + 28px);align-self:start;display:grid;gap:2px;font-size:var(--fs-ui)}
 .toc a{position:relative;display:flex;justify-content:space-between;gap:var(--s2);padding:6px 10px;border-radius:var(--r-sm);color:var(--ink-3);transition:color var(--t1) var(--ease),background-color var(--t1) var(--ease)}
 .toc a:hover{color:var(--ink);background:color-mix(in srgb,var(--ink) 5%,transparent)}
 .toc a.on{color:var(--ink);font-weight:550;background:color-mix(in srgb,var(--ink) 6%,transparent)}
-.toc a.on::before{content:"";position:absolute;left:-10px;top:8px;bottom:8px;width:2px;border-radius:2px;background:var(--accent)}
 .toc small{font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 @media (max-width:980px){
   .playout{grid-template-columns:minmax(0,1fr);gap:var(--s6)}
@@ -27,7 +26,6 @@
     background:color-mix(in srgb,var(--bg) 90%,transparent);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--line)}
   .toc::-webkit-scrollbar{display:none}
   .toc a{flex:none;white-space:nowrap}
-  .toc a.on::before{left:10px;right:10px;top:auto;bottom:-8px;width:auto;height:2px}
 }
 
 .psec{padding-bottom:var(--s10);margin-bottom:var(--s10);box-shadow:0 1px 0 var(--line);scroll-margin-top:calc(var(--header-h) + 24px)}
