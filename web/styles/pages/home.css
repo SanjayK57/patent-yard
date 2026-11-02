@@ -1,7 +1,7 @@
 /* Home: headline and search, the plotted drawing on its sheet, the collections, today's picks, fields, the studio. */
 .hero{display:grid;justify-items:center;padding-top:clamp(36px,6vw,84px);text-align:center}
 .hero h1{max-width:13.5em;font-size:var(--fs-display);font-weight:650;line-height:1.02;letter-spacing:var(--track-display)}
-.lede{max-width:56ch;margin-top:var(--s6);font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2);letter-spacing:-.006em}
+.hero .lede{max-width:56ch;margin-top:var(--s6);font-size:clamp(17px,1.5vw,20px);line-height:1.5;color:var(--ink-2);letter-spacing:-.006em}
 
 /* the search: the largest control on the site */
 .bigsearch{position:relative;display:flex;align-items:center;gap:var(--s3);width:100%;max-width:640px;margin-top:var(--s8);padding:6px 6px 6px 18px;border-radius:14px;

@@ -5,7 +5,8 @@
 @media (max-width:860px){.omethod{grid-template-columns:1fr 1fr}}
 .omethod+.fine-print{margin:var(--s3) 0 var(--s7)}
 .ofilter{display:inline-flex;flex-wrap:wrap;gap:2px;max-width:100%;margin-bottom:var(--s6);padding:2px;border-radius:9px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
-.ofilter .chip[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1),0 0 0 .5px var(--line)}
+.ofilter .lab{display:none}
+.ofilter .chip[aria-pressed="true"]{background:var(--thumb);color:var(--ink);box-shadow:var(--sh-1),0 0 0 .5px var(--line)}
 .opicks{display:grid;gap:var(--s5)}
 .oppick{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);border-radius:var(--r-lg);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--edge);overflow:hidden;
   transition:box-shadow var(--t2) var(--ease)}

@@ -61,7 +61,7 @@ class Home:
 </section>
 <section class="stage rise" style="--d:4" aria-labelledby="plateTitle">
   <figure class="plotter">
-    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}"><span class="figbar" aria-hidden="true"><b>Fig. 1 · {E(he["n"])}</b></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}" fetchpriority="high"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
+    <div class="plotbox" id="plotbox" data-src="{self.img(he["id"])}"><span class="figbar" aria-hidden="true"><b>Sheet 1 · {E(he["n"])}</b></span><img src="{self.img(he["id"])}" alt="Drawing from {E(he["n"])}" fetchpriority="high"><canvas id="plot" aria-hidden="true"></canvas><canvas id="pen" aria-hidden="true"></canvas>
       <div class="lmark" aria-hidden="true"></div><div class="loupe" aria-hidden="true"></div></div>
   </figure>
   <div class="platefacts">

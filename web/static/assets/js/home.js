@@ -12,6 +12,35 @@ if (recent.length && $("#recentSec")) {
 const box = document.getElementById("plotbox");
 const reduced = reducedMotion();
 
+// The pen follows the linework: from each inked cell it moves to the neighbouring one that keeps its direction best,
+// lifts to the nearest undrawn line when a stroke ends, and the ink settles in behind it over a fraction of a second.
+function strokeOrder(ink, cols, rows) {
+  const left = new Set(ink), order = [], key = (x, y) => y * cols + x;
+  let cur = ink[0], dx = 1, dy = 0;
+  while (left.size) {
+    if (!left.has(cur)) {  // pen up: the nearest cell still to draw
+      const cx = cur % cols, cy = Math.floor(cur / cols);
+      let best = -1, bd = Infinity;
+      for (const k of left) { const d = (k % cols - cx) ** 2 + (Math.floor(k / cols) - cy) ** 2; if (d < bd) { bd = d; best = k; if (d <= 2) break; } }
+      cur = best; dx = 0; dy = 0;
+    }
+    left.delete(cur); order.push(cur);
+    const x = cur % cols, y = Math.floor(cur / cols);
+    let next = -1, score = -Infinity;
+    for (let oy = -1; oy <= 1; oy++) for (let ox = -1; ox <= 1; ox++) {
+      if (!ox && !oy) continue;
+      const nx = x + ox, ny = y + oy, k = key(nx, ny);
+      if (nx < 0 || ny < 0 || nx >= cols || ny >= rows || !left.has(k)) continue;
+      const sc = (ox * dx + oy * dy) / Math.hypot(ox, oy) - (ox && oy ? .05 : 0);
+      if (sc > score) { score = sc; next = k; }
+    }
+    if (next >= 0) { dx = next % cols - x; dy = Math.floor(next / cols) - y; cur = next; }
+    else cur = -1;
+    if (cur === -1 && left.size) cur = order[order.length - 1];
+  }
+  return order;
+}
+
 async function plot() {
   const img = new Image();
   await new Promise((ok, err) => { img.onload = ok; img.onerror = err; img.src = box.dataset.src; });
@@ -25,34 +54,42 @@ async function plot() {
   const off = document.createElement("canvas"); off.width = dw; off.height = dh;
   const o = off.getContext("2d"); o.drawImage(img, 0, 0, dw, dh);
   const css = getComputedStyle(document.documentElement);
-  const [r, g, b] = css.getPropertyValue("--ink").trim().replace("#", "").match(/../g).map(h => parseInt(h, 16));
+  // ink: the page's ink on an inverted (dark) sheet, near-black on a white one
+  const hex = css.getPropertyValue("--fig-filter").trim() === "none" ? "#161A1D" : css.getPropertyValue("--ink").trim();
+  const [r, g, b] = hex.replace("#", "").match(/../g).map(h => parseInt(h, 16));
   const d = o.getImageData(0, 0, dw, dh);
   for (let i = 0; i < d.data.length; i += 4) { const a = 255 - d.data[i]; d.data[i] = r; d.data[i + 1] = g; d.data[i + 2] = b; d.data[i + 3] = a; }
   o.putImageData(d, 0, 0);
-  const C = Math.round(12 * dpr), cells = [];
-  for (let y = 0, row = 0; y < dh; y += C, row++) {
-    const xs = []; for (let x = 0; x < dw; x += C) xs.push(x);
-    if (row % 2) xs.reverse();
-    for (const x of xs) {
-      let ink = 0; const w = Math.min(C, dw - x), h = Math.min(C, dh - y);
-      for (let yy = y; yy < y + h && !ink; yy += 2) for (let xx = x; xx < x + w; xx += 2) if (d.data[(yy * dw + xx) * 4 + 3] > 90) { ink = 1; break; }
-      if (ink) cells.push([x, y]);
+  const C = Math.max(6, Math.round(7 * dpr)), cols = Math.ceil(dw / C), rows = Math.ceil(dh / C), ink = [];
+  for (let gy = 0; gy < rows; gy++) for (let gx = 0; gx < cols; gx++) {
+    const x0 = gx * C, y0 = gy * C, x1 = Math.min(dw, x0 + C), y1 = Math.min(dh, y0 + C);
+    find: for (let yy = y0; yy < y1; yy += 2) for (let xx = x0; xx < x1; xx += 2) if (d.data[(yy * dw + xx) * 4 + 3] > 90) { ink.push(gy * cols + gx); break find; }
+  }
+  if (!ink.length) return;
+  const order = strokeOrder(ink, cols, rows);
+  const cell = k => { const x = (k % cols) * C, y = Math.floor(k / cols) * C; return [x, y, Math.min(C, dw - x), Math.min(C, dh - y)]; };
+  const stamp = (c, k) => { const [x, y, w, h] = cell(k); c.drawImage(off, x, y, w, h, ox + x, oy + y, w, h); };
+  // paced by the clock, not by frames: about 3 seconds, easing in and out, whatever the frame rate
+  const DUR = 3000, FADE = 220, dot = css.getPropertyValue("--accent").trim(), t0 = performance.now(), wet = [];
+  const ease = t => (t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+  let i = 0;
+  while (i < order.length || wet.length) {
+    await new Promise(requestAnimationFrame);
+    const now = performance.now();
+    const to = Math.min(order.length, Math.max(i + 1, Math.ceil(order.length * ease(Math.min(1, (now - t0) / DUR)))));
+    for (; i < to; i++) wet.push([order[i], now]);
+    if (still.style.visibility !== "hidden") still.style.visibility = "hidden";  // swap only once the pen is drawing
+    pc.clearRect(0, 0, W, H);
+    while (wet.length && now - wet[0][1] >= FADE) stamp(ctx, wet.shift()[0]);  // dry ink joins the drawing
+    for (const [k, t] of wet) { pc.globalAlpha = Math.min(1, (now - t) / FADE); stamp(pc, k); }
+    if (i < order.length) {
+      const [x, y, w, h] = cell(order[i - 1]), px = ox + x + w / 2, py = oy + y + h / 2;
+      pc.globalAlpha = .12; pc.strokeStyle = `rgb(${r},${g},${b})`; pc.lineWidth = dpr;
+      pc.beginPath(); pc.moveTo(px, 0); pc.lineTo(px, H); pc.moveTo(0, py); pc.lineTo(W, py); pc.stroke();
+      pc.globalAlpha = 1; pc.fillStyle = dot; pc.beginPath(); pc.arc(px, py, 3.5 * dpr, 0, 7); pc.fill();
     }
   }
-  // paced by the clock, not by frames, so it finishes in about 2.5 seconds even when frames are slow
-  const DUR = 2500, dot = css.getPropertyValue("--accent").trim(), t0 = performance.now();
-  for (let i = 0; i < cells.length;) {
-    await new Promise(requestAnimationFrame);
-    const to = Math.max(i + 1, Math.ceil(cells.length * Math.min(1, (performance.now() - t0) / DUR)));
-    for (const [x, y] of cells.slice(i, to)) ctx.drawImage(off, x, y, Math.min(C, dw - x), Math.min(C, dh - y), ox + x, oy + y, Math.min(C, dw - x), Math.min(C, dh - y));
-    if (i === 0) still.style.visibility = "hidden";  // swap only once the pen is drawing
-    i = Math.min(to, cells.length);
-    const [x, y] = cells[i - 1], px = ox + x + C / 2, py = oy + y + C / 2;
-    pc.clearRect(0, 0, W, H); pc.strokeStyle = `rgb(${r},${g},${b})`; pc.globalAlpha = .15; pc.lineWidth = dpr;
-    pc.beginPath(); pc.moveTo(px, 0); pc.lineTo(px, H); pc.moveTo(0, py); pc.lineTo(W, py); pc.stroke();
-    pc.globalAlpha = 1; pc.fillStyle = dot; pc.beginPath(); pc.arc(px, py, 3.5 * dpr, 0, 7); pc.fill();
-  }
-  pc.clearRect(0, 0, W, H);
+  pc.globalAlpha = 1; pc.clearRect(0, 0, W, H);
 }
 if (box && !reduced) plot().catch(() => {});
 

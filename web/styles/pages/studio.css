@@ -1,8 +1,8 @@
 /* Invention studio and the Claude kit dialog: a two-pane workspace, the idea on the left, the task and its prompt on the right. */
 .howto{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s7);margin-bottom:var(--s7);padding:0;list-style:none;counter-reset:s}
-.howto>div,.howto>li{display:flex;align-items:baseline;gap:var(--s2);max-width:34ch;font-size:var(--fs-ui);line-height:1.45;color:var(--ink-3)}
-.howto>div::before,.howto>li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;
-  background:var(--accent-soft);color:var(--link);font-size:12px;font-weight:650;transform:translateY(-1px)}
+.howto>div,.howto>li{position:relative;max-width:34ch;padding-left:32px;font-size:var(--fs-ui);line-height:1.5;color:var(--ink-3)}
+.howto>div::before,.howto>li::before{counter-increment:s;content:counter(s);position:absolute;left:0;top:0;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;
+  background:var(--accent-soft);color:var(--link);font-size:12px;font-weight:650}
 .howto b{color:var(--ink);font-weight:600}
 .studio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:var(--s7);align-items:start}
 .studio>.panel{padding:var(--s6)}

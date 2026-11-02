@@ -21,7 +21,7 @@
   --sh-2:0 1px 2px rgba(22,26,29,.05),0 8px 20px -6px rgba(22,26,29,.12);
   --sh-3:0 2px 6px rgba(22,26,29,.06),0 24px 56px -16px rgba(22,26,29,.22);
   --sh-sheet:0 1px 2px rgba(22,26,29,.06),0 18px 40px -18px rgba(22,26,29,.2),0 60px 120px -48px rgba(22,26,29,.22);
-  --edge:inset 0 0 0 1px rgba(22,26,29,0);
+  --edge:inset 0 0 0 1px rgba(22,26,29,0); --thumb:#FFFFFF;
   --scrim:rgba(14,17,19,.42);
 
   /* type: Hanken Grotesk is Patent Yard speaking, Source Serif 4 is the patent's own words, mono is numbers that identify */
@@ -59,7 +59,7 @@
   --sh-2:0 1px 2px rgba(0,0,0,.4),0 10px 24px -8px rgba(0,0,0,.6);
   --sh-3:0 2px 8px rgba(0,0,0,.45),0 28px 64px -16px rgba(0,0,0,.75);
   --sh-sheet:0 2px 6px rgba(0,0,0,.4),0 30px 80px -30px rgba(0,0,0,.8);
-  --edge:inset 0 1px 0 rgba(255,255,255,.05);
+  --edge:inset 0 1px 0 rgba(255,255,255,.05); --thumb:#3A4044;
   --scrim:rgba(0,0,0,.6);
   color-scheme:dark;
 }

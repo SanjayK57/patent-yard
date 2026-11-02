@@ -24,7 +24,7 @@
 .legalnav{display:inline-flex;flex-wrap:wrap;gap:2px;margin-bottom:var(--s6);padding:2px;border-radius:9px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
 .legalnav a{padding:7px 12px;border-radius:7px;font-size:13.5px;font-weight:500;color:var(--ink-2)}
 .legalnav a:hover{color:var(--ink)}
-.legalnav a[aria-current="page"]{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1),0 0 0 .5px var(--line)}
+.legalnav a[aria-current="page"]{background:var(--thumb);color:var(--ink);box-shadow:var(--sh-1),0 0 0 .5px var(--line)}
 .legalgrid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:var(--s9);align-items:start}
 .legaltoc{position:sticky;top:calc(var(--header-h) + 28px);font-size:13.5px}
 .legaltoc b{display:block;margin-bottom:var(--s3);font-size:var(--fs-sm);font-weight:600;color:var(--ink)}

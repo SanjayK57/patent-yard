@@ -44,7 +44,7 @@ class Opportunities:
 </ul>
 <p class="muted fine-print">Each patent's factors and points are under "Why it ranks here". Claim length is not used: a short claim isn't necessarily a broad one.</p>
 <div class="frow ofilter" role="group" aria-label="Filter by field"><span class="lab">Field</span>{filt}</div>
-<section class="section"><div class="sechead"><div><h2>Researched notes on the top {len(picks)}</h2><p>Drafted with Claude (an AI model) from each patent's abstract and claims while the register was prepared, not reviewed by a patent professional. Who might be interested and why now are leads to check, not findings. No market figures are given because we can't source them.</p></div></div>
+<section class="section tight"><div class="sechead"><div><h2>Researched notes on the top {len(picks)}</h2><p>Drafted with Claude (an AI model) from each patent's abstract and claims while the register was prepared, not reviewed by a patent professional. Who might be interested and why now are leads to check, not findings. No market figures are given because we can't source them.</p></div></div>
 <div class="opicks">{pick_html}</div></section>
 <section class="section"><div class="sechead"><div><h2>The next {len(top)}</h2><p>Same factors, without written notes. Open any one for its claims, drawings and the Claude kit.</p></div></div>
 <div class="grid ogrid">{top_html}</div></section>

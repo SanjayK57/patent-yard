@@ -50,3 +50,8 @@
 /* numbers strike into place digit by digit (app.js), never tweened */
 .strike i{font-style:normal;transition:opacity .3s var(--ease)}
 .strike i.off{opacity:.15}
+
+/* switching light and dark: a slow cross-fade of the whole page (app.js), not the quick page-to-page one */
+.theming::view-transition-old(root),.theming::view-transition-new(root){animation-duration:var(--t4);animation-timing-function:var(--ease-in-out)}
+.theming::view-transition-old(root){animation-name:vtOut}
+.theming::view-transition-new(root){animation-name:none}

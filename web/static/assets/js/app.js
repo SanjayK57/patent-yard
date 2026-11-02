@@ -76,7 +76,14 @@ export const isDark = () => { const t = document.documentElement.getAttribute("d
 export const reducedMotion = () => document.documentElement.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;
 const themeBtn = $("#themeBtn");
 const labelTheme = () => themeBtn?.setAttribute("aria-label", isDark() ? "Switch to light mode" : "Switch to dark mode");
-themeBtn?.addEventListener("click", () => { saveSettings({ theme: isDark() ? "light" : "dark" }); applySettings(); labelTheme(); });
+// the switch cross-fades the whole page where the browser can (a view transition), and simply swaps where it can't
+themeBtn?.addEventListener("click", () => {
+  const flip = () => { saveSettings({ theme: isDark() ? "light" : "dark" }); applySettings(); labelTheme(); };
+  if (!document.startViewTransition || reducedMotion()) return flip();
+  const root = document.documentElement;
+  root.classList.add("theming");
+  document.startViewTransition(flip).finished.finally(() => root.classList.remove("theming"));
+});
 labelTheme();
 matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", labelTheme);
 addEventListener("storage", e => { if (e.key === "patentyard." + SETTINGS) { applySettings(); labelTheme(); } });  // other open tabs follow
