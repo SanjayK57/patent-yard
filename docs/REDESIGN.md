@@ -104,7 +104,10 @@ patent (US 98,000,001 and up). The publishing Mac, real data, about a minute:
   tighter Opportunities method text, one identifier size, a quiet rank badge, one search field per screen, the home
   drawing in its own proportions on phones, a normal field with a short placeholder for the register's search on
   phones. Every check above was re-run after them and passes.
-- Full production build of the branch: see 10.
+- Full production build of the branch (`pipeline.py web`, real data): passed in 829 s: 131,020 patents in 1,024
+  shards, 11,699,375 archive records, 14,318 files (Cloudflare Pages allows 20,000), largest file under 25 MiB, and the
+  link check across every page found no broken links. It ran before the finish-review fixes, which touch styles and
+  templates only.
 
 ## 7. Screenshots
 
@@ -138,6 +141,6 @@ regenerate them at any time.
 
 ## 10. Deployment readiness
 
-Ready for review, not deployed. Deploying means merging `v2` into `main` (the publisher then builds and deploys
+Ready for review, not deployed. The branch builds the whole site cleanly (see 6). Deploying means merging `v2` into `main` (the publisher then builds and deploys
 within two hours) or a manual deploy from `web/`; both need Sanjay's explicit go-ahead. The first full build after
 the merge rewrites every shard, so the whole site switches to the new design at once.
