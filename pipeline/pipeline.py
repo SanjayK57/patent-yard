@@ -76,7 +76,11 @@ def publish(every):
                     indexnow()
             else:
                 print("build failed; the live site is unchanged", flush=True)
-        time.sleep(max(60, every * 60 - (time.time() - started)))
+        # wait against the wall clock in short steps: time.sleep doesn't count time the Mac is asleep, so one long sleep
+        # would push the next publish back by however long the lid was shut
+        time.sleep(60)
+        while time.time() - started < every * 60:
+            time.sleep(60)
 
 
 def main():
