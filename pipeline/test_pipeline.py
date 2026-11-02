@@ -193,8 +193,10 @@ class Classification(unittest.TestCase):
 
 class Website(unittest.TestCase):
     def setUp(self):
-        import website
-        self.W = website
+        from types import SimpleNamespace
+        from site_ui import ranking
+        from site_ui.pages import patent
+        self.W = SimpleNamespace(**{**vars(patent), **vars(ranking)})  # the patent page's helpers and the Opportunities score
 
     def entry(self, **k):
         e = {"id": "US-9000001-B2", "st": "lapsed", "f": "2014-03-01", "e": "2013-03-01", "p": "2017-05-02", "x": "2021-05-02", "fam": 1, "og": {"d": "2021-07-06"}}

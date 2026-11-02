@@ -16,3 +16,8 @@ web/archive.tmp/
 .impeccable/review/
 .impeccable/questions/
 .impeccable/mocks/
+
+# machine-specific: Wrangler caches, and the data links a worktree points at the publishing copy
+.wrangler/
+pipeline/raw
+web/world
