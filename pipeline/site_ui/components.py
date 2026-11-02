@@ -6,29 +6,52 @@ from .base import BUILD, BUILD_MEANS, E, STATUS, VIEWTOG, badge, freed_line, ico
 from .ranking import coolness
 
 
+def card_html(c):
+    """The patent card. assets/js/cards.js card() draws the same markup from the same fields (documented there);
+    web/dev/test_cards.mjs renders both from web/dev/fixtures/cards.json and fails if they differ."""
+    b = f'<span class="badge {E(c["status"]["cls"])}">{E(c["status"]["label"])}</span>'
+    symbol = f'<svg class="fglyph" aria-hidden="true"><use href="#f-{E(c.get("glyph"))}"/></svg><span class="numart">{E(c["number"])}</span>'
+    n = c.get("sheets") or 0
+    sheets = f'<span class="sheets">{icon("sheet")}{n} {"drawing" if n == 1 else "drawings"}</span>' if n else ""
+    remote = bool(c.get("remote"))
+    if c.get("img"):
+        alt = c.get("alt") or "Drawing from " + c["number"]
+        loading = "eager" if c.get("eager") else "lazy"
+        referrer = ' referrerpolicy="no-referrer"' if remote else ""
+        fig = (f'<div class="fig{" gfig" if remote else ""}"><img src="{E(c["img"])}" alt="{E(alt)}" loading="{loading}" decoding="async"{referrer}>'
+               f'<span class="over">{b}</span>{sheets}{symbol if remote else ""}</div>')
+    else:
+        fig = f'<div class="fig plate"><span class="over">{b}</span>{symbol}</div>'
+    summary = f'<p>{E(c["summary"])}</p>' if c.get("summary") else ""
+    angle = f'<div class="angle"><b>Modern angle</b>{E(c["angle"])}</div>' if c.get("feat") and c.get("angle") else ""
+    body = (f'<div class="cbody"><span class="fieldname">{E(c["field"])} · <span class="num-id">{E(c["number"])}</span></span>'
+            f'<h3><a href="{E(c["href"])}">{E(c["title"])}</a></h3>{summary}{angle}<span class="tstat">{b}</span></div>')
+
+    def fact(m):
+        label, v, title = (list(m) + [None])[:3]
+        value = meter(v["build"]) + E(v["name"]) if isinstance(v, dict) else E(v)
+        tip = f' title="{E(title)}"' if title else ""
+        return f'<div><small>{E(label)}</small><span{tip}>{value}</span></div>'
+    meta = f'<div class="cmeta">{"".join(fact(m) for m in c["meta"])}</div>' if c.get("meta") else ""
+    cls = "card" + (" acard" if c.get("archive") else "") + (" feat" if c.get("feat") else "")
+    inner = f'{fig}<div class="side">{body}{meta}</div>' if c.get("feat") else fig + body + meta
+    return f'<article class="{cls}" data-id="{E(c["id"])}">{inner}</article>'
+
+
 class Components:
     def img(self, pid, k=1):
         return f"/img/p/{pid}/{k}.png"
 
     def card(self, r, i=0, feat=False):
-        """A patent card. assets/js/catalog.js draws the same markup from the catalog data; keep them in step."""
+        """A register patent as a card (card_html below draws it)."""
         e = r["entry"]
-        owner = e["a"] if e["st"] == "abandoned" or not e["ia"] else "None recorded"
-        owner = owner or "Not recorded"
+        owner = (e["a"] if e["st"] == "abandoned" or not e["ia"] else "None recorded") or "Not recorded"
         lab, val = freed_line(e)
-        fig = (f'<div class="fig"><img src="{self.img(e["id"])}" alt="Drawing from {E(e["n"])}" loading="{"eager" if i < 4 else "lazy"}" decoding="async">'
-               f'<span class="over">{badge(e["st"])}</span>'
-               + (f'<span class="sheets">{icon("sheet")}{e["sh"]} {"drawing" if e["sh"] == 1 else "drawings"}</span>' if e["sh"] else "") + "</div>") \
-            if e["fig"] else f'<div class="fig plate" data-tag="No drawing"><span class="over">{badge(e["st"])}</span><svg class="fglyph" aria-hidden="true"><use href="#f-{e["ind"]}"/></svg><span class="numart">{E(e["n"])}</span></div>'
-        body = (f'<div class="cbody"><span class="fieldname">{E(self.fields.get(e["ind"], e["ind"]))} · <span class="num-id">{E(e["n"])}</span></span>'
-                f'<h3><a href="{purl(e["id"])}">{E(e["t"])}</a></h3><p>{E(e["h"])}</p>'
-                + (f'<div class="angle"><b>Modern angle</b>{E(e["tw"])}</div>' if feat and e["tw"] else "") + "</div>")
-        first = (f'<div><small>Build</small><span title="Estimate: {BUILD_MEANS[e["b"]]}">{meter(e["b"])}{BUILD[e["b"]]}</span></div>' if e["b"]
-                 else f'<div><small>Filed</small><span>{E((e["e"] or e["f"] or "—")[:4])}</span></div>')
-        meta = (f'<div class="cmeta">{first}<div><small>{lab}</small><span>{E(val)}</span></div>'
-                f'<div><small>{"Applicant" if e["st"] == "abandoned" else "Assignee"}</small><span title="{E(owner)}">{E(owner)}</span></div></div>')
-        inner = f'{fig}<div class="side">{body}{meta}</div>' if feat else f"{fig}{body}{meta}"
-        return f'<article class="card{" feat" if feat else ""}" data-id="{e["id"]}">{inner}</article>'
+        first = ["Build", {"build": e["b"], "name": BUILD[e["b"]]}, f"Estimate: {BUILD_MEANS[e['b']]}"] if e["b"] else ["Filed", (e["e"] or e["f"] or "—")[:4]]
+        return card_html({"id": e["id"], "href": purl(e["id"]), "title": e["t"], "number": e["n"], "field": self.fields.get(e["ind"], e["ind"]),
+                          "status": {"cls": e["st"], "label": STATUS[e["st"]]}, "img": self.img(e["id"]) if e["fig"] else "", "glyph": e["ind"],
+                          "sheets": e["sh"], "eager": i < 4, "summary": e["h"], "angle": e["tw"], "feat": feat,
+                          "meta": [first, [lab, val], ["Applicant" if e["st"] == "abandoned" else "Assignee", owner, owner]]})
 
     def pickrow(self, r):
         """A compact line for the home page's further picks: drawing thumbnail, name, field, number and status."""
@@ -46,7 +69,7 @@ class Components:
         st = collections.Counter(r["entry"]["st"] for r in self.rows)
         return f"""
 <form class="filters" id="filters" role="search">
-  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><button class="chip" type="button" data-coll="" aria-pressed="true">Recent, US <small class="num">{self.meta["count"]:,}</small></button><button class="chip" type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div>'}
+  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><div class="seg" role="group" aria-label="Collection"><button type="button" data-coll="" aria-pressed="true">Recent, US <small class="num">{self.meta["count"]:,}</small></button><button type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div></div>'}
   <div class="frow qrow"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">Filters</button></div>
   {'' if field or len(self.meta.get("archiveSpans", [])) < 2 else '<div class="frow regrow"><span class="lab">From</span><button class="chip" type="button" data-reg="" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-reg="{n}" aria-pressed="false">{n} <small class="num">{b - a:,}</small></button>' for n, a, b in self.meta["archiveSpans"]) + '</div>'}
   {'' if field else f'<div class="frow" id="fInd"><span class="lab">Field</span><div class="frow scrollrow"><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div></div>'}
@@ -64,7 +87,7 @@ class Components:
     <button class="chip" type="button" id="fSolo" aria-pressed="false" title="Granted with no assignee recorded, usually to individual inventors">No assignee</button>
     <button class="chip" type="button" id="fFree" aria-pressed="false">Hide reserved</button>
     <label class="sr" for="sort">Sort</label>
-    <select class="field" id="sort" style="width:auto">
+    <select class="field" id="sort">
       <option value="relevance">Best match</option>
       <option value="build">Recommended</option>
       <option value="recent">Most recently freed</option>

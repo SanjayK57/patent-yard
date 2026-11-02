@@ -13,18 +13,23 @@ import zlib
 import patents as P
 from register import TODAY
 
+from .styles import bundle_css, theme_colors
 from .base import BLOCK, CONFIG, E, SITE, STATIC, STATUS, WEIGHTS, WORLD, day_number, purl, search_words
 
 
 class Outputs:
     def assets(self):
         shutil.copytree(STATIC, self.dist, dirs_exist_ok=True)
-        stamp = zlib.crc32(b"".join(p.read_bytes() for p in sorted((STATIC / "assets").rglob("*")) if p.is_file()))
+        css = bundle_css().encode()  # web/styles, bundled into one file
+        stamp = zlib.crc32(b"".join(p.read_bytes() for p in sorted((STATIC / "assets").rglob("*")) if p.is_file()) + css)
         self.version = f"{stamp:08x}"
         # the stylesheet is cached for a year, so its name carries its content hash: a page can never get an old copy
-        css = (self.dist / "assets" / "site.css").read_bytes()
         self.css = f"/assets/site.{zlib.crc32(css):08x}.css"
-        (self.dist / "assets" / "site.css").rename(self.dist / self.css.lstrip("/"))
+        (self.dist / self.css.lstrip("/")).write_bytes(css)
+        colors = theme_colors()
+        manifest = json.loads((STATIC / "site.webmanifest").read_text())
+        manifest.update(theme_color=colors["light"], background_color=colors["light"])
+        (self.dist / "site.webmanifest").write_text(json.dumps(manifest, separators=(",", ":")))
         cfg = {"siteUrl": SITE, "supabaseUrl": CONFIG.get("supabase_url", ""), "supabaseAnonKey": CONFIG.get("supabase_anon_key", ""), "version": self.version,
                **({"world": {"cards": WORLD["cards"]}} if WORLD else {})}
         (self.dist / "assets" / "js" / "config.js").write_text(f"window.PY_CONFIG = {json.dumps(cfg)};\n")

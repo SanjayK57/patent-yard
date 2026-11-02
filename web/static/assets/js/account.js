@@ -179,7 +179,7 @@ async function drawRes(b) {
     return `<div class="rowi"><div class="th">${p?.sheets?.[0] ? `<img src="${esc(p.sheets[0])}" alt="">` : ""}</div>
       <div><b><a href="/patents/${esc(r.patent_id)}/">${esc(p?.t || numberLabel(r.patent_id))}</a></b><small>${esc(numberLabel(r.patent_id))} · ${left} ${left === 1 ? "day" : "days"} left (until ${esc(fmtDate(r.expires_at))})${r.note ? ` · "${esc(r.note)}"` : ""}</small></div>
       <div class="ra"><a class="btn primary sm" href="/studio/?patent=${encodeURIComponent(r.patent_id)}">Reinvent</a>${left <= 7 ? `<button class="btn secondary sm" type="button" data-renew="${esc(r.patent_id)}">Renew</button>` : ""}<button class="btn quiet sm" type="button" data-release="${esc(r.patent_id)}">Release</button></div></div>`;
-  }).join("") || `<div class="empty" style="border:0"><b>Nothing reserved yet</b><p>Open any patent and choose Reserve; each hold lasts 30 days.</p><p style="margin-top:12px"><a class="btn secondary sm" href="/browse/">Browse patents</a></p></div>`;
+  }).join("") || `<div class="empty flat"><b>Nothing reserved yet</b><p>Open any patent and choose Reserve; each hold lasts 30 days.</p><p class="gap-top"><a class="btn secondary sm" href="/browse/">Browse patents</a></p></div>`;
   $("#resList").onclick = async e => {
     const rel = e.target.closest("[data-release]"), ren = e.target.closest("[data-renew]"), btn = rel || ren;
     if (!btn) return;
@@ -202,7 +202,7 @@ async function drawIdeas(b) {
     return `<div class="rowi"><div class="th">${p?.sheets?.[0] ? `<img src="${esc(p.sheets[0])}" alt="">` : "Own idea"}</div>
       <div><b><a href="/studio/?idea=${esc(i.id)}">${esc(i.name || (p ? "Based on " + p.t : i.ptitle ? "Based on " + i.ptitle : "Untitled invention"))}</a></b><small>${esc(i.pitch || (i.pid ? numberLabel(i.pid) : ""))}${i.updated ? ` · saved ${esc(fmtDate(i.updated))}` : ""}</small></div>
       <div class="ra"><a class="btn primary sm" href="/studio/?idea=${esc(i.id)}">Open</a><button class="btn quiet sm" type="button" data-del="${esc(i.id)}">Delete</button></div></div>`;
-  }).join("") || `<div class="empty" style="border:0"><b>No saved inventions yet</b><p>Start one in the invention studio and save it here.</p><p style="margin-top:12px"><a class="btn secondary sm" href="/studio/">Open the studio</a></p></div>`;
+  }).join("") || `<div class="empty flat"><b>No saved inventions yet</b><p>Start one in the invention studio and save it here.</p><p class="gap-top"><a class="btn secondary sm" href="/studio/">Open the studio</a></p></div>`;
   $("#ideaList").onclick = async e => {
     const del = e.target.closest("[data-del]"); if (!del) return;
     if (!del.dataset.confirm) { del.dataset.confirm = 1; del.textContent = "Confirm delete"; setTimeout(() => { if (del.isConnected) { delete del.dataset.confirm; del.textContent = "Delete"; } }, 4000); return; }

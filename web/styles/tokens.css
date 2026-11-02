@@ -1,0 +1,68 @@
+/* Design tokens: the one place colors, type, spacing, radii, shadows and motion are set. DESIGN.md explains them.
+   Dark mode is written once, as :root[data-theme="dark"]; the build copies it for visitors whose system is dark
+   and who haven't picked a theme (pipeline/site_ui/styles.py). Templates and scripts only use these names. */
+:root{
+  /* surfaces, light: a cool near-white page, white surfaces, hairline borders */
+  --bg:#F5F7F8; --surface:#FFFFFF; --surface-2:#FAFBFB; --sunken:#EEF1F2; --band:#ECF0F2; --plate:#FFFFFF;
+  --line:#DDE0E2; --line-strong:#C6CBCE; --hair:rgba(22,26,29,.07);
+  --ink:#161A1D; --ink-2:#484E52; --ink-3:#676E73;
+  /* the accent: Prussian blue, the color of the cyanotype blueprints patent drawings were once copied as */
+  --accent:#116289; --accent-hover:#015477; --accent-ink:#FFFFFF; --accent-soft:#E1F1FC; --link:#005F88; --focus:#1F7FB0;
+  /* status colors, always shown with their word */
+  --expired:#1A763F; --expired-soft:#E0F7E5; --free:#1A763F; --free-soft:#E0F7E5;
+  --lapsed:#995600; --lapsed-soft:#FFEFD4;
+  --aband:#59656D; --aband-soft:#E9EDF0;
+  --reserved:#724AAB; --reserved-soft:#F3ECFF;
+  --warn:#995600; --danger:#BA2B28;
+  /* patent drawings: black ink on the white sheet; dark mode inverts them unless the visitor wants originals */
+  --fig-blend:multiply; --fig-filter:none;
+  /* depth: offset, soft shadows; --edge is the top highlight dark surfaces get instead */
+  --sh-1:0 1px 2px rgba(22,26,29,.05),0 1px 1px rgba(22,26,29,.03);
+  --sh-2:0 1px 2px rgba(22,26,29,.05),0 8px 20px -6px rgba(22,26,29,.12);
+  --sh-3:0 2px 6px rgba(22,26,29,.06),0 24px 56px -16px rgba(22,26,29,.22);
+  --sh-sheet:0 1px 2px rgba(22,26,29,.06),0 18px 40px -18px rgba(22,26,29,.2),0 60px 120px -48px rgba(22,26,29,.22);
+  --edge:inset 0 0 0 1px rgba(22,26,29,0);
+  --scrim:rgba(14,17,19,.42);
+
+  /* type: Hanken Grotesk is Patent Yard speaking, Source Serif 4 is the patent's own words, mono is numbers that identify */
+  --sans:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  --serif:"Source Serif 4","Iowan Old Style",Charter,Georgia,serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --fs-xs:12px; --fs-sm:13px; --fs-ui:14px; --fs-body:16px; --fs-read:17px; --fs-lead:19px;
+  --fs-h4:16px; --fs-h3:19px; --fs-h2:28px; --fs-h1:40px; --fs-display:clamp(40px,5.6vw,76px);
+  --track-display:-.038em; --track-h1:-.03em; --track-h2:-.022em; --track-h3:-.012em;
+
+  /* space (4px steps), widths, shapes */
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s7:32px; --s8:40px; --s9:48px; --s10:64px; --s11:80px; --s12:112px;
+  --gap:20px; --gutter:clamp(16px,4vw,40px); --page:1200px; --page-wide:1320px; --measure:68ch; --header-h:52px;
+  --r-xs:4px; --r-sm:6px; --r:8px; --r-md:12px; --r-lg:16px; --r-xl:22px;
+  --control-h:36px; --control-h-sm:30px; --control-h-lg:46px;
+
+  /* motion: one ease-out curve, a spring for things pressed or arriving small, four durations */
+  --ease:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1);
+  --spring:linear(0,.063 2.1%,.233 4.6%,.488 7.6%,.746 11%,.904 14.2%,1.006 17.9%,1.045 21.3%,1.053 24.6%,1.04 29.2%,1.012 36.6%,.998 45%,.997 55%,1);
+  --t1:.12s; --t2:.2s; --t3:.36s; --t4:.52s;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#111416; --surface:#181B1D; --surface-2:#1C2022; --sunken:#151819; --band:#15181A; --plate:#141719;
+  --line:#2A2F31; --line-strong:#3B4144; --hair:rgba(255,255,255,.06);
+  --ink:#EEF0F2; --ink-2:#BABEC1; --ink-3:#969B9F;
+  --accent:#64B5E4; --accent-hover:#83C7F0; --accent-ink:#0C1012; --accent-soft:#12303F; --link:#75C2EF; --focus:#64B5E4;
+  --expired:#6BC987; --expired-soft:#142D1B; --free:#6BC987; --free-soft:#142D1B;
+  --lapsed:#EBB25F; --lapsed-soft:#33240F;
+  --aband:#9CA6AD; --aband-soft:#202527;
+  --reserved:#BD9FF2; --reserved-soft:#2D233E;
+  --warn:#EBB25F; --danger:#F47C70;
+  --fig-blend:screen; --fig-filter:invert(1);
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 1px 2px rgba(0,0,0,.4),0 10px 24px -8px rgba(0,0,0,.6);
+  --sh-3:0 2px 8px rgba(0,0,0,.45),0 28px 64px -16px rgba(0,0,0,.75);
+  --sh-sheet:0 2px 6px rgba(0,0,0,.4),0 30px 80px -30px rgba(0,0,0,.8);
+  --edge:inset 0 1px 0 rgba(255,255,255,.05);
+  --scrim:rgba(0,0,0,.6);
+  color-scheme:dark;
+}
+/* visitor settings (settings page): original drawings in dark mode, larger text, less motion */
+:root[data-drawings="original"]{--fig-blend:normal;--fig-filter:none;--plate:#FFFFFF}
+:root[data-text="large"] body{zoom:1.12}

@@ -58,19 +58,20 @@ def main(out, live, test):
     s.catalog(None)
     if live:
         sh = out / "shard"
-        sh.mkdir()
-        (sh / "a").symlink_to(live / "shard" / "a")
-        for kind in "pik":
-            (sh / kind).mkdir()
+        for kind in "apik":  # hard links where possible: wrangler serves them, and they never write through to the live build
+            (sh / kind).mkdir(parents=True)
             for f in (live / "shard" / kind).iterdir():
-                (sh / kind / f.name).symlink_to(f)
+                try:
+                    os.link(f, sh / kind / f.name)
+                except OSError:
+                    (sh / kind / f.name).symlink_to(f)
         W._SITE = s
         home = (out / "index.html").read_text()
         picks = re.findall(r'data-id="(US-[^"]+)"', home)[:4] + re.findall(r'/img/p/(US-[^/]+)/', home)[:1]
         for k in sorted({W.shard_of(p) for p in test + picks}):
             for kind in "pik":
                 f = sh / kind / f"{k}.bin"
-                if f.is_symlink():
+                if f.exists() or f.is_symlink():
                     f.unlink()  # never write through a link into the live build
             W.render_shard((k, [i for i, r in enumerate(rows) if W.shard_of(r["entry"]["id"]) == k]))
     print(f"preview in {out} ({time.time() - t0:.0f}s)")

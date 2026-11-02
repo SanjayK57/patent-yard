@@ -1,0 +1,52 @@
+/* Motion: one ease-out curve (--ease), a spring for presses and small arrivals (--spring), four durations.
+   Content is visible by default; motion only refines how it arrives. Everything stops under reduced motion,
+   whether the system asks or the visitor's Patent Yard setting does. */
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes pop{0%{opacity:0;transform:scale(.86)}35%{opacity:1}100%{opacity:1;transform:scale(1)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes shimmer{to{background-position:-300% 0}}
+@keyframes cardIn{from{opacity:0;transform:translateY(12px)}}
+@keyframes dropIn{from{opacity:0;transform:translateY(-4px) scale(.98)}}
+@keyframes sheetIn{from{opacity:0;transform:translateY(-6px)}}
+@keyframes fieldIn{from{opacity:0;transform:translateY(-4px)}}
+@keyframes toastIn{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px) scale(.98)}}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+
+/* the page's opening moment: elements marked .rise arrive in order (--d) */
+.rise{animation:rise .9s var(--ease) both;animation-delay:calc(var(--d,0) * 80ms)}
+/* sections ease up as they scroll in (app.js adds .in); without scripts they simply show */
+.js .reveal{transform:translateY(18px);transition:transform .8s var(--ease)}
+.js .reveal.in{transform:none}
+.pop,.copied{animation:pop var(--t3) var(--spring)}
+
+/* page to page: a quick cross-fade; a card's drawing flies into the patent page's drawing ("pfig", theme.js) */
+@view-transition{navigation:auto}
+.top{view-transition-name:top}
+::view-transition-old(root){animation:vtOut .16s ease-in both}
+::view-transition-new(root){animation:vtIn .32s var(--ease) both}
+::view-transition-group(pfig){animation-duration:var(--t4);animation-timing-function:var(--ease)}
+::view-transition-old(pfig){animation-duration:.18s}
+::view-transition-new(pfig){animation-duration:var(--t3)}
+::view-transition-image-pair(pfig){isolation:auto}
+@keyframes vtOut{to{opacity:0}}
+@keyframes vtIn{from{opacity:0}}
+
+/* reduced motion: the system preference and the site setting (data-motion="reduce") */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
+  .js .reveal{transform:none}
+}
+:root[data-motion="reduce"]{scroll-behavior:auto}
+:root[data-motion="reduce"] *,:root[data-motion="reduce"] *::before,:root[data-motion="reduce"] *::after{animation:none!important;transition:none!important}
+:root[data-motion="reduce"]::view-transition-group(*),:root[data-motion="reduce"]::view-transition-old(*),:root[data-motion="reduce"]::view-transition-new(*){animation:none!important}
+:root[data-motion="reduce"] .reveal{transform:none}
+
+/* numbers strike into place digit by digit (app.js), never tweened */
+.strike i{font-style:normal;transition:opacity .3s var(--ease)}
+.strike i.off{opacity:.15}

@@ -15,7 +15,7 @@ class Account:
     def account(self):
         g = '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.6 12.3c0-.8-.1-1.6-.2-2.3H12v4.4h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-1.9 3.3-4.8 3.3-8.1z"/><path fill="#34A853" d="M12 23c3 0 5.5-1 7.3-2.7l-3.6-2.7c-1 .7-2.2 1.1-3.7 1.1-2.9 0-5.3-1.9-6.2-4.5H2.1v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.8 14.2a6.6 6.6 0 0 1 0-4.3V7.1H2.1a11 11 0 0 0 0 9.9l3.7-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3.1.6 4.2 1.7l3.2-3.2A11 11 0 0 0 2.1 7.1l3.7 2.8C6.7 7.3 9.1 5.4 12 5.4z"/></svg>'
         body = f"""<div class="page">
-<div id="loadView"><p class="muted" style="text-align:center;padding:48px 0"><span class="think">Loading your account…</span></p><noscript><p class="empty">Accounts need JavaScript turned on.</p></noscript></div>
+<div id="loadView"><p class="muted loading-row"><span class="think">Loading your account…</span></p><noscript><p class="empty">Accounts need JavaScript turned on.</p></noscript></div>
 <div id="authView" hidden>
   <div class="authwrap">
     <div class="authpitch">
@@ -39,7 +39,7 @@ class Account:
             <div class="meterbar" id="pwMeter" hidden><i></i></div><small id="pwHint" hidden>At least 8 characters. A short phrase is easiest to remember.</small></div>
           <button class="btn primary lg" type="submit" id="authSubmit"><span>Sign in</span></button>
           <p class="status authstatus" id="authStatus" aria-live="polite"></p>
-          <button class="btn quiet sm" type="button" id="forgotBtn" style="justify-self:center">Forgot your password?</button>
+          <button class="btn quiet sm self-center" type="button" id="forgotBtn">Forgot your password?</button>
         </form>
       </div>
       <div id="authDone" hidden></div>
@@ -48,7 +48,7 @@ class Account:
   </div>
 </div>
 <div id="newPwView" hidden>
-  <div class="authcard" style="max-width:440px;margin:32px auto 0"><h2>Set a new password</h2><p class="sub">Choose a new password for your account.</p><form id="newPwForm" class="authform"><div class="fgroup"><label for="npw">New password</label><input class="field" id="npw" type="password" minlength="8" required autocomplete="new-password"></div><button class="btn primary lg" type="submit"><span>Save password</span></button><p class="status" id="npwStatus" aria-live="polite"></p></form></div>
+  <div class="authcard authsolo"><h2>Set a new password</h2><p class="sub">Choose a new password for your account.</p><form id="newPwForm" class="authform"><div class="fgroup"><label for="npw">New password</label><input class="field" id="npw" type="password" minlength="8" required autocomplete="new-password"></div><button class="btn primary lg" type="submit"><span>Save password</span></button><p class="status" id="npwStatus" aria-live="polite"></p></form></div>
 </div>
 <div id="benchView" hidden>
   <div id="welcome"></div>
@@ -80,12 +80,12 @@ class Account:
     <div class="setrow"><div><b>Default order</b><p>How the register is sorted when you aren't searching. Recommended puts patents with a written summary and an easy build first.</p></div>{seg("sort", [("build", "Recommended"), ("recent", "Recently freed"), ("added", "Newly added")])}</div>
   </section>
   <section class="panel" aria-labelledby="sAcct"><h2 id="sAcct">Account</h2>
-    <div id="acctOff" hidden><p class="muted" style="padding:6px 0">Account settings didn't load. Reload the page to try again.</p></div>
+    <div id="acctOff" hidden><p class="muted pad-y">Account settings didn't load. Reload the page to try again.</p></div>
     <div id="acctOut" hidden><div class="setrow"><div><b>Not signed in</b><p>Sign in to reserve patents and keep inventions on your bench.</p></div><a class="btn primary" href="/account/?next=/settings/">Sign in</a></div></div>
     <div id="acctIn" hidden>
       <div class="setrow"><div><b>Email</b><p id="setEmail"></p></div></div>
-      <form class="setrow" id="nameForm"><div><b><label for="setName">Display name</label></b><p>Shown next to the patents you reserve. Leave it blank to appear as "A builder".</p><input class="field" id="setName" maxlength="40" style="max-width:320px;margin-top:8px"></div><div class="rowbtns"><button class="btn secondary" type="submit">Save name</button></div></form>
-      <form class="setrow" id="pwForm"><div><b><label for="setPw">New password</label></b><p>At least 8 characters.</p><input class="field" id="setPw" type="password" minlength="8" autocomplete="new-password" style="max-width:320px;margin-top:8px"></div><div class="rowbtns"><button class="btn secondary" type="submit">Change password</button></div></form>
+      <form class="setrow" id="nameForm"><div><b><label for="setName">Display name</label></b><p>Shown next to the patents you reserve. Leave it blank to appear as "A builder".</p><input class="field narrow-input" id="setName" maxlength="40"></div><div class="rowbtns"><button class="btn secondary" type="submit">Save name</button></div></form>
+      <form class="setrow" id="pwForm"><div><b><label for="setPw">New password</label></b><p>At least 8 characters.</p><input class="field narrow-input" id="setPw" type="password" minlength="8" autocomplete="new-password"></div><div class="rowbtns"><button class="btn secondary" type="submit">Change password</button></div></form>
       <div class="setrow"><div><b>Sign out</b><p>Signs you out in this browser.</p></div><button class="btn secondary" type="button" id="setSignOut">Sign out</button></div>
       <div class="setrow"><div><b>Delete account</b><p>Permanently removes your account, reservations and saved inventions.</p></div><button class="btn quiet" type="button" id="setDelete">Delete my account</button></div>
     </div>
@@ -94,6 +94,6 @@ class Account:
   <section class="panel" aria-labelledby="sData"><h2 id="sData">Data in this browser</h2>
     <div class="setrow"><div><b>Clear saved settings and drafts</b><p>Resets the settings above and removes your unsent studio draft from this browser. Your account isn't affected.</p></div><button class="btn secondary" type="button" id="clearLocal">Clear</button></div>
   </section>
-  <p class="muted" style="font-size:13px">Data checked against USPTO records {E(full_date(self.meta.get("verified") or self.meta["built"]))} · site version {self.version}</p>
+  <p class="muted note">Data checked against USPTO records {E(full_date(self.meta.get("verified") or self.meta["built"]))} · site version {self.version}</p>
 </div></div>"""
         self.page("/settings/", "Settings", "Appearance, browsing and account settings for Patent Yard.", body, scripts=("settings",), index=False)

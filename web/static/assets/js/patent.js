@@ -192,7 +192,7 @@ document.addEventListener("click", async e => {
   $(".dbody", kitDlg).innerHTML = `
     <div class="howto"><div><b>Pick a task.</b> We write the prompt for you.</div><div><b>Open Claude.</b> The prompt is copied; paste it if the box is empty.</div><div><b>Attach the brief</b> for the full claims and original drawings.</div></div>
     <div class="tasks" id="kTasks"></div>
-    <div class="fgroup"><label for="kIdea">Your idea or notes (optional)</label><textarea class="field" id="kIdea" maxlength="4000" style="min-height:80px" placeholder="Anything you already have in mind. Leave it blank to let Claude propose directions."></textarea></div>
+    <div class="fgroup"><label for="kIdea">Your idea or notes (optional)</label><textarea class="field short" id="kIdea" maxlength="4000" placeholder="Anything you already have in mind. Leave it blank to let Claude propose directions."></textarea></div>
     <div class="fgroup"><label for="kPrompt">Prompt for Claude</label><textarea class="field prompt" id="kPrompt" readonly></textarea></div>
     <div class="rowbtns"><button class="btn primary" type="button" id="kOpen">${icon("spark")}Copy prompt and open Claude</button><button class="btn secondary" type="button" id="kPdf">${icon("file")}Download PDF brief</button><button class="btn quiet" type="button" id="kCopy">${icon("copy")}Copy</button><a class="btn quiet" href="/studio/?patent=${encodeURIComponent(id)}">Open in studio</a></div>
     <p class="status">Runs in your own Claude account, which has a free plan. Patent Yard sends nothing to any AI service.</p>`;

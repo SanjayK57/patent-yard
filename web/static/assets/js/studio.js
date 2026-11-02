@@ -22,7 +22,7 @@ async function choose(id) {
   try { patent = await loadPatent(id); }
   catch { toast("That patent didn't load."); return; }
   if (patent.armed) { patent = null; toast("The studio doesn't work with weapons patents: Claude doesn't help design weapons."); return; }
-  picked.innerHTML = `<div class="srcline">${patent.sheets[0] ? `<img src="${patent.sheets[0]}" alt="">` : ""}<div><b>${esc(patent.t)}</b><div class="muted" style="font-size:12.5px">${esc(patent.n)} · ${esc(patent.status)}</div></div><button class="btn quiet sm" type="button" id="unpick" style="margin-left:auto">Remove</button></div>`;
+  picked.innerHTML = `<div class="srcline">${patent.sheets[0] ? `<img src="${patent.sheets[0]}" alt="">` : ""}<div><b>${esc(patent.t)}</b><div class="muted note">${esc(patent.n)} · ${esc(patent.status)}</div></div><button class="btn quiet sm push-right" type="button" id="unpick">Remove</button></div>`;
   $("#unpick").addEventListener("click", () => choose(null));
   pq.value = ""; list.hidden = true; kit.refresh(); draft();
 }
@@ -33,7 +33,7 @@ pq.addEventListener("input", async () => {
   const num = q.replace(/[,\s/]/g, "").match(/^(?:us)?(\d{5,11})/i)?.[1];
   const hits = await (num ? fetch(`/patents/${num}`, { method: "HEAD" }).then(r => r.ok ? [{ id: new URL(r.url).pathname.split("/")[2], t: "Patent " + numberLabel(`US-${num}-`).trim() }] : []) : bestMatches(q, 8)).catch(() => []);
   if (my !== seqP) return;
-  list.innerHTML = hits.length ? hits.map(p => `<li><button type="button" data-pick="${esc(p.id)}"><span>${esc(p.t)}</span><small>${esc(numberLabel(p.id))}</small></button></li>`).join("") : `<li class="status" style="padding:8px 10px">No matches.</li>`;
+  list.innerHTML = hits.length ? hits.map(p => `<li><button type="button" data-pick="${esc(p.id)}"><span>${esc(p.t)}</span><small>${esc(numberLabel(p.id))}</small></button></li>`).join("") : `<li class="status pad-item">No matches.</li>`;
   list.hidden = false;
 });
 list.addEventListener("click", e => { const b = e.target.closest("[data-pick]"); if (b) choose(b.dataset.pick); });

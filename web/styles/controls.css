@@ -1,0 +1,86 @@
+/* Controls: buttons, filter chips, segmented controls, form fields, status labels. One vocabulary on every page. */
+
+/* ---- buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:var(--control-h);padding:0 14px;border:0;border-radius:var(--r);
+  font-size:var(--fs-ui);font-weight:550;line-height:1;letter-spacing:-.005em;white-space:nowrap;cursor:pointer;text-decoration:none;
+  transition:background-color var(--t1) var(--ease),box-shadow var(--t1) var(--ease),color var(--t1) var(--ease),transform var(--t3) var(--spring)}
+.btn:active{transform:scale(.97);transition-duration:var(--t1),var(--t1),var(--t1),60ms}
+.btn .i{width:16px;height:16px}
+.btn.primary{background:var(--accent);color:var(--accent-ink);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),var(--sh-1)}
+.btn.primary:hover{background:var(--accent-hover);color:var(--accent-ink)}
+.btn.secondary{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line-strong),var(--sh-1)}
+.btn.secondary:hover{background:var(--surface-2);color:var(--ink);box-shadow:0 0 0 1px color-mix(in srgb,var(--ink) 30%,transparent),var(--sh-1)}
+.btn.quiet,.btn.link{background:transparent;color:var(--ink-2);padding-inline:10px}
+.btn.quiet:hover,.btn.link:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+.btn.link{color:var(--link)}
+.btn.link:hover{color:var(--accent-hover)}
+.btn.sm{min-height:var(--control-h-sm);padding-inline:11px;font-size:var(--fs-sm);gap:6px}
+.btn.sm .i{width:15px;height:15px}
+.btn.lg{min-height:var(--control-h-lg);padding-inline:20px;font-size:var(--fs-body);border-radius:10px}
+.btn:disabled,.btn[aria-disabled="true"]{opacity:.45;cursor:not-allowed;transform:none}
+.btn.loading{position:relative;color:transparent!important;pointer-events:none}
+.btn.loading>*{visibility:hidden}
+.btn.loading::after{content:"";position:absolute;inset:0;margin:auto;width:15px;height:15px;border:2px solid currentColor;border-color:var(--accent-ink) var(--accent-ink) var(--accent-ink) transparent;
+  border-radius:50%;animation:spin .7s linear infinite}
+.btn.secondary.loading::after,.btn.quiet.loading::after,.btn.link.loading::after{border-color:var(--ink-2) var(--ink-2) var(--ink-2) transparent}
+
+/* ---- filter chips: text buttons that fill with the accent tint when on */
+.chip{display:inline-flex;align-items:center;gap:6px;height:var(--control-h-sm);padding:0 11px;border:0;border-radius:var(--r);background:transparent;
+  color:var(--ink-2);font-size:13.5px;font-weight:500;line-height:1;white-space:nowrap;text-decoration:none}
+button.chip,a.chip{cursor:pointer;transition:background-color var(--t1) var(--ease),color var(--t1) var(--ease),box-shadow var(--t1) var(--ease)}
+button.chip:hover,a.chip:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--accent-soft);color:var(--link);font-weight:600}
+.chip small,.chip .num{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.chip[aria-pressed="true"] small,.chip[aria-pressed="true"] .num{color:color-mix(in srgb,var(--link) 75%,transparent)}
+.chip .i{width:14px;height:14px}
+.chip.sm{height:24px;padding:0 8px;font-size:12px;cursor:default;background:var(--sunken);color:var(--ink-2)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+
+/* ---- segmented controls: a recessed track with a raised thumb on the chosen option */
+.seg,.viewtog{display:inline-flex;gap:2px;padding:2px;border-radius:9px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.seg{display:flex}
+.seg button,.viewtog button{flex:1;display:inline-flex;white-space:nowrap;align-items:center;justify-content:center;gap:6px;min-height:28px;padding:0 12px;border:0;border-radius:7px;background:none;
+  color:var(--ink-2);font-size:13.5px;font-weight:500;line-height:1;cursor:pointer;transition:background-color var(--t2) var(--ease),color var(--t1) var(--ease),box-shadow var(--t2) var(--ease)}
+.seg button:hover,.viewtog button:hover{color:var(--ink)}
+.seg button[aria-selected="true"],.seg button[aria-checked="true"],.seg button[aria-pressed="true"],.viewtog button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1),0 0 0 .5px var(--line)}
+.viewtog button{width:32px;padding:0}
+.seg.inline{display:inline-flex;flex-wrap:wrap}
+.seg.inline button{flex:none}
+
+/* ---- form fields */
+input.field,select.field,textarea.field{width:100%;min-height:38px;padding:8px 12px;border:1px solid var(--line-strong);border-radius:var(--r);background:var(--surface);
+  font-size:15px;line-height:1.4;color:var(--ink);transition:border-color var(--t2) var(--ease),box-shadow var(--t2) var(--ease)}
+input.field:hover,select.field:hover,textarea.field:hover{border-color:color-mix(in srgb,var(--ink) 32%,transparent)}
+input.field:focus,select.field:focus,textarea.field:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+input.field[aria-invalid="true"]{border-color:var(--danger)}
+select.field{appearance:none;-webkit-appearance:none;padding-right:34px;cursor:pointer;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M5 6.5l3 3 3-3' fill='none' stroke='%237B8287' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 10px center;background-size:16px}
+textarea.field{min-height:110px;resize:vertical}
+.fgroup{display:grid;gap:7px}
+.fgroup label{font-size:13.5px;font-weight:550;color:var(--ink)}
+.fgroup small{font-size:12.5px;line-height:1.45;color:var(--ink-3)}
+.opt{margin-left:4px;font-size:12.5px;font-weight:400;color:var(--ink-3)}
+.status{font-size:13.5px;color:var(--ink-3)}
+.status.err{color:var(--danger)}
+.status.ok{color:var(--free)}
+
+/* ---- status labels: tinted, with a dot; abandoned (inferred) gets a hollow dot */
+.badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:var(--r-sm);background:var(--sunken);color:var(--ink-2);
+  font-size:12px;font-weight:550;line-height:1;white-space:nowrap;text-decoration:none}
+.badge::before{content:"";width:6px;height:6px;flex:none;border-radius:50%;background:currentColor}
+.badge.expired{background:var(--expired-soft);color:var(--expired)}
+.badge.lapsed{background:var(--lapsed-soft);color:var(--lapsed)}
+.badge.abandoned{background:var(--aband-soft);color:var(--aband)}
+.badge.abandoned::before{width:7px;height:7px;background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}
+.badge.reserved{background:var(--reserved-soft);color:var(--reserved)}
+.badge.ok{background:var(--free-soft);color:var(--free)}
+.badge.plain::before,.badge.ok::before{display:none}
+a.badge.plain:hover{color:var(--ink)}
+.badges{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+
+/* build level: five ticks */
+.meter{display:inline-flex;gap:2px;margin-right:6px;vertical-align:-1px}
+.meter i{width:4px;height:10px;border-radius:1px;background:var(--line-strong)}
+.meter i.on{background:var(--ink-2)}
+.seg small{font-size:12px;font-weight:500;font-variant-numeric:tabular-nums;color:var(--ink-3)}

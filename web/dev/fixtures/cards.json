@@ -1,0 +1,21 @@
+{
+  "_note": "Development fixtures: invented sample cards for tests and local previews, not real patent records.",
+  "cards": [
+    {"id": "US-9000001-B2", "href": "/patents/US-9000001-B2/", "title": "Sample folding ladder", "number": "US 9,000,001 B2", "field": "Tools & Workshop",
+     "status": {"cls": "lapsed", "label": "Lapsed, fee not paid"}, "img": "/img/p/US-9000001-B2/1.png", "glyph": "tools", "sheets": 6, "eager": true,
+     "summary": "A sample summary with <tags> & \"quotes\" and an apostrophe's escape.",
+     "meta": [["Build", {"build": 2, "name": "Garage"}, "Estimate: basic power tools"], ["Lapsed", "Oct 2025"], ["Assignee", "None recorded", "None recorded"]]},
+    {"id": "US-2015000002-A1", "href": "/patents/US-2015000002-A1/", "title": "Sample sensor glove", "number": "US 2015/000002 A1", "field": "Medical Devices",
+     "status": {"cls": "abandoned", "label": "Likely abandoned application"}, "img": "", "glyph": "medical", "sheets": 0, "eager": false, "summary": "",
+     "meta": [["Filed", "2014"], ["Published", "2015"], ["Applicant", "Sample Labs Inc.", "Sample Labs Inc."]]},
+    {"id": "US-5000003-A", "href": "/patents/US-5000003-A/", "title": "Sample bicycle brake", "number": "US 5,000,003 A", "field": "Vehicles & Drones",
+     "status": {"cls": "expired", "label": "Expired, full term"}, "img": "https://patentimages.storage.googleapis.com/pages/US5000003-1.png", "alt": "Drawing sheet 1 of US 5,000,003 A",
+     "remote": true, "glyph": "mobility", "sheets": 1, "archive": true, "meta": [["Granted", "1991"], ["Kind", "Full term"], ["Assignee", "None recorded", "None recorded"]]},
+    {"id": "DE-102004000004-A1", "href": "/patents/DE-102004000004-A1/", "title": "Sample hinge", "number": "DE 102004000004 A1", "field": "Germany · Industrial Equipment",
+     "status": {"cls": "expired", "label": "Past its term"}, "img": "", "glyph": "industrial", "archive": true,
+     "meta": [["Published", "2004"], ["Kind", "A1"], ["Assignee", "—", ""]]},
+    {"id": "US-9000005-B1", "href": "/patents/US-9000005-B1/", "title": "Sample solar lantern", "number": "US 9,000,005 B1", "field": "Energy & Sustainability",
+     "status": {"cls": "expired", "label": "Expired, full term"}, "img": "/img/p/US-9000005-B1/1.png", "glyph": "energy", "sheets": 1, "feat": true,
+     "summary": "A lead card.", "angle": "A sample modern angle.", "meta": [["Build", {"build": 1, "name": "Weekend"}, "Estimate"], ["Term ended", "Jan 2020"], ["Assignee", "Sample Co.", "Sample Co."]]}
+  ]
+}

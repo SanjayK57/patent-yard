@@ -1,0 +1,11 @@
+/* Printing a patent page: the content, in black on white, without the site around it. */
+@media print{
+  body{padding:0;background:#fff;color:#000;font-size:11pt}
+  .top,footer.foot,.toc,.pactions,.resline,#toast,.skip,.noprint,.readbar,.savebtn{display:none!important}
+  .playout{display:block;margin:0}
+  .psec{break-inside:auto;padding-bottom:16pt;margin-bottom:16pt;box-shadow:none}
+  .bigfig img,.gallery img{filter:none!important;mix-blend-mode:normal!important}
+  .gallery figure{break-inside:avoid}
+  .desc.clamped{max-height:none;-webkit-mask-image:none;mask-image:none}
+  a{color:#000;text-decoration:none}
+}

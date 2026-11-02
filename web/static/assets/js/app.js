@@ -1,5 +1,6 @@
 // Runs on every page: menu, account button, reservation marks on patent cards, and shared helpers.
 import { backend } from "./backend.js";
+import { card, esc, icon } from "./cards.js";
 import { latest, topMatches, patentNumber, numberLabel, numLabel, randomPatent, STATUS, archiveSearch, archiveCards } from "./catalog.js";
 
 // Best matches across both collections: the recently freed register first, then the archive fills up to n.
@@ -12,11 +13,10 @@ export async function bestMatches(q, n) {
   return [...hits, ...more];
 }
 const label = p => numberLabel(p.id);
+export { esc, icon };
 
 export const $ = (s, el = document) => el.querySelector(s);
 export const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-export const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-export const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
 export const DAY = 864e5;
 export const fmtDate = (s, o = { month: "short", day: "numeric", year: "numeric" }) => { const d = new Date(s); return isNaN(d) ? "" : d.toLocaleDateString("en-US", o); };
 export const daysLeft = until => Math.max(0, Math.ceil((Date.parse(until) - Date.now()) / DAY));
@@ -218,8 +218,8 @@ export function cardItem(card) {
     fld: card.querySelector(".fieldname")?.firstChild?.textContent.replace(/·\s*$/, "").trim() || "", img: !!img };
 }
 export function miniCard(x) {
-  return `<article class="card" data-id="${esc(x.id)}"><div class="fig${x.img ? "" : " plate"}" data-tag="No drawing">${x.img ? `<img src="/img/p/${esc(x.id)}/1.png" alt="Drawing from ${esc(x.n)}" loading="lazy" decoding="async">` : `<svg class="fglyph" aria-hidden="true"><use href="#f-other"/></svg><span class="numart">${esc(x.n)}</span>`}<span class="over"><span class="badge ${esc(x.st)}">${esc(STATUS[x.st] || "")}</span></span></div>`
-    + `<div class="cbody"><span class="fieldname">${esc(x.fld)} · <span class="num-id">${esc(x.n)}</span></span><h3><a href="/patents/${esc(x.id)}/">${esc(x.t)}</a></h3></div></article>`;
+  return card({ id: x.id, href: `/patents/${x.id}/`, title: x.t, number: x.n, field: x.fld, status: { cls: x.st, label: STATUS[x.st] || "" },
+    img: x.img ? `/img/p/${x.id}/1.png` : "", glyph: "other" });
 }
 // a bookmark on every card
 export function decorateCards(root = document) {

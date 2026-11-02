@@ -2,7 +2,8 @@
 // from the cards project; the cards for a page come from /api/cards, which slices them out of their packs.
 // Docs are numbered newest first, so matching docs in increasing order are the newest matches.
 import { $, $$, esc } from "./app.js";
-import { words, crc32, latest, plateHTML } from "./catalog.js";
+import { words, crc32, latest } from "./catalog.js";
+import { card } from "./cards.js";
 
 const W = window.PY_CONFIG.world;
 const grid = $("#wgrid"), count = $("#wcount"), more = $("#wmore"), q = $("#wq"), cc = $("#wcc"), free = $("#wfree"), fld = $("#wfld"), y1 = $("#wy1"), y2 = $("#wy2");
@@ -60,10 +61,10 @@ function cardHTML(line) {
   const past = +flags & 1 && !(c === "US" && Date.parse(`${+date.slice(0, 4) + 20}${date.slice(4)}`) > Date.now());
   // kind codes B, C, E and S are granted patents and U a registered utility model in most offices, even without the flag
   const granted = +flags & 2 || /^[BCES]/.test(kind), utility = /^U/.test(kind);
-  const badge = `<span class="badge ${past ? "expired" : "plain"}">${past ? "Past its term" : utility ? "Registered" : granted ? "Granted" : "Application"}</span>`;
-  return `<article class="card acard" data-id="${esc(id)}">${plateHTML(fields[+field] || "other", num(id), `${c} · ${date.slice(0, 4)}`, badge)}`
-    + `<div class="cbody"><span class="fieldname">${esc(country(c))} · ${esc(names[fields[+field]] || "")}</span><h3><a href="/patents/${esc(id)}/">${esc(t)}</a></h3><span class="tstat">${badge}</span></div>`
-    + `<div class="cmeta"><div><small>Published</small><span>${esc(date.slice(0, 4))}</span></div><div><small>Kind</small><span>${esc(kind)}</span></div><div><small>Assignee</small><span title="${esc(a)}">${esc(a || "—")}</span></div></div></article>`;
+  const key = fields[+field] || "other";
+  return card({ id, href: `/patents/${id}/`, title: t, number: num(id), field: `${country(c)} · ${names[key] || ""}`, archive: true, glyph: key, img: "",
+    status: { cls: past ? "expired" : "plain", label: past ? "Past its term" : utility ? "Registered" : granted ? "Granted" : "Application" },
+    meta: [["Published", date.slice(0, 4)], ["Kind", kind], ["Assignee", a || "—", a]] });
 }
 
 // a patent number goes straight to its page, in Google Patents' form CC-NUMBER-KIND: "CN 112345678 A", "JP2005-123456A",

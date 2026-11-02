@@ -1,0 +1,42 @@
+/* Free to use (browse), field pages, All patents and the fields index: a search toolbar over dense results. */
+.filters{display:grid;gap:var(--s3);margin-bottom:var(--s6);padding:var(--s4) var(--s5);border-radius:var(--r-lg);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--sh-1)}
+.frow{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+.frow .lab{min-width:84px;margin-right:var(--s2);font-size:var(--fs-sm);font-weight:550;color:var(--ink-3)}
+.frow>.scrollrow{flex:1 1 0;width:0;min-width:0}
+.scrollrow{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
+.scrollrow::-webkit-scrollbar{display:none}
+.qrow{flex-wrap:nowrap;gap:var(--s2)}
+.filters .qrow input.field{min-height:44px;padding-left:40px;border-color:transparent;border-radius:10px;background:var(--sunken) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='6.5' fill='none' stroke='%237B8287' stroke-width='1.8'/%3E%3Cpath d='M16 16l4 4' stroke='%237B8287' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 13px center/18px;
+  font-size:var(--fs-read)}
+.filters .qrow input.field:hover{border-color:var(--line)}
+.filters .qrow input.field:focus{border-color:var(--accent);background-color:var(--surface)}
+.filters select.field{width:auto;min-height:var(--control-h-sm);padding:0 32px 0 10px;border-color:transparent;background-color:var(--sunken);font-size:13.5px;font-weight:500;color:var(--ink-2)}
+.filters select.field:hover{border-color:var(--line)}
+.frow .seg{margin-right:var(--s2)}
+.ftoggle{display:none;flex:none;height:44px}
+.colrow .chip small{opacity:.85}
+.filters.archive .frow:not(.qrow):not(.colrow):not(.regrow){display:none}
+.filters:not(.archive) .regrow{display:none}
+@media (max-width:700px){
+  .filters{padding:var(--s3)}
+  .frow .lab{flex-basis:100%;margin:var(--s2) 0 2px}
+  .ftoggle{display:inline-flex}
+  .filters:not(.open) .frow:not(.qrow){display:none}
+  .filters.open .frow:not(.qrow){animation:fieldIn var(--t2) var(--ease) both}
+}
+.archhint{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3);margin:calc(var(--s2) * -1) 0 var(--s5);padding:var(--s3) var(--s4);
+  border-radius:var(--r-md);background:var(--accent-soft);font-size:var(--fs-ui);color:var(--ink-2)}
+.archhint a{font-weight:600}
+.results-foot{justify-content:center;margin-top:var(--s5)}
+
+/* the fields index */
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--s2) var(--gap)}
+.tile{display:grid;grid-template-columns:88px minmax(0,1fr);align-items:center;gap:var(--s4);padding:var(--s3);border-radius:var(--r-md);color:var(--ink);
+  transition:background-color var(--t1) var(--ease)}
+.tile:hover{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
+.tile .th{display:grid;place-items:center;width:88px;height:66px;border-radius:var(--r);overflow:hidden}
+.tile .th img{width:100%;height:100%;padding:5px;object-fit:contain}
+.tile .th>svg{width:24px;height:24px;color:var(--ink-3)}
+.tile b{display:block;font-size:var(--fs-read);font-weight:600;letter-spacing:-.01em}
+.tile small{display:block;margin-top:2px;font-size:var(--fs-sm);line-height:1.45;color:var(--ink-3)}
+.tile:hover b{color:var(--link)}

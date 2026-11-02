@@ -186,7 +186,7 @@ export function renderArchive(tpl, r) {
   <div class="stack">${arm ? KIT_OFF : ""}
     ${r.ab ? `<div class="block"><h3>Abstract <span class="src">From the ${R ? R.adj + " " : ""}patent</span></h3><p class="prose source">${E(r.ab)}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Read the whole patent</h3><p class="prose">Listed from its ${office} record in Patent Yard's ${R ? `archive of ${R.adj} patents past their term` : "full-term archive"}. Its claims, description and drawings are in the <a href="${doc}" ${EXT}>${R ? L.docLabel : "USPTO PDF"}</a> and on <a href="${L.google}" ${EXT}>Google Patents</a>${arm ? "" : ", and the Claude kit works from them"}.</p>
-      <div class="rowbtns" style="margin-top:12px"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a></div></div></div>
+      <div class="rowbtns gap-top"><a class="btn secondary sm" href="${L.google}" ${EXT}>Google Patents${icon("ext")}</a><a class="btn secondary sm" href="${doc}" ${EXT}>${icon("file")}${R ? L.docLabel : "USPTO PDF"}</a></div></div></div>
     <div class="panel soft"><div class="block"><h3>Why it's listed</h3><ul class="checks">${checks.map(c => `<li>${E(c)}</li>`).join("")}<li class="warn">${E(warn)}</li></ul></div></div>
     <div class="facts">
       ${R ? R.facts(r).map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("") + `<div><small>Classification (${R.ipc})</small><b>${cpc}</b></div>`
@@ -198,7 +198,7 @@ export function renderArchive(tpl, r) {
   <section class="psec" id="sources"><h2>Sources &amp; verification</h2><div class="stack">
     <div class="cols2 links2"><div class="block"><h3>Official ${office} records</h3><div class="linklist">${official.map(x => lc(x)).join("")}</div></div>
     <div class="block"><h3>Cross-check elsewhere</h3><div class="linklist">${cross.map(x => lc(x)).join("")}</div></div></div>
-    <p class="muted" style="font-size:13px">Everything on this page comes from the ${office} record linked above.${R ? " " + R.credit : ""}</p>
+    <p class="muted note">Everything on this page comes from the ${office} record linked above.${R ? " " + R.credit : ""}</p>
     <div class="rowbtns noprint"><button class="btn secondary sm" type="button" id="reportBtn" hidden>Report a problem with this listing</button></div>
   </div></section>
   </div>

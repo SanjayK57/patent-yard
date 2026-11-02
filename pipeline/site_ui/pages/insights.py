@@ -88,7 +88,7 @@ class Insights:
   <section class="panel reveal span2"><h2>Lapses every week</h2><p class="muted">Patents the Official Gazette listed as expired for an unpaid maintenance fee, issue by issue.</p><div class="chartbox">{chart}</div></section>
   <section class="panel reveal"><h2>By field</h2><p class="muted">All {n + len(recs):,} listed patents by the field of their main classification: recently freed and archive together.</p><div class="hbars">{field_bars}</div></section>
   <section class="panel reveal"><h2>When owners stop paying</h2><p class="muted">Maintenance fees fall due 3.5, 7.5 and 11.5 years after grant. Of the {len(lap):,} patents that lapsed in the past year, the share by the fee that went unpaid.</p><div class="vbars">{lapse_bars}</div>
-    <h2 style="margin-top:26px">Most frequent former owners</h2><p class="muted">Companies with the most patents in the register, every spelling of a name counted together.</p><ol class="owners">{own}</ol></section>
+    <h2 class="gap-top-lg">Most frequent former owners</h2><p class="muted">Companies with the most patents in the register, every spelling of a name counted together.</p><ol class="owners">{own}</ol></section>
   {archive_sec}
 </div>
 {"</section>" if WSTATS else ""}
@@ -130,7 +130,7 @@ class Insights:
 <div class="ins">
   <section class="panel reveal span2"><h2>Published each year</h2><p class="muted">Patents and applications by the year they were published, across every office, from 1900 to {years[-1][0]}.</p><div class="chartbox">{chart}</div></section>
   <section class="panel reveal"><h2>By office</h2><p class="muted">The 12 offices with the most records. The bright part of each bar is past its term.</p><div class="hbars">{office_bars}</div>
-    <h2 style="margin-top:26px">Biggest owners</h2><p class="muted">The owners with the most records worldwide, every spelling of a name counted together.</p><ol class="owners">{owners}</ol></section>
+    <h2 class="gap-top-lg">Biggest owners</h2><p class="muted">The owners with the most records worldwide, every spelling of a name counted together.</p><ol class="owners">{owners}</ol></section>
   <section class="panel reveal"><h2>By field</h2><p class="muted">Records by the field of their main classification; {big_number(w["fields"].get("other", 0))} more have no classification or fall outside these fields.</p><div class="hbars">{field_bars}</div></section>
 </div>
 </section>"""

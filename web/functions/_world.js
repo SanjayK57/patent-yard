@@ -132,7 +132,7 @@ export function renderWorld(tpl, r) {
   <div class="stack">
     ${r.ab ? `<div class="block"><h3>Abstract${r.ab.length >= 320 ? " <span class=\"src\">Opening only</span>" : ""}</h3><p class="prose source">${E(r.ab)}${r.ab.length >= 320 ? "…" : ""}</p></div>` : ""}
     <div class="panel soft"><div class="block"><h3>Is it still in force?</h3><ul class="checks">${checks.map((c, i) => `<li${!r.free && i === checks.length - 1 ? ' class="warn"' : ""}>${E(c)}</li>`).join("")}</ul>
-      ${r.free ? "" : `<p class="muted" style="margin-top:8px">Looking for patents that are no longer in force? <a href="/browse/">Browse the free-to-use register</a>.</p>`}</div></div>
+      ${r.free ? "" : `<p class="muted gap-top">Looking for patents that are no longer in force? <a href="/browse/">Browse the free-to-use register</a>.</p>`}</div></div>
     <div class="facts">${facts.map(([k, v]) => `<div><small>${k}</small><b>${E(v)}</b></div>`).join("")}</div>
   </div></div></section>
   ${timeline}

@@ -5,7 +5,7 @@ from ..base import BUILD, BUILD_MEANS, E, EXT, OFFICES, SITE, WORLD, big_number
 
 class Content:
     def how(self):
-        body = f"""<div class="page narrow" style="margin-inline:auto">
+        body = f"""<div class="page narrow center">
 <div class="sechead"><div><h1>How a patent gets here</h1><p>Every patent comes from an official patent office source (the USPTO, the EPO, the Canadian Intellectual Property Office or IP Australia) and links back to it. Recently lapsed patents are rechecked daily, and new ones are added every week.</p></div></div>
 <ol class="pipe">
   <li><span class="n">1</span><b>Recently lapsed</b><p>Every patent the USPTO's weekly Official Gazette listed in the past year as expired for an unpaid maintenance fee, minus any reinstated since. These get their full file: claims, description and drawings.</p><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>Official Gazette for Patents</a></li>
@@ -41,7 +41,7 @@ class Content:
 
     def about(self):
         m = self.meta
-        body = f"""<div class="page narrow" style="margin-inline:auto">
+        body = f"""<div class="page narrow center">
 <div class="sechead"><div><h1>About Patent Yard</h1><p>A free register of patents and applications that are no longer in force, for people who build things.</p></div></div>
 <div class="prose">
 <p>Every week, thousands of US patents stop being enforceable: owners stop paying maintenance fees and terms run out. Other applications are abandoned before they are ever granted. Once that happens, the patent's own claims no longer stop anyone in the US from making, using or selling what they describe, although other rights can still apply to a product. The same happens in Europe, Canada, Australia and everywhere else. Most of these inventions are never looked at again.</p>
@@ -61,15 +61,15 @@ class Content:
         self.page("/about/", "About", "Why Patent Yard exists, where its data comes from, and what it promises.", body, section="/about/")
 
     def contact(self):
-        body = """<div class="page narrow" style="margin-inline:auto">
+        body = """<div class="page narrow center">
 <div class="sechead"><div><h1>Contact</h1><p>Questions, corrections or ideas for Patent Yard. To report a problem with a particular patent, use "Report a problem" on its page so we know which one.</p></div></div>
 <div class="panel"><noscript><p class="muted">The contact form needs JavaScript turned on.</p></noscript><form id="contactForm" class="stack" novalidate hidden>
   <div class="fgroup"><label for="cEmail">Your email (optional, if you'd like a reply)</label><input class="field" id="cEmail" type="email" maxlength="200" autocomplete="email"></div>
-  <div class="fgroup"><label for="cBody">Message</label><textarea class="field" id="cBody" maxlength="4000" required style="min-height:160px"></textarea></div>
+  <div class="fgroup"><label for="cBody">Message</label><textarea class="field tall" id="cBody" maxlength="4000" required></textarea></div>
   <input class="trap" id="cWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
   <div class="rowbtns"><button class="btn primary" type="submit">Send message</button><span class="status" id="cStatus" aria-live="polite"></span></div>
 </form><p id="cOff" class="muted" hidden>The contact form didn't load. Check your connection or any content blocker, then reload the page.</p></div>
-<p class="muted" style="margin-top:14px;font-size:14px">We read every message. Patent Yard can't give legal advice; for that, talk to a registered patent attorney or agent. Please don't send confidential details of your own inventions. Messages are handled as described in our <a href="/legal/privacy/">Privacy Policy</a>.</p>
+<p class="muted note gap-top">We read every message. Patent Yard can't give legal advice; for that, talk to a registered patent attorney or agent. Please don't send confidential details of your own inventions. Messages are handled as described in our <a href="/legal/privacy/">Privacy Policy</a>.</p>
 </div>"""
         self.page("/contact/", "Contact", "Get in touch with Patent Yard: questions, corrections and ideas.", body, scripts=("contact",))
 
@@ -150,5 +150,5 @@ class Content:
             self.page(f"/legal/{slug}/", title, f"Patent Yard {title.lower()}: how the free patent register works and what it promises.", body)
 
     def not_found(self):
-        body = '<div class="notfound"><h1>404</h1><h2 style="margin-top:18px;font-size:32px">Not here</h2><p class="muted" style="margin:14px 0 24px">That page doesn\'t exist, or the patent has left the register after a daily check.</p><div class="rowbtns" style="justify-content:center"><a class="btn primary" href="/browse/">Browse patents</a><a class="btn secondary" href="/">Home</a></div></div>'
+        body = '<div class="notfound"><h1>404</h1><h2 class="nf2">Not here</h2><p class="muted nf3">That page doesn\'t exist, or the patent has left the register after a daily check.</p><div class="rowbtns center-row"><a class="btn primary" href="/browse/">Browse patents</a><a class="btn secondary" href="/">Home</a></div></div>'
         self.page("/404.html", "Page not found", "This page doesn't exist.", body, index=False)

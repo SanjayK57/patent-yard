@@ -182,7 +182,7 @@ def claim_map(claims):
         f'<div class="cgroup"><a class="ci" href="#claim-{n}">Claim {n}</a><small>{len(deps) or "No"} {"claim builds" if len(deps) == 1 else "claims build"} on it</small>'
         + ('<div class="cdeps">' + "".join(f'<a href="#claim-{k}">{k}</a>' for k in deps) + "</div>" if deps else "") + "</div>"
         for n, deps in groups.items())
-    return (f'<div class="sidecard"><div class="panel"><div class="block"><h3>Claim map</h3><p class="muted" style="font-size:13px;margin-bottom:12px">'
+    return (f'<div class="sidecard"><div class="panel"><div class="block"><h3>Claim map</h3><p class="muted note mb">'
             f'Independent claims stand on their own. The others add detail to the claim they name.</p>{rows}</div></div></div>')
 
 
@@ -237,7 +237,7 @@ class PatentPage:
                    f'<div class="nofig"><b>This document has no drawings.</b><p class="muted">Claude can sketch it from the patent text.</p><button class="btn secondary sm" type="button" data-kit="sketch">{icon("spark")}Sketch it with Claude</button></div>')
         cpc = dd.get("cpc", [])
         cpc_html = (E(cpc[0]) + (f' <span class="muted" title="{E(", ".join(cpc))}">+{len(cpc) - 1} more</span>' if len(cpc) > 1 else "")) if cpc else "—"
-        abstract = (f'<div class="block"><h3>Abstract <span class="src">Excerpt, from Google Patents</span></h3><p class="prose source">{E(dd["abs"])}</p><p class="muted" style="margin-top:8px;font-size:13.5px">The full abstract, claims and description are {later}</p></div>' if dd.get("abx") else
+        abstract = (f'<div class="block"><h3>Abstract <span class="src">Excerpt, from Google Patents</span></h3><p class="prose source">{E(dd["abs"])}</p><p class="muted note gap-top">The full abstract, claims and description are {later}</p></div>' if dd.get("abx") else
                     f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose source">{E(dd["abs"])}</p></div>' if dd["abs"] else
                     f'<div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>Full text on its way</h3><p class="prose">This {kind} is listed from its USPTO record because it passed every check. Its abstract, claims and description are {later}</p></div></div>')
         plain = "" if e["auto"] else f'<div class="block"><h3>In plain English <span class="src">Patent Yard summary</span></h3><p class="lead">{E(e["h"])}</p></div>'
@@ -313,10 +313,10 @@ class PatentPage:
             jump = "".join(f'<a href="#{a}">{E(lbl)}</a>' for a, lbl in heads[:14])
             aside = ('<div class="sidecard"><div class="panel"><div class="block"><h3>In this description</h3>'
                      + (f'<nav class="jump" aria-label="Description sections">{jump}</nav>' if jump else "")
-                     + f'<p class="muted" style="font-size:13px;margin-top:10px">About {words:,} words. The <a href="{L["pdf"]}" {EXT}>USPTO PDF</a> has it with every drawing.</p></div></div></div>')
+                     + f'<p class="muted note gap-top">About {words:,} words. The <a href="{L["pdf"]}" {EXT}>USPTO PDF</a> has it with every drawing.</p></div></div></div>')
             desc = f"""<section class="psec" id="description"><h2>Description</h2>
 <div class="withaside"><div><div class="desc{" clamped" if long_ else ""}" id="desc">{"".join(parts)}{f'<p class="muted">The description continues in the <a href="{L["pdf"]}" {EXT}>full USPTO document</a>.</p>' if doc.get("more") else ""}</div>
-{'<div class="rowbtns noprint" style="margin-top:14px"><button class="btn secondary" type="button" id="descMore" aria-controls="desc" aria-expanded="false">Read the full description</button></div>' if long_ else ""}</div>{aside}</div></section>"""
+{'<div class="rowbtns noprint gap-top"><button class="btn secondary" type="button" id="descMore" aria-controls="desc" aria-expanded="false">Read the full description</button></div>' if long_ else ""}</div>{aside}</div></section>"""
         else:
             desc = (f'<section class="psec" id="description"><h2>Description</h2><div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>On its way</h3><p class="prose">The description is {later}</p></div></div></section>' if e["pending"] else
                     f'<section class="psec" id="description"><h2>Description</h2><p class="prose">The full description is in the <a href="{L["pdf"]}" {EXT}>USPTO document</a>.</p></section>')
@@ -325,7 +325,7 @@ class PatentPage:
         fees = fee_schedule(e)
         fee_html = ""
         if fees:
-            fee_html = (f'<div class="panel"><div class="block"><h3>Maintenance fees</h3><p class="muted" style="font-size:14px;margin-bottom:12px">Fees are due 3.5, 7.5 and 11.5 years after grant. This patent expired on {E(full_date(e["x"]))}, so the fee marked "not paid" was the one that went unpaid.</p><div class="fees">'
+            fee_html = (f'<div class="panel"><div class="block"><h3>Maintenance fees</h3><p class="muted note mb">Fees are due 3.5, 7.5 and 11.5 years after grant. This patent expired on {E(full_date(e["x"]))}, so the fee marked "not paid" was the one that went unpaid.</p><div class="fees">'
                         + "".join(f'<div class="fee"><b>{y}-year fee</b><small>Due {E(full_date(due))}</small><span class="badge {"ok" if st == "paid" else "lapsed" if st == "missed" else "plain"}">{"Paid" if st == "paid" else "Not paid" if st == "missed" else "Never came due"}</span></div>' for y, due, st in fees)
                         + "</div></div></div>")
         me = {"n": e["n"], "id": pid, "t": e["ot"], "f": e["f"], "p": e["p"], "k": kind, "s": STATUS[e["st"]], "me": True}
@@ -334,16 +334,16 @@ class PatentPage:
             kind_ = "This document" if m.get("me") else "Patent" if m.get("k") == "patent" else "Published application"
             when = (" · " + ("granted" if m.get("k") == "patent" else "published") + " " + E(short_date(m.get("p")))) if m.get("p") else ""
             cls = e["st"] if m.get("me") else "plain"
-            ext = "" if m.get("me") else f'<div style="margin-top:8px"><a href="{gp(m["id"])}" {EXT}>View on Google Patents</a></div>'
+            ext = "" if m.get("me") else f'<div class="gap-top"><a href="{gp(m["id"])}" {EXT}>View on Google Patents</a></div>'
             return (f'<div class="famnode{" me" if m.get("me") else ""}" role="listitem"><small>{kind_}</small><b>{E(m["n"])}</b><p>{E(m["t"])}</p>'
-                    f'<small>Filed {E(short_date(m.get("f")))}{when}</small><div style="margin-top:8px"><span class="badge {cls}">{E(m["s"])}</span></div>{ext}</div>')
+                    f'<small>Filed {E(short_date(m.get("f")))}{when}</small><div class="gap-top"><span class="badge {cls}">{E(m["s"])}</span></div>{ext}</div>')
         lane = "".join(node(m) for m in fam)
         cites = doc.get("cites") or []
-        cite_html = ('<div class="cites">' + "".join(f'<a class="chip" href="{h}" {EXT}>{E(lbl)}</a>' for lbl, h in map(cite_ref, cites)) + '</div><p class="muted" style="margin-top:10px;font-size:13px">Prior art cited by the examiner or applicant. Useful when you check your own idea for novelty.</p>') if cites else '<p class="muted">No US citations on record.</p>'
+        cite_html = ('<div class="cites">' + "".join(f'<a class="chip" href="{h}" {EXT}>{E(lbl)}</a>' for lbl, h in map(cite_ref, cites)) + '</div><p class="muted note gap-top">Prior art cited by the examiner or applicant. Useful when you check your own idea for novelty.</p>') if cites else '<p class="muted">No US citations on record.</p>'
         history = f"""<section class="psec" id="history"><h2>Timeline &amp; family</h2><div class="stack">
 <div class="panel"><div class="block"><h3>Timeline <span class="src">From USPTO dates</span></h3><div class="chartbox">{timeline_svg(timeline_events(e, doc))}</div></div></div>
 {fee_html}
-<div class="panel"><div class="block"><h3>US family <span class="src">{len(fam)} {"documents" if len(fam) > 1 else "document"}, by filing date</span></h3><div class="famlane" role="list">{lane}</div><p class="muted" style="margin-top:10px;font-size:13px">Earlier publications, parents and continuations. None of them can still be enforced, or this {kind} would not be listed.</p></div></div>
+<div class="panel"><div class="block"><h3>US family <span class="src">{len(fam)} {"documents" if len(fam) > 1 else "document"}, by filing date</span></h3><div class="famlane" role="list">{lane}</div><p class="muted note gap-top">Earlier publications, parents and continuations. None of them can still be enforced, or this {kind} would not be listed.</p></div></div>
 <div class="panel"><div class="block"><h3>US patents it cites <span class="src">{len(cites)}</span></h3>{cite_html}</div></div>
 </div></section>"""
 
@@ -366,10 +366,10 @@ class PatentPage:
         sources = f"""<section class="psec" id="sources"><h2>Sources &amp; verification</h2><div class="stack">
 <div class="cols2"><div class="panel"><div class="block"><h3>Verification</h3><ul class="checks">{"".join(f"<li>{E(c)}</li>" for c in checks)}<li><span>{"Rechecked against USPTO records for a reinstatement every day" if e["st"] == "lapsed" else "Rechecked against USPTO records with each refresh"}<span class="vdate"></span>.</span></li><li class="warn">{E(warn)}</li></ul>
 <p class="muted dates">{" · ".join(x for x in [f"Added to Patent Yard {full_date(r['added'][:10])}" if r["added"] else "", f"status last checked {full_date(e['v'])}" if e["v"] else ""] if x)}</p></div></div>
-<div class="panel"><div class="block"><h3>Confirm it yourself</h3><ol class="prose" style="padding-left:18px;margin:0;font-size:14.5px"><li>Open the <a href="{L["center"]}" {EXT}>file history on Patent Center</a>.</li><li>{confirm}</li><li>Check the documents for any later petition to revive or reinstate.</li></ol></div></div></div>
+<div class="panel"><div class="block"><h3>Confirm it yourself</h3><ol class="prose olist"><li>Open the <a href="{L["center"]}" {EXT}>file history on Patent Center</a>.</li><li>{confirm}</li><li>Check the documents for any later petition to revive or reinstate.</li></ol></div></div></div>
 <div class="cols2 links2"><div class="block"><h3>Official USPTO records</h3><div class="linklist">{"".join(lc(x, "src" if i == 0 else "") for i, x in enumerate(origin + official))}</div></div>
 <div class="block"><h3>Cross-check elsewhere</h3><div class="linklist">{"".join(lc(x) for x in cross)}</div></div></div>
-<p class="muted" style="font-size:13px">{"The name, summary, modern angle and build rating are Patent Yard's notes, drafted with Claude (an AI model) from the patent's text. Everything else" if not e["auto"] else "Everything"} on this page comes from the documents linked above.</p>
+<p class="muted note">{"The name, summary, modern angle and build rating are Patent Yard's notes, drafted with Claude (an AI model) from the patent's text. Everything else" if not e["auto"] else "Everything"} on this page comes from the documents linked above.</p>
 <div class="rowbtns noprint"><button class="btn secondary sm" type="button" id="reportBtn" hidden>Report a problem with this listing</button></div>
 </div></section>"""
 

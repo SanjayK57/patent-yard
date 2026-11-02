@@ -4,10 +4,7 @@
 //   /v/<v>/keys.bin     per patent, in catalog order: field, flags, build, and freed/added/filed days (filter, sort)
 //   /v/<v>/c/<n>.json   card text for patents n*block .. n*block+block-1
 //   /v/<v>/s/<ab>.json  search index: word -> patents it appears in, for words starting with "ab"
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-// a patent with no drawing on file: its field's line symbol and its number in a blueprint frame (site.css .fig.plate)
-export const plateHTML = (field, n, tag, over = "") => `<div class="fig plate" data-tag="${esc(tag)}">${over ? `<span class="over">${over}</span>` : ""}<svg class="fglyph" aria-hidden="true"><use href="#f-${esc(field || "other")}"/></svg><span class="numart">${esc(n)}</span></div>`;
-const icon = name => `<svg class="i" aria-hidden="true"><use href="#i-${name}"/></svg>`;
+import { card, esc } from "./cards.js";
 export const STATUS = { lapsed: "Lapsed, fee not paid", expired: "Expired, full term", abandoned: "Likely abandoned application" };
 const ST = ["lapsed", "expired", "abandoned"];
 const BUILD = ["", "Weekend", "Garage", "Workshop", "Lab", "Industrial"];
@@ -112,7 +109,7 @@ export async function topMatches(q, n) {
   return top.length ? cards(top) : [];
 }
 
-// ---------------------------------------------------------------- cards (pipeline/website.py Site.card draws the same)
+// ---------------------------------------------------------------- cards (cards.js draws them; pipeline/site_ui/components.py card_html matches)
 // what patentNumber() returned, for display: "11112282" -> "US 11,112,282", "EP0500272" -> "EP 0500272"
 export const numLabel = num => (/^(EP|CA|AU)/.test(num) ? `${num.slice(0, 2)} ${num.slice(2)}` : numberLabel(`US-${num}-`).trim());
 
@@ -124,19 +121,14 @@ export function numberLabel(id) {
   return num.length > 8 ? `US ${num.slice(0, 4)}/${num.slice(4)} ${kind}` : `US ${Number(num).toLocaleString("en-US")} ${kind}`;
 }
 const fmtDay = (n, o) => (n ? new Date(n * 864e5).toLocaleDateString("en-US", { timeZone: "UTC", ...o }) : "—");
-const meter = b => `<span class="meter" aria-hidden="true">${[1, 2, 3, 4, 5].map(i => `<i class="${i <= b ? "on" : ""}"></i>`).join("")}</span>`;
 
 export function cardHTML(c, names, i = 9) {
   const n = numberLabel(c.id), owner = (c.st === "abandoned" || !c.ia ? c.a : "None recorded") || (c.st === "abandoned" ? "Inventors" : "Not recorded");
-  const badge = `<span class="badge ${c.st}">${STATUS[c.st]}</span>`;
-  const fig = c.fig
-    ? `<div class="fig"><img src="/img/p/${c.id}/1.png" alt="Drawing from ${esc(n)}" loading="${i < 4 ? "eager" : "lazy"}" decoding="async"><span class="over">${badge}</span>${c.sh ? `<span class="sheets">${icon("sheet")}${c.sh} ${c.sh === 1 ? "drawing" : "drawings"}</span>` : ""}</div>`
-    : plateHTML(c.ind, n, "No drawing", badge);
   const freed = c.st === "abandoned" ? ["Published", fmtDay(c.freed, { year: "numeric" })] : [c.st === "lapsed" ? "Lapsed" : "Term ended", fmtDay(c.freed, { month: "short", year: "numeric" })];
-  const first = c.b ? `<div><small>Build</small><span title="Estimate for a first working prototype">${meter(c.b)}${BUILD[c.b]}</span></div>` : `<div><small>Filed</small><span>${fmtDay(c.filed, { year: "numeric" })}</span></div>`;
-  return `<article class="card" data-id="${esc(c.id)}">${fig}<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)} · <span class="num-id">${esc(n)}</span></span>`
-    + `<h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3><p>${esc(c.h)}</p></div>`
-    + `<div class="cmeta">${first}<div><small>${freed[0]}</small><span>${freed[1]}</span></div><div><small>${c.st === "abandoned" ? "Applicant" : "Assignee"}</small><span title="${esc(owner)}">${esc(owner)}</span></div></div></article>`;
+  return card({ id: c.id, href: `/patents/${c.id}/`, title: c.t, number: n, field: names[c.ind] || c.ind, status: { cls: c.st, label: STATUS[c.st] },
+    img: c.fig ? `/img/p/${c.id}/1.png` : "", glyph: c.ind || "other", sheets: c.sh, eager: i < 4, summary: c.h,
+    meta: [c.b ? ["Build", { build: c.b, name: BUILD[c.b] }, "Estimate for a first working prototype"] : ["Filed", fmtDay(c.filed, { year: "numeric" })],
+      freed, [c.st === "abandoned" ? "Applicant" : "Assignee", owner, owner]] });
 }
 
 export const skeletons = n => Array.from({ length: n }, () => `<div class="card skel" aria-hidden="true"><div class="fig"></div><div class="cbody"></div></div>`).join("");
@@ -192,14 +184,12 @@ const AKIND = { S: ["Expired design patent", "expired", "Granted", "Design"], A:
   E: ["Expired, Europe", "expired", "Published", "European"], CA: ["Expired, Canada", "expired", "Year", "Canadian"],
   AU: ["Expired, Australia", "expired", "Year", "Australian"] };
 export function archiveCardHTML(c, names) {
+  // US archive patents show their first drawing sheet from Google Patents' page images (app.js falls back to the field
+  // symbol if it doesn't load); others have no drawing on file, so their cards show their field's symbol
   const n = numberLabel(c.id), owner = c.a || (c.k === "A" ? "Inventors" : "None recorded"), K = AKIND[c.k] || AKIND[""];
-  // US archive patents show their first drawing sheet from Google Patents' page images (app.js falls back to the field symbol
-  // if it doesn't load); others have no drawing on file, so their cards show their field's symbol
-  const badge = `<span class="badge ${K[1]}">${K[0]}</span>`;
-  const fig = c.id.startsWith("US-") && c.k !== "A" && c.sh
-    ? `<div class="fig gfig"><img src="https://patentimages.storage.googleapis.com/pages/${c.id.split("-").slice(0, 2).join("")}-1.png" alt="Drawing sheet 1 of ${esc(n)}" loading="lazy" decoding="async" referrerpolicy="no-referrer"><span class="over">${badge}</span><span class="sheets">${c.sh} ${c.sh === 1 ? "drawing" : "drawings"}</span><svg class="fglyph" aria-hidden="true"><use href="#f-${esc(c.ind)}"/></svg><span class="numart">${esc(n)}</span></div>`
-    : plateHTML(c.ind, n, `${c.id.slice(0, 2)} · no drawing`, badge);
-  return `<article class="card acard" data-id="${esc(c.id)}">${fig}`
-    + `<div class="cbody"><span class="fieldname">${esc(names[c.ind] || c.ind)} · <span class="num-id">${esc(n)}</span></span><h3><a href="/patents/${esc(c.id)}/">${esc(c.t)}</a></h3></div>`
-    + `<div class="cmeta"><div><small>${K[2]}</small><span>${c.year}</span></div><div><small>Kind</small><span>${K[3]}</span></div><div><small>${c.k === "A" ? "Applicant" : "Assignee"}</small><span title="${esc(owner)}">${esc(owner)}</span></div></div></article>`;
+  const remote = c.id.startsWith("US-") && c.k !== "A" && c.sh;
+  return card({ id: c.id, href: `/patents/${c.id}/`, title: c.t, number: n, field: names[c.ind] || c.ind, status: { cls: K[1], label: K[0] },
+    img: remote ? `https://patentimages.storage.googleapis.com/pages/${c.id.split("-").slice(0, 2).join("")}-1.png` : "", alt: `Drawing sheet 1 of ${n}`,
+    remote: !!remote, glyph: c.ind || "other", sheets: remote ? c.sh : 0, archive: true,
+    meta: [[K[2], String(c.year)], ["Kind", K[3]], [c.k === "A" ? "Applicant" : "Assignee", owner, owner]] });
 }

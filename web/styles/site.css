@@ -1,0 +1,31 @@
+/* Patent Yard's stylesheet, in source form. The build inlines these @imports, in this order, into one file
+   (assets/site.<hash>.css), so the site makes one request for its styles. Edit the files, never the output.
+
+   tokens.css    colors, type, spacing, radii, shadows, motion: change the look here first
+   fonts.css     the self-hosted faces
+   base.css      reset, typography, utilities
+   layout.css    header, navigation, footer, page heads, sections, panels
+   controls.css  buttons, chips, segmented controls, fields, status labels
+   drawings.css  patent drawings and the full-screen viewer
+   cards.css     patent cards, the list view, loading states
+   overlays.css  dialogs, command palette, menus, toasts
+   motion.css    keyframes, page transitions, reduced motion
+   pages/*.css   what only one page uses */
+@import "tokens.css";
+@import "fonts.css";
+@import "base.css";
+@import "layout.css";
+@import "controls.css";
+@import "drawings.css";
+@import "cards.css";
+@import "overlays.css";
+@import "pages/home.css";
+@import "pages/browse.css";
+@import "pages/patent.css";
+@import "pages/opportunities.css";
+@import "pages/insights.css";
+@import "pages/studio.css";
+@import "pages/account.css";
+@import "pages/content.css";
+@import "motion.css";
+@import "print.css";

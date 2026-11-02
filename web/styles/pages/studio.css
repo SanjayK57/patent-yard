@@ -1,0 +1,34 @@
+/* Invention studio and the Claude kit dialog: a two-pane workspace, the idea on the left, the task and its prompt on the right. */
+.howto{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s7);margin-bottom:var(--s7);padding:0;list-style:none;counter-reset:s}
+.howto>div,.howto>li{display:flex;align-items:baseline;gap:var(--s2);max-width:34ch;font-size:var(--fs-ui);line-height:1.45;color:var(--ink-3)}
+.howto>div::before,.howto>li::before{counter-increment:s;content:counter(s);display:grid;place-items:center;flex:none;width:22px;height:22px;border-radius:50%;
+  background:var(--accent-soft);color:var(--link);font-size:12px;font-weight:650;transform:translateY(-1px)}
+.howto b{color:var(--ink);font-weight:600}
+.studio{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:var(--s7);align-items:start}
+.studio>.panel{padding:var(--s6)}
+.studio>.stack{position:sticky;top:calc(var(--header-h) + 24px)}
+@media (max-width:940px){.studio{grid-template-columns:minmax(0,1fr)}.studio>.stack{position:static}}
+.studio .block>h2{font-size:15px}
+.draftnote{margin:calc(var(--s2) * -1) 0 0;font-size:12.5px}
+.srcline{display:flex;align-items:center;gap:var(--s3);margin-top:var(--s2);padding:var(--s2) var(--s3);border-radius:var(--r-md);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);font-size:var(--fs-ui)}
+.srcline img{width:64px;height:48px;flex:none;border-radius:var(--r-sm);object-fit:contain}
+
+/* tasks: a list of choices; the chosen one is ringed in the accent */
+.tasks{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--s2)}
+.task{position:relative;display:grid;gap:3px;padding:var(--s3) var(--s4) var(--s3) var(--s4);border:0;border-radius:var(--r-md);background:var(--surface);box-shadow:0 0 0 1px var(--line);
+  text-align:left;cursor:pointer;transition:box-shadow var(--t2) var(--ease),background-color var(--t2) var(--ease),transform var(--t3) var(--spring)}
+.task:hover{box-shadow:0 0 0 1px var(--line-strong),var(--sh-1)}
+.task:active{transform:scale(.985)}
+.task[aria-pressed="true"]{background:var(--accent-soft);box-shadow:0 0 0 1.5px var(--accent)}
+.task b{padding-right:22px;font-size:var(--fs-ui);font-weight:600}
+.task span{font-size:13px;line-height:1.45;color:var(--ink-3)}
+.task em{justify-self:start;margin-bottom:2px;padding:2px 7px;border-radius:var(--r-xs);background:var(--accent);color:var(--accent-ink);font-size:11px;font-style:normal;font-weight:650}
+.task[aria-pressed="true"]::after{content:"";position:absolute;right:var(--s3);top:var(--s3);width:16px;height:16px;border-radius:50%;
+  background:var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.5 8.3l2.3 2.3 4.7-4.9' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/12px no-repeat;
+  animation:pop var(--t3) var(--spring)}
+/* the prompt: read-only text set like a document */
+textarea.prompt{min-height:260px;padding:var(--s4);border-color:transparent;border-radius:var(--r-md);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);
+  font:13px/1.7 var(--mono);color:var(--ink-2)}
+textarea.prompt:focus{box-shadow:inset 0 0 0 1px var(--accent),0 0 0 4px var(--accent-soft)}
+.think{display:inline-flex;align-items:center;gap:var(--s2);font-size:var(--fs-ui);color:var(--ink-3)}
+.think::before{content:"";width:13px;height:13px;border:2px solid var(--line-strong);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}

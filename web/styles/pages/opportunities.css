@@ -1,0 +1,41 @@
+/* Opportunities: read like a research note. The method first, then each pick as an article: analysis beside its drawing. */
+.omethod{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s6);margin:var(--s6) 0 var(--s4);padding:var(--s5) 0;list-style:none;box-shadow:0 -1px 0 var(--line),0 1px 0 var(--line)}
+.omethod b{display:block;margin-bottom:4px;font-size:15px}
+.omethod span{font-size:var(--fs-sm);line-height:1.5;color:var(--ink-3)}
+@media (max-width:860px){.omethod{grid-template-columns:1fr 1fr}}
+.omethod+.fine-print{margin:var(--s3) 0 var(--s7)}
+.ofilter{display:inline-flex;flex-wrap:wrap;gap:2px;max-width:100%;margin-bottom:var(--s6);padding:2px;border-radius:9px;background:color-mix(in srgb,var(--ink) 7%,transparent)}
+.ofilter .chip[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--sh-1),0 0 0 .5px var(--line)}
+.opicks{display:grid;gap:var(--s5)}
+.oppick{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);border-radius:var(--r-lg);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--edge);overflow:hidden;
+  transition:box-shadow var(--t2) var(--ease)}
+.oppick:hover{box-shadow:0 0 0 1px var(--line-strong),var(--sh-2)}
+.oppick[hidden],.opp[hidden]{display:none}
+.oppick>.otext{order:1;padding:var(--s7) var(--s8)}
+.oppick>.ofig{order:2}
+.ofig{position:relative;display:grid;place-items:center;min-height:280px;padding:var(--s8) var(--s6) var(--s6);box-shadow:inset 1px 0 0 var(--line);overflow:hidden}
+.ofig img{width:100%;height:100%;max-height:320px;object-fit:contain;transition:transform .7s var(--ease)}
+.oppick:hover .ofig img{transform:scale(1.035)}
+.rank{position:absolute;top:var(--s4);left:var(--s4);z-index:2;display:grid;place-items:center;min-width:30px;height:24px;padding:0 8px;border-radius:var(--r-sm);
+  background:var(--ink);color:var(--bg);font-size:12.5px;font-weight:650;font-variant-numeric:tabular-nums}
+.otext h3{margin:var(--s2) 0 var(--s4);font-size:clamp(21px,2vw,26px);line-height:1.15;letter-spacing:-.024em}
+.otext h3 a{color:inherit}
+.otext h3 a:hover{color:var(--link)}
+.otext dl{display:grid;grid-template-columns:1fr 1fr;gap:var(--s4) var(--s6);margin:0 0 var(--s5)}
+.otext dt{margin-bottom:4px;font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.otext dd{margin:0;font-size:var(--fs-ui);line-height:1.55;color:var(--ink-2)}
+.otext .chips{margin-bottom:var(--s4)}
+@media (max-width:860px){.oppick{grid-template-columns:minmax(0,1fr)}.oppick>.ofig{order:0;box-shadow:inset 0 -1px 0 var(--line)}.oppick>.otext{padding:var(--s5)}.otext dl{grid-template-columns:minmax(0,1fr)}}
+.opp{position:relative;display:flex;flex-direction:column;gap:var(--s2)}
+.opp>.card{flex:1}
+/* every factor behind a rank, one click away */
+.why{margin-top:var(--s4);padding-top:var(--s3);box-shadow:0 -1px 0 var(--line)}
+.why summary{display:flex;align-items:center;gap:var(--s2);font-size:13.5px;font-weight:550;color:var(--ink-2);list-style:none;cursor:pointer}
+.why summary::-webkit-details-marker{display:none}
+.why summary::before{content:"";width:8px;height:8px;margin:0 2px;border-right:1.6px solid var(--ink-3);border-bottom:1.6px solid var(--ink-3);transform:rotate(-45deg);transition:transform var(--t2) var(--ease)}
+.why[open] summary::before{transform:rotate(45deg) translate(-2px,-2px)}
+.why summary .num{margin-left:auto;font-size:12.5px;color:var(--ink-3)}
+.why ul{display:grid;gap:4px;margin:var(--s2) 0 0;padding:0 0 0 20px;list-style:none}
+.why li{display:flex;justify-content:space-between;gap:var(--s3);font-size:var(--fs-sm);color:var(--ink-2)}
+.why li b{font-size:12.5px;font-weight:550;font-variant-numeric:tabular-nums;color:var(--ink-3)}
+.opp>.why{margin:var(--s2) 2px 0}
