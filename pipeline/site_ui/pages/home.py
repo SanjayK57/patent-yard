@@ -57,7 +57,7 @@ class Home:
   <p class="lede rise" style="--d:1">Search expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, with their original drawings and claims. Then develop your own version with Claude.</p>
   <form class="bigsearch rise" style="--d:2" action="/browse/" role="search">{icon("search")}<label class="sr" for="heroQ">Search patents</label><input id="heroQ" name="q" type="search" autocomplete="off" placeholder="Search ideas, titles or patent numbers"><span class="kbd" aria-hidden="true"><kbd>⌘</kbd><kbd>K</kbd></span><button class="btn primary" type="submit">Search</button></form>
   <div class="tryrow rise" style="--d:3"><span>Try</span>{tries}<button class="chip" type="button" data-surprise>{icon("shuffle")}Surprise me</button></div>
-  {f'<a class="allpat rise" style="--d:3" href="/all/">Or check all {big_number(WORLD["n"])} patents worldwide ›</a>' if WORLD else ""}
+  {f'<a class="allpat rise" style="--d:3" href="/all/">Or check all {big_number(WORLD["n"])} patent records worldwide ›</a>' if WORLD else ""}
 </section>
 <section class="stage rise" style="--d:4" aria-labelledby="plateTitle">
   <figure class="plotter">

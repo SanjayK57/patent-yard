@@ -23,7 +23,8 @@ export const badge = s => `<span class="badge ${esc(s.cls)}">${esc(s.label)}</sp
 export function card(c) {
   const b = badge(c.status);
   const symbol = `<svg class="fglyph" aria-hidden="true"><use href="#f-${esc(c.glyph)}"/></svg><span class="numart">${esc(c.number)}</span>`;
-  const sheets = c.sheets ? `<span class="sheets">${icon("sheet")}${c.sheets} ${c.sheets === 1 ? "drawing" : "drawings"}</span>` : "";
+  const n = Math.max(0, Math.floor(+c.sheets || 0));
+  const sheets = n ? `<span class="sheets">${icon("sheet")}${n} ${n === 1 ? "drawing" : "drawings"}</span>` : "";
   const fig = c.img
     ? `<div class="fig${c.remote ? " gfig" : ""}"><img src="${esc(c.img)}" alt="${esc(c.alt || "Drawing from " + c.number)}" loading="${c.eager ? "eager" : "lazy"}" decoding="async"${c.remote ? ' referrerpolicy="no-referrer"' : ""}>`
       + `<span class="over">${b}</span>${sheets}${c.remote ? symbol : ""}</div>`

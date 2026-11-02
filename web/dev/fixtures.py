@@ -61,7 +61,7 @@ def png(path, w, h, seed):
 
 
 def sample_rows(tmp, n=36):
-    rnd, today, rows = random.Random(7), dt.date.today(), []
+    today, rows = dt.date.today(), []
     for i in range(n):
         st, ind = STATUS[i % len(STATUS)], FIELDS[i % len(FIELDS)]
         pid, num = f"US-{98000001 + i}-B{1 + i % 2}", 98000001 + i

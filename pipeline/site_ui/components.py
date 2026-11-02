@@ -11,7 +11,7 @@ def card_html(c):
     web/dev/test_cards.mjs renders both from web/dev/fixtures/cards.json and fails if they differ."""
     b = f'<span class="badge {E(c["status"]["cls"])}">{E(c["status"]["label"])}</span>'
     symbol = f'<svg class="fglyph" aria-hidden="true"><use href="#f-{E(c.get("glyph"))}"/></svg><span class="numart">{E(c["number"])}</span>'
-    n = c.get("sheets") or 0
+    n = max(0, int(c.get("sheets") or 0))
     sheets = f'<span class="sheets">{icon("sheet")}{n} {"drawing" if n == 1 else "drawings"}</span>' if n else ""
     remote = bool(c.get("remote"))
     if c.get("img"):
