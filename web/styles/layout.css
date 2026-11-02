@@ -106,3 +106,6 @@ footer.foot .fine a{color:var(--ink-2)}
 .src{font-size:var(--fs-sm);font-weight:400;letter-spacing:0;color:var(--ink-3)}
 .rowbtns{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2)}
 .fine-print{max-width:80ch;margin-top:var(--s7);font-size:var(--fs-sm);color:var(--ink-3)}
+
+/* development previews built from sample data (web/dev/fixtures.py) say so on every page */
+.devbanner{margin-inline:calc(var(--gutter) * -1);padding:6px var(--gutter);background:var(--lapsed-soft);color:var(--lapsed);font-size:var(--fs-sm);font-weight:600;text-align:center}

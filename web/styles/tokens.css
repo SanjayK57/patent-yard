@@ -7,7 +7,7 @@
   --line:#DDE0E2; --line-strong:#C6CBCE; --hair:rgba(22,26,29,.07);
   --ink:#161A1D; --ink-2:#484E52; --ink-3:#676E73;
   /* the accent: Prussian blue, the color of the cyanotype blueprints patent drawings were once copied as */
-  --accent:#116289; --accent-hover:#015477; --accent-ink:#FFFFFF; --accent-soft:#E1F1FC; --link:#005F88; --focus:#1F7FB0;
+  --accent:#116289; --accent-hover:#015477; --accent-ink:#FFFFFF; --accent-soft:#E8F4FC; --link:#005F88; --focus:#1F7FB0;
   /* status colors, always shown with their word */
   --expired:#1A763F; --expired-soft:#E0F7E5; --free:#1A763F; --free-soft:#E0F7E5;
   --lapsed:#995600; --lapsed-soft:#FFEFD4;
@@ -29,7 +29,7 @@
   --serif:"Source Serif 4","Iowan Old Style",Charter,Georgia,serif;
   --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
   --fs-xs:12px; --fs-sm:13px; --fs-ui:14px; --fs-body:16px; --fs-read:17px; --fs-lead:19px;
-  --fs-h4:16px; --fs-h3:19px; --fs-h2:28px; --fs-h1:40px; --fs-display:clamp(40px,5.6vw,76px);
+  --fs-h4:16px; --fs-h3:19px; --fs-h2:28px; --fs-h1:40px; --fs-display:clamp(34px,5.6vw,76px);
   --track-display:-.038em; --track-h1:-.03em; --track-h2:-.022em; --track-h3:-.012em;
 
   /* space (4px steps), widths, shapes */
@@ -63,6 +63,9 @@
   --scrim:rgba(0,0,0,.6);
   color-scheme:dark;
 }
+/* the home page's studio band is dark in both themes: it takes the dark theme's values wherever it appears */
+.studioband{--ink:#EEF0F2;--ink-2:#BABEC1;--ink-3:#969B9F;--link:#75C2EF;--accent:#64B5E4;--accent-hover:#83C7F0;--accent-ink:#0C1012;--accent-soft:#12303F;--line:#2A2F31;--line-strong:#3B4144;--surface:#181B1D;--surface-2:#1C2022;--plate:#141719;--sh-1:0 1px 2px rgba(0,0,0,.4);--band-bg:#0E1113}
+:root[data-theme="dark"] .studioband{--band-bg:#1A1E21}
 /* visitor settings (settings page): original drawings in dark mode, larger text, less motion */
 :root[data-drawings="original"]{--fig-blend:normal;--fig-filter:none;--plate:#FFFFFF}
 :root[data-text="large"] body{zoom:1.12}

@@ -3,7 +3,7 @@
 .phead{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--s5) var(--s8);align-items:end;padding-bottom:var(--s7);box-shadow:0 1px 0 var(--line)}
 .phead>div:first-child{display:flex;flex-direction:column}
 .phead>div:first-child>.badges{order:-1;margin-bottom:var(--s4)}
-.phead h1{max-width:22ch;margin:0 0 var(--s3);font-size:clamp(30px,3.8vw,46px);line-height:1.06;letter-spacing:-.032em}
+.phead h1{max-width:26ch;margin:0 0 var(--s3);font-size:clamp(30px,3.8vw,46px);line-height:1.06;letter-spacing:-.032em}
 .phead .asfiled{font-size:15px;line-height:1.5;color:var(--ink-3)}
 .phead .asfiled .num,.phead .asfiled .num-id{font-family:var(--mono);font-size:14px;color:var(--ink-2)}
 .pactions{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:var(--s1) var(--s1);max-width:480px}
@@ -72,11 +72,11 @@
 .claimlist .cn{font-family:var(--sans);font-size:13px;font-weight:600;line-height:1.85;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .claimlist li.ind .cn{color:var(--link)}
 .claimlist li:target,.claimlist li.hl{background:var(--accent-soft)}
-.claimlist em{display:block;margin-bottom:var(--s2);font-family:var(--sans);font-size:12.5px;font-style:normal;font-weight:600;color:var(--link)}
+.claimlist em{display:block;margin-bottom:var(--s2);font-family:var(--sans);font-size:12.5px;font-style:normal;font-weight:600;color:var(--ink-2)}
 .cgroup{padding:var(--s3) 0;box-shadow:0 -1px 0 var(--line)}
 .cgroup:first-of-type{padding-top:0;box-shadow:none}
 .ci{display:inline-flex;align-items:center;gap:var(--s2);font-size:var(--fs-ui);font-weight:600;color:var(--ink)}
-.ci::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.ci::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink-3)}
 .ci:hover{color:var(--link)}
 .cgroup small{display:block;margin:4px 0 var(--s2);font-size:12.5px;color:var(--ink-3)}
 .cdeps{display:flex;flex-wrap:wrap;gap:4px}
@@ -141,8 +141,8 @@
 @media (max-width:640px){.pnav{grid-template-columns:minmax(0,1fr)}.pstep.next{text-align:left}}
 
 /* drawings, text or a kit still on their way; patents pulled from the register */
-.pulse{display:inline-block;width:7px;height:7px;margin-right:var(--s2);border-radius:50%;background:var(--free);vertical-align:1px;box-shadow:0 0 0 0 color-mix(in srgb,var(--free) 50%,transparent);animation:pulse 2s var(--ease) infinite}
-@keyframes pulse{70%{box-shadow:0 0 0 6px transparent}}
+.pulse{display:inline-block;width:7px;height:7px;margin-right:var(--s2);border-radius:50%;background:var(--free);vertical-align:1px;animation:pulse 2.4s var(--ease-in-out) infinite}
+@keyframes pulse{50%{opacity:.35}}
 .pulled{margin-top:var(--s5);padding:var(--s4) var(--s5);border-radius:var(--r-md);background:color-mix(in srgb,var(--danger) 9%,var(--surface));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--danger) 35%,transparent);font-size:15px}
 .pulled b{color:var(--danger)}
 .kitoff{background:var(--aband-soft);box-shadow:none}

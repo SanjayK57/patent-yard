@@ -1,461 +1,332 @@
 ---
 name: Patent Yard
-description: A free register of expired patents, set like a drafting room: paper, ink, hairlines, and the patent drawing as the only picture.
+description: A free register of expired, lapsed and abandoned patents, where the patent drawing is the product shot and the interface recedes around it.
 colors:
-  paper: "#F7F6F2"
+  accent: "#116289"
+  accent-hover: "#015477"
+  accent-ink: "#FFFFFF"
+  accent-soft: "#E1F1FC"
+  link: "#005F88"
+  focus: "#1F7FB0"
+  bg: "#F5F7F8"
   surface: "#FFFFFF"
-  surface-2: "#FBFAF7"
-  sunken: "#EFEDE7"
-  band: "#F0EEE8"
+  surface-2: "#FAFBFB"
+  sunken: "#EEF1F2"
+  band: "#ECF0F2"
   plate: "#FFFFFF"
-  line: "#E3E0D8"
-  line-strong: "#CDC9BE"
-  ink: "#17171A"
-  ink-2: "#44444A"
-  ink-3: "#66656B"
-  fill: "#17171A"
-  fill-hover: "#2E2E33"
-  accent: "#D9480F"
-  accent-hover: "#B93A0A"
-  accent-soft: "#FCEBE2"
-  link: "#B33A0C"
-  expired: "#1E7A4A"
-  expired-soft: "#E3F1E8"
-  lapsed: "#9A5B00"
-  lapsed-soft: "#F8EED9"
-  abandoned: "#5B6370"
-  abandoned-soft: "#EAECEF"
-  reserved: "#2F5D8C"
-  reserved-soft: "#E4ECF5"
-  danger: "#B42318"
-  dark-paper: "#0F1012"
-  dark-surface: "#16171A"
-  dark-surface-2: "#1A1B1E"
-  dark-sunken: "#1F2024"
-  dark-band: "#131417"
-  dark-plate: "#121316"
-  dark-line: "#26272B"
-  dark-line-strong: "#36383D"
-  dark-ink: "#EDECE8"
-  dark-ink-2: "#BDBCB7"
-  dark-ink-3: "#93928D"
-  dark-accent: "#FF7A3D"
-  dark-accent-hover: "#FF9663"
-  dark-link: "#FF9A66"
-  dark-expired: "#5CC98F"
-  dark-lapsed: "#E9A944"
-  dark-abandoned: "#A1A9B6"
-  dark-reserved: "#8DB4E2"
-  dark-danger: "#F97066"
+  line: "#DDE0E2"
+  line-strong: "#C6CBCE"
+  ink: "#161A1D"
+  ink-2: "#484E52"
+  ink-3: "#676E73"
+  expired: "#1A763F"
+  expired-soft: "#E0F7E5"
+  lapsed: "#995600"
+  lapsed-soft: "#FFEFD4"
+  aband: "#59656D"
+  aband-soft: "#E9EDF0"
+  reserved: "#724AAB"
+  reserved-soft: "#F3ECFF"
+  danger: "#BA2B28"
+  accent-dark: "#64B5E4"
+  link-dark: "#75C2EF"
+  bg-dark: "#111416"
+  surface-dark: "#181B1D"
+  plate-dark: "#141719"
+  line-dark: "#2A2F31"
+  ink-dark: "#EEF0F2"
+  ink-2-dark: "#BABEC1"
+  ink-3-dark: "#969B9F"
 typography:
   display:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(36px, 4.4vw, 58px)"
-    fontWeight: 600
-    lineHeight: 1.04
-    letterSpacing: "-0.025em"
+    fontFamily: "Hanken Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
+    fontSize: "clamp(34px, 5.6vw, 76px)"
+    fontWeight: 650
+    lineHeight: 1.02
+    letterSpacing: "-0.038em"
   headline:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(28px, 3.4vw, 40px)"
+    fontFamily: "Hanken Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
+    fontSize: "40px"
     fontWeight: 600
-    lineHeight: 1.1
-    letterSpacing: "-0.028em"
+    lineHeight: 1.08
+    letterSpacing: "-0.03em"
   title:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(22px, 2.3vw, 28px)"
+    fontFamily: "Hanken Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
+    fontSize: "28px"
     fontWeight: 600
-    lineHeight: 1.15
+    lineHeight: 1.14
     letterSpacing: "-0.022em"
-  card-title:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
-    fontSize: "16.5px"
-    fontWeight: 600
-    lineHeight: 1.28
-    letterSpacing: "-0.012em"
   body:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
+    fontFamily: "Hanken Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
     fontSize: "16px"
     fontWeight: 400
-    lineHeight: 1.6
-    letterSpacing: "0"
+    lineHeight: 1.55
   source:
-    fontFamily: "IBM Plex Serif, Charter, Georgia, Times New Roman, serif"
-    fontSize: "16px"
+    fontFamily: "Source Serif 4, Iowan Old Style, Charter, Georgia, serif"
+    fontSize: "17px"
     fontWeight: 400
-    lineHeight: 1.7
-  claim:
-    fontFamily: "IBM Plex Serif, Charter, Georgia, Times New Roman, serif"
-    fontSize: "15px"
-    fontWeight: 400
-    lineHeight: 1.7
-  number:
-    fontFamily: "IBM Plex Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
-    fontSize: "11.5px"
-    fontWeight: 500
-    lineHeight: 1.2
-    letterSpacing: "0.01em"
-    fontFeature: "tnum"
+    lineHeight: 1.65
   label:
-    fontFamily: "IBM Plex Mono, ui-monospace, SF Mono, Menlo, Consolas, monospace"
-    fontSize: "10.5px"
-    fontWeight: 500
+    fontFamily: "Hanken Grotesk, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, sans-serif"
+    fontSize: "12px"
+    fontWeight: 550
     lineHeight: 1
-    letterSpacing: "0.08em"
-  metric:
-    fontFamily: "IBM Plex Sans, -apple-system, BlinkMacSystemFont, Helvetica Neue, Arial, sans-serif"
-    fontSize: "clamp(22px, 2vw, 28px)"
-    fontWeight: 600
-    lineHeight: 1.1
-    letterSpacing: "-0.015em"
-    fontFeature: "tnum"
+  identifier:
+    fontFamily: "ui-monospace, SF Mono, SFMono-Regular, Menlo, Consolas, Liberation Mono, monospace"
+    fontSize: "0.92em"
+    letterSpacing: "-0.01em"
 rounded:
-  control: "6px"
-  panel: "10px"
-  pill: "999px"
+  xs: "4px"
+  sm: "6px"
+  r: "8px"
+  md: "12px"
+  lg: "16px"
+  xl: "22px"
 spacing:
-  gap: "16px"
-  page-inline: "20px"
-  page-inline-wide: "40px"
-  section: "80px"
-  container: "1240px"
-  narrow: "820px"
+  s1: "4px"
+  s2: "8px"
+  s3: "12px"
+  s4: "16px"
+  s5: "20px"
+  s6: "24px"
+  s7: "32px"
+  s8: "40px"
+  s9: "48px"
+  s10: "64px"
+  s11: "80px"
+  s12: "112px"
 components:
   button-primary:
-    backgroundColor: "{colors.fill}"
-    textColor: "{colors.surface}"
-    rounded: "{rounded.control}"
-    padding: "8px 16px"
-    height: "38px"
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.accent-ink}"
+    rounded: "{rounded.r}"
+    padding: "0 14px"
+    height: "36px"
   button-primary-hover:
-    backgroundColor: "{colors.fill-hover}"
+    backgroundColor: "{colors.accent-hover}"
   button-secondary:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
-    padding: "8px 16px"
-    height: "38px"
+    rounded: "{rounded.r}"
+    padding: "0 14px"
+    height: "36px"
   button-quiet:
-    backgroundColor: "transparent"
     textColor: "{colors.ink-2}"
-    rounded: "{rounded.control}"
-    padding: "8px 10px"
-  button-quiet-hover:
-    backgroundColor: "{colors.sunken}"
-    textColor: "{colors.ink}"
-  chip:
-    backgroundColor: "transparent"
-    textColor: "{colors.ink-2}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.r}"
+    padding: "0 10px"
+    height: "36px"
+  chip-filter-on:
+    backgroundColor: "{colors.accent-soft}"
+    textColor: "{colors.link}"
+    rounded: "{rounded.r}"
     padding: "0 11px"
     height: "30px"
-  chip-pressed:
-    backgroundColor: "{colors.fill}"
-    textColor: "{colors.surface}"
-  badge-expired:
-    backgroundColor: "{colors.expired-soft}"
-    textColor: "{colors.expired}"
-    rounded: "{rounded.control}"
-    padding: "0 8px"
-    height: "22px"
+  field:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.r}"
+    padding: "8px 12px"
+    height: "38px"
   badge-lapsed:
     backgroundColor: "{colors.lapsed-soft}"
     textColor: "{colors.lapsed}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.sm}"
+    padding: "0 8px"
+    height: "22px"
+  badge-expired:
+    backgroundColor: "{colors.expired-soft}"
+    textColor: "{colors.expired}"
+    rounded: "{rounded.sm}"
     padding: "0 8px"
     height: "22px"
   badge-abandoned:
-    backgroundColor: "{colors.abandoned-soft}"
-    textColor: "{colors.abandoned}"
-    rounded: "{rounded.control}"
+    backgroundColor: "{colors.aband-soft}"
+    textColor: "{colors.aband}"
+    rounded: "{rounded.sm}"
     padding: "0 8px"
     height: "22px"
   badge-reserved:
+    backgroundColor: "{colors.reserved-soft}"
     textColor: "{colors.reserved}"
-    rounded: "{rounded.control}"
+    rounded: "{rounded.sm}"
     padding: "0 8px"
     height: "22px"
-  input:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.control}"
-    padding: "9px 12px"
-    height: "40px"
-  card:
-    backgroundColor: "{colors.surface}"
-    rounded: "{rounded.panel}"
-  card-figure:
+  card-sheet:
     backgroundColor: "{colors.plate}"
-    padding: "42px 16px 30px"
+    rounded: "{rounded.lg}"
+    padding: "38px 22px 26px"
   panel:
     backgroundColor: "{colors.surface}"
-    rounded: "{rounded.panel}"
-    padding: "22px"
-  nav-link:
-    textColor: "{colors.ink-3}"
-    rounded: "{rounded.control}"
-    padding: "7px 10px"
-  nav-link-current:
-    backgroundColor: "{colors.sunken}"
-    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "20px 24px"
 ---
 
 # Design System: Patent Yard
 
-Shipped on branch `overhaul` (2026-10-31), replacing the dark "spatial" indigo look of 2026-10-27. Source of truth is
-the token block at the top of `web/static/assets/site.css`: `:root` for light, the same names redefined under
-`prefers-color-scheme: dark` (unless `data-theme="light"`) and under `:root[data-theme="dark"]`. The `dark-*` keys in
-the frontmatter are those dark values of the same CSS variables, not separate variables.
-
 ## Overview
 
-**Creative North Star: "The Drafting Room"**
+**Creative North Star: "The Drawing Is the Product Shot"**
 
-A drafting room, not a dashboard. Patent drawings are the only pictures; everything around them is paper, ink and
-hairlines. Light mode is warm drafting paper, dark mode is graphite. Type is ink-black, there is one safety-orange
-accent for focus, links and selection, and filled actions are ink, not orange. The one place the patent-sheet idea
-shows is the drawing itself: a white sheet with a mono `FIG. 1` caption in its lower-left corner.
+Patent Yard is desktop-class software for reading old patents. A cool near-white page (near-black charcoal in dark mode) carries white surfaces drawn with 1px hairline rings, Hanken Grotesk for everything the site says, and one Prussian blue accent, the color of the cyanotype blueprints patent drawings were once copied as. The interface stays quiet so the patent drawing, always on its sheet, carries each page.
 
-Three voices are kept apart by face. IBM Plex Sans is Patent Yard speaking (interface, headings, summaries, notes).
-IBM Plex Serif is the patent's own text (abstract, claims, description), so source text always reads differently from
-ours. IBM Plex Mono is every patent number, date, count and small label.
+Density follows the task. The home page persuades with one large headline, the biggest search box on the site and a plotted drawing. Browse and account pages operate with chips, segmented controls and dense grids. Patent pages read like a well-set technical document with the drawing first and the patent's own text in a serif.
 
-Working pages are left-aligned and dense: headings sit left with their action at the right edge, filters are grouped
-text buttons with micro-counters, card grids collapse into a ruled table, and data sits in hairline-divided cells
-instead of boxes. The visitor controls theme, drawing treatment in dark mode, text size and motion from the settings
-page.
+All values live in `web/styles/tokens.css`. Dark mode is written once as `:root[data-theme="dark"]`, and `pipeline/site_ui/styles.py` copies each dark rule for visitors whose system is dark and who have not picked a theme. Templates and scripts use token names only.
 
 **Key Characteristics:**
-- Warm paper (light) and graphite (dark) grounds; ink type in three steps.
-- Hairlines (1px `line` / `line-strong`) do the structural work; shadows only for hover and floating layers.
-- Two radii: 6px for controls, 10px for panels, cards and drawings.
-- Status color is fixed site-wide and always paired with a word.
-- Drawings sit on a plate with a mono FIG caption; in dark mode the linework is inverted onto graphite unless the visitor asks for original white sheets.
-- One easing curve; every animation stops under reduced motion (OS or site setting).
+- Cool neutrals, one blue accent, four status colors that always come with a word.
+- Hairlines as 1px box-shadow rings, not borders; most content sits directly on the page.
+- Two voices in type: grotesk for Patent Yard, serif for the patent, system mono for identifiers.
+- 8px controls, 12 to 22px containers, a raised thumb in segmented controls.
+- Motion refines arrival and never gates content; reduced motion stops all of it.
 
 ## Colors
 
-A near-neutral warm palette with one orange accent and four fixed status hues; dark mode keeps the same roles at
-higher lightness.
+Cool, low-chroma neutrals with one saturated blue and four muted status hues, each with a soft tint for label backgrounds.
 
 ### Primary
-- **Safety Orange** (`accent`, dark `dark-accent`): focus rings (`--focus` equals it), text selection (30% mix),
-  the active table-of-contents rule, the reading-progress bar, the pressed save button, the user avatar, chart lines,
-  and the soft wash (`accent-soft`) behind focused fields, targeted claims and the archive hint. Never a status.
-- **Redline Link** (`link`, dark `dark-link`): link text and the mono step numbers and claim labels that act as
-  wayfinding. Darker than the accent so it reaches text contrast on paper (5.5:1).
-
-### Neutral
-- **Drafting Paper** (`paper`): page ground. **Sheet White** (`surface`): cards, panels, fields, menus.
-  **Warm Off-white** (`surface-2`): asides (`.angle`) and keycaps. **Sunken** (`sunken`): hover and pressed backgrounds
-  for quiet controls, nav, rows and segmented choices. **Band** (`band`): full-bleed section bands.
-  **Plate** (`plate`): the ground every drawing sits on.
-- **Hairline** (`line`) and **Strong Hairline** (`line-strong`): borders; a third, translucent `--hair`
-  (`rgba(23,21,14,.07)`, dark `rgba(255,255,255,.06)`) divides cells inside a bordered container.
-- **Ink** (`ink`, `ink-2`, `ink-3`): primary text, secondary text and body of long text, muted metadata and labels.
-- **Ink Fill** (`fill`, `fill-hover`): the primary button, the pressed chip, the brand mark and the skip link. In
-  dark mode the fill turns light (`#EDECE8`) with dark ink on it.
-- **Graphite** (`dark-paper`, `dark-surface`, `dark-surface-2`, `dark-sunken`, `dark-band`, `dark-plate`,
-  `dark-line`, `dark-line-strong`, `dark-ink*`): the dark-theme equivalents of the roles above.
+- **Prussian Blue** (accent; `accent-dark` in dark mode): primary buttons, the current-page underline in the nav, focus rings, pressed filter chips, the save button when on. Hover deepens to `accent-hover`.
+- **Link Blue** (link; `link-dark`): text links and the text of pressed chips. Links inside running text are also underlined, never told apart by color alone.
+- **Blueprint Wash** (accent-soft): fill for pressed chips, highlighted claims, menu and palette selection, and the focus halo around fields and the big search.
 
 ### Status
-| Status | Token | Light | Dark | Badge |
-|---|---|---|---|---|
-| Expired (full term, design, past term) | `--expired` (= `--free`) | `expired` | `dark-expired` | solid dot, soft green wash |
-| Lapsed, fee not paid (can be reinstated) | `--lapsed` (= `--warn`) | `lapsed` | `dark-lapsed` | solid dot, soft amber wash |
-| Likely abandoned application (inferred) | `--aband` | `abandoned` | `dark-abandoned` | hollow ring dot, dashed border |
-| Reserved | `--reserved` | `reserved` | `dark-reserved` | solid dot, default hairline border |
-| Error | `--danger` | `danger` | `dark-danger` | text only (`.status.err`) |
+- **Lapsed Amber** (lapsed on lapsed-soft): a maintenance fee was not paid.
+- **Past-Term Green** (expired on expired-soft): the term ended. The same green is `--free` for success messages.
+- **Inferred Gray** (aband on aband-soft): likely abandoned. Its dot is hollow because the status is inferred, not recorded.
+- **Reserved Violet** (reserved on reserved-soft): a builder reserved it.
+- **Danger Red** (danger): form errors and patents pulled from the register only.
 
-Soft washes are the `*-soft` tokens (light: tints; dark: the status hue at 12% alpha). Badge borders are the status
-hue mixed to 30% (55% and dashed for abandoned).
+### Neutral
+- **Cool Page** (bg; `bg-dark`): the page itself.
+- **White Surface** (surface, surface-2; `surface-dark`): panels, menus, dialogs, fields, secondary buttons.
+- **Sunken** (sunken) and **Band** (band): recessed tracks, small chips, skeletons; the footer and full-bleed section bands.
+- **The Sheet** (plate; `plate-dark`): the ground every patent drawing sits on.
+- **Hairlines** (line, line-strong; `line-dark`): 1px rings and dividers; the strong line for hover and field borders.
+- **Ink** (ink, ink-2, ink-3): headings and values, running text, captions and meta.
 
 ### Named Rules
-**The Status Is Not The Accent Rule.** Orange means "you can act here" or "you are here"; status meaning comes only
-from the four status hues, and each badge carries its word.
+**The Accent Has Four Jobs Rule.** The accent marks primary actions, links, focus and selection, and the state that follows from them (your own reservation, the current document in its family, reading progress, the plotter's pen). The brand mark is the one fill of identity. Decoration is never blue: callouts, icon tiles and notices use the neutral surfaces.
 
-**The Ink Fill Rule.** The filled primary action is ink, never orange. Orange stays rare enough to mark focus.
+**The Word With a Color Rule.** A status is always a word with its color: lapsed amber, expired or past-term green, likely-abandoned gray with a hollow dot, reserved violet. Color never carries a status alone.
 
 ## Typography
 
-**Display Font:** IBM Plex Sans (variable 100-700, with -apple-system, Helvetica Neue, Arial)
-**Body Font:** IBM Plex Sans; IBM Plex Serif 400 / 400 italic / 600 (with Charter, Georgia) for source text
-**Label/Mono Font:** IBM Plex Mono 400 / 500 / 600 (with ui-monospace, SF Mono, Menlo)
+**Display and UI Font:** Hanken Grotesk (self-hosted, weights 300 to 800, system sans fallback)
+**Source Font:** Source Serif 4 (self-hosted, 400 to 600 with italics, Charter and Georgia fallback)
+**Identifier Font:** the system mono stack (no web font)
 
-**Character:** One humanist-grotesque family in three cuts, so the voices differ by register rather than by
-personality. Self-hosted woff2 in `assets/fonts` (OFL), Latin plus Latin Extended for sans and serif 400.
+**Character:** A crisp grotesk that tightens its tracking as it grows, set against a calm book serif reserved for the patent's own words.
 
 ### Hierarchy
-- **Display** (600, `clamp(36px,4.4vw,58px)`, 1.04, -0.025em, max 14ch): home hero only.
-- **Headline** (600, `clamp(28px,3.4vw,40px)`, 1.1, -0.028em): page `h1` in `.sechead`; patent title `.phead h1`
-  runs `clamp(28px,3.6vw,42px)` at -0.03em, max 24ch.
-- **Title** (600, `clamp(22px,2.3vw,28px)`, 1.15, -0.022em): section `h2`; patent sections `clamp(20px,2vw,24px)`.
-- **Card title** (600, 16.5px, 1.28, -0.012em): card `h3`; featured card grows to `clamp(22px,2.2vw,28px)`.
-- **Body** (400, 16px, 1.6): default. Lede `clamp(17px,1.6vw,19px)`/1.5 in `ink-3`, max 52-58ch. Long prose 16/1.7
-  in `ink-2`.
-- **Source** (Serif 400, 16px, 1.7): abstract (`.source`); claims 15/1.7 (`.claimlist li`); description 15.5/1.75,
-  max 76ch (`.desc p`).
-- **Number** (Mono 500, 11.5px, tabular): patent numbers (`.num-id`, `.num`), dates, counts, chart text, captions.
-- **Label** (Mono 500, 10-11px, uppercase, 0.06-0.1em tracking): data labels in fact grids and card meta
-  (`.facts small`, `.cmeta small`), filter row labels, FIG captions, section labels inside patent blocks.
-- **Metric** (Sans 600, `clamp(22px,2vw,28px)`, tabular figures): the big numbers in `.statband`.
-
-All headings: weight 600, `text-wrap: balance`, tracking -0.012em by default. Paragraphs use `text-wrap: pretty`.
+- **Display** (650, clamp 34 to 76px, 1.02): the home headline only, centered, about 13.5em wide.
+- **Headline** (600, 40px, 1.08): page titles; patent titles run clamp 30 to 46px. Drops to 32px under 700px.
+- **Title** (600, 28px, 1.14): section heads; patent sections use 26px. Drops to 24px under 700px.
+- **Body** (400, 16px, 1.55): interface text. Lead text is 19px; section intros 17px in ink-3, about 64ch.
+- **Source** (400, 17px, 1.65 to 1.75): abstract, claims and description, 70 to 76ch measure.
+- **Label** (550, 12 to 13.5px): status labels, chips, field labels, meta. Sentence case, no added tracking.
+- **Identifier** (mono, 0.92em): patent and application numbers, classification codes, citations, family members.
 
 ### Named Rules
-**The Three Voices Rule.** Sans for what Patent Yard writes, Serif for what the patent says, Mono for numbers and
-identifiers. A quoted claim in the sans, or a summary in the serif, is a bug.
+**The Two Voices Rule.** The patent's own words (abstract, claims, description) are set in Source Serif 4. Everything Patent Yard writes, including labels inside those sections, is Hanken Grotesk.
 
-**The Sans Metric Rule.** Big ledger numbers are sans with tabular figures, not mono; mono is for small numbers.
+**The Numbers That Identify Rule.** Mono appears only on identifiers and on the prompts the Studio writes for Claude (text meant to be copied as it is). Counts and dates use the grotesk with tabular figures.
 
 ## Layout
 
-Body padding 20px inline (40px from 900px). Content sits in `.wrap` (max 1240px, centered); reading pages use
-`.narrow` (820px). The header is sticky (56px) with a 1px bottom hairline; sections are spaced 80px apart, the footer
-96px below content. Grids use one gap token (16px).
+A centered page of 1200px (header 1320px) with a fluid gutter of 16 to 40px, on a 4px spacing scale (`s1` to `s12`). Sections sit 112px apart (80px under 700px). The header is 52px (`--header-h`) and sticky. Reading columns cap at 68ch.
 
-- **Card grids:** `.grid` auto-fill at min 250px; `.wall` 1/2/3 columns at 640/1000px with a full-width featured card;
-  `.bento` 4/3/2/1 columns at 1100/820/520px; `.rail` horizontal scroll-snap, four visible on desktop.
-- **Patent page:** `.playout` 190px sticky table of contents plus content (single column under 980px, where the TOC
-  becomes a horizontal tab strip); `.ov` overview of drawing and facts side by side under 900px collapses.
-- **Data cells:** `.statband`, `.facts`, `.fees`, `.steps3`, `.pipe`, `.omethod`, `.fchips` share one pattern: a
-  bordered container whose cells are divided by `--hair` lines, collapsing to 2 or 1 columns on narrow screens.
-- **Navigation breakpoints:** header search hides under 1180px (command button appears); main nav folds into a menu
-  under 1080px; theme button hides under 520px.
-- Sticky asides and in-page anchors offset by 76px (`scroll-padding-top: 72px` on `html`).
+- **Home:** centered hero and a 640px search, then a 1080px drawing sheet at 16:9 (4:3 under 700px). Below: the collections as a ruled ledger beside its intro, today's picks as one lead card plus four across, a ruled list of more picks, a compact field index, three steps, and one dark Studio band.
+- **Browse:** a filter toolbar panel over a card grid (`minmax(240px, 1fr)`) that can switch to a dense table view.
+- **Patent page:** title and actions over a 184px sticky contents list and one reading column. Under 980px the contents become a sticky horizontal tab row.
+- Navigation collapses to a menu sheet under 1080px; header search becomes a palette button under 1180px.
+
+**The Page, Not the Box Rule.** Most content sits directly on the page. Panels group related rows; they are not wrapped around every section.
 
 ## Elevation & Depth
 
-Flat by default; hairlines carry structure. Depth appears only as a response to hover or for layers that float over
-content. In dark mode `--shadow-sm` is none and the other two become deep, low-opacity black drops.
+Mostly flat, with hairline rings for edges and soft, offset shadows only for things that lift: hovered cards, menus, dialogs, toasts and the home drawing sheet. In dark mode shadows deepen and surfaces gain a faint top highlight (`--edge`).
 
 ### Shadow Vocabulary
-- **Rest** (`--shadow-sm: 0 1px 2px rgba(23,21,14,.05)`): the home search field at rest.
-- **Lift** (`--shadow: 0 1px 2px rgba(23,21,14,.05), 0 10px 28px -14px rgba(23,21,14,.18)`): card, tile, gallery and
-  opportunity hover; the home plotter and the sign-in card.
-- **Float** (`--shadow-lg: 0 2px 6px rgba(23,21,14,.06), 0 28px 64px -24px rgba(23,21,14,.3)`): dialogs, menus,
-  suggestion lists, pickers, toasts, the loupe.
-- **Focus wash** (`0 0 0 3px var(--accent-soft)`): fields and the search bar on focus, in addition to the ink border.
+- **Rest** (`--sh-1`): buttons and the raised thumb of a segmented control.
+- **Lift** (`--sh-2`): hovered cards and drawings, the big search box.
+- **Float** (`--sh-3`): menus, suggestions, dialogs, toasts.
+- **Sheet** (`--sh-sheet`): the home plotter's drawing sheet only.
 
-### Named Rules
-**The Flat-At-Rest Rule.** Containers rest flat with a hairline; a shadow is a state (hover) or a layer (floating).
+**The Ring, Not the Border Rule.** Edges are `box-shadow: 0 0 0 1px var(--line)` (inset on drawings). Form fields are the exception and use a real 1px border.
 
 ## Shapes
 
-Two radii: 6px (`--radius-sm`) for buttons, chips, badges, fields, small tiles and claim rows; 10px (`--radius`) for
-cards, panels, drawings, dialogs and menus. Circles only for dots, avatars and spinners. Borders are always 1px
-hairlines except the dashed edge that marks inferred status and empty states (`.empty`, `.nofig`). Keycaps carry a 2px
-bottom border. On phones (under 720px) dialogs go full-screen with no radius.
+Gently rounded, growing with size: 4px for focus outlines and tiny marks, 6px for status labels and nav items, 8px for every control, 12px for panels and menus, 16px for drawing sheets and dialogs, 22px for the home plotter. Avatars and the dialog close button are circles. Large buttons use 10px; the big search box 14px.
 
 ## Components
 
-### Buttons (`.btn.primary | secondary | quiet | link`, sizes `.sm`, `.lg`)
-- **Shape:** gently squared (6px), min-height 38px (30 small, 46 large), Sans 500 14px.
-- **Primary:** ink fill with paper text; hover to `fill-hover`. One per group.
-- **Secondary:** sheet white with a strong hairline; hover darkens the border to `ink-3`.
-- **Quiet / Link:** transparent, `ink-2` (link uses `link` color), hover fills `sunken`.
-- **States:** press scales to .97; disabled at 40% opacity; `.loading` hides the label behind a 14px spinner.
+### Buttons
+- **Shape:** 8px corners, 36px tall (30px small, 46px large), weight 550.
+- **Primary:** accent fill, accent-ink text, a faint inner top highlight. One per view where possible.
+- **Secondary:** white surface with a strong hairline ring. **Quiet and Link:** no fill; quiet is ink-2, link is link blue.
+- **States:** hover tints in 120ms; press scales to 0.97 on the spring; disabled is 45% opacity; loading swaps the label for a spinner.
 
-### Chips (`.chip`, `.chip.sm`)
-- **Style:** text buttons 30px tall, transparent, `ink-2`, with a mono micro-counter in `ink-3`.
-- **State:** hover fills `sunken`; pressed (`aria-pressed="true"`) is ink fill, the counter at 70% of the fill ink.
-  `.chip.sm` is a static 22px mono tag with a hairline.
+### Chips and Segmented Controls
+- **Filter chips:** text buttons, 30px tall, no fill at rest, an ink tint on hover, accent-soft fill with link text at weight 600 when pressed.
+- **Segmented controls:** a recessed track (ink at 7%) with a raised thumb (`--thumb`, Rest shadow) on the chosen option.
 
-### Status badges (`.badge.expired | lapsed | abandoned | reserved | ok | plain`)
-- 22px tall, 6px radius, Sans 500 11.5px, a 6px dot before the word. Colors per the Status table. On cards they sit
-  top-left over the drawing (`.over`).
+### Status Labels
+- 22px tall, 6px corners, 12px at weight 550, tinted background with a 6px dot in the status color; likely abandoned has a hollow dot. `card_html` and the `badge()` helper in `cards.js` always emit the class and the word together.
 
-### Cards (`.card`, `.card.feat`, `.card.acard`, `.card.skel`)
-- **Corner Style:** 10px, hairline border, sheet white.
-- **Figure:** `.fig` is a 4:3 plate with the drawing contained (multiply blend in light, inverted screen blend in
-  dark), `FIG. 1` in Mono 500 10px at the lower-left, the sheet count lower-right. No drawing on file: the field glyph
-  and the patent number in mono (`.fig.plate`, `.numart`).
-- **Body:** mono number, sans title (the whole card is the link via a stretched `::after`), 3-line clamped summary,
-  then `.cmeta`, a hairline-divided row of mono labels over values.
-- **Hover:** border to `line-strong`, Lift shadow, 2px rise, drawing scales 1.05. In the table view (`.grid.as-table`)
-  cards become flat ruled rows with no lift.
-- **Featured:** text left, drawing right, full grid width; stacks under 640px.
-- **Loading:** `.card.skel` shimmer placeholders.
+### Cards
+- **Patent card:** the drawing on its sheet (4:3, 16px corners, inset hairline), then the words with no box around them: field and number, a 17px title, two lines of summary, a ruled meta row. Status labels sit over the sheet's top-left corner; the save button appears top-right on hover (always on touch screens).
+- **Hover:** the sheet lifts 3px with the Lift shadow, the drawing scales to 1.04, the title turns link blue.
+- **Lead card:** drawing large on the right, words on the left; stacks under 820px.
+- **Contract:** server markup (`pipeline/site_ui/components.py` `card_html`) and browser markup (`web/static/assets/js/cards.js`) are one contract, checked by `web/dev/test_cards.mjs`.
 
-### Inputs / Fields (`.field`, `.fgroup`, `.bigsearch`, `.hsearch`)
-- **Style:** sheet white, strong hairline, 6px radius, min-height 40px; labels Sans 500 13.5px, hints 12.5px `ink-3`.
-- **Focus:** border goes to ink plus the 3px accent wash (header search: accent border). No outline ring on fields.
-- **Error:** status text in `danger` below the form (`.status.err`); the sign-in status shakes once.
-- **Home search** (`.bigsearch`): a 10px-radius command bar, 16.5px input, keycap hints, primary button inside.
+### Inputs
+- 38px, 1px line-strong border, 8px corners, white surface. Focus turns the border accent with a 4px accent-soft halo. Invalid uses the danger border.
+- **Big search:** the largest control on the site, 14px corners, Lift shadow, a filled Search button inside.
 
-### Navigation (`.top`, `.mainnav`, `.toc`, `.crumbs`, `.legalnav`)
-- Sticky header on the page ground with a bottom hairline; brand mark is a 28px ink tile (8px radius) that tilts on
-  hover. Nav links Sans 500 13.5px in `ink-3`; hover and current page fill `sunken` with ink text. Under 1080px the nav
-  opens as a full-width list of 17px ruled rows, the current page in link color.
-- Patent table of contents: a left hairline; the current section takes a 1px accent rule.
+### Navigation
+- A sticky translucent bar in the page color; a hairline appears once the page scrolls under it. Items are 14px weight 500 in ink-2; the current page is ink with a 2px accent underline on the bar's bottom edge. Under 1080px the links open as a full-width sheet of ruled 17px rows.
 
-### Data ledger (`.statband`, `.facts`)
-- Hairline-ruled cells. Statband: sans metric numbers, a mono note above, a 13px caption below. Facts: mono label
-  over a mono value.
+### Drawings
+- Every drawing sits on `--plate` with an inset hairline. Images use `--fig-blend` and `--fig-filter`: multiplied onto white in light mode, inverted and screened onto the dark sheet in dark mode, and black on white again when the visitor picks original drawings (`data-drawings="original"`). The full-screen viewer is a dark stage in both themes with each sheet on white.
 
-### Drawing plate (`.bigfig`, `.gallery figure`, `.ofig`, `.plotter`, `.gfront`)
-- The signature: every patent drawing on `plate`, strong hairline, 10px radius, zoom-in cursor, `FIG. 1` caption
-  lower-left, and a full-screen `#viewer` on near-black with the sheet on white. The home plotter draws the figure on
-  canvas with a magnifying loupe.
+### The Plotter (signature)
+- On the home sheet a pen traces the drawing's strokes in order over about 3s on an ease-in-out cubic, with ink settling behind the pen over 220ms (`web/static/assets/js/home.js`). A loupe magnifies under the pointer on wide screens. With reduced motion the finished drawing shows at once.
 
-### Claims (`.claimlist`)
-- Serif 15/1.7, mono claim numbers. Independent claims are bordered sheet-white blocks; dependents indent by depth
-  (20/40/60px) behind a strong left hairline; a targeted claim takes the accent wash.
+### Motion
+- One ease-out curve (`--ease`), an ease-in-out for the theme fade, a spring for presses and small arrivals, four durations (120, 200, 360, 520ms). Pages cross-fade on navigation; a card's drawing flies into the patent page's first drawing through the `pfig` view transition (`theme.js`); switching theme is a slow whole-page cross-fade (`app.js`). Content is visible without motion; motion only refines how it arrives.
 
-### Ranking explanation (`details.why`)
-- A hairline-topped disclosure with a mono plus/minus marker, the score right-aligned in mono, and factor rows below.
-
-### Dialogs and overlays (`dialog`, `.cmdk`, `.sugg`, `.acctmenu .menu`, `.toast`)
-- Sheet white, strong hairline, 10px radius, Float shadow. Dialogs rise 10px and fade in; backdrop is graphite at 55%.
-  Toasts sit bottom-center with a status-colored icon dot.
-
-### Utilities
-- Honeypot `.trap` (off-screen, inert). Optional-field tag `.opt` (12.5px `ink-3`). Skip link `.skip` (ink fill,
-  appears on focus). Screen-reader text `.sr`.
-
-## Motion
-
-Not a canonical DESIGN.md section in the spec's eight, kept here because the motion tokens are part of the system;
-the sidecar carries them as `extensions.motion`.
-
-- **Curves:** `--ease: cubic-bezier(.22,.8,.24,1)` for every transition and entry; `--spring` (a `linear()` damped spring,
-  about 5% overshoot) only for things that are pressed or arrive small: button release, saved/reserved/copied pops, toasts.
-- **Durations:** `--t1` .16s (link color, buttons, ruled-list hover), `--t2` .24s (home search focus, page view
-  transitions), `--t3` .42s (section reveal). Most hover transitions in the stylesheet use a literal .3s with
-  `--ease`; drawing zoom on hover is .6s.
-- **Page to page:** cross-document view transitions (`@view-transition { navigation: auto }`), root cross-fade at
-  `--t2` with the header held still (`view-transition-name: top`). Opening a patent from a card carries that card's
-  drawing into the patent page's drawing (`theme.js` names the pair `pfig` on `pageswap`/`pagereveal`, `--t3`), only
-  when the target drawing is on screen.
-- **Entry:** sections rise 14px once on scroll (`.reveal`); new card batches stagger in 30ms apart; charts draw in.
-- **Reduced motion:** under `prefers-reduced-motion: reduce` or the site's `data-motion="reduce"`, all animations,
-  transitions and view transitions are disabled, the ticker stops and charts render at their final state.
-
-## Accessibility
-
-- **Underlined links in running text:** links inside `p`, `dd`, prose list items and check lists are underlined
-  (1px, offset 2px, 45% current color, full on hover), never told apart by color alone. Nav, buttons and chips are
-  exempt.
-- **Focus:** every focusable element gets a 2px `--focus` outline at 2px offset; fields use the ink border plus wash.
-- **Contrast (measured):** `ink-3` on paper 5.3:1, on sunken 4.9:1; `link` on paper 5.5:1; status text on its own wash
-  4.6-5.1:1 (light) and 7.5-8.7:1 (dark on surface); dark `ink-3` on graphite 6.1:1.
-- **Status by word:** every status color appears with its word; inferred status adds a dashed edge and hollow dot so
-  it does not rely on hue.
-- **Visitor settings:** theme, original white drawings in dark mode, large text (zoom 1.12) and reduced motion.
+**The Stillness Rule.** Reduced motion, from the system setting or the site's own `data-motion="reduce"`, stops every animation, transition and view transition, and the scripts skip the plotter, digit strikes and celebrations.
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** take every color from the CSS variables so light, dark and the settings page all follow.
-- **Do** put any new patent drawing on `plate` with the multiply/invert blend variables and a mono FIG caption.
-- **Do** set patent-quoted text in Plex Serif, numbers and dates in Plex Mono, and everything else in Plex Sans.
-- **Do** pair every status color with its word, and draw inferred status with the dashed edge.
-- **Do** divide data with hairlines inside one bordered container rather than boxing each value.
-- **Do** use 6px for controls and 10px for containers; nothing else.
-- **Do** honor both reduced-motion switches for any new animation.
+- **Do** take every value from `tokens.css`, and write dark overrides once under `:root[data-theme="dark"]`.
+- **Do** show a status as its word plus its color, with the hollow dot for likely abandoned.
+- **Do** set abstract, claims and description in Source Serif 4, and everything else in Hanken Grotesk.
+- **Do** put identifiers (patent and application numbers, classification codes) in the system mono stack.
+- **Do** keep every drawing on its sheet (`--plate`) and pass it through `--fig-blend` and `--fig-filter`.
+- **Do** draw edges as 1px rings and keep content on the page rather than in boxes.
+- **Do** check new motion under both reduced-motion switches.
 
 ### Don't:
-- **Don't** use orange for status, or a status hue for actions.
-- **Don't** fill the primary button with the accent.
-- **Don't** add glows, gradient text, background grids, glass blur, corner brackets or fake window chrome.
-- **Don't** put shadows on resting containers.
-- **Don't** add pictures other than patent drawings.
+- **Don't** use the accent for anything but primary actions, links, focus and selection.
+- **Don't** put eyebrow or kicker labels above headings.
+- **Don't** use gradient text, decorative glass, or glow.
+- **Don't** set Patent Yard's own copy in the serif, or counts and prose in mono.
+- **Don't** show a drawing off its sheet, or uninverted in dark mode unless the visitor chose original drawings.
+- **Don't** hide content behind an entrance animation.
+
+## Where to change it
+
+| Request | File |
+|---|---|
+| Accent or any color, type size, spacing, radius, shadow, duration | `web/styles/tokens.css` (light block, then the dark block) |
+| Nav height | `--header-h` in `web/styles/tokens.css` |
+| Header, nav, footer | `pipeline/site_ui/shell.py`; styles in `web/styles/layout.css` |
+| Card radius, card hover, list view | `web/styles/cards.css` (`.card .fig`); markup in `components.py` and `cards.js` together |
+| Buttons, chips, fields, status labels | `web/styles/controls.css` |
+| Patent page density and layout | `web/styles/pages/patent.css`; markup in `pipeline/site_ui/pages/patent.py` |
+| Home layout | `pipeline/site_ui/pages/home.py` and `web/styles/pages/home.css` |
+| Plotter speed and ink | `web/static/assets/js/home.js` (`DUR`, `FADE`) |
+| Page, theme and card-to-patent transitions | `web/styles/motion.css`, `web/static/assets/js/app.js`, `web/static/assets/js/theme.js` |
+| One page's own styles | `web/styles/pages/<page>.css`, imported in `web/styles/site.css` |

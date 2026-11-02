@@ -26,18 +26,21 @@ pipeline/            data pipeline, Python 3.9+ standard library only
   drawings.py        drawing sheet -> small cropped PNG (nothing added to the drawing)
   register.py        harvest, dossier download, daily verification, notes
   build.py           collect() for both front ends; writes site/data/ for the claude.ai version
-  website.py         writes web/dist/ (pages, shards, catalog, sitemaps, feed) and checks every link
+  website.py         builds web/dist/: archive, shards, catalog, and the swap into place; checks every link
+  site_ui/           what the pages look like: shell, components, one module per page (docs/DEVELOPING.md)
   test_pipeline.py   checks for everything above
   curation.json      plain-English notes per patent (Patent Yard's editorial layer)
   raw/               downloaded records, drawings and Gazette cache (not published)
 web/
   config.json        site address and the Supabase project URL + anon key (public values)
-  static/            copied into dist: site.css, assets/js/*.js, favicon, _headers (security and cache headers)
+  styles/            the stylesheet in source form; the build bundles it into one file (assets/site.<hash>.css)
+  static/            copied into dist: assets/js/*.js, fonts, vendor libraries, favicon, _headers (security and cache headers)
   functions/         Cloudflare Pages Functions: serve patent pages, drawings and kit data out of the shards
                      (site.json is written by the build)
   supabase/schema.sql  tables, row-level security and functions for accounts, reservations, saved inventions
                      and contact / "report a problem" messages
-  dev/               preview.py (local copy, --mock adds a stand-in backend), serve.py, mock-backend.js, smoke.js
+  dev/               fixtures.py (sample-data site), build_preview.py (fast real-data preview), preview.py, serve.py,
+                     mock-backend.js, smoke.js, check.mjs (browser checks), test_cards.mjs (card contract)
   dist/              the built site (generated)
 site/                the claude.ai version: index.html + data/
 dev/                 test tools for the claude.ai version
@@ -148,8 +151,14 @@ its content hash so it can be cached for a year without ever going stale; script
 
 ## Website: test and deploy
 
+docs/DEVELOPING.md is the guide to changing the website: where each page and style lives, the sample-data preview
+that works on any computer, and the checks. In short:
+
 ```
-python3 web/dev/preview.py /tmp/py-web --mock      # local copy with a stand-in account backend
+python3 web/dev/fixtures.py /tmp/py-sample          # a sample-data site, no production data needed
+python3 web/dev/serve.py /tmp/py-sample 8000       # then open http://localhost:8000
+node web/dev/test_cards.mjs                        # Python and JavaScript patent cards match
+python3 web/dev/preview.py /tmp/py-web --mock      # local copy of a full build with a stand-in account backend
 python3 web/dev/serve.py /tmp/py-web 8766          # then open http://localhost:8766
 ```
 In the browser console of a page: `await runSuite("header" | "home" | "browse" | "patent" | "patent2" | "studio" |

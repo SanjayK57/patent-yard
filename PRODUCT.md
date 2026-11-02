@@ -42,9 +42,9 @@ A free register of patents whose protection has ended, each one traced to the of
 ## Brand Commitments
 
 - The name **Patent Yard** stays. The logo and wordmark may change.
-- Visual reference: a precise technical instrument, from a brief Sanjay pasted from Google Gemini on 2026-10-27 (after rejecting an Apple-style pass and an engineering-manual look as still AI-looking): spatial dark #070709 with a matching light mode, Inter plus JetBrains Mono for every number and code, blueprint frames around every patent drawing. Details in DESIGN.md.
+- Visual reference (Sanjay, 2026-11-02, "Patent Yard 2.0" brief): premium desktop-class software with Apple-level care for typography, spacing, controls and motion, without copying Apple; a distinct Patent Yard identity built around the original drawings. Replaces the earlier drafting-room and dark technical-instrument directions. Details in DESIGN.md.
 - **Reinvent with Claude** (the kit) and the **Invention studio** stay as features.
-- The home page's **plotted drawing**: a real patent drawing redrawn cell by cell like a pen plotter. It stays as the signature animation.
+- The home page's **plotted drawing**: a real patent drawing redrawn by a pen that follows its strokes. It stays as the signature animation.
 - A **light and dark** switch stays, alongside the existing reduced-motion, large-text and original-drawings settings.
 - Voice: plain and specific. No hype, no em-dash asides, no invented features; say what the patent itself says.
 

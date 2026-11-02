@@ -9,6 +9,7 @@ from .base import E, EXT, LOGO, NAV, SITE, SPRITE, WORLD, big_number, icon
 
 
 THEME = theme_colors()  # the page background in each theme, from web/styles/tokens.css
+DEV_BANNER = ""  # set by web/dev/fixtures.py: a note on every page that the data is invented
 
 
 class Shell:
@@ -50,6 +51,7 @@ class Shell:
 </head>
 <body>
 {SPRITE}
+{f'<div class="devbanner" role="note">{E(DEV_BANNER)}</div>' if DEV_BANNER else ''}
 <a class="skip" href="#main">Skip to content</a>
 <header class="top">
   <div class="wrap">

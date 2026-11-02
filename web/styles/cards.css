@@ -13,7 +13,7 @@
 .card .sheets .i{width:13px;height:13px}
 /* no drawing on file: the field's symbol and the number on a blank sheet */
 .card .fig.plate{display:grid;place-items:center;align-content:center;gap:var(--s3);background:var(--surface-2)}
-.card:hover .fglyph{transform:scale(1.08);stroke:var(--accent)}
+.card:hover .fglyph{transform:scale(1.08);stroke:var(--ink-2)}
 .card .numart{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em;color:var(--ink-2);white-space:nowrap}
 .card.acard .fig.plate{aspect-ratio:16/9}
 
@@ -29,8 +29,8 @@
 .cmeta>div{min-width:0}
 .cmeta small{display:block;margin-bottom:2px;font-size:11.5px;color:var(--ink-3)}
 .cmeta span{display:block;font-weight:500;color:var(--ink-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.angle{padding:var(--s3) var(--s4);border-radius:var(--r);background:var(--accent-soft);font-size:14px;line-height:1.5;color:var(--ink)}
-.angle b{display:block;margin-bottom:3px;font-size:12.5px;font-weight:600;color:var(--link)}
+.angle{padding:var(--s3) var(--s4);border-radius:var(--r);background:var(--sunken);font-size:14px;line-height:1.5;color:var(--ink)}
+.angle b{display:block;margin-bottom:3px;font-size:12.5px;font-weight:600;color:var(--ink-2)}
 
 /* the lead card on the home page: drawing large on the right, words on the left */
 .card.feat{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);gap:var(--s8);align-items:center}
