@@ -198,3 +198,8 @@ Status marks: `[ ]` open · `[~]` in progress · `[x]` done and verified (how) �
   accessibility/best practices/SEO 100. Archive pages show their drawing sheets on the site.
 - 2026-11-01 Documenter regenerated DESIGN.md and .impeccable/design.json; its 8 CSS findings fixed (96ef64d).
 - 2026-11-01 Phone menu keyboard: focus moves in on open; Escape and outside click close it (470820d).
+- 2026-11-01 22:13 live verification of the evening publish (main 4c51c15): smoke header 8/8, home 6/6, browse 17/17,
+  patent 24/24, studio 6/6, account 2/2; All patents 17/17 on live data; card-to-patent drawing transition named on both
+  ends, nothing left named after going back; Lighthouse home and /all/?type=g&cc=DE 100/100/100/100; Insights and All
+  patents both say 81,259,033 granted patents or registered utility models. (The 19:00 publish was late: the Mac slept
+  and time.sleep stops counting; the publisher now waits against the wall clock, effective when it next restarts.)

@@ -128,7 +128,7 @@ https://patentyard.pages.dev
   done.
 
 ## 8. Final status
-Live and verified. Waiting on Sanjay: deploying the new filter lists to the cards project (a production deploy; the
-filter rows stay hidden until then). Open: leaked-password protection (Sanjay's dashboard), a per-sender contact limit, worldwide
+Live and verified (2026-11-01 22:13: every suite passes on the live site, Lighthouse 100 across the board on home and
+All patents). Open: leaked-password protection (Sanjay's dashboard), a per-sender contact limit, worldwide
 filters beyond country and age (needs a new world export), and the USPTO API key needed from 2026-11-07 for new
 patents to keep arriving.
