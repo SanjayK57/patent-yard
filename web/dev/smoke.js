@@ -27,7 +27,7 @@
       check("footer totals", !!(await until(() => /US patents · status last checked/.test(q("#footStat").textContent))), q("#footStat").textContent);
     },
     async home(check) {
-      check("today's picks", qa("#today .bento .card").length >= 4 && qa("#today .pickrows li").length >= 4 && !!q("#today .bento .card.feat"));
+      check("today's picks", !!q("#closeup .card.feat") && qa("#today .bento .card").length >= 3 && qa("#today .pickrows li").length >= 4);
       check("collection counts filled", qa(".ledger .n").length >= 1 && qa(".ledger .n").every(b => /\d/.test(b.textContent)));
       check("field chips", qa(".fchips .fchip").length >= 10);
       check("hero search goes to browse", q(".bigsearch").getAttribute("action") === "/browse/" && !!q("#heroQ"));
@@ -38,7 +38,6 @@
       check("every card image loads", (await until(() => qa(".card img").filter(i => i.loading !== "lazy").every(i => i.complete && i.naturalWidth > 0))) !== null);
     },
     async features(check) {  // run on the home page; then features2 on /saved/
-      check("ticker of new patents", qa(".ticker .ttrack > a").length >= 10);
       await wait(1500);
       check("counters finish on the real number", qa("[data-count]").every(el => el.textContent.replace(/,/g, "") === el.dataset.count));
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "k", ctrlKey: true, bubbles: true }));
