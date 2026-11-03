@@ -20,7 +20,7 @@ class Opportunities:
             return (f'<details class="why"><summary>Why it ranks here <span class="num">{sum(v for _, v in sig):.1f} points</span></summary>'
                     f'<ul>{rows_}</ul></details>')
         pick_html = "".join(f"""<article class="oppick reveal" data-of="{r["entry"]["ind"]}">
-  <a class="ofig" href="{purl(r["entry"]["id"])}">{f'<img src="{self.img(r["entry"]["id"])}" alt="Drawing from {E(r["entry"]["n"])}" loading="lazy">' if r["fig"] else ""}<span class="rank">{i}</span></a>
+  <a class="ofig glass" href="{purl(r["entry"]["id"])}">{f'<img src="{self.img(r["entry"]["id"])}" alt="Drawing from {E(r["entry"]["n"])}" loading="lazy">' if r["fig"] else ""}<span class="rank num">{i}</span></a>
   <div class="otext"><span class="fieldname">{E(self.fields.get(r["entry"]["ind"], r["entry"]["ind"]))} · <span class="num-id">{E(r["entry"]["n"])}</span> · lapsed {E(short_date(r["entry"]["x"]))}</span>
     <h3><a href="{purl(r["entry"]["id"])}">{E(r["entry"]["t"])}</a></h3>
     <dl><div><dt>What lapsed</dt><dd>{E(a["open"])}</dd></div><div><dt>Who might be interested</dt><dd>{E(a["buyers"])}</dd></div>
@@ -28,12 +28,16 @@ class Opportunities:
     {why(r)}
     <div class="rowbtns"><a class="btn primary sm" href="{purl(r["entry"]["id"])}">Open patent</a><a class="btn secondary sm" href="/studio/?patent={quote(r["entry"]["id"])}">{icon("spark")}Reinvent with Claude</a></div></div>
 </article>""" for i, (r, a) in enumerate(picks, 1))
-        top_html = "".join(f'<div class="opp" data-of="{r["entry"]["ind"]}"><span class="rank">{i}</span>{self.card(r, i)}{why(r)}</div>'
-                           for i, r in enumerate(top, len(picks) + 1))
+        def row(i, r):  # the ranked list: one line each, the reasons a click away
+            e = r["entry"]
+            thumb = f'<img src="{self.img(e["id"])}" alt="" loading="lazy" decoding="async">' if r["fig"] else ""
+            return (f'<li class="opp" data-of="{e["ind"]}"><span class="rank num">{i}</span><a class="orow" href="{purl(e["id"])}"><span class="pthumb">{thumb}</span>'
+                    f'<span class="ptext"><b>{E(e["t"])}</b><small>{E(self.fields.get(e["ind"], e["ind"]))} · <span class="num-id">{E(e["n"])}</span> · lapsed {E(short_date(e["x"]))}</small></span></a>{why(r)}</li>')
+        top_html = "".join(row(i, r) for i, r in enumerate(top, len(picks) + 1))
         fields = sorted({r["entry"]["ind"] for r, _ in picks} | {r["entry"]["ind"] for r in top}, key=lambda k: list(self.fields).index(k) if k in self.fields else 99)
         filt = '<button class="chip" type="button" data-of="" aria-pressed="true">All</button>' + "".join(
             f'<button class="chip" type="button" data-of="{k}" aria-pressed="false">{E(self.fields.get(k, k))}</button>' for k in fields)
-        body = f"""<div class="page">
+        body = f"""<div class="page opps">
 <div class="sechead"><div><h1>Opportunities</h1>
 <p class="lede">US patents that lapsed for an unpaid maintenance fee in the past year, ordered by a few facts from their records that suggest someone once invested in them. It's a starting point for research, not a valuation: nothing here measures the legal scope of the claims or predicts sales.</p></div></div>
 <ul class="omethod">
@@ -47,7 +51,7 @@ class Opportunities:
 <section class="section tight"><div class="sechead"><div><h2>Researched notes on the top {len(picks)}</h2><p>Drafted with Claude (an AI model) from each patent's abstract and claims while the register was prepared, not reviewed by a patent professional. Who might be interested and why now are leads to check, not findings. No market figures are given because we can't source them.</p></div></div>
 <div class="opicks">{pick_html}</div></section>
 <section class="section"><div class="sechead"><div><h2>The next {len(top)}</h2><p>Same factors, without written notes. Open any one for its claims, drawings and the Claude kit.</p></div></div>
-<div class="grid ogrid">{top_html}</div></section>
+<ol class="ogrid orank">{top_html}</ol></section>
 <p class="muted fine-print">A lapsed US patent can be reinstated if the owner later shows the missed payment was unintentional, and its own claims are only one of the rights a product can touch: newer patents, design patents, trademarks, regulations and patents in other countries can still apply. See the <a href="/legal/disclaimer/">disclaimer</a>.</p>
 </div>"""
         self.page("/opportunities/", "Opportunities", f"{len(picks) + len(top)} recently lapsed US patents in an explainable research order, with notes on the top {len(picks)} drafted with Claude.",
