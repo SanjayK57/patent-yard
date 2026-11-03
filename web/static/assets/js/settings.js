@@ -2,7 +2,7 @@
 import { $, $$, toast, session, getSettings, saveSettings, applySettings } from "./app.js";
 
 // ---------------------------------------------------------------- display settings
-const DEFAULTS = { theme: "system", drawings: "inverted", text: "normal", motion: "system", sort: "build" };
+const DEFAULTS = { theme: "system", drawings: "original", text: "normal", motion: "system", sort: "build" };
 function paint() {
   const s = { ...DEFAULTS, ...getSettings() };
   for (const group of $$("[data-setting]")) for (const b of $$("button", group)) b.setAttribute("aria-checked", String(b.dataset.value === s[group.dataset.setting]));

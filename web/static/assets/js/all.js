@@ -182,7 +182,13 @@ const pressType = () => $$("[data-type]").forEach(b => b.setAttribute("aria-pres
   });
   $("#wfilters").addEventListener("click", e => { const b = e.target.closest("[data-type]"); if (b) { S.type = b.dataset.type; pressType(); run(); } });
   const tg = $("#wToggle");
-  tg.addEventListener("click", () => { const open = $("#wfilters").classList.toggle("open"); tg.setAttribute("aria-expanded", String(open)); });
+  tg.addEventListener("click", () => {
+    if (wide.matches) { const closed = $(".workspace").classList.toggle("fclosed"); tg.setAttribute("aria-expanded", String(!closed)); try { localStorage.setItem("patentyard.filters", closed ? "closed" : "open"); } catch {} return; }
+    const open = $("#wfilters").classList.toggle("open"); tg.setAttribute("aria-expanded", String(open));
+  });
+  const wide = matchMedia("(min-width: 901px)");  // wide screens fold the sidebar away, phones open the sheet
+  try { if (localStorage.getItem("patentyard.filters") === "closed") $(".workspace").classList.add("fclosed"); } catch {}
+  if (wide.matches) tg.setAttribute("aria-expanded", String(!$(".workspace").classList.contains("fclosed")));
   $("#wDone")?.addEventListener("click", () => { $("#wfilters").classList.remove("open"); tg.setAttribute("aria-expanded", "false"); });
   free.addEventListener("click", () => { S.free = !S.free; free.setAttribute("aria-pressed", String(S.free)); run(); });
   more.addEventListener("click", async () => { more.disabled = true; await page(seq); more.disabled = false; });

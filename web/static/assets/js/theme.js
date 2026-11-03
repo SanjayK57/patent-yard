@@ -8,7 +8,7 @@
     if (s.theme === "light" || s.theme === "dark") d.setAttribute("data-theme", s.theme);
     if (s.motion === "reduce") d.setAttribute("data-motion", "reduce");
     if (s.text === "large") d.setAttribute("data-text", "large");
-    if (s.drawings === "original") d.setAttribute("data-drawings", "original");
+    if (s.drawings === "inverted") d.setAttribute("data-drawings", "inverted");
   } catch (e) {}
 })();
 // Page-to-page transitions (site.css @view-transition): a skipped transition is normal, not an error.

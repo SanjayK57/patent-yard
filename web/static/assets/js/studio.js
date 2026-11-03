@@ -86,10 +86,10 @@ $("#saveIdea").addEventListener("click", async () => {
     if (!start) ideaId = null;
   }
   start ||= params.get("patent") ? { pid: params.get("patent") } : local("studioDraft");
-  if (!start) return after();
+  if (!start) { begin("idea", false); return after(); }  // a visit with nothing started is someone with their own idea; patent pages link with ?patent=
   for (const k of Object.keys(F)) F[k].value = start[k] || "";
   if (start.task) kit.task = start.task;
   if (start.pid) await choose(start.pid);
-  begin(start.pid ? "patent" : start.name || start.pitch || start.desc ? "idea" : "", false);
+  begin(start.pid ? "patent" : "idea", false);
   refresh();
 })();

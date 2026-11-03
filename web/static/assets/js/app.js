@@ -70,7 +70,7 @@ export function applySettings() {
   set("data-theme", s.theme === "light" || s.theme === "dark", s.theme);
   set("data-motion", s.motion === "reduce", "reduce");
   set("data-text", s.text === "large", "large");
-  set("data-drawings", s.drawings === "original", "original");
+  set("data-drawings", s.drawings === "inverted", "inverted");
 }
 export const isDark = () => { const t = document.documentElement.getAttribute("data-theme"); return t ? t === "dark" : matchMedia("(prefers-color-scheme: dark)").matches; };
 export const reducedMotion = () => document.documentElement.getAttribute("data-motion") === "reduce" || matchMedia("(prefers-reduced-motion: reduce)").matches;

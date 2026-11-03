@@ -235,6 +235,11 @@ class Website(unittest.TestCase):
         self.assertEqual(self.W.cite_ref("7038588")[0], "US 7,038,588")
         self.assertIn("USD512345S", self.W.cite_ref("D512345")[1])
 
+    def test_cut_excerpts_end_cleanly(self):
+        self.assertEqual(self.W.excerpt("Few mechanisms in nature rival the hand. Mimicking it"), ("Few mechanisms in nature rival the hand.", True))
+        self.assertEqual(self.W.excerpt("One. Then a long run of words that was cut mid wo"), ("One. Then a long run of words that was cut mid…", True))
+        self.assertEqual(self.W.excerpt("Whole sentence."), ("Whole sentence.", False))
+
     def test_why_free_mentions_dates(self):
         checks, warn = self.W.why_free(self.entry())
         self.assertIn("May 2, 2021", checks[0])

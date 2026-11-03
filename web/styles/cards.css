@@ -17,6 +17,13 @@
 .card .sheets .i{width:13px;height:13px}
 /* no drawing on file: the field's symbol and the number on a blank sheet */
 .card .fig.plate{display:grid;place-items:center;align-content:center;gap:var(--s3);background:var(--surface-2)}
+.card .fig.plate .fglyph,.gfig.failed .fglyph{display:none!important}
+.card .fig.plate::after,.gfig.failed::after{content:"";position:absolute;inset:18%;pointer-events:none;opacity:.45;
+  background:linear-gradient(var(--ink-3),var(--ink-3)) 0 0/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 0 0/1px 12px no-repeat,
+    linear-gradient(var(--ink-3),var(--ink-3)) 100% 0/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 100% 0/1px 12px no-repeat,
+    linear-gradient(var(--ink-3),var(--ink-3)) 0 100%/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 0 100%/1px 12px no-repeat,
+    linear-gradient(var(--ink-3),var(--ink-3)) 100% 100%/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 100% 100%/1px 12px no-repeat}
+.card .fig.plate .numart,.gfig.failed .numart{font-size:17px;font-weight:560;font-stretch:var(--semiwide);letter-spacing:-.01em;color:var(--ink-2)}
 .card:hover .fglyph{transform:scale(1.08);stroke:var(--ink-2)}
 .card .numart{font-size:13px;font-stretch:var(--narrow);font-variant-numeric:tabular-nums;color:var(--ink-3);white-space:nowrap}
 .card.acard .fig.plate{aspect-ratio:16/9}
@@ -97,7 +104,7 @@
 .grid.as-list .cbody{padding:0;gap:6px 10px}
 .grid.as-list .cbody h3{font-size:18px;font-stretch:var(--semiwide)}
 .grid.as-list .cbody p{-webkit-line-clamp:2}
-.grid.as-list .cmeta{grid-template-columns:auto minmax(0,1fr);gap:7px 14px;margin:0;padding:0 44px 0 var(--s5);border:0;box-shadow:-1px 0 0 var(--line);align-self:stretch;align-content:center}
+.grid.as-list .cmeta{font-stretch:var(--narrow);grid-template-columns:auto minmax(0,1fr);gap:7px 14px;margin:0;padding:0 44px 0 var(--s5);border:0;box-shadow:-1px 0 0 var(--line);align-self:stretch;align-content:center}
 .grid.as-list .cmeta small{margin:0;font-size:12.5px}
 .grid.as-list .cmeta>div{display:contents}
 .grid.as-list .savebtn{top:50%;margin-top:-17px;right:0}

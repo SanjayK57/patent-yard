@@ -1,4 +1,4 @@
-/* Insights: charts that read like a data publication. Graphite bars, the vermilion mark for the one series that is live, labels in plain words. */
+/* Insights: charts that read like a data publication. Graphite bars and lines, labels in plain words. */
 .ins{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--gap);margin-top:var(--s6)}
 .ins .span2{grid-column:1/-1}
 @media (max-width:900px){.ins{grid-template-columns:minmax(0,1fr)}}
@@ -45,8 +45,8 @@ a.hrow:hover{background:color-mix(in srgb,var(--ink) 5%,transparent);color:var(-
 .owners li::marker{font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .owners li b{float:right;font-size:12.5px;font-weight:550;font-variant-numeric:tabular-nums;color:var(--ink-2)}
 /* the line chart: the accent line draws in once, with a faint area under it */
-.linechart .area{fill:color-mix(in srgb,var(--mark) 10%,transparent);opacity:0;transition:opacity 1s var(--ease) .6s}
-.linechart .line{fill:none;stroke:var(--mark);stroke-width:2;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.8s var(--ease)}
+.linechart .area{fill:color-mix(in srgb,var(--ink) 8%,transparent);opacity:0;transition:opacity 1s var(--ease) .6s}
+.linechart .line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;transition:stroke-dashoffset 1.8s var(--ease)}
 .linechart .peak{stroke:var(--line-strong);stroke-dasharray:3 4;stroke-width:1}
 .reveal.in .linechart .line,html:not(.js) .linechart .line{stroke-dashoffset:0}
 .reveal.in .linechart .area,html:not(.js) .linechart .area{opacity:1}

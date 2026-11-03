@@ -74,7 +74,16 @@ function moreLabel() {
 }
 
 const toggle = $("#fToggle");
-toggle.addEventListener("click", () => { const open = $("#filters").classList.toggle("open"); toggle.setAttribute("aria-expanded", String(open)); });
+toggle.addEventListener("click", () => { if (wide.matches) return sidebar(!$(".workspace").classList.contains("fclosed")); const open = $("#filters").classList.toggle("open"); toggle.setAttribute("aria-expanded", String(open)); });
+// wide screens: the same button folds the filter sidebar away (remembered in this browser); phones: it opens the sheet
+const wide = matchMedia("(min-width: 901px)");
+function sidebar(closed, keep = true) {
+  $(".workspace").classList.toggle("fclosed", closed);
+  toggle.setAttribute("aria-expanded", String(wide.matches ? !closed : $("#filters").classList.contains("open")));
+  if (keep) try { localStorage.setItem("patentyard.filters", closed ? "closed" : "open"); } catch {}
+}
+try { sidebar(localStorage.getItem("patentyard.filters") === "closed", false); } catch { sidebar(false, false); }
+wide.addEventListener("change", () => sidebar($(".workspace").classList.contains("fclosed"), false));
 // phones: the filters open as a sheet; "Show results" closes it. "Reset" starts over with the same collection.
 $("#fDone")?.addEventListener("click", () => { $("#filters").classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); grid.scrollIntoView({ block: "start" }); });
 $("#fReset")?.addEventListener("click", () => { location.href = location.pathname + (ARCH ? "?in=archive" : ""); });

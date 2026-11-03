@@ -25,7 +25,7 @@
 .hsearch{position:relative;display:flex;align-items:center;gap:8px;width:230px;height:34px;padding:0 6px 0 12px;border-radius:var(--pill);
   background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink-3);transition:background-color var(--t2) var(--ease),box-shadow var(--t2) var(--ease),width var(--t3) var(--ease)}
 .hsearch:hover{background:color-mix(in srgb,var(--ink) 9%,transparent)}
-.hsearch:focus-within{width:320px;background:var(--surface);box-shadow:0 0 0 1px var(--line-strong),var(--sh-2)}
+.hsearch:focus-within{width:320px;background:var(--surface);box-shadow:0 0 0 1.5px var(--ink),var(--sh-2)}
 .hsearch input{flex:1;min-width:0;border:0;background:none;outline:none;font-size:var(--fs-ui);color:var(--ink)}
 .hsearch input::-webkit-search-cancel-button{display:none}
 kbd.hk{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 5px;border-radius:6px;background:var(--surface);box-shadow:0 0 0 1px var(--line),0 1px 0 var(--line);color:var(--ink-3)}

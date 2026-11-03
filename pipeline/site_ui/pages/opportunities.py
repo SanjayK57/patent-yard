@@ -27,7 +27,15 @@ class Opportunities:
     <div><dt>Why it could matter now</dt><dd>{E(a["now"])}</dd></div><div><dt>Check before building</dt><dd>{E(a["watch"])}</dd></div></dl>
     {why(r)}
     <div class="rowbtns"><a class="btn primary sm" href="{purl(r["entry"]["id"])}">Open patent</a><a class="btn secondary sm" href="/studio/?patent={quote(r["entry"]["id"])}">{icon("spark")}Reinvent with Claude</a></div></div>
-</article>""" for i, (r, a) in enumerate(picks, 1))
+</article>""" for i, (r, a) in enumerate(picks[:3], 1))
+        # the rest of the researched picks: one line each, their notes opening in place
+        note_html = "".join(f"""<li class="onote" data-of="{r["entry"]["ind"]}"><details><summary><span class="rank num">{i}</span>
+  <span class="pthumb">{f'<img src="{self.img(r["entry"]["id"])}" alt="" loading="lazy" decoding="async">' if r["fig"] else ""}</span>
+  <span class="ptext"><b>{E(r["entry"]["t"])}</b><small>{E(self.fields.get(r["entry"]["ind"], r["entry"]["ind"]))} · <span class="num-id">{E(r["entry"]["n"])}</span> · lapsed {E(short_date(r["entry"]["x"]))}</small></span></summary>
+  <div class="otext"><dl><div><dt>What lapsed</dt><dd>{E(a["open"])}</dd></div><div><dt>Who might be interested</dt><dd>{E(a["buyers"])}</dd></div>
+    <div><dt>Why it could matter now</dt><dd>{E(a["now"])}</dd></div><div><dt>Check before building</dt><dd>{E(a["watch"])}</dd></div></dl>
+    {why(r)}
+    <div class="rowbtns"><a class="btn primary sm" href="{purl(r["entry"]["id"])}">Open patent</a><a class="btn secondary sm" href="/studio/?patent={quote(r["entry"]["id"])}">{icon("spark")}Reinvent with Claude</a></div></div></details></li>""" for i, (r, a) in enumerate(picks[3:], 4))
         def row(i, r):  # the ranked list: one line each, the reasons a click away
             e = r["entry"]
             thumb = f'<img src="{self.img(e["id"])}" alt="" loading="lazy" decoding="async">' if r["fig"] else ""
@@ -49,7 +57,7 @@ class Opportunities:
 <p class="muted fine-print">Each patent's factors and points are under "Why it ranks here". Claim length is not used: a short claim isn't necessarily a broad one.</p>
 <div class="frow ofilter" role="group" aria-label="Filter by field"><span class="lab">Field</span>{filt}</div>
 <section class="section tight"><div class="sechead"><div><h2>Researched notes on the top {len(picks)}</h2><p>Drafted with Claude (an AI model) from each patent's abstract and claims while the register was prepared, not reviewed by a patent professional. Who might be interested and why now are leads to check, not findings. No market figures are given because we can't source them.</p></div></div>
-<div class="opicks">{pick_html}</div></section>
+<div class="opicks">{pick_html}</div>{f'<ol class="opicks onotes">{note_html}</ol>' if note_html else ""}</section>
 <section class="section"><div class="sechead"><div><h2>The next {len(top)}</h2><p>Same factors, without written notes. Open any one for its claims, drawings and the Claude kit.</p></div></div>
 <ol class="ogrid orank">{top_html}</ol></section>
 <p class="muted fine-print">A lapsed US patent can be reinstated if the owner later shows the missed payment was unintentional, and its own claims are only one of the rights a product can touch: newer patents, design patents, trademarks, regulations and patents in other countries can still apply. See the <a href="/legal/disclaimer/">disclaimer</a>.</p>

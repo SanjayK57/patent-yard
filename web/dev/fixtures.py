@@ -20,6 +20,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT / "pipeline"))
+import register  # noqa: E402
+# one fixed day, so the sample site (and its visual-regression screenshots, web/dev/visual.mjs) is the same every day:
+# the home page picks and every relative date are worked out from it
+SAMPLE_DAY = dt.date(2026, 11, 2)
+register.TODAY = SAMPLE_DAY
 import patents as P  # noqa: E402
 import website as W  # noqa: E402
 from site_ui import shell  # noqa: E402
@@ -61,7 +66,7 @@ def png(path, w, h, seed):
 
 
 def sample_rows(tmp, n=36):
-    today, rows = dt.date.today(), []
+    today, rows = SAMPLE_DAY, []
     for i in range(n):
         st, ind = STATUS[i % len(STATUS)], FIELDS[i % len(FIELDS)]
         pid, num = f"US-{98000001 + i}-B{1 + i % 2}", 98000001 + i

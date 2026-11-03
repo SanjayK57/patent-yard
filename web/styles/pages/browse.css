@@ -15,7 +15,12 @@
   box-shadow:0 0 0 1px var(--line),0 12px 30px -18px rgba(23,25,26,.28);font-size:var(--fs-read)}
 .qrow input.field:focus{box-shadow:0 0 0 1.5px var(--ink),0 16px 36px -18px rgba(23,25,26,.32)}
 .qrow input.field::-webkit-search-cancel-button{cursor:pointer}
-.ftoggle{display:none;flex:none;height:52px;padding-inline:20px;background:var(--surface)}
+.ftoggle{display:inline-flex;flex:none;height:52px;padding-inline:20px;background:var(--surface)}
+.ftoggle[aria-expanded="true"]{box-shadow:inset 0 0 0 1.5px var(--ink);color:var(--ink)}
+/* the sidebar folded away (wide screens): the search bar and the results take the whole width */
+.workspace.fclosed{grid-template-columns:minmax(0,1fr)}
+.workspace.fclosed .fside{display:none}
+.workspace.fclosed .qrow,.workspace.fclosed .results{grid-column:1}
 
 /* the sidebar: groups with a label over their options, active options filled */
 .fhead{display:flex;align-items:center;justify-content:space-between;padding-bottom:var(--s3);border-bottom:1.5px solid var(--ink)}
@@ -50,7 +55,7 @@
 @media (max-width:900px){
   .workspace{display:block}
   .workspace>.filters{display:block;margin-bottom:var(--s5)}
-  .ftoggle{display:inline-flex}
+  .workspace.fclosed .fside{display:grid}
   .fside{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:60;max-height:min(82vh,720px);padding:var(--s5) var(--gutter) calc(var(--s5) + env(safe-area-inset-bottom,0px));
     border-radius:var(--r-xl) var(--r-xl) 0 0;background:var(--surface);box-shadow:0 -1px 0 var(--line),0 -30px 60px -20px rgba(0,0,0,.35);
     transform:translateY(105%);visibility:hidden;transition:transform var(--t4) var(--ease),visibility 0s linear var(--t4)}
@@ -74,3 +79,10 @@
 .tile b{display:block;font-size:var(--fs-read);font-weight:620;letter-spacing:-.012em}
 .tile small{display:block;margin-top:3px;font-size:var(--fs-sm);line-height:1.45;color:var(--ink-3)}
 .tile:hover b{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+/* All patents: what the data is, one click away */
+.aboutdata{margin-top:var(--s3);font-size:var(--fs-sm);color:var(--ink-3)}
+.aboutdata summary{display:inline-flex;align-items:center;gap:6px;min-height:28px;font-weight:600;color:var(--ink-2);cursor:pointer;list-style:none}
+.aboutdata summary::-webkit-details-marker{display:none}
+.aboutdata summary::after{content:"";width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform var(--t2) var(--ease)}
+.aboutdata[open] summary::after{transform:rotate(225deg)}
+.aboutdata p{max-width:70ch;margin-top:var(--s2);font-size:var(--fs-sm);line-height:1.55;color:var(--ink-3);animation:fieldIn var(--t2) var(--ease)}

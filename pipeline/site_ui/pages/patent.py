@@ -75,6 +75,15 @@ def why_free(e):
 
 # ---------------------------------------------------------------- graphics built only from the patent's own data
 
+def excerpt(text):
+    """A stored excerpt ends where the text was cut, sometimes mid-word: end it at a sentence, or a word, and say so."""
+    text = text.rstrip()
+    if not text or text[-1] in '.!?)"':
+        return text, False
+    cut = text.rfind(". ")
+    return (text[:cut + 1] if cut > len(text) * .6 else text[:text.rfind(" ")].rstrip(",;:") + "…"), True
+
+
 def fee_schedule(e):
     """Fees are due 3.5, 7.5 and 11.5 years after grant; a lapse at the 4th, 8th or 12th anniversary means the fee due
     half a year earlier went unpaid and every earlier one was paid."""
@@ -241,6 +250,8 @@ class PatentPage:
                     f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose source">{E(dd["abs"])}</p></div>' if dd["abs"] else
                     f'<div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>Full text on its way</h3><p class="prose">This {kind} is listed from its USPTO record because it passed every check. Its abstract, claims and description are {later}</p></div></div>')
         plain = "" if e["auto"] else f'<div class="block pynote"><h3>In plain English <span class="src">Patent Yard summary</span></h3><p class="lead">{E(e["h"])}</p></div>'
+        bg, bg_cut = excerpt(dd.get("bg") or "")
+        bg_more = '<p class="muted note gap-top">It continues in the <a href="#description">description</a>.</p>' if bg_cut else ""
         overview = f"""
 <section class="psec" id="overview"><h2>Overview</h2>
 <div class="ov"><div>{fig}</div>
@@ -258,7 +269,7 @@ class PatentPage:
     <div><small>Length</small><b>{f'{len(claims)} {"claim" if len(claims) == 1 else "claims"}' if claims else ""}{" · " if claims and dd.get("pages") else ""}{f'{dd["pages"]} pages' if dd.get("pages") else ""}{"—" if not claims and not dd.get("pages") else ""}</b></div>
   </div>
   {abstract if plain else ""}
-  {f'<div class="block"><h3>Background <span class="src">From the {kind}</span></h3><p class="prose source">{E(dd["bg"])}</p></div>' if dd.get("bg") else ""}
+  {f'<div class="block"><h3>Background <span class="src">From the {kind}</span></h3><p class="prose source">{E(bg)}</p>{bg_more}</div>' if dd.get("bg") else ""}
 </div></div></section>"""
 
         # drawings

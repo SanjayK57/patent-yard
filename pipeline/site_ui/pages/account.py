@@ -72,7 +72,7 @@ class Account:
   <div class="sechead"><div><h1>Settings</h1><p>Display settings are saved in this browser. Account settings follow your account everywhere.</p></div></div>
   <section class="panel" aria-labelledby="sAppear"><h2 id="sAppear">Appearance</h2>
     <div class="setrow"><div><b>Theme</b><p>System follows your device's light or dark setting.</p></div>{seg("theme", [("system", "System"), ("light", "Light"), ("dark", "Dark")])}</div>
-    <div class="setrow"><div><b>Drawings in dark mode</b><p>Inverted drawings match the dark page; original keeps black lines on white paper.</p></div>{seg("drawings", [("inverted", "Inverted"), ("original", "Original")])}</div>
+    <div class="setrow"><div><b>Drawings in dark mode</b><p>Original shows each sheet as published, black lines on paper; inverted turns them into light lines on the dark page.</p></div>{seg("drawings", [("original", "Original"), ("inverted", "Inverted")])}</div>
     <div class="setrow"><div><b>Text size</b><p>Makes everything on the site a little larger.</p></div>{seg("text", [("normal", "Normal"), ("large", "Large")])}</div>
     <div class="setrow"><div><b>Motion</b><p>Turns off animations, including the drawing plotter on the home page.</p></div>{seg("motion", [("system", "System"), ("reduce", "Reduce")])}</div>
   </section>

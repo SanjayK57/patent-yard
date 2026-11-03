@@ -8,7 +8,7 @@
 :root{
   /* the table, the glass, the sheets, the vellum */
   --bg:#F3F3F1; --glass:#FDFDFC; --surface:#FFFFFF; --surface-2:#F8F8F6; --sunken:#E9E9E6; --band:#ECECE9; --plate:#FFFFFF;
-  --vellum:rgba(253,253,252,.76); --vellum-solid:#FAFAF8; --blur:saturate(1.3) blur(18px);
+  --vellum:rgba(253,253,252,.76); --vellum-solid:#FAFAF8; --blur:saturate(1.3) blur(18px); --glass-lit:var(--glass);
   --line:#DCDCD8; --line-strong:#C3C3BE; --hair:rgba(23,25,26,.08);
   --ink:#17191A; --ink-2:#45494C; --ink-3:#62676B;
   /* actions are graphite; the mark is vermilion and rare */
@@ -68,7 +68,7 @@
   --aband:#A4A9AD; --aband-soft:#222426;
   --reserved:#BFA3F1; --reserved-soft:#2B2340;
   --warn:#EAB566; --danger:#FF8A7A;
-  --fig-blend:screen; --fig-filter:invert(1);
+  --plate:#D9D8D3; --glass-lit:#CFCEC9; --fig-blend:multiply; --fig-filter:none;
   --sh-1:0 1px 2px rgba(0,0,0,.45);
   --sh-2:0 1px 2px rgba(0,0,0,.4),0 12px 28px -10px rgba(0,0,0,.65);
   --sh-3:0 2px 8px rgba(0,0,0,.45),0 30px 70px -20px rgba(0,0,0,.8);
@@ -79,6 +79,10 @@
   --scrim:rgba(0,0,0,.62);
   color-scheme:dark;
 }
-/* visitor settings (settings page): original drawings in dark mode, larger text, less motion */
-:root[data-drawings="original"]{--fig-blend:normal;--fig-filter:none;--plate:#FFFFFF}
+/* in dark mode the table goes dark but the glass stays lit: a panel that holds an original sheet keeps light-theme
+   ink, so what is written on it stays readable */
+:root[data-theme="dark"]:not([data-drawings="inverted"]) :is(.lit,.ltglass,.bigfig,.card .fig,.ofig,.gfront,.sistage .glass,.gallery figure>button){--ink:#17191A;--ink-2:#45494C;--ink-3:#5E6367;--line:#C3C2BD;--hair:rgba(23,25,26,.1);
+  --vellum:rgba(250,250,248,.8);--glass:var(--glass-lit);--glow:#E2E1DC;color:var(--ink)}
+/* visitor settings (settings page): inverted drawings in dark mode, larger text, less motion */
+:root[data-theme="dark"][data-drawings="inverted"]{--plate:#151617;--glass-lit:var(--glass);--fig-blend:screen;--fig-filter:invert(1)}
 :root[data-text="large"] body{zoom:1.12}
