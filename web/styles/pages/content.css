@@ -32,7 +32,6 @@
 .legaltoc a{color:var(--ink-2)}
 .legaltoc a:hover{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
 .legaltext{max-width:72ch}
-.legaltext section{scroll-margin-top:calc(var(--header-h) + 24px)}
 .legaltext section+section{margin-top:var(--s7);padding-top:var(--s6);box-shadow:0 -1px 0 var(--line)}
 .legaltext h2{margin-top:0;font-size:22px;font-weight:640;letter-spacing:-.022em}
 @media (max-width:900px){.legalgrid{grid-template-columns:minmax(0,1fr)}.legaltoc{position:static}}

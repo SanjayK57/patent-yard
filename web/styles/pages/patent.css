@@ -32,12 +32,13 @@
   .toc a::before{left:12px;right:12px;top:auto;bottom:0;width:auto;height:2px}
 }
 
-.psec{padding-bottom:var(--s11);margin-bottom:var(--s9);box-shadow:0 1px 0 var(--line);scroll-margin-top:calc(var(--header-h) + 24px)}
+.psec{padding-bottom:var(--s11);margin-bottom:var(--s9);box-shadow:0 1px 0 var(--line)}
 .psec:last-child{box-shadow:none;margin-bottom:0}
 .psec>h2{display:flex;align-items:baseline;justify-content:space-between;gap:var(--s3);margin-bottom:var(--s7);font-size:clamp(26px,2.6vw,34px);font-weight:640;letter-spacing:-.03em}
 .psec>h2 small{font-size:var(--fs-ui);font-weight:400;letter-spacing:0;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .sublead{max-width:70ch;margin:calc(var(--s4) * -1) 0 var(--s6);font-size:15px;color:var(--ink-3)}
-@media (max-width:980px){.psec{scroll-margin-top:calc(var(--header-h) + 64px)}}
+/* narrow screens: the contents bar sticks under the header, so a linked section also clears it */
+@media (max-width:980px){.psec,.claimlist li{scroll-margin-top:48px}}
 
 /* overview: the first sheet beside what it is and why it's listed */
 .ov{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:var(--s9);align-items:start}
@@ -65,7 +66,7 @@
 @media (max-width:1100px){.withaside{grid-template-columns:minmax(0,1fr)}.withaside>.sidecard{position:static;order:-1}.sidecard .panel{max-height:none}}
 .claimlist{display:grid;gap:var(--s2);max-width:76ch;margin:0;padding:0;list-style:none}
 .claimlist li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:var(--s3);padding:var(--s3) var(--s4);border-radius:var(--r);font-size:var(--fs-read);line-height:1.7;color:var(--ink-2);
-  overflow-wrap:anywhere;scroll-margin-top:110px;transition:background-color var(--t3) var(--ease)}
+  overflow-wrap:anywhere;transition:background-color var(--t3) var(--ease)}
 .claimlist li.ind{margin-top:var(--s4);padding:var(--s5) var(--s6);border-radius:var(--r-md);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--sh-1);color:var(--ink)}
 .claimlist li.ind:first-child{margin-top:0}
 .claimlist li.dep{box-shadow:inset 2px 0 0 var(--line)}

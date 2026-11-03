@@ -94,17 +94,19 @@ $("#copyLink").addEventListener("click", async e => {
     setTimeout(() => { btn.innerHTML = `${icon("link")}Copy link`; btn.classList.remove("copied"); }, 1800);
   } else toast(url, 6000);
 });
-// "On this page": the section whose heading was passed last is the current one
+// "On this page": the current section is the last one whose top has reached the upper third of the window
 const tocLinks = $$(".toc a"), secs = $$(".psec");
 let ticking = false;
 function spy() {
   ticking = false;
   let cur = secs[0];
-  for (const s of secs) if (s.getBoundingClientRect().top <= 140) cur = s;
+  const line = Math.max(140, innerHeight / 3);
+  for (const s of secs) if (s.getBoundingClientRect().top <= line) cur = s;
   if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) cur = secs[secs.length - 1];
   tocLinks.forEach(a => a.classList.toggle("on", a.getAttribute("href") === "#" + cur.id));
 }
 addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, { passive: true });
+addEventListener("load", spy);  // drawings loading above a linked section can move it after the first check
 spy();
 
 // ---------------------------------------------------------------- reservations
