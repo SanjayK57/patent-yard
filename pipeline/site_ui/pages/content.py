@@ -5,7 +5,7 @@ from ..base import BUILD, BUILD_MEANS, E, EXT, OFFICES, SITE, WORLD, big_number
 
 class Content:
     def how(self):
-        body = f"""<div class="page narrow center">
+        body = f"""<div class="page read narrow center">
 <div class="sechead"><div><h1>How a patent gets here</h1><p>Every patent comes from an official patent office source (the USPTO, the EPO, the Canadian Intellectual Property Office or IP Australia) and links back to it. Recently lapsed patents are rechecked daily, and new ones are added every week.</p></div></div>
 <ol class="pipe">
   <li><span class="n">1</span><b>Recently lapsed</b><p>Every patent the USPTO's weekly Official Gazette listed in the past year as expired for an unpaid maintenance fee, minus any reinstated since. These get their full file: claims, description and drawings.</p><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>Official Gazette for Patents</a></li>
@@ -41,7 +41,7 @@ class Content:
 
     def about(self):
         m = self.meta
-        body = f"""<div class="page narrow center">
+        body = f"""<div class="page read narrow center">
 <div class="sechead"><div><h1>About Patent Yard</h1><p>A free register of patents and applications that are no longer in force, for people who build things.</p></div></div>
 <div class="prose">
 <p>Every week, thousands of US patents stop being enforceable: owners stop paying maintenance fees and terms run out. Other applications are abandoned before they are ever granted. Once that happens, the patent's own claims no longer stop anyone in the US from making, using or selling what they describe, although other rights can still apply to a product. The same happens in Europe, Canada, Australia and everywhere else. Most of these inventions are never looked at again.</p>
@@ -61,7 +61,7 @@ class Content:
         self.page("/about/", "About", "Why Patent Yard exists, where its data comes from, and what it promises.", body, section="/about/")
 
     def contact(self):
-        body = """<div class="page narrow center">
+        body = """<div class="page read narrow center">
 <div class="sechead"><div><h1>Contact</h1><p>Questions, corrections or ideas for Patent Yard. To report a problem with a particular patent, use "Report a problem" on its page so we know which one.</p></div></div>
 <div class="panel"><noscript><p class="muted">The contact form needs JavaScript turned on.</p></noscript><form id="contactForm" class="stack" novalidate hidden>
   <div class="fgroup"><label for="cEmail">Your email (optional, if you'd like a reply)</label><input class="field" id="cEmail" type="email" maxlength="200" autocomplete="email"></div>
@@ -142,7 +142,7 @@ class Content:
             nav = "".join(f'<a href="/legal/{s}/"{cur if s == slug else ""}>{t}</a>' for s, (t, _) in pages.items())
             toc = "".join(f'<li><a href="#{a}">{E(h)}</a></li>' for a, h, _ in sections)
             text = "".join(f'<section id="{a}"><h2>{E(h)}</h2>{t}</section>' for a, h, t in sections)
-            body = f"""<div class="page legal">
+            body = f"""<div class="page read legal">
 <nav class="legalnav" aria-label="Legal">{nav}</nav>
 <div class="sechead"><div><h1>{title}</h1><p>Effective {updated.get(slug, eff)}. Written in plain language; the headings are a guide, not limits on what a section says.</p></div></div>
 <div class="legalgrid"><nav class="legaltoc" aria-label="On this page"><b>On this page</b><ol>{toc}</ol></nav><div class="panel prose legaltext">{text}</div></div>
