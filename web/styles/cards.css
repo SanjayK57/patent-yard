@@ -33,7 +33,7 @@
 .cbody .tstat{display:block;grid-column:1;grid-row:1}
 .cbody .fieldname{grid-column:2;grid-row:1;font-size:12.5px;line-height:1.4;color:var(--ink-3);min-width:0}
 .tstat .badge{height:auto;padding:0;background:none;font-size:12.5px}
-.cbody h3{font-size:17px;font-weight:620;line-height:1.26;letter-spacing:-.016em}
+.cbody h3{font-size:17px;font-weight:620;line-height:1.26;letter-spacing:-.016em;overflow-wrap:anywhere}  /* long compound words (German titles) break rather than overflow */
 .cbody h3 a{color:var(--ink);transition:color var(--t1) var(--ease)}
 .cbody h3 a::after{content:"";position:absolute;inset:0;z-index:1}
 .card:hover .cbody h3 a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
@@ -142,3 +142,5 @@
 @media (max-width:1100px){.rail{grid-auto-columns:calc((100% - 2 * var(--gap)) / 3)}}
 @media (max-width:760px){.rail{grid-auto-columns:calc((100% - 16px) / 1.6)}}
 @media (max-width:480px){.rail{grid-auto-columns:82%}}
+/* narrow screens: the status over the field and number, so a long number never runs past its column */
+@media (max-width:560px){.cbody .tstat{grid-column:1/-1}.cbody .fieldname{grid-column:1/-1;grid-row:auto}}
