@@ -1,40 +1,76 @@
-/* Free to use (browse), field pages, All patents and the fields index: a search toolbar over dense results. */
-.filters{display:grid;gap:var(--s3);margin-bottom:var(--s6);padding:var(--s4) var(--s5);border-radius:var(--r-lg);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--sh-1)}
-.frow{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
-.frow .lab{min-width:84px;margin-right:var(--s2);font-size:var(--fs-sm);font-weight:550;color:var(--ink-3)}
-.frow>.scrollrow{flex:1 1 0;width:0;min-width:0}
-.scrollrow{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,#000 92%,transparent);mask-image:linear-gradient(90deg,#000 92%,transparent)}
-.scrollrow::-webkit-scrollbar{display:none}
-.qrow{flex-wrap:nowrap;gap:var(--s2)}
-.filters .qrow input.field{min-height:44px;padding-left:40px;border-radius:10px;background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='6.5' fill='none' stroke='%237B8287' stroke-width='1.8'/%3E%3Cpath d='M16 16l4 4' stroke='%237B8287' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 13px center/18px;
-  font-size:var(--fs-read)}
-.filters select.field{width:auto;min-height:var(--control-h-sm);padding:0 32px 0 10px;border-color:transparent;background-color:var(--sunken);font-size:13.5px;font-weight:500;color:var(--ink-2)}
-.filters select.field:hover{border-color:var(--line)}
-.frow .seg{margin-right:var(--s2)}
-.ftoggle{display:none;flex:none;height:44px}
-.colrow .chip small{opacity:.85}
+/* Free to use (browse), field pages, All patents and the fields index: research software. A search bar over the
+   results, a sidebar of grouped filters beside them (a sheet on phones), a toolbar with the count, sort and view. */
+.browse>.sechead{margin-bottom:var(--s8)}
+.browse>.sechead p{font-size:15px;color:var(--ink-3)}
+.workspace{display:grid;grid-template-columns:272px minmax(0,1fr);grid-template-rows:auto 1fr;gap:var(--s5) var(--s9);align-items:start}
+/* the form is the search bar and the sidebar at once; on wide screens its two parts take their own places */
+.workspace>.filters{display:contents}
+.qrow{grid-column:2;grid-row:1;display:flex;align-items:center;gap:var(--s2)}
+.fside{grid-column:1;grid-row:1/3;position:sticky;top:calc(var(--header-h) + var(--s4));max-height:calc(100vh - var(--header-h) - var(--s7));overflow:auto;
+  display:grid;gap:var(--s5);padding:2px 6px var(--s6) 2px;scrollbar-width:thin;overscroll-behavior:contain}
+.results{grid-column:2;grid-row:2;min-width:0}
+
+/* the search bar: a pill, the largest control on the page */
+.qrow input.field{min-height:52px;padding:0 20px 0 48px;border-radius:var(--pill);background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='6.5' fill='none' stroke='%2378797A' stroke-width='1.8'/%3E%3Cpath d='M16 16l4 4' stroke='%2378797A' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat 18px center/19px;
+  box-shadow:0 0 0 1px var(--line),0 12px 30px -18px rgba(23,25,26,.28);font-size:var(--fs-read)}
+.qrow input.field:focus{box-shadow:0 0 0 1.5px var(--ink),0 16px 36px -18px rgba(23,25,26,.32)}
+.qrow input.field::-webkit-search-cancel-button{cursor:pointer}
+.ftoggle{display:none;flex:none;height:52px;padding-inline:20px;background:var(--surface)}
+
+/* the sidebar: groups with a label over their options, active options filled */
+.fhead{display:flex;align-items:center;justify-content:space-between;padding-bottom:var(--s3);border-bottom:1.5px solid var(--ink)}
+.fhead b{font-size:15px;font-weight:640;font-stretch:var(--semiwide);letter-spacing:-.015em}
+.fside .frow{display:grid;gap:var(--s2)}
+.frow .lab{font-size:12.5px;font-weight:600;color:var(--ink-3)}
+.fopts{display:flex;flex-wrap:wrap;gap:6px}
+.fside .seg{display:flex;flex-direction:column;border-radius:var(--r-md)}
+.fside .seg button{justify-content:space-between;border-radius:11px;min-height:34px}
+/* the field list: one column of rows, the count at the right */
+.flist{flex-direction:column;flex-wrap:nowrap;gap:1px}
+.flist .chip{justify-content:space-between;width:100%;height:32px;padding:0 10px;border-radius:var(--r-sm);box-shadow:none;font-size:13.5px}
+.flist .chip span{overflow:hidden;text-overflow:ellipsis}
+.flist .chip:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);box-shadow:none}
+.flist .chip[aria-pressed="true"]{background:var(--act);color:var(--act-ink)}
+.fdone{display:none}
 .filters.archive .frow:not(.qrow):not(.colrow):not(.regrow){display:none}
 .filters:not(.archive) .regrow{display:none}
-@media (max-width:700px){
-  .filters{padding:var(--s3)}
-  .frow .lab{flex-basis:100%;margin:var(--s2) 0 2px}
-  .ftoggle{display:inline-flex}
-  .filters:not(.open) .frow:not(.qrow){display:none}
-  .filters.open .frow:not(.qrow){animation:fieldIn var(--t2) var(--ease) both}
-}
-.archhint{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3);margin:calc(var(--s2) * -1) 0 var(--s5);padding:var(--s3) var(--s4);
-  border-radius:var(--r-md);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line);font-size:var(--fs-ui);color:var(--ink-2)}
-.archhint a{font-weight:600}
+
+/* the toolbar over the results */
+.countbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3);min-height:40px;margin-bottom:var(--s4)}
+.countbar .count{font-size:var(--fs-ui);font-weight:520;color:var(--ink)}
+.tools{display:flex;align-items:center;gap:var(--s2)}
+.tools select.field{width:auto;min-height:36px;padding:0 34px 0 14px;border-radius:var(--pill);background-color:transparent;box-shadow:inset 0 0 0 1px var(--line);font-size:13.5px;font-weight:540;color:var(--ink-2)}
+.tools select.field:hover{box-shadow:inset 0 0 0 1px var(--line-strong)}
+.archhint{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--s3);margin:0 0 var(--s5);padding:var(--s3) var(--s5);
+  border-radius:var(--r-lg);background:var(--vellum);box-shadow:var(--sh-vellum);font-size:var(--fs-ui);color:var(--ink-2)}
+.archhint a{font-weight:620;color:var(--ink)}
 .results-foot{justify-content:center;margin-top:var(--s5)}
 
+/* phones and narrow windows: the search bar first, the filters as a sheet from the bottom */
+@media (max-width:900px){
+  .workspace{display:block}
+  .workspace>.filters{display:block;margin-bottom:var(--s5)}
+  .ftoggle{display:inline-flex}
+  .fside{position:fixed;left:0;right:0;bottom:0;top:auto;z-index:60;max-height:min(82vh,720px);padding:var(--s5) var(--gutter) calc(var(--s5) + env(safe-area-inset-bottom,0px));
+    border-radius:var(--r-xl) var(--r-xl) 0 0;background:var(--surface);box-shadow:0 -1px 0 var(--line),0 -30px 60px -20px rgba(0,0,0,.35);
+    transform:translateY(105%);visibility:hidden;transition:transform var(--t4) var(--ease),visibility 0s linear var(--t4)}
+  .filters.open .fside{transform:none;visibility:visible;transition:transform var(--t4) var(--ease),visibility 0s}
+  .fdone{display:block;position:sticky;bottom:calc(var(--s5) * -1);margin:0 calc(var(--gutter) * -1) calc(var(--s5) * -1);padding:var(--s3) var(--gutter) var(--s5);background:var(--surface);box-shadow:0 -1px 0 var(--line)}
+  .fdone .btn{width:100%;min-height:48px}
+  .flist{max-height:none}
+  .flist .chip{height:38px}
+}
+@media (max-width:520px){.qrow input.field{min-height:48px;padding-left:44px;background-position:15px center}.ftoggle{height:48px;padding-inline:16px}
+  .countbar{gap:var(--s2)}.tools select.field{max-width:150px}}
+
 /* the fields index */
-.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--s2) var(--gap)}
-.tile{display:grid;grid-template-columns:88px minmax(0,1fr);align-items:center;gap:var(--s4);padding:var(--s3);border-radius:var(--r-md);color:var(--ink);
-  transition:background-color var(--t1) var(--ease)}
-.tile:hover{background:var(--surface);color:var(--ink);box-shadow:0 0 0 1px var(--line)}
-.tile .th{display:grid;place-items:center;width:88px;height:66px;border-radius:var(--r);overflow:hidden}
-.tile .th img{width:100%;height:100%;padding:5px;object-fit:contain}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:0 var(--s8);border-top:1.5px solid var(--ink)}
+.tile{display:grid;grid-template-columns:96px minmax(0,1fr);align-items:center;gap:var(--s5);padding:var(--s4) 0;border-bottom:1px solid var(--line);color:var(--ink)}
+.tile:hover{color:var(--ink)}
+.tile .th{display:grid;place-items:center;width:96px;height:72px;border-radius:var(--r);overflow:hidden;transition:box-shadow var(--t3) var(--ease),transform var(--t3) var(--ease)}
+.tile:hover .th{box-shadow:inset 0 0 0 1px var(--line),var(--sh-2);transform:translateY(-2px)}
+.tile .th img{width:100%;height:100%;padding:6px;object-fit:contain}
 .tile .th>svg{width:24px;height:24px;color:var(--ink-3)}
-.tile b{display:block;font-size:var(--fs-read);font-weight:600;letter-spacing:-.01em}
-.tile small{display:block;margin-top:2px;font-size:var(--fs-sm);line-height:1.45;color:var(--ink-3)}
-.tile:hover b{color:var(--link)}
+.tile b{display:block;font-size:var(--fs-read);font-weight:620;letter-spacing:-.012em}
+.tile small{display:block;margin-top:3px;font-size:var(--fs-sm);line-height:1.45;color:var(--ink-3)}
+.tile:hover b{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}

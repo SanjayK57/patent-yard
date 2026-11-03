@@ -6,10 +6,9 @@ from ..base import E, FIELD_NOTES, STATUS
 class Browse:
     def browse(self):
         n = len(self.rows)
-        body = f"""<div class="page">
+        body = f"""<div class="page browse">
 <div class="sechead"><div><h1>Browse the register</h1><p>{n:,} recent US patents and applications that are no longer in force: lapsed for an unpaid fee, past their full term, or likely abandoned. Each passed the same checks, including no live relative in its US family, and lapsed ones are rechecked for reinstatement daily. The archive adds {self.meta.get('archive', 0):,} older records from four offices.</p></div></div>
-{self.filters()}
-{self.listing(self.rows)}
+<div class="workspace">{self.filters()}<div class="results">{self.toolbar()}{self.listing(self.rows)}</div></div>
 </div>"""
         self.page("/browse/", "Browse free-to-use patents", f"Search and filter {n:,} US patents whose protection has ended, by field, status and how hard they are to build.",
                   body, section="/browse/", scripts=("browse",))
@@ -25,11 +24,10 @@ class Browse:
             counts = {s: sum(1 for r in rows if r["entry"]["st"] == s) for s in STATUS}
             arch = self.meta.get("archiveByField", {}).get(k, 0)
             parts = [f"{counts['lapsed']:,} lapsed", f"{counts['expired']:,} expired at full term", f"{counts['abandoned']:,} likely abandoned"]
-            body = f"""<div class="page" data-field="{k}">
+            body = f"""<div class="page browse" data-field="{k}">
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/fields/">Fields</a><span>/</span><span>{E(n)}</span></nav>
 <div class="sechead"><div><h1>{E(n)}</h1><p>{E(FIELD_NOTES.get(k, ""))} {len(rows) + arch:,} patents: {len(rows):,} freed in the past year ({", ".join(p for p in parts if not p.startswith("0 "))}){f", and {arch:,} more in the archive, from the US, Europe, Canada and Australia" if arch else ""}.</p></div><div class="rowbtns"><a class="btn secondary" href="/browse/?field={k}">Open in browse</a>{f'<a class="btn quiet" href="/browse/?in=archive">Search the archive</a>' if arch else ""}</div></div>
-{self.filters(field=k)}
-{self.listing(rows)}
+<div class="workspace">{self.filters(field=k)}<div class="results">{self.toolbar()}{self.listing(rows)}</div></div>
 </div>"""
             self.page(f"/fields/{k}/", f"{n} patents", f"{len(rows) + arch:,} free-to-use patents in {n.lower()}: {FIELD_NOTES.get(k, '')}",
                       body, section="/fields/", scripts=("browse",))

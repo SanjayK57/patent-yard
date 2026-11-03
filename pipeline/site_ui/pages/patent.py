@@ -227,7 +227,7 @@ class PatentPage:
         # overview
         if sheets:
             w, h = png_size(sheets[0])
-            fig = (f'<div class="figstick"><button class="bigfig" type="button" data-sheet="0" aria-label="Enlarge drawing sheet 1"><img src="{self.img(pid)}" width="{w}" height="{h}" alt="Drawing sheet 1 of {E(e["n"])}"></button>'
+            fig = (f'<div class="figstick"><button class="bigfig" type="button" data-sheet="0" aria-label="Enlarge drawing sheet 1"><span class="ticks" aria-hidden="true"></span><img src="{self.img(pid)}" width="{w}" height="{h}" alt="Drawing sheet 1 of {E(e["n"])}"></button>'
                    f'<p class="cap">Sheet 1 of {e["sh"] or len(sheets)} from the published document. <a href="{L["pdf"]}" {EXT}>All sheets in the USPTO PDF</a></p></div>')
         elif e["sh"]:
             fig = (f'<div class="nofig later"><b><span class="pulse" aria-hidden="true"></span>Drawings on their way</b><p class="muted">This {kind} has {e["sh"]} drawing '
@@ -240,7 +240,7 @@ class PatentPage:
         abstract = (f'<div class="block"><h3>Abstract <span class="src">Excerpt, from Google Patents</span></h3><p class="prose source">{E(dd["abs"])}</p><p class="muted note gap-top">The full abstract, claims and description are {later}</p></div>' if dd.get("abx") else
                     f'<div class="block"><h3>Abstract <span class="src">From the {kind}</span></h3><p class="prose source">{E(dd["abs"])}</p></div>' if dd["abs"] else
                     f'<div class="panel soft pendingbox"><div class="block"><h3><span class="pulse" aria-hidden="true"></span>Full text on its way</h3><p class="prose">This {kind} is listed from its USPTO record because it passed every check. Its abstract, claims and description are {later}</p></div></div>')
-        plain = "" if e["auto"] else f'<div class="block"><h3>In plain English <span class="src">Patent Yard summary</span></h3><p class="lead">{E(e["h"])}</p></div>'
+        plain = "" if e["auto"] else f'<div class="block pynote"><h3>In plain English <span class="src">Patent Yard summary</span></h3><p class="lead">{E(e["h"])}</p></div>'
         overview = f"""
 <section class="psec" id="overview"><h2>Overview</h2>
 <div class="ov"><div>{fig}</div>
@@ -258,7 +258,7 @@ class PatentPage:
     <div><small>Length</small><b>{f'{len(claims)} {"claim" if len(claims) == 1 else "claims"}' if claims else ""}{" · " if claims and dd.get("pages") else ""}{f'{dd["pages"]} pages' if dd.get("pages") else ""}{"—" if not claims and not dd.get("pages") else ""}</b></div>
   </div>
   {abstract if plain else ""}
-  {f'<div class="block"><h3>Background <span class="src">From the {kind}</span></h3><p class="prose">{E(dd["bg"])}</p></div>' if dd.get("bg") else ""}
+  {f'<div class="block"><h3>Background <span class="src">From the {kind}</span></h3><p class="prose source">{E(dd["bg"])}</p></div>' if dd.get("bg") else ""}
 </div></div></section>"""
 
         # drawings

@@ -75,6 +75,9 @@ function moreLabel() {
 
 const toggle = $("#fToggle");
 toggle.addEventListener("click", () => { const open = $("#filters").classList.toggle("open"); toggle.setAttribute("aria-expanded", String(open)); });
+// phones: the filters open as a sheet; "Show results" closes it. "Reset" starts over with the same collection.
+$("#fDone")?.addEventListener("click", () => { $("#filters").classList.remove("open"); toggle.setAttribute("aria-expanded", "false"); grid.scrollIntoView({ block: "start" }); });
+$("#fReset")?.addEventListener("click", () => { location.href = location.pathname + (ARCH ? "?in=archive" : ""); });
 function syncUrl() {
   const active = [!fixedField && S.ind, S.st, S.b, S.fig, S.solo, S.free].filter(Boolean).length;
   toggle.textContent = active ? `Filters · ${active}` : "Filters";

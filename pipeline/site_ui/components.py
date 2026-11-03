@@ -65,37 +65,45 @@ class Components:
         return f'<img src="{self.img(r["entry"]["id"])}" alt="" loading="lazy">' if r else icon("sheet")
 
     def filters(self, field=None):
-        fields = "".join(f'<button class="chip" type="button" data-ind="{k}" aria-pressed="false">{E(n)} <small>{len(self.by_field.get(k, [])):,}</small></button>' for k, n in self.fields.items())
+        fields = "".join(f'<button class="chip" type="button" data-ind="{k}" aria-pressed="false"><span>{E(n)}</span> <small>{len(self.by_field.get(k, [])):,}</small></button>' for k, n in self.fields.items())
         st = collections.Counter(r["entry"]["st"] for r in self.rows)
+        coll = f'<div class="frow colrow"><span class="lab">Collection</span><div class="seg" role="group" aria-label="Collection"><button type="button" data-coll="" aria-pressed="true">Recent, US <small class="num">{self.meta["count"]:,}</small></button><button type="button" data-coll="archive" aria-pressed="false">Archive <small class="num">{self.meta.get("archive", 0):,}</small></button></div></div>'
+        regs = '<div class="frow regrow"><span class="lab">From</span><div class="fopts"><button class="chip" type="button" data-reg="" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-reg="{n}" aria-pressed="false">{n} <small class="num">{b - a:,}</small></button>' for n, a, b in self.meta.get("archiveSpans", [])) + '</div></div>'
         return f"""
-<form class="filters" id="filters" role="search">
-  {'' if field else f'<div class="frow colrow"><span class="lab">Collection</span><div class="seg" role="group" aria-label="Collection"><button type="button" data-coll="" aria-pressed="true">Recent, US <small class="num">{self.meta["count"]:,}</small></button><button type="button" data-coll="archive" aria-pressed="false">Archive, 4 offices <small class="num">{self.meta.get("archive", 0):,}</small></button></div></div>'}
-  <div class="frow qrow"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="filters">Filters</button></div>
-  {'' if field or len(self.meta.get("archiveSpans", [])) < 2 else '<div class="frow regrow"><span class="lab">From</span><button class="chip" type="button" data-reg="" aria-pressed="true">All</button>' + "".join(f'<button class="chip" type="button" data-reg="{n}" aria-pressed="false">{n} <small class="num">{b - a:,}</small></button>' for n, a, b in self.meta["archiveSpans"]) + '</div>'}
-  {'' if field else f'<div class="frow" id="fInd"><span class="lab">Field</span><div class="frow scrollrow"><button class="chip" type="button" data-ind="" aria-pressed="true">All</button>{fields}</div></div>'}
-  <div class="frow"><span class="lab">Status</span>
+<form class="filters" id="filters">
+  <div class="frow qrow" role="search"><label class="sr" for="q">Search</label><input class="field" id="q" name="q" type="search" placeholder="Search names, titles, owners or patent numbers" autocomplete="off"><button class="chip ftoggle" type="button" id="fToggle" aria-expanded="false" aria-controls="fside">Filters</button></div>
+  <div class="fside" id="fside" role="group" aria-label="Filters">
+  <div class="fhead"><b>Filters</b><button class="btn quiet sm" type="button" id="fReset">Reset</button></div>
+  {'' if field else coll}
+  {'' if field or len(self.meta.get("archiveSpans", [])) < 2 else regs}
+  {'' if field else f'<div class="frow" id="fInd"><span class="lab">Field</span><div class="fopts flist"><button class="chip" type="button" data-ind="" aria-pressed="true">All fields</button>{fields}</div></div>'}
+  <div class="frow"><span class="lab">Status</span><div class="fopts">
     <button class="chip" type="button" data-st="" aria-pressed="true">All</button>
     <button class="chip" type="button" data-st="lapsed" aria-pressed="false">Lapsed <small>{st["lapsed"]:,}</small></button>
     <button class="chip" type="button" data-st="expired" aria-pressed="false">Expired, full term <small>{st["expired"]:,}</small></button>
-    <button class="chip" type="button" data-st="abandoned" aria-pressed="false">Likely abandoned applications <small>{st["abandoned"]:,}</small></button></div>
-  <div class="frow"><span class="lab" title="Our estimate of the effort for a first working prototype, not for production">Build</span>
+    <button class="chip" type="button" data-st="abandoned" aria-pressed="false">Likely abandoned <small>{st["abandoned"]:,}</small></button></div></div>
+  <div class="frow"><span class="lab" title="Our estimate of the effort for a first working prototype, not for production">Build</span><div class="fopts">
     <button class="chip" type="button" data-b="" aria-pressed="true">Any</button>
     <button class="chip" type="button" data-b="2" aria-pressed="false">Weekend or garage</button>
-    <button class="chip" type="button" data-b="3" aria-pressed="false">Up to workshop</button></div>
-  <div class="frow"><span class="lab">Options</span>
+    <button class="chip" type="button" data-b="3" aria-pressed="false">Up to workshop</button></div></div>
+  <div class="frow"><span class="lab">Options</span><div class="fopts">
     <button class="chip" type="button" id="fFig" aria-pressed="false">With drawings</button>
     <button class="chip" type="button" id="fSolo" aria-pressed="false" title="Granted with no assignee recorded, usually to individual inventors">No assignee</button>
-    <button class="chip" type="button" id="fFree" aria-pressed="false">Hide reserved</button>
-    <label class="sr" for="sort">Sort</label>
-    <select class="field" id="sort">
+    <button class="chip" type="button" id="fFree" aria-pressed="false">Hide reserved</button></div></div>
+  <div class="fdone"><button class="btn primary" type="button" id="fDone">Show results</button></div>
+  </div>
+</form>"""
+
+    def toolbar(self):
+        """The results toolbar beside the filters: the count, the sort and the view switch."""
+        return f"""<div class="countbar"><div class="count" id="count" aria-live="polite"></div><div class="tools"><label class="sr" for="sort">Sort</label>
+  <select class="field" id="sort">
       <option value="relevance">Best match</option>
       <option value="build">Recommended</option>
       <option value="recent">Most recently freed</option>
       <option value="added">Newly added</option>
       <option value="old">Oldest filing first</option>
-    </select></div>
-</form>
-<div class="countbar"><div class="count" id="count" aria-live="polite"></div>{VIEWTOG.format(grid="grid")}</div><div class="archhint" id="archHint" hidden></div>"""
+    </select>{VIEWTOG.format(grid="grid")}</div></div><div class="archhint" id="archHint" hidden></div>"""
 
     def listing(self, rows):
         """The first page of a list as plain HTML, for visitors without JavaScript and for search engines.
