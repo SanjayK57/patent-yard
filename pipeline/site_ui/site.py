@@ -29,4 +29,4 @@ class Site(Shell, Components, Home, Browse, PatentPage, AllPatents, Opportunitie
         self.ids = {r["entry"]["id"]: (1 if r["fig"] else 0) + len(r["extra"]) for r in rows}  # id -> drawing sheets on the site
         self.pages = []  # (path, lastmod) for the sitemap
         self.version, self.css = "", "/assets/site.css"
-        self.default_og = next((self.img(r["entry"]["id"]) for r in rows if r["entry"]["fig"]), "/favicon.svg")
+        self.default_og = "/og.png"  # the share card (web/static/og.png, made by web/dev/og/); patent pages use their own drawing

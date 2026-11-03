@@ -36,6 +36,7 @@ class Shell:
 <meta property="og:description" content="{E(desc)}">
 <meta property="og:url" content="{SITE}{path}">
 <meta property="og:image" content="{SITE}{og}">
+{'<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Patent Yard: old inventions, new possibilities. A patent drawing on a light table.">' if og == "/og.png" else ""}
 <meta name="twitter:card" content="summary_large_image">
 {'' if index else '<meta name="robots" content="noindex">'}
 <meta name="theme-color" content="{THEME["light"]}" media="(prefers-color-scheme: light)">

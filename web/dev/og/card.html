@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@font-face{font-family:"Archivo";src:url(../../static/assets/fonts/archivo-latin.woff2) format("woff2");font-weight:400 700;font-stretch:88% 120%}
+*{box-sizing:border-box;margin:0}
+html,body{width:1200px;height:630px;background:#F3F3F1;font-family:"Archivo",sans-serif;color:#17191A;-webkit-font-smoothing:antialiased;overflow:hidden}
+.card{position:relative;width:1200px;height:630px;display:grid;grid-template-columns:600px 600px}
+.copy{padding:60px 0 54px 72px;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:14px;font-size:26px;font-weight:660;font-stretch:118%;letter-spacing:-.025em}
+.brand svg{width:30px;height:30px}
+h1{margin-top:auto;font-size:66px;line-height:.95;font-weight:640;font-stretch:118%;letter-spacing:-.045em}
+h1 span{display:block;color:#62676B}
+p{margin-top:24px;max-width:480px;font-size:22px;line-height:1.4;color:#45494C}
+.url{margin-top:34px;font-size:19px;font-weight:560;color:#17191A;display:flex;align-items:center;gap:10px}
+.url i{width:8px;height:8px;border-radius:50%;background:#C23B27}
+.glass{position:absolute;left:640px;top:48px;right:0;bottom:48px;border-radius:28px 0 0 28px;background:#FDFDFC;
+  box-shadow:0 0 0 1px #DCDCD8,inset 0 0 0 1px rgba(255,255,255,.9),0 40px 80px -40px rgba(23,25,26,.3);display:grid;place-items:center}
+.sheet{position:relative;height:440px;aspect-ratio:470/601;background:#fff;box-shadow:0 1px 2px rgba(23,25,26,.06),0 18px 40px -20px rgba(23,25,26,.22)}
+.sheet img{position:absolute;inset:6%;width:88%;height:88%;object-fit:contain;mix-blend-mode:multiply}
+.ticks{position:absolute;inset:-18px;opacity:.5;background:
+ linear-gradient(#17191A,#17191A) 0 0/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 0 0/1px 14px no-repeat,
+ linear-gradient(#17191A,#17191A) 100% 0/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 100% 0/1px 14px no-repeat,
+ linear-gradient(#17191A,#17191A) 0 100%/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 0 100%/1px 14px no-repeat,
+ linear-gradient(#17191A,#17191A) 100% 100%/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 100% 100%/1px 14px no-repeat}
+.label{position:absolute;left:calc(100% + 26px);top:0;writing-mode:vertical-rl;font-size:13px;font-stretch:90%;letter-spacing:.02em;color:#62676B;white-space:nowrap}
+</style></head><body><div class="card">
+<div class="copy">
+  <div class="brand"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="6.2"/><path d="M12 1.5v21M1.5 12h21"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>Patent Yard</div>
+  <h1>Old inventions.<span>New possibilities.</span></h1>
+  <p>Free to search: patents whose protection has ended, each with its drawings, claims and official record.</p>
+  <div class="url"><i></i>patentyard.pages.dev</div>
+</div>
+<div class="glass"><div class="sheet"><img src="drawing.png" alt=""><span class="ticks"></span><span class="label">US 11,154,768 B2 · Sheet 1</span></div></div>
+</div></body></html>

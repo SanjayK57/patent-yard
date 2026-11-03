@@ -42,6 +42,7 @@ web/dev/                     previews, the local server and the checks
 | Header, navigation, footer, page heads, panels | `web/styles/layout.css` and `pipeline/site_ui/shell.py` |
 | Patent results (list, cards, table) | look: `web/styles/cards.css` (`.grid.as-list`, `.grid`, `.grid.as-table`); markup: `card_html` in `site_ui/components.py` and `card` in `web/static/assets/js/cards.js` (change both, then run the card test); the view switch is `VIEWTOG` in `site_ui/base.py` and `setView` in `assets/js/app.js` |
 | The register's filters and toolbar | `filters()` and `toolbar()` in `site_ui/components.py`, laid out by `web/styles/pages/browse.css` (`.workspace`, `.fside`, `.countbar`) |
+| The share card (the picture shown when a link to the site is posted) | `web/dev/og/card.html`, rendered to `web/static/og.png` by `node web/dev/og/render.mjs web/dev/og/card.html web/static/og.png`; patent pages share their own first drawing |
 | Glass, vellum and corner ticks | `.glass` in `web/styles/drawings.css`; `.vellum` and `.ticks` in `web/styles/base.css` |
 | Drawings and the full-screen viewer | `web/styles/drawings.css` |
 | Dialogs, command palette, menus, toasts | `web/styles/overlays.css` |

@@ -129,4 +129,4 @@ class Home:
                "potentialAction": {"@type": "SearchAction", "target": SITE + "/browse/?q={search_term_string}", "query-input": "required name=search_term_string"}},
               {"@context": "https://schema.org", "@type": "Organization", "name": "Patent Yard", "url": SITE + "/", "logo": SITE + "/favicon.svg"}]
         self.page("/", "Patent Yard", f"Search {big_number(total)} expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, each traced to its patent office record, with tools to develop new inventions from them with Claude.",
-                  body, og_image=self.img(hero["id"]), jsonld=ld, scripts=("home",))
+                  body, jsonld=ld, scripts=("home",))
