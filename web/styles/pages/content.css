@@ -3,7 +3,7 @@
 @media (max-width:900px){.pipe{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.pipe{grid-template-columns:minmax(0,1fr)}}
 .pipe li{padding-top:var(--s4);box-shadow:0 -1.5px 0 var(--ink)}
-.pipe .n{display:block;margin-bottom:var(--s2);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--mark)}
+.pipe .n{display:block;margin-bottom:var(--s2);font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 .pipe .n::before{content:"Step "}
 .pipe b{display:block;margin-bottom:6px;font-size:19px;font-weight:640;font-stretch:var(--semiwide);letter-spacing:-.02em}
 .pipe p{font-size:var(--fs-ui);line-height:1.55;color:var(--ink-3)}

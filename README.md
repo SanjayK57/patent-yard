@@ -152,12 +152,14 @@ its content hash so it can be cached for a year without ever going stale; script
 ## Website: test and deploy
 
 docs/DEVELOPING.md is the guide to changing the website: where each page and style lives, the sample-data preview
-that works on any computer, and the checks. In short:
+that works on any computer, and the checks. DESIGN.md describes the look ("the light table"); docs/REDESIGN-V3.md
+explains how it was chosen and what changed. In short:
 
 ```
 python3 web/dev/fixtures.py /tmp/py-sample          # a sample-data site, no production data needed
 python3 web/dev/serve.py /tmp/py-sample 8000       # then open http://localhost:8000
 node web/dev/test_cards.mjs                        # Python and JavaScript patent cards match
+node web/dev/visual.mjs http://localhost:8000 OUT   # screenshots of nine pages; --against GOLD compares
 python3 web/dev/preview.py /tmp/py-web --mock      # local copy of a full build with a stand-in account backend
 python3 web/dev/serve.py /tmp/py-web 8766          # then open http://localhost:8766
 ```

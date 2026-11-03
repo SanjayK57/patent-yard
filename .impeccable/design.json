@@ -1,794 +1,1090 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-02T17:56:31Z",
+  "generatedAt": "2026-11-03T13:54:06+00:00",
   "title": "Design System: Patent Yard",
   "extensions": {
     "colorMeta": {
-      "accent": {
-        "role": "primary",
-        "displayName": "Prussian Blue",
-        "canonical": "#116289",
+      "table": {
+        "role": "neutral",
+        "displayName": "The Table",
+        "canonical": "#F3F3F1",
+        "purpose": "Page background; content sits directly on it.",
         "tonalRamp": [
-          "#000D1C",
-          "#002A49",
-          "#004B71",
-          "#226E95",
-          "#4A92BB",
-          "#7EB6D8",
-          "#B7D6EA",
-          "#E5F0F8"
+          "#0B0B0A",
+          "#252524",
+          "#424240",
+          "#616160",
+          "#828281",
+          "#A5A5A3",
+          "#C9C9C7",
+          "#EEEEEC"
         ]
       },
-      "accent-hover": {
-        "role": "primary",
-        "displayName": "Prussian Blue, pressed",
-        "canonical": "#015477",
-        "tonalRamp": [
-          "#000D1A",
-          "#002B46",
-          "#004B6E",
-          "#286E92",
-          "#4E92B8",
-          "#81B6D5",
-          "#B9D6E8",
-          "#E6F0F7"
-        ]
-      },
-      "accent-ink": {
-        "role": "primary",
-        "displayName": "On Accent",
-        "canonical": "#FFFFFF",
+      "glass": {
+        "role": "neutral",
+        "displayName": "Lit Glass",
+        "canonical": "#FDFDFC",
+        "purpose": "The panel an original lies on, with a radial inner glow.",
         "tonalRamp": [
           "#0B0B0B",
-          "#262626",
-          "#454545",
-          "#666666",
-          "#898989",
-          "#AEAEAE",
-          "#D1D1D1",
-          "#EEEEEE"
-        ]
-      },
-      "accent-soft": {
-        "role": "primary",
-        "displayName": "Blueprint Wash",
-        "canonical": "#E8F4FC",
-        "tonalRamp": [
-          "#070C0F",
-          "#1E282F",
-          "#3A4750",
-          "#5A6872",
-          "#7D8B95",
-          "#A4B0B8",
-          "#CBD2D7",
-          "#ECEFF1"
-        ]
-      },
-      "link": {
-        "role": "primary",
-        "displayName": "Link Blue",
-        "canonical": "#005F88",
-        "tonalRamp": [
-          "#000D1C",
-          "#002A4A",
-          "#004B73",
-          "#1C6E98",
-          "#4692BE",
-          "#7CB6DA",
-          "#B6D6EB",
-          "#E5F0F8"
-        ]
-      },
-      "focus": {
-        "role": "primary",
-        "displayName": "Focus Blue",
-        "canonical": "#1F7FB0",
-        "tonalRamp": [
-          "#000D1F",
-          "#002A4F",
-          "#004B79",
-          "#006E9E",
-          "#3893C5",
-          "#74B7E0",
-          "#B3D7EF",
-          "#E4F1F9"
-        ]
-      },
-      "bg": {
-        "role": "neutral",
-        "displayName": "Cool Page",
-        "canonical": "#F5F7F8",
-        "tonalRamp": [
-          "#0B0B0C",
-          "#252727",
-          "#444546",
-          "#656667",
-          "#88898A",
-          "#ADAEAF",
-          "#D0D1D1",
-          "#EEEEEF"
+          "#252524",
+          "#424241",
+          "#616160",
+          "#828281",
+          "#A5A5A4",
+          "#C9C9C8",
+          "#EEEEED"
         ]
       },
       "surface": {
         "role": "neutral",
-        "displayName": "White Surface",
+        "displayName": "Surface",
         "canonical": "#FFFFFF",
+        "purpose": "Fields, grouped panels, menus, dialogs.",
         "tonalRamp": [
           "#0B0B0B",
-          "#262626",
-          "#454545",
-          "#666666",
-          "#898989",
-          "#AEAEAE",
-          "#D1D1D1",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
           "#EEEEEE"
         ]
       },
       "surface-2": {
         "role": "neutral",
-        "displayName": "Raised White",
-        "canonical": "#FAFBFB",
+        "displayName": "Soft Surface",
+        "canonical": "#F8F8F6",
+        "purpose": "Soft panels, row hover, blank sheets.",
         "tonalRamp": [
-          "#0B0B0B",
-          "#262626",
-          "#444545",
-          "#656666",
-          "#888989",
-          "#ADAEAE",
-          "#D0D1D1",
-          "#EEEEEE"
+          "#0B0B0A",
+          "#252524",
+          "#424240",
+          "#616160",
+          "#828281",
+          "#A5A5A3",
+          "#C9C9C7",
+          "#EEEEEC"
         ]
       },
       "sunken": {
         "role": "neutral",
         "displayName": "Sunken",
-        "canonical": "#EEF1F2",
+        "canonical": "#E9E9E6",
+        "purpose": "Recessed tracks, small chips, skeletons.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#252727",
-          "#434546",
-          "#646667",
-          "#878A8A",
-          "#ACAEAF",
-          "#D0D1D2",
-          "#EEEEEF"
+          "#0B0B09",
+          "#252523",
+          "#424240",
+          "#61615F",
+          "#828280",
+          "#A5A5A2",
+          "#C9C9C6",
+          "#EFEFEC"
         ]
       },
       "band": {
         "role": "neutral",
         "displayName": "Band",
-        "canonical": "#ECF0F2",
+        "canonical": "#ECECE9",
+        "purpose": "Footer and full-bleed bands.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#242728",
-          "#424647",
-          "#636768",
-          "#868A8C",
-          "#ABAEB0",
-          "#CFD1D2",
-          "#EEEEEF"
+          "#0B0B09",
+          "#252523",
+          "#424240",
+          "#61615F",
+          "#828280",
+          "#A5A5A2",
+          "#C9C9C6",
+          "#EFEFEC"
         ]
       },
       "plate": {
         "role": "neutral",
-        "displayName": "The Sheet",
+        "displayName": "Sheet",
         "canonical": "#FFFFFF",
+        "purpose": "The paper of a drawing.",
         "tonalRamp": [
           "#0B0B0B",
-          "#262626",
-          "#454545",
-          "#666666",
-          "#898989",
-          "#AEAEAE",
-          "#D1D1D1",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
           "#EEEEEE"
+        ]
+      },
+      "vellum": {
+        "role": "neutral",
+        "displayName": "Vellum",
+        "canonical": "rgba(253,253,252,.76)",
+        "purpose": "Translucent film for Patent Yard's own notes, with an 18px backdrop blur."
+      },
+      "vellum-solid": {
+        "role": "neutral",
+        "displayName": "Vellum Solid",
+        "canonical": "#FAFAF8",
+        "purpose": "Vellum fallback where backdrop-filter is missing.",
+        "tonalRamp": [
+          "#0B0B0A",
+          "#252524",
+          "#424240",
+          "#616160",
+          "#828281",
+          "#A5A5A3",
+          "#C9C9C7",
+          "#EEEEEC"
         ]
       },
       "line": {
         "role": "neutral",
-        "displayName": "Hairline",
-        "canonical": "#DDE0E2",
+        "displayName": "Line",
+        "canonical": "#DCDCD8",
+        "purpose": "Rules between rows, rings on panels.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#252728",
-          "#434547",
-          "#646668",
-          "#87898B",
-          "#ACAEB0",
-          "#D0D1D2",
-          "#EEEEEF"
+          "#0B0B09",
+          "#252522",
+          "#42423F",
+          "#61615E",
+          "#82827F",
+          "#A5A5A1",
+          "#C9C9C5",
+          "#EFEFEB"
         ]
       },
       "line-strong": {
         "role": "neutral",
-        "displayName": "Strong Hairline",
-        "canonical": "#C6CBCE",
+        "displayName": "Line Strong",
+        "canonical": "#C3C3BE",
+        "purpose": "Field strokes, secondary button rings.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#242729",
-          "#424648",
-          "#626769",
-          "#858A8D",
-          "#ABAEB1",
-          "#CFD1D3",
-          "#EEEEEF"
+          "#0B0B08",
+          "#252521",
+          "#42423E",
+          "#61615D",
+          "#83837E",
+          "#A5A5A0",
+          "#C9C9C4",
+          "#EFEFEA"
         ]
+      },
+      "hair": {
+        "role": "neutral",
+        "displayName": "Hair",
+        "canonical": "rgba(23,25,26,.08)",
+        "purpose": "The hairline edge of a sheet."
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "#161A1D",
+        "displayName": "Graphite Ink",
+        "canonical": "#17191A",
+        "purpose": "Headings and values.",
         "tonalRamp": [
-          "#0A0B0D",
-          "#23272A",
-          "#414649",
-          "#62676B",
-          "#858A8E",
-          "#AAAFB2",
-          "#CFD1D3",
-          "#EEEEEF"
+          "#0A0B0C",
+          "#232526",
+          "#404243",
+          "#5F6263",
+          "#808384",
+          "#A3A5A7",
+          "#C7CACB",
+          "#ECEFF0"
         ]
       },
       "ink-2": {
         "role": "neutral",
-        "displayName": "Ink, running text",
-        "canonical": "#484E52",
+        "displayName": "Ink 2",
+        "canonical": "#45494C",
+        "purpose": "Body and secondary text.",
         "tonalRamp": [
-          "#090B0D",
-          "#22272A",
-          "#40464A",
-          "#61676B",
-          "#848A8F",
-          "#A9AFB2",
-          "#CED1D4",
-          "#EDEFEF"
+          "#080C0E",
+          "#222628",
+          "#3F4346",
+          "#5E6265",
+          "#7F8386",
+          "#A1A6A9",
+          "#C5CACD",
+          "#EAEFF3"
         ]
       },
       "ink-3": {
         "role": "neutral",
-        "displayName": "Ink, meta",
-        "canonical": "#676E73",
+        "displayName": "Ink 3",
+        "canonical": "#62676B",
+        "purpose": "Labels, captions, metadata.",
         "tonalRamp": [
-          "#090C0D",
-          "#22272B",
-          "#40464B",
-          "#60676C",
-          "#838A8F",
-          "#A9AFB3",
-          "#CED1D4",
-          "#EDEFEF"
+          "#080C0F",
+          "#212629",
+          "#3E4346",
+          "#5D6266",
+          "#7E8387",
+          "#A0A6AA",
+          "#C4CACE",
+          "#E9EFF4"
+        ]
+      },
+      "graphite": {
+        "role": "primary",
+        "displayName": "Graphite",
+        "canonical": "#17191A",
+        "purpose": "Every action: primary pills, chips that are on, toasts.",
+        "tonalRamp": [
+          "#0A0B0C",
+          "#232526",
+          "#404243",
+          "#5F6263",
+          "#808384",
+          "#A3A5A7",
+          "#C7CACB",
+          "#ECEFF0"
+        ]
+      },
+      "graphite-hover": {
+        "role": "primary",
+        "displayName": "Graphite Hover",
+        "canonical": "#33373A",
+        "purpose": "Hover on graphite actions.",
+        "tonalRamp": [
+          "#080C0E",
+          "#222628",
+          "#3E4346",
+          "#5D6265",
+          "#7E8386",
+          "#A1A6A9",
+          "#C5CACE",
+          "#EAEFF3"
+        ]
+      },
+      "graphite-ink": {
+        "role": "primary",
+        "displayName": "Graphite Ink",
+        "canonical": "#FFFFFF",
+        "purpose": "Text on graphite.",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#252525",
+          "#424242",
+          "#616161",
+          "#828282",
+          "#A5A5A5",
+          "#C9C9C9",
+          "#EEEEEE"
+        ]
+      },
+      "vermilion": {
+        "role": "primary",
+        "displayName": "Vermilion Mark",
+        "canonical": "#C23B27",
+        "purpose": "The one live thing in view: focus, the pen, the current step, section or task.",
+        "tonalRamp": [
+          "#3A0000",
+          "#600000",
+          "#870000",
+          "#AF2713",
+          "#D74F3A",
+          "#FF745C",
+          "#FF9980",
+          "#FFBFA4"
+        ]
+      },
+      "vermilion-soft": {
+        "role": "primary",
+        "displayName": "Vermilion Tint",
+        "canonical": "#FBEAE6",
+        "purpose": "The targeted claim.",
+        "tonalRamp": [
+          "#120806",
+          "#2E221F",
+          "#4C3E3B",
+          "#6C5D5A",
+          "#8E7E7B",
+          "#B1A19D",
+          "#D5C5C1",
+          "#FBEAE6"
         ]
       },
       "expired": {
         "role": "status",
-        "displayName": "Past-Term Green",
-        "canonical": "#1A763F",
+        "displayName": "Expired Green",
+        "canonical": "#1C6B3E",
+        "purpose": "Expired, full term; free; success. Always with its word.",
         "tonalRamp": [
-          "#001101",
-          "#003307",
-          "#005621",
-          "#1E7942",
-          "#499E64",
-          "#7EC090",
-          "#B8DCC0",
-          "#E6F2E8"
+          "#001500",
+          "#003208",
+          "#005126",
+          "#257245",
+          "#4A9565",
+          "#6EB887",
+          "#92DDAA",
+          "#B7FFCE"
         ]
       },
       "expired-soft": {
         "role": "status",
-        "displayName": "Past-Term Green tint",
-        "canonical": "#E0F7E5",
+        "displayName": "Expired Tint",
+        "canonical": "#E1F0E6",
+        "purpose": "Expired label background.",
         "tonalRamp": [
-          "#060D08",
-          "#1B2B1F",
-          "#374A3C",
-          "#586C5D",
-          "#7A8F7F",
-          "#A2B3A6",
-          "#CAD4CC",
-          "#ECEFED"
+          "#050E08",
+          "#1D2821",
+          "#39453E",
+          "#58655C",
+          "#79867D",
+          "#9BA9A0",
+          "#BFCDC4",
+          "#E4F3E9"
         ]
       },
       "lapsed": {
         "role": "status",
         "displayName": "Lapsed Amber",
-        "canonical": "#995600",
+        "canonical": "#8A5100",
+        "purpose": "Lapsed, fee not paid; warnings. Always with its word.",
         "tonalRamp": [
-          "#1B0400",
-          "#471300",
-          "#703000",
-          "#965300",
-          "#BC7732",
-          "#DAA06D",
-          "#ECCAAE",
-          "#F8ECE2"
+          "#260000",
+          "#461200",
+          "#683200",
+          "#8B5201",
+          "#AF7332",
+          "#D49657",
+          "#FBBA7A",
+          "#FFE09F"
         ]
       },
       "lapsed-soft": {
         "role": "status",
-        "displayName": "Lapsed Amber tint",
-        "canonical": "#FFEFD4",
+        "displayName": "Lapsed Tint",
+        "canonical": "#F7ECDA",
+        "purpose": "Lapsed label background.",
         "tonalRamp": [
-          "#0F0A04",
-          "#2F2512",
-          "#50432C",
-          "#72644C",
-          "#96876E",
-          "#B8AC98",
-          "#D7D0C4",
-          "#F1EEEA"
+          "#110A01",
+          "#2C2416",
+          "#494132",
+          "#696050",
+          "#8B8171",
+          "#AEA493",
+          "#D2C8B6",
+          "#F8EDDB"
         ]
       },
-      "aband": {
+      "abandoned": {
         "role": "status",
-        "displayName": "Inferred Gray",
-        "canonical": "#59656D",
+        "displayName": "Abandoned Grey",
+        "canonical": "#5A6065",
+        "purpose": "Likely abandoned (inferred), hollow dot.",
         "tonalRamp": [
-          "#080C0F",
-          "#1F282E",
-          "#3B474E",
-          "#5C6870",
-          "#7F8B94",
-          "#A5B0B7",
-          "#CCD2D6",
-          "#EDEFF0"
+          "#070C0F",
+          "#21262A",
+          "#3D4347",
+          "#5C6267",
+          "#7D8389",
+          "#9FA6AB",
+          "#C3CAD0",
+          "#E8EFF5"
         ]
       },
-      "aband-soft": {
+      "abandoned-soft": {
         "role": "status",
-        "displayName": "Inferred Gray tint",
-        "canonical": "#E9EDF0",
+        "displayName": "Abandoned Tint",
+        "canonical": "#E7E8E8",
+        "purpose": "Abandoned label background.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#242729",
-          "#424548",
-          "#636769",
-          "#868A8C",
-          "#ABAEB1",
-          "#CFD1D2",
-          "#EEEEEF"
+          "#0B0B0B",
+          "#242525",
+          "#414242",
+          "#606161",
+          "#818282",
+          "#A4A5A5",
+          "#C8C9C9",
+          "#EEEFEF"
         ]
       },
       "reserved": {
         "role": "status",
         "displayName": "Reserved Violet",
-        "canonical": "#724AAB",
+        "canonical": "#6A47A2",
+        "purpose": "Reserved by another user (a note only).",
         "tonalRamp": [
-          "#100222",
-          "#310E57",
-          "#522C83",
-          "#734FA9",
-          "#9773D0",
-          "#B99DEA",
-          "#D7C8F5",
-          "#F0EBFC"
+          "#18003D",
+          "#31005E",
+          "#4E2881",
+          "#6D4AA6",
+          "#8E6CCB",
+          "#B18FF1",
+          "#D6B4FF",
+          "#FBD9FF"
         ]
       },
       "reserved-soft": {
         "role": "status",
-        "displayName": "Reserved Violet tint",
-        "canonical": "#F3ECFF",
+        "displayName": "Reserved Tint",
+        "canonical": "#EEE8F8",
+        "purpose": "Reserved label background.",
         "tonalRamp": [
-          "#0C0A10",
-          "#282430",
-          "#484251",
-          "#696373",
-          "#8C8697",
-          "#B0ABB9",
-          "#D2CFD8",
-          "#EFEEF1"
+          "#0D0913",
+          "#27232E",
+          "#443F4C",
+          "#645E6C",
+          "#857F8E",
+          "#A8A2B1",
+          "#CCC6D5",
+          "#F1EBFB"
         ]
       },
       "danger": {
         "role": "status",
         "displayName": "Danger Red",
-        "canonical": "#BA2B28",
+        "canonical": "#B32A1F",
+        "purpose": "Invalid fields; a patent pulled from the register.",
         "tonalRamp": [
-          "#200000",
-          "#530000",
-          "#801615",
-          "#A73E37",
-          "#D06359",
-          "#EC9287",
-          "#F8C2BB",
-          "#FDE9E6"
+          "#3A0000",
+          "#610000",
+          "#870000",
+          "#AF251B",
+          "#D74E3F",
+          "#FF7361",
+          "#FF9884",
+          "#FFBEA8"
         ]
       },
-      "accent-dark": {
-        "role": "primary",
-        "displayName": "Prussian Blue (dark mode)",
-        "canonical": "#64B5E4",
-        "tonalRamp": [
-          "#000D1D",
-          "#002B4C",
-          "#004B75",
-          "#116E9A",
-          "#4092C0",
-          "#79B7DC",
-          "#B5D7EC",
-          "#E4F1F8"
-        ]
-      },
-      "link-dark": {
-        "role": "primary",
-        "displayName": "Link Blue (dark mode)",
-        "canonical": "#75C2EF",
-        "tonalRamp": [
-          "#000D1C",
-          "#002B4A",
-          "#004B72",
-          "#1A6E97",
-          "#4592BD",
-          "#7BB6DA",
-          "#B6D6EB",
-          "#E5F0F8"
-        ]
-      },
-      "bg-dark": {
+      "table-dark": {
         "role": "neutral",
-        "displayName": "Cool Page (dark mode)",
-        "canonical": "#111416",
+        "displayName": "The Table (dark)",
+        "canonical": "#121314",
+        "purpose": "Dark-mode value. Page background; content sits directly on it.",
         "tonalRamp": [
           "#0A0B0C",
-          "#242729",
-          "#424648",
-          "#636769",
-          "#868A8C",
-          "#ABAEB1",
-          "#CFD1D2",
-          "#EEEEEF"
+          "#242526",
+          "#414243",
+          "#606163",
+          "#818284",
+          "#A4A5A6",
+          "#C8C9CB",
+          "#EDEFF0"
+        ]
+      },
+      "glass-dark": {
+        "role": "neutral",
+        "displayName": "Lit Glass (dark)",
+        "canonical": "#1A1B1D",
+        "purpose": "Dark-mode value. The panel an original lies on, with a radial inner glow.",
+        "tonalRamp": [
+          "#0A0B0D",
+          "#242527",
+          "#414244",
+          "#606164",
+          "#818285",
+          "#A4A5A8",
+          "#C8C9CC",
+          "#EDEEF1"
         ]
       },
       "surface-dark": {
         "role": "neutral",
-        "displayName": "White Surface (dark mode)",
-        "canonical": "#181B1D",
+        "displayName": "Surface (dark)",
+        "canonical": "#1C1D1F",
+        "purpose": "Dark-mode value. Fields, grouped panels, menus, dialogs.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#242729",
-          "#424648",
-          "#636769",
-          "#868A8C",
-          "#ABAEB1",
-          "#CFD1D2",
-          "#EEEEEF"
+          "#0A0B0D",
+          "#242527",
+          "#414244",
+          "#606164",
+          "#818285",
+          "#A4A5A8",
+          "#C8C9CC",
+          "#EDEEF1"
+        ]
+      },
+      "lit-glass-dark": {
+        "role": "neutral",
+        "displayName": "Lit Glass (dark)",
+        "canonical": "#CFCEC9",
+        "purpose": "Dark mode: glass that holds an original stays lit at this value.",
+        "tonalRamp": [
+          "#0C0B08",
+          "#262521",
+          "#43423E",
+          "#62615D",
+          "#83827E",
+          "#A6A5A0",
+          "#CAC9C4",
+          "#F0EFE9"
         ]
       },
       "plate-dark": {
         "role": "neutral",
-        "displayName": "The Sheet (dark mode)",
-        "canonical": "#141719",
+        "displayName": "Sheet (dark)",
+        "canonical": "#D9D8D3",
+        "purpose": "Dark mode: a warm paper grey so drawings still read as paper.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#242729",
-          "#424648",
-          "#636769",
-          "#868A8C",
-          "#ABAEB1",
-          "#CFD1D2",
-          "#EEEEEF"
+          "#0C0B08",
+          "#262521",
+          "#43423E",
+          "#62615D",
+          "#83827E",
+          "#A6A5A0",
+          "#CAC9C4",
+          "#F0EFE9"
         ]
+      },
+      "vellum-dark": {
+        "role": "neutral",
+        "displayName": "Vellum (dark)",
+        "canonical": "rgba(38,39,42,.74)",
+        "purpose": "Dark-mode value. Translucent film for Patent Yard's own notes, with an 18px backdrop blur."
       },
       "line-dark": {
         "role": "neutral",
-        "displayName": "Hairline (dark mode)",
-        "canonical": "#2A2F31",
+        "displayName": "Line (dark)",
+        "canonical": "#2C2E31",
+        "purpose": "Dark-mode value. Rules between rows, rings on panels.",
         "tonalRamp": [
-          "#090C0C",
-          "#232729",
-          "#414648",
-          "#616769",
-          "#848A8D",
-          "#AAAFB1",
-          "#CFD1D3",
-          "#EDEFEF"
+          "#0A0B0E",
+          "#232528",
+          "#404245",
+          "#5F6165",
+          "#808286",
+          "#A3A5A9",
+          "#C7C9CD",
+          "#ECEFF3"
         ]
       },
       "ink-dark": {
         "role": "neutral",
-        "displayName": "Ink (dark mode)",
-        "canonical": "#EEF0F2",
+        "displayName": "Graphite Ink (dark)",
+        "canonical": "#EDEDEB",
+        "purpose": "Dark-mode value. Headings and values.",
         "tonalRamp": [
-          "#0B0B0C",
-          "#252728",
-          "#444547",
-          "#646668",
-          "#87898B",
-          "#ACAEAF",
-          "#D0D1D2",
-          "#EEEEEF"
+          "#0B0B0A",
+          "#252524",
+          "#424240",
+          "#616160",
+          "#828281",
+          "#A5A5A3",
+          "#C9C9C7",
+          "#EEEEEC"
         ]
       },
       "ink-2-dark": {
         "role": "neutral",
-        "displayName": "Ink, running text (dark mode)",
-        "canonical": "#BABEC1",
+        "displayName": "Ink 2 (dark)",
+        "canonical": "#BBBDBF",
+        "purpose": "Dark-mode value. Body and secondary text.",
         "tonalRamp": [
-          "#0A0B0C",
-          "#242729",
-          "#424548",
-          "#636769",
-          "#868A8C",
-          "#ABAEB1",
-          "#CFD1D2",
-          "#EEEEEF"
+          "#0A0B0D",
+          "#242527",
+          "#404244",
+          "#606163",
+          "#818284",
+          "#A3A5A7",
+          "#C7C9CB",
+          "#EDEFF1"
         ]
       },
       "ink-3-dark": {
         "role": "neutral",
-        "displayName": "Ink, meta (dark mode)",
-        "canonical": "#969B9F",
+        "displayName": "Ink 3 (dark)",
+        "canonical": "#979A9D",
+        "purpose": "Dark-mode value. Labels, captions, metadata.",
         "tonalRamp": [
-          "#0A0B0D",
-          "#23272A",
-          "#414649",
-          "#62676A",
-          "#858A8E",
-          "#AAAEB2",
-          "#CFD1D3",
-          "#EEEEEF"
+          "#090B0D",
+          "#232528",
+          "#404245",
+          "#5F6264",
+          "#808386",
+          "#A2A5A8",
+          "#C6C9CD",
+          "#ECEFF2"
+        ]
+      },
+      "vermilion-dark": {
+        "role": "primary",
+        "displayName": "Vermilion Mark (dark)",
+        "canonical": "#FF7D66",
+        "purpose": "Dark-mode value. The one live thing in view: focus, the pen, the current step, section or task.",
+        "tonalRamp": [
+          "#370000",
+          "#5D0000",
+          "#830000",
+          "#AA2F1C",
+          "#D2543F",
+          "#FA7962",
+          "#FF9D85",
+          "#FFC3A9"
+        ]
+      },
+      "expired-dark": {
+        "role": "status",
+        "displayName": "Expired Green (dark)",
+        "canonical": "#74C893",
+        "purpose": "Dark-mode value. Expired, full term; free; success. Always with its word.",
+        "tonalRamp": [
+          "#001500",
+          "#003307",
+          "#005225",
+          "#177344",
+          "#419664",
+          "#66BA86",
+          "#8BDFA9",
+          "#B0FFCD"
+        ]
+      },
+      "lapsed-dark": {
+        "role": "status",
+        "displayName": "Lapsed Amber (dark)",
+        "canonical": "#EAB566",
+        "purpose": "Dark-mode value. Lapsed, fee not paid; warnings. Always with its word.",
+        "tonalRamp": [
+          "#230000",
+          "#431600",
+          "#633600",
+          "#865600",
+          "#A97723",
+          "#CE9A4B",
+          "#F4BF70",
+          "#FFE495"
+        ]
+      },
+      "abandoned-dark": {
+        "role": "status",
+        "displayName": "Abandoned Grey (dark)",
+        "canonical": "#A4A9AD",
+        "purpose": "Dark-mode value. Likely abandoned (inferred), hollow dot.",
+        "tonalRamp": [
+          "#080C0E",
+          "#222629",
+          "#3E4346",
+          "#5D6265",
+          "#7E8387",
+          "#A1A6AA",
+          "#C5CACE",
+          "#EAEFF3"
+        ]
+      },
+      "reserved-dark": {
+        "role": "status",
+        "displayName": "Reserved Violet (dark)",
+        "canonical": "#BFA3F1",
+        "purpose": "Dark-mode value. Reserved by another user (a note only).",
+        "tonalRamp": [
+          "#150032",
+          "#2F1052",
+          "#4C3074",
+          "#6C5097",
+          "#8D72BC",
+          "#B094E1",
+          "#D5B8FF",
+          "#FADEFF"
+        ]
+      },
+      "danger-dark": {
+        "role": "status",
+        "displayName": "Danger Red (dark)",
+        "canonical": "#FF8A7A",
+        "purpose": "Dark-mode value. Invalid fields; a patent pulled from the register.",
+        "tonalRamp": [
+          "#330000",
+          "#580000",
+          "#7D0E09",
+          "#A3372D",
+          "#CA5B4D",
+          "#F27E6F",
+          "#FFA392",
+          "#FFC8B6"
         ]
       }
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The home headline only."
+        "purpose": "Home hero; reading-page titles at the same 118% width."
+      },
+      "numeral": {
+        "displayName": "Counted Numeral",
+        "purpose": "The yard's numbers, Insights key figures, the Opportunities rank."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Page and patent titles."
+        "purpose": "Application page titles and the patent masthead, 108% width."
+      },
+      "section": {
+        "displayName": "Section",
+        "purpose": "Section heads, 108% width."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Section heads."
+        "purpose": "h3, groups, dialog titles."
+      },
+      "card-title": {
+        "displayName": "Card Title",
+        "purpose": "Card and row titles; break inside long words."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "Ledes."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "Interface text, in Patent Yard's voice."
+        "purpose": "Running text in Archivo."
       },
-      "source": {
-        "displayName": "Source",
-        "purpose": "The patent's own words: abstract, claims, description."
+      "ui": {
+        "displayName": "Interface",
+        "purpose": "Buttons, navigation, toolbars."
       },
       "label": {
         "displayName": "Label",
-        "purpose": "Status labels, chips, field labels, meta."
+        "purpose": "Status labels and group labels, sentence case."
       },
-      "identifier": {
-        "displayName": "Identifier",
-        "purpose": "Patent and application numbers, classification codes, citations."
+      "data": {
+        "displayName": "Data",
+        "purpose": "Identifiers and dense data at 90% width with tabular figures."
+      },
+      "source": {
+        "displayName": "Source",
+        "purpose": "The patent's own words only: abstract, background, claims, description."
+      },
+      "prompt": {
+        "displayName": "Prompt Document",
+        "purpose": "The Studio prompt document."
       }
     },
     "shadows": [
       {
-        "name": "sh-1",
-        "value": "0 1px 2px rgba(22,26,29,.05),0 1px 1px rgba(22,26,29,.03)",
-        "purpose": "Rest: buttons, segmented thumb."
+        "name": "sh-1 rest",
+        "value": "0 1px 2px rgba(23,25,26,.06),0 1px 1px rgba(23,25,26,.03)",
+        "dark": "0 1px 2px rgba(0,0,0,.45)",
+        "purpose": "Primary buttons, segmented thumbs, card sheets at rest."
       },
       {
-        "name": "sh-2",
-        "value": "0 1px 2px rgba(22,26,29,.05),0 8px 20px -6px rgba(22,26,29,.12)",
-        "purpose": "Lift: hovered cards and drawings, big search."
+        "name": "sh-2 raised",
+        "value": "0 1px 2px rgba(23,25,26,.05),0 10px 24px -10px rgba(23,25,26,.16)",
+        "dark": "0 1px 2px rgba(0,0,0,.4),0 12px 28px -10px rgba(0,0,0,.65)",
+        "purpose": "List hover, selected task, link cards on hover."
       },
       {
-        "name": "sh-3",
-        "value": "0 2px 6px rgba(22,26,29,.06),0 24px 56px -16px rgba(22,26,29,.22)",
-        "purpose": "Float: menus, suggestions, dialogs, toasts."
+        "name": "sh-3 lifted",
+        "value": "0 2px 6px rgba(23,25,26,.06),0 28px 60px -20px rgba(23,25,26,.26)",
+        "dark": "0 2px 8px rgba(0,0,0,.45),0 30px 70px -20px rgba(0,0,0,.8)",
+        "purpose": "Card sheets on hover, dialogs, menus, toasts."
+      },
+      {
+        "name": "sh-glass",
+        "value": "0 0 0 1px var(--line),inset 0 0 0 1px rgba(255,255,255,.9),0 50px 90px -50px rgba(23,25,26,.28)",
+        "dark": "0 0 0 1px var(--line),inset 0 1px 0 rgba(255,255,255,.05),0 50px 90px -50px rgba(0,0,0,.9)",
+        "purpose": "Every lit-glass panel."
+      },
+      {
+        "name": "sh-vellum",
+        "value": "0 0 0 1px rgba(23,25,26,.09),0 22px 44px -22px rgba(23,25,26,.32)",
+        "dark": "0 0 0 1px rgba(255,255,255,.08),0 22px 44px -22px rgba(0,0,0,.8)",
+        "purpose": "Vellum notes, the save button over a drawing."
       },
       {
         "name": "sh-sheet",
-        "value": "0 1px 2px rgba(22,26,29,.06),0 18px 40px -18px rgba(22,26,29,.2),0 60px 120px -48px rgba(22,26,29,.22)",
-        "purpose": "The home plotter sheet only."
+        "value": "0 1px 2px rgba(23,25,26,.06),0 18px 40px -20px rgba(23,25,26,.22)",
+        "dark": "0 2px 6px rgba(0,0,0,.4),0 30px 80px -30px rgba(0,0,0,.8)",
+        "purpose": "The plotted sheet on the home glass."
       },
       {
-        "name": "edge",
-        "value": "inset 0 1px 0 rgba(255,255,255,.05)",
-        "purpose": "Dark mode only: faint top highlight on panels."
+        "name": "field-focus",
+        "value": "inset 0 0 0 1.5px var(--ink),0 0 0 4px color-mix(in srgb,var(--ink) 9%,transparent)",
+        "purpose": "Field focus ring (1.5px ink)."
+      },
+      {
+        "name": "vellum-blur",
+        "value": "backdrop-filter: saturate(1.3) blur(18px)",
+        "purpose": "The vellum material."
+      },
+      {
+        "name": "glass-glow",
+        "value": "radial-gradient(110% 80% at 50% 45%, var(--glow), transparent 70%)",
+        "purpose": "The inner glow of lit glass (--glow white in light, #E2E1DC on lit glass in dark)."
       }
     ],
     "motion": [
       {
         "name": "ease",
         "value": "cubic-bezier(.16,1,.3,1)",
-        "purpose": "Default ease-out for every state change and arrival."
+        "purpose": "Everything that moves."
       },
       {
         "name": "ease-in-out",
         "value": "cubic-bezier(.65,0,.35,1)",
-        "purpose": "The light/dark cross-fade."
+        "purpose": "Theme cross-fade, pulses."
       },
       {
         "name": "spring",
         "value": "linear(0,.063 2.1%,.233 4.6%,.488 7.6%,.746 11%,.904 14.2%,1.006 17.9%,1.045 21.3%,1.053 24.6%,1.04 29.2%,1.012 36.6%,.998 45%,.997 55%,1)",
-        "purpose": "Presses and small arrivals (buttons, toasts, marks)."
+        "purpose": "Presses and small arrivals."
       },
       {
         "name": "t1",
-        "value": "120ms",
-        "purpose": "Hover tints."
+        "value": ".12s",
+        "purpose": "Color and hover."
       },
       {
         "name": "t2",
-        "value": "200ms",
-        "purpose": "Shadows, menus, fades."
+        "value": ".2s",
+        "purpose": "State changes."
       },
       {
         "name": "t3",
-        "value": "360ms",
-        "purpose": "Transforms, dialogs, toasts."
+        "value": ".36s",
+        "purpose": "Presses, arrivals, dialogs."
       },
       {
         "name": "t4",
-        "value": "520ms",
-        "purpose": "Theme cross-fade, card-to-patent drawing flight (pfig)."
+        "value": ".6s",
+        "purpose": "Sheets, the theme fade, the filter sheet, the card-to-patent flight."
       },
       {
-        "name": "plotter",
-        "value": "3000ms ease-in-out cubic, 220ms ink settle",
-        "purpose": "Home pen plotter (home.js)."
+        "name": "sheetLay",
+        "value": "@keyframes sheetLay{from{opacity:0;transform:translateY(14px) scale(.985);filter:blur(3px)}}",
+        "purpose": "A sheet laid on the glass (home sheet, viewer)."
+      },
+      {
+        "name": "vellumIn",
+        "value": "@keyframes vellumIn{from{opacity:0;transform:translateY(18px);backdrop-filter:blur(0)}}",
+        "purpose": "Vellum arriving over a sheet (home record card)."
+      },
+      {
+        "name": "pen-plotter",
+        "value": "~3000ms clock-paced, 220ms ink dry, vermilion pen dot, 12% ink crosshairs",
+        "purpose": "The home drawing redrawn by a pen following its strokes; skipped under reduced motion."
+      },
+      {
+        "name": "view-transition pfig",
+        "value": "group var(--t4) var(--ease); old .18s; new var(--t3)",
+        "purpose": "A card's drawing flies into the patent page's drawing."
+      },
+      {
+        "name": "page cross-fade",
+        "value": "old .16s ease-in; new .32s var(--ease)",
+        "purpose": "Page to page."
+      },
+      {
+        "name": "theme cross-fade",
+        "value": "var(--t4) var(--ease-in-out)",
+        "purpose": "Switching light and dark."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation:none!important;transition:none!important",
+        "purpose": "prefers-reduced-motion or data-motion=reduce stops everything, view transitions included."
       }
     ],
     "breakpoints": [
       {
-        "name": "phone",
-        "value": "520px"
+        "name": "desktop-search",
+        "value": "1180px"
       },
       {
-        "name": "type-step",
-        "value": "700px"
-      },
-      {
-        "name": "patent-contents",
-        "value": "980px"
-      },
-      {
-        "name": "nav",
+        "name": "nav-sheet",
         "value": "1080px"
       },
       {
-        "name": "header-search",
-        "value": "1180px"
+        "name": "hero-stack",
+        "value": "980px"
+      },
+      {
+        "name": "filter-sheet",
+        "value": "900px"
+      },
+      {
+        "name": "feature-stack",
+        "value": "860px"
+      },
+      {
+        "name": "dialog-full",
+        "value": "720px"
+      },
+      {
+        "name": "heading-drop",
+        "value": "700px"
+      },
+      {
+        "name": "card-status-stack",
+        "value": "560px"
+      },
+      {
+        "name": "phone",
+        "value": "520px"
       }
-    ]
+    ],
+    "darkMode": {
+      "selector": ":root[data-theme=\"dark\"] (copied by the build for system-dark visitors without a choice)",
+      "litGlass": ":root[data-theme=\"dark\"]:not([data-drawings=\"inverted\"]) :is(.ltglass,.bigfig,.card .fig,.ofig,.gfront,.sistage .glass,.gallery figure>button,.docframe,.pthumb,.tile .th,.rowi .th) re-scopes --ink #17191A, --ink-2 #45494C, --ink-3 #53575B, --line #C3C2BD, --vellum rgba(250,250,248,.8), --glass var(--glass-lit), --glow #E2E1DC",
+      "invertedDrawings": ":root[data-theme=\"dark\"][data-drawings=\"inverted\"] sets --plate #151617, --fig-blend screen, --fig-filter invert(1); only by the visitor's setting"
+    },
+    "fontAxes": {
+      "family": "Archivo variable, wdth 88-120%, wght 400-700 (trimmed)",
+      "wide": "118%",
+      "semiwide": "108%",
+      "interface": "100%",
+      "narrow": "90%"
+    }
   },
   "components": [
     {
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one filled action in a view.",
+      "description": "Graphite pill for the main action.",
       "html": "<button class=\"ds-btn ds-btn-primary\">Search</button>",
-      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:36px;padding:0 14px;border:0;border-radius:var(--r,8px);font:550 14px/1 var(--sans);letter-spacing:-.005em;cursor:pointer;transition:background-color .12s cubic-bezier(.16,1,.3,1),box-shadow .12s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)} .ds-btn:active{transform:scale(.97)} .ds-btn:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px} .ds-btn-primary{background:var(--accent,#116289);color:var(--accent-ink,#fff);box-shadow:inset 0 1px 0 rgba(255,255,255,.14),var(--sh-1)} .ds-btn-primary:hover{background:var(--accent-hover,#015477)}"
+      "css": ".ds-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:38px;padding:0 16px;border:0;border-radius:999px;font:580 14px/1 Archivo,sans-serif;letter-spacing:-.005em;cursor:pointer;transition:background-color .12s cubic-bezier(.16,1,.3,1),box-shadow .12s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)}.ds-btn-primary{background:var(--act,#17191A);color:var(--act-ink,#fff);box-shadow:0 1px 2px rgba(23,25,26,.06),0 1px 1px rgba(23,25,26,.03)}.ds-btn-primary:hover{background:var(--act-hover,#33373A)}.ds-btn:active{transform:scale(.97)}.ds-btn:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}"
     },
     {
       "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "White surface with a strong hairline ring.",
-      "html": "<button class=\"ds-btn2\">Save</button>",
-      "css": ".ds-btn2{display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border:0;border-radius:var(--r,8px);background:var(--surface,#fff);color:var(--ink,#161A1D);box-shadow:0 0 0 1px var(--line-strong,#C6CBCE),var(--sh-1);font:550 14px/1 var(--sans);cursor:pointer;transition:background-color .12s} .ds-btn2:hover{background:var(--surface-2,#FAFBFB)} .ds-btn2:active{transform:scale(.97)} .ds-btn2:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px}"
+      "description": "Surface pill with a line ring.",
+      "html": "<button class=\"ds-btn2\">Browse all</button>",
+      "css": ".ds-btn2{display:inline-flex;align-items:center;min-height:38px;padding:0 16px;border:0;border-radius:999px;background:var(--surface,#fff);color:var(--ink,#17191A);box-shadow:0 0 0 1px var(--line-strong,#C3C3BE),0 1px 2px rgba(23,25,26,.06);font:580 14px/1 Archivo,sans-serif;cursor:pointer;transition:box-shadow .12s cubic-bezier(.16,1,.3,1),transform .36s}.ds-btn2:hover{box-shadow:0 0 0 1px rgba(23,25,26,.45),0 1px 2px rgba(23,25,26,.06)}.ds-btn2:active{transform:scale(.97)}.ds-btn2:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}"
+    },
+    {
+      "name": "Filter Chips",
+      "kind": "chip",
+      "refersTo": "chip-on",
+      "description": "Text pills that fill with graphite when on.",
+      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">Expired <small>48,210</small></button><button class=\"ds-chip\" aria-pressed=\"false\">Lapsed <small>71,904</small></button></div>",
+      "css": ".ds-chips{display:flex;gap:6px}.ds-chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 13px;border:0;border-radius:999px;background:transparent;color:var(--ink-2,#45494C);font:520 13.5px/1 Archivo,sans-serif;box-shadow:inset 0 0 0 1px var(--line,#DCDCD8);cursor:pointer;transition:background-color .12s,color .12s,box-shadow .12s}.ds-chip small{font-size:12px;font-variant-numeric:tabular-nums;color:var(--ink-3,#62676B)}.ds-chip:hover{background:var(--surface,#fff);color:var(--ink,#17191A);box-shadow:inset 0 0 0 1px var(--line-strong,#C3C3BE)}.ds-chip[aria-pressed=\"true\"]{background:var(--act,#17191A);color:var(--act-ink,#fff);font-weight:600;box-shadow:none}.ds-chip[aria-pressed=\"true\"] small{color:rgba(255,255,255,.7)}.ds-chip:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}"
+    },
+    {
+      "name": "Segmented View Switch",
+      "kind": "custom",
+      "refersTo": "segmented-thumb",
+      "description": "Recessed track with a raised thumb; list, cards, table.",
+      "html": "<div class=\"ds-seg\"><button aria-pressed=\"true\">List</button><button aria-pressed=\"false\">Cards</button><button aria-pressed=\"false\">Table</button></div>",
+      "css": ".ds-seg{display:inline-flex;gap:2px;padding:3px;border-radius:999px;background:rgba(23,25,26,.07)}.ds-seg button{min-height:30px;padding:0 14px;border:0;border-radius:999px;background:none;color:var(--ink-2,#45494C);font:520 13.5px/1 Archivo,sans-serif;cursor:pointer;transition:background-color .2s,color .12s,box-shadow .2s}.ds-seg button:hover{color:var(--ink,#17191A)}.ds-seg button[aria-pressed=\"true\"]{background:var(--thumb,#fff);color:var(--ink,#17191A);font-weight:600;box-shadow:0 1px 2px rgba(23,25,26,.06),0 0 0 .5px var(--line,#DCDCD8)}.ds-seg button:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}"
     },
     {
       "name": "Field",
       "kind": "input",
       "refersTo": "field",
-      "description": "Text field: hairline border, accent border and halo on focus.",
-      "html": "<input class=\"ds-field\" placeholder=\"Email address\">",
-      "css": ".ds-field{width:100%;min-height:38px;padding:8px 12px;border:1px solid var(--line-strong,#C6CBCE);border-radius:var(--r,8px);background:var(--surface,#fff);color:var(--ink,#161A1D);font:400 15px/1.4 var(--sans);transition:border-color .2s,box-shadow .2s} .ds-field:hover{border-color:color-mix(in srgb,var(--ink,#161A1D) 32%,transparent)} .ds-field:focus{outline:none;border-color:var(--accent,#116289);box-shadow:0 0 0 4px var(--accent-soft,#E8F4FC)}"
+      "description": "Surface field with the 1.5px ink focus ring and vermilion caret.",
+      "html": "<input class=\"ds-field\" placeholder=\"Your email\">",
+      "css": ".ds-field{width:100%;min-height:42px;padding:9px 14px;border:0;border-radius:10px;background:var(--surface,#fff);color:var(--ink,#17191A);caret-color:var(--mark,#C23B27);font:400 15px/1.4 Archivo,sans-serif;box-shadow:inset 0 0 0 1px var(--line-strong,#C3C3BE);transition:box-shadow .2s cubic-bezier(.16,1,.3,1)}.ds-field:hover{box-shadow:inset 0 0 0 1px rgba(23,25,26,.4)}.ds-field:focus{outline:none;box-shadow:inset 0 0 0 1.5px var(--ink,#17191A),0 0 0 4px rgba(23,25,26,.09)}"
     },
     {
-      "name": "Big Search",
+      "name": "Home Search Pill",
       "kind": "input",
-      "refersTo": "field",
-      "description": "The largest control on the site, on the home page.",
-      "html": "<form class=\"ds-bigsearch\"><svg viewBox=\"0 0 24 24\" width=\"18\" height=\"18\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M16 16l4 4\"/></svg><input placeholder=\"Search ideas, titles or patent numbers\"><button class=\"ds-bs-btn\" type=\"button\">Search</button></form>",
-      "css": ".ds-bigsearch{display:flex;align-items:center;gap:12px;max-width:640px;padding:6px 6px 6px 18px;border-radius:14px;background:var(--surface,#fff);box-shadow:0 0 0 1px var(--line-strong,#C6CBCE),var(--sh-2);color:var(--ink-3,#676E73);transition:box-shadow .2s} .ds-bigsearch:focus-within{box-shadow:0 0 0 1px var(--accent,#116289),0 0 0 5px var(--accent-soft,#E8F4FC),var(--sh-2)} .ds-bigsearch input{flex:1;min-width:0;padding:12px 2px;border:0;background:none;outline:none;font:400 17px var(--sans);color:var(--ink,#161A1D)} .ds-bs-btn{min-height:44px;padding:0 20px;border:0;border-radius:10px;background:var(--accent,#116289);color:var(--accent-ink,#fff);font:550 15px/1 var(--sans);cursor:pointer} .ds-bs-btn:hover{background:var(--accent-hover,#015477)}"
-    },
-    {
-      "name": "Filter Chips",
-      "kind": "chip",
-      "refersTo": "chip-filter-on",
-      "description": "Text buttons; pressed chips fill with the accent wash.",
-      "html": "<div class=\"ds-chips\"><button class=\"ds-chip\" aria-pressed=\"true\">Robotics <small>412</small></button><button class=\"ds-chip\" aria-pressed=\"false\">Medical <small>380</small></button></div>",
-      "css": ".ds-chips{display:flex;gap:6px} .ds-chip{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 11px;border:0;border-radius:var(--r,8px);background:transparent;color:var(--ink-2,#484E52);font:500 13.5px/1 var(--sans);cursor:pointer;transition:background-color .12s,color .12s} .ds-chip:hover{background:color-mix(in srgb,var(--ink,#161A1D) 6%,transparent);color:var(--ink,#161A1D)} .ds-chip[aria-pressed=true]{background:var(--accent-soft,#E8F4FC);color:var(--link,#005F88);font-weight:600} .ds-chip small{font-size:12px;color:var(--ink-3,#676E73)} .ds-chip:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px}"
-    },
-    {
-      "name": "Segmented Control",
-      "kind": "custom",
-      "refersTo": "",
-      "description": "A recessed track with a raised thumb on the chosen option.",
-      "html": "<div class=\"ds-seg\" role=\"tablist\"><button aria-selected=\"true\">Grid</button><button aria-selected=\"false\">List</button></div>",
-      "css": ".ds-seg{display:inline-flex;gap:2px;padding:2px;border-radius:9px;background:color-mix(in srgb,var(--ink,#161A1D) 7%,transparent)} .ds-seg button{min-height:28px;padding:0 12px;border:0;border-radius:7px;background:none;color:var(--ink-2,#484E52);font:500 13.5px/1 var(--sans);cursor:pointer;transition:background-color .2s,box-shadow .2s} .ds-seg button:hover{color:var(--ink,#161A1D)} .ds-seg button[aria-selected=true]{background:var(--thumb,#fff);color:var(--ink,#161A1D);box-shadow:var(--sh-1),0 0 0 .5px var(--line,#DDE0E2)}"
+      "refersTo": "search-pill",
+      "description": "The largest control on home: a 62px pill with a graphite Search button.",
+      "html": "<form class=\"ds-search\"><svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M16 16l4 4\"/></svg><input placeholder=\"Search by idea or number\"><button type=\"button\">Search</button></form>",
+      "css": ".ds-search{display:flex;align-items:center;gap:8px;max-width:580px;height:62px;padding:0 7px 0 22px;border-radius:999px;background:var(--surface,#fff);color:var(--ink-3,#62676B);box-shadow:0 0 0 1px var(--line,#DCDCD8),0 16px 36px -18px rgba(23,25,26,.28);transition:box-shadow .36s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)}.ds-search:focus-within{box-shadow:0 0 0 1.5px var(--ink,#17191A),0 22px 48px -18px rgba(23,25,26,.36);transform:translateY(-1px)}.ds-search input{flex:1;min-width:0;height:100%;border:0;background:none;outline:none;font:400 17px Archivo,sans-serif;color:var(--ink,#17191A);caret-color:var(--mark,#C23B27)}.ds-search button{min-height:48px;padding:0 24px;border:0;border-radius:999px;background:var(--act,#17191A);color:var(--act-ink,#fff);font:580 15px/1 Archivo,sans-serif;cursor:pointer}.ds-search button:hover{background:var(--act-hover,#33373A)}"
     },
     {
       "name": "Status Labels",
       "kind": "chip",
-      "refersTo": "badge-lapsed",
-      "description": "Always a word with its color; likely abandoned has a hollow dot.",
-      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ds-lapsed\">Lapsed, fee not paid</span><span class=\"ds-badge ds-expired\">Expired</span><span class=\"ds-badge ds-aband\">Likely abandoned</span><span class=\"ds-badge ds-res\">Reserved</span></div>",
-      "css": ".ds-badges{display:flex;flex-wrap:wrap;gap:6px} .ds-badge{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:var(--r-sm,6px);font:550 12px/1 var(--sans)} .ds-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor} .ds-lapsed{background:var(--lapsed-soft,#FFEFD4);color:var(--lapsed,#995600)} .ds-expired{background:var(--expired-soft,#E0F7E5);color:var(--expired,#1A763F)} .ds-aband{background:var(--aband-soft,#E9EDF0);color:var(--aband,#59656D)} .ds-aband::before{width:7px;height:7px;background:transparent;box-shadow:inset 0 0 0 1.5px currentColor} .ds-res{background:var(--reserved-soft,#F3ECFF);color:var(--reserved,#724AAB)}"
+      "refersTo": "badge-expired",
+      "description": "The status word in its color with a dot, on its tint; abandoned gets a hollow dot.",
+      "html": "<div class=\"ds-badges\"><span class=\"ds-badge ex\">Expired, full term</span><span class=\"ds-badge la\">Lapsed, fee not paid</span><span class=\"ds-badge ab\">Likely abandoned</span><span class=\"ds-badge re\">Reserved</span></div>",
+      "css": ".ds-badges{display:flex;flex-wrap:wrap;gap:6px}.ds-badge{display:inline-flex;align-items:center;gap:7px;height:24px;padding:0 10px 0 9px;border-radius:999px;font:600 12.5px/1 Archivo,sans-serif;white-space:nowrap}.ds-badge::before{content:\"\";width:6px;height:6px;border-radius:50%;background:currentColor}.ds-badge.ex{background:var(--expired-soft,#E1F0E6);color:var(--expired,#1C6B3E)}.ds-badge.la{background:var(--lapsed-soft,#F7ECDA);color:var(--lapsed,#8A5100)}.ds-badge.ab{background:var(--aband-soft,#E7E8E8);color:var(--aband,#5A6065)}.ds-badge.ab::before{width:7px;height:7px;background:transparent;box-shadow:inset 0 0 0 1.5px currentColor}.ds-badge.re{background:var(--reserved-soft,#EEE8F8);color:var(--reserved,#6A47A2)}"
     },
     {
-      "name": "Patent Card",
+      "name": "Patent Card (cards view)",
       "kind": "card",
       "refersTo": "card-sheet",
-      "description": "The drawing on its sheet, then the words with no box around them.",
-      "html": "<article class=\"ds-card\"><a class=\"ds-fig\" href=\"#\"><span class=\"ds-over\">Expired</span><svg viewBox=\"0 0 120 80\" fill=\"none\" stroke=\"#161A1D\" stroke-width=\"1.2\"><rect x=\"30\" y=\"20\" width=\"60\" height=\"40\" rx=\"4\"/><path d=\"M30 40h60M60 20v40\"/><circle cx=\"60\" cy=\"40\" r=\"10\"/></svg></a><div class=\"ds-body\"><small>Robotics &amp; Automation &#183; <code>US 11,117,268 B2</code></small><h3>Ball-joint robot wrist</h3><p>A compact wrist joint that lets a robot hand rotate on three axes.</p></div></article>",
-      "css": ".ds-card{max-width:300px;font-family:var(--sans)} .ds-fig{position:relative;display:grid;place-items:center;aspect-ratio:4/3;padding:38px 22px 26px;border-radius:var(--r-lg,16px);background:var(--plate,#fff);box-shadow:inset 0 0 0 1px var(--line,#DDE0E2);transition:box-shadow .2s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)} .ds-fig svg{width:100%;height:100%;mix-blend-mode:var(--fig-blend,multiply);filter:var(--fig-filter,none);transition:transform .7s cubic-bezier(.16,1,.3,1)} .ds-card:hover .ds-fig{box-shadow:inset 0 0 0 1px var(--line-strong,#C6CBCE),var(--sh-2);transform:translateY(-3px)} .ds-card:hover .ds-fig svg{transform:scale(1.04)} .ds-fig:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px} .ds-over{position:absolute;left:12px;top:12px;display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:6px;background:var(--expired-soft,#E0F7E5);color:var(--expired,#1A763F);font:550 12px/1 var(--sans)} .ds-body{display:grid;gap:5px;padding:16px 2px 0} .ds-body small{font-size:12.5px;color:var(--ink-3,#676E73)} .ds-body code{font-family:var(--mono);font-size:.92em} .ds-body h3{margin:0;font-size:17px;font-weight:600;line-height:1.28;letter-spacing:-.014em;color:var(--ink,#161A1D)} .ds-card:hover h3{color:var(--link,#005F88)} .ds-body p{margin:0;font-size:14px;line-height:1.5;color:var(--ink-3,#676E73)}"
+      "description": "A sheet laid on the table, status with the words, facts under a rule.",
+      "html": "<article class=\"ds-card\"><a class=\"ds-fig\" href=\"#\"><svg viewBox=\"0 0 120 90\" fill=\"none\" stroke=\"#17191A\" stroke-width=\"1\"><rect x=\"30\" y=\"18\" width=\"60\" height=\"50\"/><path d=\"M30 18l14-10h60l-14 10M90 68l14-10V8\"/></svg><span class=\"ds-sheets\">8 drawings</span></a><div class=\"ds-cbody\"><span class=\"ds-st\">Expired, full term</span><span class=\"ds-fn\">Consumer Products · US 6,501,234</span><h3>Motorized jointed toy figure</h3><p>A toy figure with jointed legs, waist and arms.</p></div></article>",
+      "css": ".ds-card{display:flex;flex-direction:column;max-width:300px;font-family:Archivo,sans-serif}.ds-fig{position:relative;display:block;aspect-ratio:4/3;padding:26px 22px;border-radius:20px;background:var(--plate,#fff);box-shadow:inset 0 0 0 1px rgba(23,25,26,.08),0 1px 2px rgba(23,25,26,.06);transition:box-shadow .36s cubic-bezier(.16,1,.3,1),transform .36s cubic-bezier(.16,1,.3,1)}.ds-fig svg{width:100%;height:100%}.ds-card:hover .ds-fig{transform:translateY(-4px);box-shadow:inset 0 0 0 1px var(--line,#DCDCD8),0 2px 6px rgba(23,25,26,.06),0 28px 60px -20px rgba(23,25,26,.26)}.ds-fig:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}.ds-sheets{position:absolute;right:10px;bottom:8px;padding:2px 7px;border-radius:999px;background:rgba(253,253,252,.76);font-size:12px;font-stretch:90%;color:var(--ink-2,#45494C)}.ds-cbody{display:grid;grid-template-columns:auto 1fr;gap:7px 10px;padding:16px 2px 0}.ds-cbody h3,.ds-cbody p{grid-column:1/-1;margin:0}.ds-st{font-size:12.5px;font-weight:600;color:var(--expired,#1C6B3E)}.ds-st::before{content:\"\";display:inline-block;width:6px;height:6px;margin-right:7px;border-radius:50%;background:currentColor;vertical-align:1px}.ds-fn{font-size:12.5px;color:var(--ink-3,#62676B)}.ds-cbody h3{font-size:17px;font-weight:620;line-height:1.26;letter-spacing:-.016em;color:var(--ink,#17191A);overflow-wrap:anywhere}.ds-cbody p{font-size:14px;line-height:1.5;color:var(--ink-2,#45494C)}"
     },
     {
-      "name": "Header",
+      "name": "Sheet on Lit Glass with Vellum Record",
+      "kind": "custom",
+      "refersTo": "glass-panel",
+      "description": "The signature: a sheet on lit glass, registration ticks, vertical margin label, a vellum note over its corner.",
+      "html": "<figure class=\"ds-glass\"><div class=\"ds-sheet\"><span class=\"ds-ticks\"></span><span class=\"ds-label\">US 6,501,234 · Sheet 1 of 8</span></div><figcaption class=\"ds-vellum\"><b>Expired, full term</b><span>Motorized jointed toy figure</span></figcaption></figure>",
+      "css": ".ds-glass{position:relative;isolation:isolate;display:grid;place-items:center;height:360px;margin:0;border-radius:28px;background:var(--glass,#FDFDFC);box-shadow:0 0 0 1px var(--line,#DCDCD8),inset 0 0 0 1px rgba(255,255,255,.9),0 50px 90px -50px rgba(23,25,26,.28);font-family:Archivo,sans-serif}.ds-glass::before{content:\"\";position:absolute;inset:0;z-index:-1;border-radius:inherit;background:radial-gradient(110% 80% at 50% 45%,var(--glow,#fff),transparent 70%)}.ds-sheet{position:relative;width:180px;aspect-ratio:3/4;background:var(--plate,#fff);box-shadow:0 1px 2px rgba(23,25,26,.06),0 18px 40px -20px rgba(23,25,26,.22);animation:ds-lay .6s cubic-bezier(.16,1,.3,1) both}.ds-ticks{position:absolute;inset:-18px;opacity:.5;background:linear-gradient(#17191A,#17191A) 0 0/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 0 0/1px 14px no-repeat,linear-gradient(#17191A,#17191A) 100% 0/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 100% 0/1px 14px no-repeat,linear-gradient(#17191A,#17191A) 0 100%/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 0 100%/1px 14px no-repeat,linear-gradient(#17191A,#17191A) 100% 100%/14px 1px no-repeat,linear-gradient(#17191A,#17191A) 100% 100%/1px 14px no-repeat}.ds-label{position:absolute;left:calc(100% + 28px);top:0;writing-mode:vertical-rl;font-size:12px;font-stretch:90%;color:#62676B;white-space:nowrap}.ds-vellum{position:absolute;left:24px;bottom:24px;display:grid;gap:6px;width:220px;padding:16px 20px;border-radius:20px;background:rgba(253,253,252,.76);-webkit-backdrop-filter:saturate(1.3) blur(18px);backdrop-filter:saturate(1.3) blur(18px);box-shadow:0 0 0 1px rgba(23,25,26,.09),0 22px 44px -22px rgba(23,25,26,.32)}.ds-vellum b{font-size:12.5px;font-weight:600;color:#1C6B3E}.ds-vellum span{font-size:18px;font-weight:620;font-stretch:108%;letter-spacing:-.025em;color:#17191A}@keyframes ds-lay{from{opacity:0;transform:translateY(14px) scale(.985);filter:blur(3px)}}@media (prefers-reduced-motion:reduce){.ds-sheet{animation:none}}"
+    },
+    {
+      "name": "Studio Task",
+      "kind": "custom",
+      "refersTo": "task",
+      "description": "A task choice; selected is ringed in ink with the vermilion live dot.",
+      "html": "<div class=\"ds-tasks\"><button class=\"ds-task\" aria-pressed=\"true\"><b>Find a modern use</b><span>Three products this could become now.</span></button><button class=\"ds-task\" aria-pressed=\"false\"><b>Check what's free</b><span>What the expiry frees, claim by claim.</span></button></div>",
+      "css": ".ds-tasks{display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:Archivo,sans-serif}.ds-task{position:relative;display:grid;gap:3px;padding:12px 16px;border:0;border-radius:14px;background:var(--surface,#fff);color:var(--ink,#17191A);text-align:left;box-shadow:0 0 0 1px var(--line,#DCDCD8);cursor:pointer;transition:box-shadow .2s cubic-bezier(.16,1,.3,1),transform .36s}.ds-task:hover{box-shadow:0 0 0 1px var(--line-strong,#C3C3BE),0 1px 2px rgba(23,25,26,.06)}.ds-task:active{transform:scale(.985)}.ds-task[aria-pressed=\"true\"]{box-shadow:0 0 0 1.5px var(--ink,#17191A),0 1px 2px rgba(23,25,26,.05),0 10px 24px -10px rgba(23,25,26,.16)}.ds-task[aria-pressed=\"true\"]::after{content:\"\";position:absolute;right:16px;top:16px;width:8px;height:8px;border-radius:50%;background:var(--mark,#C23B27)}.ds-task b{padding-right:22px;font-size:14px;font-weight:620}.ds-task span{font-size:13px;line-height:1.45;color:var(--ink-3,#62676B)}.ds-task:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}"
+    },
+    {
+      "name": "Header Navigation",
       "kind": "nav",
       "refersTo": "",
-      "description": "Sticky bar in the page color; current page gets a 2px accent underline.",
-      "html": "<header class=\"ds-top\"><b class=\"ds-brand\">Patent Yard</b><nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Free to use</a><a href=\"#\">All patents</a><a href=\"#\">Insights</a></nav></header>",
-      "css": ".ds-top{display:flex;align-items:center;gap:16px;height:52px;padding:0 20px;background:color-mix(in srgb,var(--bg,#F5F7F8) 82%,transparent);box-shadow:0 1px 0 var(--line,#DDE0E2);font-family:var(--sans)} .ds-brand{font-size:16px;font-weight:650;letter-spacing:-.02em;color:var(--ink,#161A1D)} .ds-nav{display:flex;gap:2px;height:100%;align-items:center} .ds-nav a{position:relative;padding:8px 10px;border-radius:6px;font-size:14px;font-weight:500;color:var(--ink-2,#484E52);text-decoration:none;transition:color .12s,background-color .12s} .ds-nav a:hover{color:var(--ink,#161A1D);background:color-mix(in srgb,var(--ink,#161A1D) 5%,transparent)} .ds-nav a[aria-current=page]{color:var(--ink,#161A1D)} .ds-nav a[aria-current=page]::after{content:'';position:absolute;left:10px;right:10px;bottom:-9px;height:2px;border-radius:2px 2px 0 0;background:var(--accent,#116289)} .ds-nav a:focus-visible{outline:2px solid var(--focus,#1F7FB0);outline-offset:2px}"
+      "description": "Translucent table rail; current page in ink with a graphite dot.",
+      "html": "<nav class=\"ds-nav\"><b>Patent Yard</b><a href=\"#\" aria-current=\"page\">Free to use</a><a href=\"#\">All patents</a><a href=\"#\">Opportunities</a><a href=\"#\">Studio</a></nav>",
+      "css": ".ds-nav{display:flex;align-items:center;gap:2px;height:56px;padding:0 16px;background:rgba(243,243,241,.8);-webkit-backdrop-filter:saturate(170%) blur(18px);backdrop-filter:saturate(170%) blur(18px);box-shadow:0 1px 0 var(--line,#DCDCD8);font-family:Archivo,sans-serif}.ds-nav b{margin-right:20px;font-size:16px;font-weight:660;font-stretch:118%;letter-spacing:-.025em;color:#17191A}.ds-nav a{position:relative;padding:8px 11px;border-radius:999px;font-size:14px;font-weight:500;color:var(--ink-2,#45494C);text-decoration:none;transition:color .12s,background-color .12s}.ds-nav a:hover{color:#17191A;background:rgba(23,25,26,.06)}.ds-nav a[aria-current=\"page\"]{color:#17191A;font-weight:600}.ds-nav a[aria-current=\"page\"]::after{content:\"\";position:absolute;left:50%;bottom:1px;width:4px;height:4px;margin-left:-2px;border-radius:50%;background:#17191A}.ds-nav a:focus-visible{outline:2px solid var(--focus,#C23B27);outline-offset:2px}"
     }
   ],
   "narrative": {
-    "northStar": "The Drawing Is the Product Shot",
-    "overview": "Patent Yard is desktop-class software for reading old patents. A cool near-white page (near-black charcoal in dark mode) carries white surfaces drawn with 1px hairline rings, Hanken Grotesk for everything the site says, and one Prussian blue accent, the color of the cyanotype blueprints patent drawings were once copied as. The interface stays quiet so the patent drawing, always on its sheet, carries each page.\n\nDensity follows the task. The home page persuades with one large headline, the biggest search box on the site and a plotted drawing. Browse and account pages operate with chips, segmented controls and dense grids. Patent pages read like a well-set technical document with the drawing first and the patent's own text in a serif.\n\nAll values live in `web/styles/tokens.css`. Dark mode is written once as `:root[data-theme=\"dark\"]`, and `pipeline/site_ui/styles.py` copies each dark rule for visitors whose system is dark and who have not picked a theme. Templates and scripts use token names only.",
+    "northStar": "The Light Table",
+    "overview": "An old invention lies on lit glass as the original sheet, and everything Patent Yard adds is drawn on frosted vellum laid over it. The page itself is the table: a neutral near-white (charcoal at night) on which glass panels, sheets and notes are placed, not boxed. The original drawing is the content and the brightest thing in view; the interface is graphite and recedes around it. A single vermilion mark appears only on the one thing that is live right now.\n\nOne world serves two densities. The home page is composed and expressive: split compositions, an expanded display face, a real drawing plotted by a pen onto glass that bleeds off the window edge, numbers struck into place. The research application (Free to use, All patents, Studio, saved, settings, account) is dense and operational, like desktop software: compact titles instead of heroes, a filter sidebar, three result views, ruled lists. Reading pages (a patent, Opportunities, Insights, How it works, legal) sit between the two, with the patent's own words in a serif.\n\nThis world replaces v2 entirely: no blue accent, no cool tinted surfaces, no centered headline over a search over a boxed drawing, no equal grids of identical cards as the only layout.",
     "keyCharacteristics": [
-      "Cool neutrals, one blue accent, four status colors that always come with a word.",
-      "Hairlines as 1px box-shadow rings, not borders; most content sits directly on the page.",
-      "Two voices in type: grotesk for Patent Yard, serif for the patent, system mono for identifiers.",
-      "8px controls, 12 to 22px containers, a raised thumb in segmented controls.",
-      "Motion refines arrival and never gates content; reduced motion stops all of it."
+      "Materials, not boxes: table, lit glass, sheet and vellum, each with its own surface and shadow.",
+      "Registration ticks at a sheet's corners in place of a border.",
+      "Graphite does all the work: pill buttons, filled chips, the 1.5px ink focus ring on fields.",
+      "One vermilion mark, reserved for the live thing.",
+      "Archivo in three widths for Patent Yard's voice; Source Serif 4 only for the patent's own words and the Studio prompt.",
+      "Statuses always carry their word; color is never the only signal.",
+      "Motion that settles: one long ease-out, a spring for presses, sheets laying down out of a slight blur."
     ],
     "rules": [
       {
-        "name": "The Accent Has Four Jobs Rule",
-        "body": "The accent marks primary actions, links, focus and selection. Nothing else is painted blue.",
+        "name": "The One Mark Rule",
+        "body": "Vermilion marks only the single live thing in view: focus, the pen, the current step, the current section, the selected task. If two things on a screen are vermilion at once and are not both live, one of them is wrong. Actions are graphite, never vermilion.",
         "section": "colors"
       },
       {
-        "name": "The Word With a Color Rule",
-        "body": "A status is always a word with its color: lapsed amber, expired or past-term green, likely-abandoned gray with a hollow dot, reserved violet. Color never carries a status alone.",
+        "name": "The Word With Every Color Rule",
+        "body": "A status color always travels with its word (\"Lapsed, fee not paid\"), with a dot, on its own tint. Links in running text are underlined, never told apart by color alone.",
         "section": "colors"
       },
       {
-        "name": "The Two Voices Rule",
-        "body": "The patent's own words (abstract, claims, description) are set in Source Serif 4. Everything Patent Yard writes, including labels inside those sections, is Hanken Grotesk.",
+        "name": "The Lit Glass Rule",
+        "body": "In dark mode the table goes charcoal but glass that holds an original stays lit: a panel holding a drawing (the home stage, the patent's first sheet, card sheets, Opportunities figures, the archive front page, the Studio intro, gallery sheets, the prompt document, thumbnails) re-scopes ink, lines and vellum to their light values, so what is written on the glass stays readable. Drawings are inverted only when the visitor chooses inverted drawings in Settings.",
+        "section": "colors"
+      },
+      {
+        "name": "The Three Widths Rule",
+        "body": "Width carries register: 118% for display and big numbers, 108% for headings, 100% for the interface, 90% for identifiers and dense data. Weight stays between 520 and 660; hierarchy comes from width and size, not from heavy weights.",
         "section": "typography"
       },
       {
-        "name": "The Numbers That Identify Rule",
-        "body": "Mono appears only on identifiers. Counts and dates use the grotesk with tabular figures.",
+        "name": "The Patent's Own Words Rule",
+        "body": "Source Serif 4 is used only for text the patent itself says and for the Studio prompt document. Patent Yard never sets its own copy in the serif.",
         "section": "typography"
       },
       {
-        "name": "The Page, Not the Box Rule",
-        "body": "Most content sits directly on the page. Panels group related rows; they are not wrapped around every section.",
-        "section": "layout"
-      },
-      {
-        "name": "The Ring, Not the Border Rule",
-        "body": "Edges are `box-shadow: 0 0 0 1px var(--line)` (inset on drawings). Form fields are the exception and use a real 1px border.",
+        "name": "The Materials Rule",
+        "body": "Every surface is one of four materials: the table, lit glass (28px corners, a radial glow at 50% 45%, the glass shadow), a sheet (the plate color with a hairline edge), or vellum (translucent, `saturate(1.3) blur(18px)` behind it, the vellum shadow, 20px corners, a solid fallback where backdrop-filter is missing). Original drawings go on sheets on glass; Patent Yard's own notes (the record card, the modern angle, the archive hint, the explain note, the Patent Yard note on a patent, the Studio brief) go on vellum. Plain grouped panels are surface with a 1px ring.",
         "section": "elevation"
       },
       {
-        "name": "The Stillness Rule",
-        "body": "Reduced motion, from the system setting or the site's own `data-motion=\"reduce\"`, stops every animation, transition and view transition, and the scripts skip the plotter, digit strikes and celebrations.",
-        "section": "components"
+        "name": "The Ticks Not Boxes Rule",
+        "body": "A sheet on glass is framed by four registration ticks (14px by 1px corner marks in ink at 50% opacity, 18px outside the sheet), never by a border or a box. A blank sheet with no drawing on file gets the same ticks in ink-3, inset.",
+        "section": "elevation"
       }
     ],
     "dos": [
-      "**Do** take every value from `tokens.css`, and write dark overrides once under `:root[data-theme=\"dark\"]`.",
-      "**Do** show a status as its word plus its color, with the hollow dot for likely abandoned.",
-      "**Do** set abstract, claims and description in Source Serif 4, and everything else in Hanken Grotesk.",
-      "**Do** put identifiers (patent and application numbers, classification codes) in the system mono stack.",
-      "**Do** keep every drawing on its sheet (`--plate`) and pass it through `--fig-blend` and `--fig-filter`.",
-      "**Do** draw edges as 1px rings and keep content on the page rather than in boxes.",
-      "**Do** check new motion under both reduced-motion switches."
+      "Do put every original drawing on a sheet on lit glass, framed by registration ticks, and every note Patent Yard writes about it on vellum.",
+      "Do make actions graphite pills, and fill a chip with graphite when it is on.",
+      "Do reserve vermilion for the single live thing: focus, the pen, the current step, the current contents section, the selected Studio intent or task.",
+      "Do show every status with its word, its dot and its tint.",
+      "Do set the patent's own words (abstract, background, claims, description) and the Studio prompt in Source Serif 4, and everything Patent Yard says in Archivo.",
+      "Do choose Archivo's width by register: 118% for display and big numbers, 108% for headings, 100% for the interface, 90% with tabular figures for identifiers and dense data.",
+      "Do keep glass that holds an original lit in dark mode, and invert drawings only when the visitor asks for it.",
+      "Do bleed hero and feature glass off the window edge with calc(50% - 50vw) on a block-level parent, square its outer corners, and bring it back inside the gutter on narrow screens.",
+      "Do give application pages a compact title and a dense working layout; keep split, expressive compositions for the home page.",
+      "Do move only with the motion tokens, and stop all motion under either reduced-motion signal."
     ],
     "donts": [
-      "**Don't** use the accent for anything but primary actions, links, focus and selection.",
-      "**Don't** put eyebrow or kicker labels above headings.",
-      "**Don't** use gradient text, decorative glass, or glow.",
-      "**Don't** set Patent Yard's own copy in the serif, or counts and prose in mono.",
-      "**Don't** show a drawing off its sheet, or uninverted in dark mode unless the visitor chose original drawings.",
-      "**Don't** hide content behind an entrance animation."
+      "Don't put a border or box around a sheet on glass; use the ticks.",
+      "Don't use vermilion for buttons, links, decoration, numbering, or more than one thing at a time.",
+      "Don't bring back v2's blue accent, cool tinted surfaces, the centered headline over a search over a boxed drawing, or grids of identical cards as the only layout.",
+      "Don't let a status color stand without its word, or tell a link apart by color alone.",
+      "Don't set Patent Yard's own copy in the serif, or the patent's words in Archivo.",
+      "Don't put small uppercase tracked labels above headlines; labels are sentence case at normal tracking.",
+      "Don't apply the full-bleed margin to inline or flex children, or let it cause horizontal scrolling.",
+      "Don't invert drawings in dark mode by default."
     ]
   }
 }

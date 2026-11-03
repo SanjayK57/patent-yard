@@ -1,4 +1,5 @@
-/* Patent drawings: every drawing is a sheet (--plate) lying on lit glass (--glass); dark mode inverts the ink.
+/* Patent drawings: every drawing is a sheet (--plate) lying on lit glass (--glass), in its published ink; in dark mode
+   the glass stays lit (tokens.css), and only the visitor's setting inverts the drawings.
    Used by cards, the patent page, the gallery, Opportunities and the full-screen viewer. */
 .sheet,.bigfig,.gfront,.gallery figure>button,.gallery figure.later a,.ofig,.pthumb,.tile .th,.rowi .th,.srcline img{background-color:var(--plate);box-shadow:inset 0 0 0 1px var(--hair)}
 .bigfig img,.gfront img,.gallery img,.ofig img,.pthumb img,.tile .th img,.rowi .th img,.srcline img,.card .fig img,.plotbox img,.sistage img{mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}

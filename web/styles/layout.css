@@ -57,7 +57,7 @@ body:has(.bigsearch,#filters,#wfilters) .cmdbtn{display:grid}
   .mainnav.open{display:flex;animation:sheetIn var(--t3) var(--ease) both}
   .mainnav a{padding:16px 2px;border-radius:0;border-bottom:1px solid var(--line);font-size:22px;font-weight:600;font-stretch:var(--semiwide);letter-spacing:-.02em;color:var(--ink)}
   .mainnav a:hover{background:none}
-  .mainnav a[aria-current="page"]::after{left:auto;right:4px;top:50%;bottom:auto;width:6px;height:6px;margin:-3px 0 0;background:var(--mark)}
+  .mainnav a[aria-current="page"]::after{left:auto;right:4px;top:50%;bottom:auto;width:6px;height:6px;margin:-3px 0 0;background:var(--ink)}
   .acct .btn span{display:none}
 }
 @media (max-width:520px){#themeBtn{display:none}.brand{margin-right:0}}

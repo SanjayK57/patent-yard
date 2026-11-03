@@ -6,7 +6,7 @@
 .hero{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--s9);align-items:center;min-height:min(calc(100svh - var(--header-h)),900px);
   margin-right:calc(50% - 50vw);padding-block:var(--s8) var(--s9)}
 .hcopy{display:flex;flex-direction:column;align-items:flex-start;min-width:0;padding-block:var(--s6)}
-.hero h1{font-size:clamp(44px,5.4vw,82px);font-weight:640;font-stretch:var(--wide);line-height:.95;letter-spacing:var(--track-display);text-wrap:balance}
+.hero h1{font-size:var(--fs-display);font-weight:640;font-stretch:var(--wide);line-height:.95;letter-spacing:var(--track-display);text-wrap:balance}
 .hero h1 span{display:block;color:var(--ink-3)}
 .hero .lede{max-width:31em;margin-top:var(--s6);font-size:var(--fs-lead);line-height:1.5;color:var(--ink-2)}
 .bigsearch{position:relative;display:flex;align-items:center;gap:var(--s2);width:100%;max-width:580px;height:62px;margin-top:var(--s8);padding:0 7px 0 22px;border-radius:var(--pill);
