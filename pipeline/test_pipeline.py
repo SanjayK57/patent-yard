@@ -1,6 +1,8 @@
 """Checks for the parts of the pipeline that decide what the site says. Run: python3 pipeline.py test"""
 import datetime as dt
+import sys
 import unittest
+from pathlib import Path
 
 import patents as P
 import uspto
@@ -189,6 +191,24 @@ class Classification(unittest.TestCase):
         for code, field in [("H10D30/60", "chips"), ("H04L5/00", "telecom"), ("H04L67/10", "software"), ("H02M3/156", "energy"),
                             ("F41A9/83", "defense"), ("F41B5/00", "sports"), ("H04N23/00", "imaging"), ("C12M1/00", "biotech"), ("C09K8/52", "materials")]:
             self.assertEqual(P.field_of([code]), field, code)
+
+
+class OneCopy(unittest.TestCase):
+    def test_a_second_copy_of_a_long_job_exits(self):
+        import subprocess
+        hold = "import pipeline, time; held = pipeline.one_copy('selftest'); print('held', flush=True); time.sleep(5)"
+        first = subprocess.Popen([sys.executable, "-c", hold], cwd=Path(__file__).parent, stdout=subprocess.PIPE, text=True)
+        try:
+            self.assertEqual(first.stdout.readline().strip(), "held")
+            second = subprocess.run([sys.executable, "-c", "import pipeline; pipeline.one_copy('selftest'); print('ran')"],
+                                    cwd=Path(__file__).parent, capture_output=True, text=True, timeout=30)
+            self.assertEqual(second.returncode, 0)
+            self.assertIn("already running", second.stdout)
+            self.assertNotIn("ran", second.stdout)
+        finally:
+            first.kill()
+            first.wait()
+        (Path(__file__).parent / "raw" / ".selftest.lock").unlink(missing_ok=True)
 
 
 class Website(unittest.TestCase):

@@ -83,6 +83,20 @@ def publish(every):
             time.sleep(60)
 
 
+def one_copy(cmd):
+    """Lets only one copy of a long job run. The daily LaunchAgent (daily.sh) and the daily Claude task both run verify,
+    harvest and enrich; two copies at once split USPTO's one-request-a-second allowance (more 429s) and write the
+    same files. A second copy says so and exits cleanly. The lock goes away with the process, even if it crashes."""
+    import fcntl
+    f = open(Path(__file__).resolve().parent / "raw" / f".{cmd}.lock", "w")
+    try:
+        fcntl.flock(f, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        print(f"pipeline.py {cmd} is already running; this copy exits.", flush=True)
+        sys.exit(0)
+    return f  # held until the process ends
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("cmd", choices=["harvest", "bulk", "archive", "europe", "publish", "todo", "notes", "enrich", "verify", "build", "web", "test"])
@@ -97,6 +111,8 @@ def main():
     ap.add_argument("--text-only", action="store_true", help="enrich: re-read claims and description only")
     ap.add_argument("--sheets", type=int, default=400, help="enrich: most extra drawing sheets to fetch for existing patents")
     a = ap.parse_args()
+    if a.cmd in ("harvest", "enrich", "verify", "bulk", "publish"):
+        a.lock = one_copy(a.cmd)  # kept on the args so it stays held while the job runs
 
     if a.cmd == "harvest":
         sources = tuple(s for s in a.sources.split(",") if s in register.SOURCES)
