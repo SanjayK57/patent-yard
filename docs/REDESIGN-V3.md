@@ -194,11 +194,18 @@ Script changes are presentation only:
 | Sample-data site (`fixtures.py`) | `check.mjs` passes. Two captures with `visual.mjs` are identical (32/32 pages, light and dark, 1440 and 390). |
 | Design detector (impeccable) | only "outside DESIGN.md" advisories from before DESIGN.md was rewritten, and the press spring's overshoot |
 | Finish review (independent design reviewer) | First pass: fix, with 8 material issues. All applied. Verdict pass: 5 resolved, 3 partial. The 3 partial items and the one regression it found were then fixed: compact Opportunities rows, smaller no-drawing plates, numbers that wrap instead of being cut, and a third row beside the lead pick. |
-| Full production build (`pipeline.py web`) | see 6a |
+| Full production build (`pipeline.py web`) | passed, see 6a |
 
 ### 6a. Full production build
 
-Result added when the build finishes.
+`python3 pipeline/pipeline.py web` on the branch with real data (2026-11-03) passed in 1,215 s:
+- 131,027 patents in 1,024 shards;
+- 11,699,368 archive records;
+- 14,318 files, 11.1 GB (Cloudflare Pages allows 20,000 files);
+- no file over 25 MiB;
+- the build's link check across every page found no broken links.
+
+It was built into the worktree's own `web/dist`; nothing was deployed.
 
 ## 7. Visual regression
 
