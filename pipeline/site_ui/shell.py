@@ -45,7 +45,7 @@ class Shell:
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="alternate" type="application/atom+xml" title="New on Patent Yard" href="/feed.xml">
-<link rel="preload" href="/assets/fonts/hanken-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/archivo-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{self.css}">
 {ld}
 </head>
@@ -69,7 +69,7 @@ class Shell:
 </main>
 <footer class="foot">
   <div class="wrap">
-    <div><b>Patent Yard</b><p class="about">A free register of expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, traced to patent office records, with tools for developing new inventions from them.</p><p class="num" id="footStat">Recently lapsed US patents are rechecked for reinstatement daily</p></div>
+    <div><b>{LOGO}Patent Yard</b><p class="about">A free register of expired, lapsed and abandoned patents from the US, Europe, Canada and Australia, traced to patent office records, with tools for developing new inventions from them.</p><p class="num" id="footStat">Recently lapsed US patents are rechecked for reinstatement daily</p></div>
     <nav aria-label="Product"><span class="kicker">Product</span><a href="/browse/">Free to use</a><a href="/all/">All patents</a><a href="/opportunities/">Opportunities</a><a href="/studio/">Invention studio</a><a href="/insights/">Insights</a><a href="/fields/">Fields</a></nav>
     <nav aria-label="Your work"><span class="kicker">Your work</span><a href="/account/">My bench</a><a href="/saved/">Saved patents</a><a href="/settings/">Settings</a><a href="/feed.xml">New patents feed (RSS)</a></nav>
     <nav aria-label="Data sources"><span class="kicker">Data sources</span><a href="https://www.uspto.gov/learning-and-resources/official-gazette/official-gazette-patents" {EXT}>USPTO Official Gazette</a><a href="https://ppubs.uspto.gov/pubwebapp/" {EXT}>USPTO Patent Public Search</a><a href="https://patentcenter.uspto.gov/" {EXT}>USPTO Patent Center</a><a href="https://data.epo.org/linked-data/" {EXT}>EPO linked open data</a><a href="https://ised-isde.canada.ca/site/canadian-intellectual-property-office/en" {EXT}>CIPO</a><a href="https://www.ipaustralia.gov.au/" {EXT}>IP Australia IPGOD</a><a href="https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data" {EXT}>Google Patents Public Data</a></nav>

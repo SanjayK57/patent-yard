@@ -1,5 +1,5 @@
 /* Things that float over the page: dialogs, the command palette, search suggestions, the account menu, toasts. */
-dialog{width:min(880px,calc(100% - 32px));max-height:calc(100% - 40px);padding:0;overflow:auto;border:0;border-radius:var(--r-lg);background:var(--surface);color:var(--ink);
+dialog{width:min(880px,calc(100% - 32px));max-height:calc(100% - 40px);padding:0;overflow:auto;border:0;border-radius:var(--r-xl);background:var(--surface);color:var(--ink);
   box-shadow:0 0 0 1px var(--line),var(--sh-3);
   opacity:0;transform:translateY(12px) scale(.98);transition:opacity var(--t2) var(--ease),transform var(--t3) var(--ease),overlay var(--t3) allow-discrete,display var(--t3) allow-discrete}
 dialog[open]{opacity:1;transform:none}
@@ -10,7 +10,7 @@ dialog[open]::backdrop{background:var(--scrim);-webkit-backdrop-filter:blur(3px)
 @media (max-width:720px){dialog:not(.cmdk):not(#viewer){width:100%;max-width:100%;height:100%;max-height:100%;margin:0;border-radius:0;box-shadow:none}}
 .dbar{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:var(--s3);padding:var(--s3) var(--s5);
   background:color-mix(in srgb,var(--surface) 88%,transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);box-shadow:0 1px 0 var(--line)}
-.dbar b{font-size:16px;font-weight:600;letter-spacing:-.01em}
+.dbar b{font-size:17px;font-weight:620;font-stretch:var(--semiwide);letter-spacing:-.02em}
 .dbody{display:grid;gap:var(--s5);padding:var(--s5) var(--s6) var(--s7)}
 .x{display:grid;place-items:center;width:30px;height:30px;flex:none;border:0;border-radius:50%;background:color-mix(in srgb,var(--ink) 7%,transparent);color:var(--ink-2);cursor:pointer;
   transition:background-color var(--t1) var(--ease),color var(--t1) var(--ease)}
@@ -33,7 +33,7 @@ dialog.cmdk[open]{display:grid}
 #cmdList button small{font-size:12px;color:var(--ink-3)}
 #cmdList button svg{color:var(--ink-3)}
 #cmdList button[aria-selected="true"]{background:var(--accent-soft)}
-#cmdList button[aria-selected="true"] svg{color:var(--link)}
+#cmdList button[aria-selected="true"] svg{color:var(--mark)}
 .cmdfoot{display:flex;gap:var(--s4);padding:10px var(--s4);box-shadow:0 -1px 0 var(--line);font-size:12px;color:var(--ink-3)}
 .cmdfoot kbd{display:inline-grid;place-items:center;min-width:18px;height:18px;margin-right:4px;padding:0 4px;border-radius:4px;background:var(--sunken);box-shadow:0 0 0 1px var(--line)}
 
@@ -46,7 +46,7 @@ dialog.cmdk[open]{display:grid}
 .sugg a span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sugg a>svg{grid-row:1/3;grid-column:2;color:var(--ink-3)}
 .sugg small{font-size:12px;color:var(--ink-3)}
-.sugg li:nth-last-child(-n+2) a{color:var(--link)}
+.sugg li:nth-last-child(-n+2) a{color:var(--ink);font-weight:560}
 .sugg .none{padding:10px;font-size:13.5px;color:var(--ink-3)}
 .sugg.busy{opacity:.6}
 .picker{position:relative}
@@ -74,7 +74,7 @@ dialog.cmdk[open]{display:grid}
 /* toasts */
 #toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:90;display:grid;justify-items:center;gap:var(--s2);width:max-content;max-width:calc(100% - 32px);
   transform:translateX(-50%);pointer-events:none}
-.toast{display:flex;align-items:center;gap:10px;padding:10px 16px 10px 12px;border-radius:var(--r-md);background:var(--ink);color:var(--bg);font-size:var(--fs-ui);font-weight:500;line-height:1.4;
+.toast{display:flex;align-items:center;gap:10px;padding:11px 18px 11px 12px;border-radius:var(--pill);background:var(--act);color:var(--act-ink);font-size:var(--fs-ui);font-weight:500;line-height:1.4;
   box-shadow:var(--sh-3);overflow-wrap:anywhere;pointer-events:auto;animation:toastIn var(--t3) var(--spring) both}
 .toast.out{animation:toastOut var(--t2) ease-in both}
 .toast .ti{display:grid;place-items:center;width:20px;height:20px;flex:none;border-radius:50%;background:color-mix(in srgb,var(--bg) 18%,transparent)}
@@ -82,4 +82,4 @@ dialog.cmdk[open]{display:grid}
 .toast.ok .ti{background:var(--free);color:var(--bg)}
 .toast.err .ti{background:var(--lapsed);color:var(--bg)}
 .confetti{position:fixed;inset:0;z-index:95;width:100%;height:100%;pointer-events:none}
-.readbar{position:fixed;left:0;right:0;top:var(--header-h);z-index:31;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+.readbar{position:fixed;left:0;right:0;top:var(--header-h);z-index:31;height:2px;background:var(--mark);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}

@@ -1,42 +1,46 @@
-/* Patent drawings: every drawing sits on its sheet (--plate) with a hairline edge; dark mode inverts the ink.
+/* Patent drawings: every drawing is a sheet (--plate) lying on lit glass (--glass); dark mode inverts the ink.
    Used by cards, the patent page, the gallery, Opportunities and the full-screen viewer. */
-.sheet,.bigfig,.gfront,.gallery figure>button,.gallery figure.later a,.ofig,.pthumb,.tile .th,.rowi .th,.srcline img{background-color:var(--plate);box-shadow:inset 0 0 0 1px var(--line)}
-.bigfig img,.gfront img,.gallery img,.ofig img,.pthumb img,.tile .th img,.rowi .th img,.srcline img,.card .fig img,.plotbox img{mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}
+.sheet,.bigfig,.gfront,.gallery figure>button,.gallery figure.later a,.ofig,.pthumb,.tile .th,.rowi .th,.srcline img{background-color:var(--plate);box-shadow:inset 0 0 0 1px var(--hair)}
+.bigfig img,.gfront img,.gallery img,.ofig img,.pthumb img,.tile .th img,.rowi .th img,.srcline img,.card .fig img,.plotbox img,.sistage img{mix-blend-mode:var(--fig-blend);filter:var(--fig-filter)}
 
-/* the patent page's first sheet */
-.bigfig{position:relative;display:block;width:100%;padding:var(--s7) var(--s6);border:0;border-radius:var(--r-lg);cursor:zoom-in;overflow:hidden;
-  transition:box-shadow var(--t2) var(--ease)}
-.bigfig:hover{box-shadow:inset 0 0 0 1px var(--line-strong),var(--sh-2)}
-.bigfig img{display:block;width:100%;height:auto;max-height:68vh;object-fit:contain;transition:transform .7s var(--ease)}
-.bigfig:hover img{transform:scale(1.025)}
+/* the lit glass a sheet lies on: a large rounded panel with a soft inner glow and a long low shadow */
+.glass{position:relative;isolation:isolate;background:var(--glass);border-radius:var(--r-xl);box-shadow:var(--sh-glass);overflow:hidden}
+.glass::before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(110% 80% at 50% 45%,var(--glow),transparent 70%);pointer-events:none}
+
+/* the patent page's first sheet, on its glass */
+.bigfig{position:relative;display:block;width:100%;padding:var(--s9) var(--s8);border:0;border-radius:var(--r-xl);cursor:zoom-in;overflow:hidden;
+  background:var(--glass);box-shadow:var(--sh-glass);transition:box-shadow var(--t3) var(--ease)}
+.bigfig:hover{box-shadow:0 0 0 1px var(--line-strong),inset 0 0 0 1px rgba(255,255,255,.9),0 60px 100px -50px rgba(23,25,26,.36)}
+.bigfig img{display:block;width:100%;height:auto;max-height:70vh;object-fit:contain;transition:transform .8s var(--ease)}
+.bigfig:hover img{transform:scale(1.02)}
 .cap{margin-top:var(--s3);font-size:var(--fs-sm);line-height:1.5;color:var(--ink-3)}
-.nofig{display:grid;justify-items:start;gap:var(--s3);padding:var(--s6);border-radius:var(--r-lg);background:var(--surface-2);box-shadow:inset 0 0 0 1px var(--line)}
-.nofig b{display:flex;align-items:center;font-size:15px}
+.nofig{display:grid;justify-items:start;gap:var(--s3);padding:var(--s7);border-radius:var(--r-xl);background:var(--glass);box-shadow:var(--sh-glass)}
+.nofig b{display:flex;align-items:center;font-size:16px}
 
-/* all sheets */
-.gallery{display:grid;gap:var(--s5) var(--gap);grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
+/* all sheets: laid out on the table in their own proportions, each one a sheet */
+.gallery{display:grid;gap:var(--s6) var(--gap);grid-template-columns:repeat(auto-fill,minmax(200px,1fr))}
 .gallery figure{margin:0;min-width:0}
 .gallery figure>button{position:relative;display:block;width:100%;aspect-ratio:3/4;padding:var(--s4);border:0;border-radius:var(--r-md);cursor:zoom-in;
-  transition:box-shadow var(--t2) var(--ease),transform var(--t3) var(--ease)}
-.gallery figure>button:hover{box-shadow:inset 0 0 0 1px var(--line-strong),var(--sh-2);transform:translateY(-2px)}
+  box-shadow:inset 0 0 0 1px var(--hair),var(--sh-1);transition:box-shadow var(--t3) var(--ease),transform var(--t3) var(--ease)}
+.gallery figure>button:hover{box-shadow:inset 0 0 0 1px var(--line),var(--sh-3);transform:translateY(-3px)}
 .gallery img{width:100%;height:100%;object-fit:contain}
-.gallery figcaption{display:flex;justify-content:space-between;padding:var(--s2) 2px 0;font-size:12.5px;color:var(--ink-3)}
+.gallery figcaption{display:flex;justify-content:space-between;padding:var(--s2) 2px 0;font-size:12.5px;font-stretch:var(--narrow);color:var(--ink-3)}
 .gallery figure.later a{display:grid;place-content:center;justify-items:center;gap:6px;aspect-ratio:3/4;padding:var(--s4);border-radius:var(--r-md);text-align:center;color:var(--ink-3);
   transition:color var(--t2) var(--ease)}
-.gallery figure.later a:hover{color:var(--link)}
-.gallery figure.later b{font-size:15px;font-weight:600;color:var(--ink)}
+.gallery figure.later a:hover{color:var(--ink)}
+.gallery figure.later b{font-size:15px;font-weight:620;color:var(--ink)}
 .gallery figure.later span:not(.pulse){font-size:13px}
-.figlist{display:grid;gap:6px;margin:0;padding-left:18px;font-size:14px;line-height:1.5;color:var(--ink-2)}
+.figlist{display:grid;gap:8px;margin:0;padding-left:18px;font-size:14px;line-height:1.5;color:var(--ink-2)}
 .drawwrap.withlist{display:grid;grid-template-columns:minmax(0,1.8fr) minmax(0,1fr);gap:var(--s7);align-items:start}
 .drawwrap.withlist .gallery{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))}
 .drawwrap>.figside{position:sticky;top:calc(var(--header-h) + 24px)}
 @media (max-width:1000px){.drawwrap.withlist{grid-template-columns:minmax(0,1fr)}.drawwrap>.figside{position:static}}
 
 /* archive (Google Patents) sheets and the front page */
-.gfront{margin:0 0 var(--s4);border-radius:var(--r-lg);overflow:hidden}
-.gfront a{display:block;padding:var(--s6);cursor:zoom-in}
+.gfront{margin:0 0 var(--s4);border-radius:var(--r-xl);overflow:hidden;background:var(--glass);box-shadow:var(--sh-glass)}
+.gfront a{display:block;padding:var(--s8);cursor:zoom-in}
 .gfront img{display:block;width:100%;max-height:640px;object-fit:contain}
-.gfront figcaption{padding:var(--s2) var(--s4) var(--s3);font-size:12.5px;color:var(--ink-3)}
+.gfront figcaption{padding:var(--s2) var(--s5) var(--s4);font-size:12.5px;color:var(--ink-3)}
 .gsheets .cap{margin-top:var(--s3)}
 .gfig .fglyph,.gfig .numart{display:none}
 .gfig.failed{display:grid;place-items:center;align-content:center;gap:var(--s3)}
@@ -46,26 +50,28 @@
 @media (max-width:860px){.docview iframe{height:60vh}}
 
 /* small thumbnails in lists */
-.pthumb{display:grid;place-items:center;width:72px;height:54px;flex:none;border-radius:var(--r);overflow:hidden}
-.pthumb img{width:100%;height:100%;padding:4px;object-fit:contain}
+.pthumb{display:grid;place-items:center;width:84px;height:64px;flex:none;border-radius:var(--r);overflow:hidden}
+.pthumb img{width:100%;height:100%;padding:5px;object-fit:contain}
 .pthumb .fglyph{width:22px;height:22px}
 .fglyph{width:30px;height:30px;fill:none;stroke:var(--ink-3);stroke-width:1.25;stroke-linecap:round;stroke-linejoin:round;transition:transform .6s var(--ease),stroke var(--t2) var(--ease)}
 
-/* the full-screen viewer: a dark stage whatever the theme, so every sheet reads as paper */
-#viewer{width:100%;max-width:100%;height:100%;max-height:100%;margin:0;border:0;border-radius:0;background:rgba(10,12,13,.96);color:#fff;box-shadow:none}
+/* the full-screen viewer: the room goes dark around one sheet, whatever the theme, so every sheet reads as paper */
+#viewer{width:100%;max-width:100%;height:100%;max-height:100%;margin:0;border:0;border-radius:0;background:rgba(12,13,14,.96);color:#fff;box-shadow:none}
 #viewer[open]{display:grid;grid-template-rows:auto minmax(0,1fr) auto}
-#viewer .vbar{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);padding:var(--s3) var(--s4);font-size:var(--fs-sm);color:rgba(255,255,255,.75)}
+#viewer .vbar{display:flex;justify-content:space-between;align-items:center;gap:var(--s3);padding:var(--s3) var(--s5);font-size:var(--fs-sm);font-stretch:var(--narrow);color:rgba(255,255,255,.72)}
 #viewer .x{background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
-#viewer .x:hover{background:rgba(255,255,255,.18)}
-#viewer .stage{position:relative;display:grid;place-items:center;padding:var(--s3);overflow:auto;touch-action:pan-y}
-#viewer .stage img{max-width:100%;max-height:100%;border-radius:var(--r-sm);background:#fff;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);cursor:zoom-in;user-select:none;-webkit-user-drag:none;
-  transition:width var(--t3) var(--ease);animation:sheetIn var(--t3) var(--ease)}
+#viewer .x:hover{background:rgba(255,255,255,.2)}
+#viewer .stage{position:relative;display:grid;place-items:center;padding:var(--s4);overflow:auto;touch-action:pan-y}
+#viewer .stage img{max-width:100%;max-height:100%;border-radius:var(--r-sm);background:#fff;box-shadow:0 40px 100px -30px rgba(0,0,0,.7);cursor:zoom-in;user-select:none;-webkit-user-drag:none;
+  transition:width var(--t3) var(--ease);animation:sheetLay var(--t4) var(--ease)}
 #viewer .stage.zoom{place-items:start center;cursor:grab;touch-action:none}
 #viewer .stage.zoom img{max-width:none;max-height:none;width:min(1400px,180%);cursor:zoom-out}
-#viewer .vnav{display:flex;justify-content:center;align-items:center;gap:var(--s3);padding:var(--s3)}
+#viewer .vnav{display:flex;justify-content:center;align-items:center;gap:var(--s3);padding:var(--s3) var(--s3) var(--s4)}
 #viewer .btn{background:rgba(255,255,255,.1);color:#fff;box-shadow:none}
-#viewer .btn:hover{background:rgba(255,255,255,.18);color:#fff}
-.vthumbs{display:flex;gap:6px;max-width:min(60vw,640px);padding:2px;overflow-x:auto;scrollbar-width:none}
-.vthumbs button{flex:none;width:44px;height:56px;padding:2px;border:2px solid transparent;border-radius:6px;background:#fff;opacity:.5;cursor:pointer;transition:opacity var(--t2) var(--ease),border-color var(--t2) var(--ease)}
-.vthumbs button[aria-current="true"],.vthumbs button:hover{opacity:1;border-color:var(--accent)}
+#viewer .btn:hover{background:rgba(255,255,255,.2);color:#fff}
+.vthumbs{display:flex;gap:8px;max-width:min(60vw,640px);padding:3px;overflow-x:auto;scrollbar-width:none}
+.vthumbs button{flex:none;width:44px;height:56px;padding:2px;border:0;border-radius:6px;background:#fff;opacity:.45;cursor:pointer;box-shadow:0 0 0 2px transparent;
+  transition:opacity var(--t2) var(--ease),box-shadow var(--t2) var(--ease),transform var(--t3) var(--spring)}
+.vthumbs button:hover{opacity:.85}
+.vthumbs button[aria-current="true"]{opacity:1;box-shadow:0 0 0 2px #FF7D66;transform:translateY(-2px)}
 .vthumbs img{width:100%;height:100%;object-fit:contain}

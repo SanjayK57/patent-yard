@@ -274,7 +274,7 @@ export function celebrate(x = innerWidth / 2, y = innerHeight / 3) {
   const dpr = Math.min(2, devicePixelRatio || 1);
   cv.width = innerWidth * dpr; cv.height = innerHeight * dpr; document.body.append(cv);
   const ctx = cv.getContext("2d"), css = getComputedStyle(document.documentElement);
-  const colors = ["--accent", "--ink", "--line-strong", "--accent"].map(v => css.getPropertyValue(v).trim());
+  const colors = ["--mark", "--ink", "--line-strong", "--mark"].map(v => css.getPropertyValue(v).trim());
   const bits = Array.from({ length: 90 }, () => ({ x: x * dpr, y: y * dpr, vx: (Math.random() - .5) * 16 * dpr, vy: (-Math.random() * 13 - 4) * dpr,
     r: (3 + Math.random() * 4) * dpr, a: Math.random() * 6, va: (Math.random() - .5) * .4, c: colors[Math.floor(Math.random() * colors.length)] }));
   const t0 = performance.now();
@@ -349,14 +349,15 @@ export function openPalette() { const p = palette(); p.showModal(); $("#cmdQ", p
 addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") { e.preventDefault(); pal?.open ? pal.close() : openPalette(); } });
 $("#cmdBtn")?.addEventListener("click", openPalette);
 
-// ---------------------------------------------------------------- card or table view for result grids (website.py VIEWTOG)
+// ---------------------------------------------------------------- list, card or table view for result grids (site_ui/base.py VIEWTOG)
 function setView(id, view) {
   const grid = document.getElementById(id);
   if (!grid) return;
+  grid.classList.toggle("as-list", view === "list");
   grid.classList.toggle("as-table", view === "table");
   $$(`[data-for="${id}"]`).forEach(b => b.setAttribute("aria-pressed", String(b.dataset.view === view)));
 }
-$$(".viewtog").forEach(t => { const b = t.querySelector("[data-for]"); try { setView(b.dataset.for, localStorage.getItem("patentyard.view." + b.dataset.for) || "cards"); } catch {} });
+$$(".viewtog").forEach(t => { const b = t.querySelector("[data-for]"); try { setView(b.dataset.for, localStorage.getItem("patentyard.view." + b.dataset.for) || b.closest(".viewtog").dataset.default || "list"); } catch {} });
 document.addEventListener("click", e => {
   const b = e.target.closest("[data-view][data-for]");
   if (!b) return;

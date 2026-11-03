@@ -1,71 +1,84 @@
 /* Design tokens: the one place colors, type, spacing, radii, shadows and motion are set. DESIGN.md explains them.
    Dark mode is written once, as :root[data-theme="dark"]; the build copies it for visitors whose system is dark
-   and who haven't picked a theme (pipeline/site_ui/styles.py). Templates and scripts only use these names. */
+   and who haven't picked a theme (pipeline/site_ui/styles.py). Templates and scripts only use these names.
+
+   The world is a light table: the page is the table (--bg), originals lie on lit glass (--glass) as sheets
+   (--plate), and everything Patent Yard adds is drawn on vellum (--vellum) laid over them. Graphite does the work;
+   one vermilion mark (--mark) appears only on the thing that is live right now: focus, the pen, the current step. */
 :root{
-  /* surfaces, light: a cool near-white page, white surfaces, hairline borders */
-  --bg:#F5F7F8; --surface:#FFFFFF; --surface-2:#FAFBFB; --sunken:#EEF1F2; --band:#ECF0F2; --plate:#FFFFFF;
-  --line:#DDE0E2; --line-strong:#C6CBCE; --hair:rgba(22,26,29,.07);
-  --ink:#161A1D; --ink-2:#484E52; --ink-3:#676E73;
-  /* the accent: Prussian blue, the color of the cyanotype blueprints patent drawings were once copied as */
-  --accent:#116289; --accent-hover:#015477; --accent-ink:#FFFFFF; --accent-soft:#E8F4FC; --link:#005F88; --focus:#1F7FB0;
+  /* the table, the glass, the sheets, the vellum */
+  --bg:#F3F3F1; --glass:#FDFDFC; --surface:#FFFFFF; --surface-2:#F8F8F6; --sunken:#E9E9E6; --band:#ECECE9; --plate:#FFFFFF;
+  --vellum:rgba(253,253,252,.76); --vellum-solid:#FAFAF8; --blur:saturate(1.3) blur(18px);
+  --line:#DCDCD8; --line-strong:#C3C3BE; --hair:rgba(23,25,26,.08);
+  --ink:#17191A; --ink-2:#45494C; --ink-3:#62676B;
+  /* actions are graphite; the mark is vermilion and rare */
+  --act:#17191A; --act-hover:#33373A; --act-ink:#FFFFFF;
+  --mark:#C23B27; --mark-soft:#FBEAE6; --focus:#C23B27;
+  --link:#17191A; --accent:var(--act); --accent-hover:var(--act-hover); --accent-ink:var(--act-ink); --accent-soft:#E6E6E2;
   /* status colors, always shown with their word */
-  --expired:#1A763F; --expired-soft:#E0F7E5; --free:#1A763F; --free-soft:#E0F7E5;
-  --lapsed:#995600; --lapsed-soft:#FFEFD4;
-  --aband:#59656D; --aband-soft:#E9EDF0;
-  --reserved:#724AAB; --reserved-soft:#F3ECFF;
-  --warn:#995600; --danger:#BA2B28;
+  --expired:#1C6B3E; --expired-soft:#E1F0E6; --free:#1C6B3E; --free-soft:#E1F0E6;
+  --lapsed:#8A5100; --lapsed-soft:#F7ECDA;
+  --aband:#5A6065; --aband-soft:#E7E8E8;
+  --reserved:#6A47A2; --reserved-soft:#EEE8F8;
+  --warn:#8A5100; --danger:#B32A1F;
   /* patent drawings: black ink on the white sheet; dark mode inverts them unless the visitor wants originals */
   --fig-blend:multiply; --fig-filter:none;
-  /* depth: offset, soft shadows; --edge is the top highlight dark surfaces get instead */
-  --sh-1:0 1px 2px rgba(22,26,29,.05),0 1px 1px rgba(22,26,29,.03);
-  --sh-2:0 1px 2px rgba(22,26,29,.05),0 8px 20px -6px rgba(22,26,29,.12);
-  --sh-3:0 2px 6px rgba(22,26,29,.06),0 24px 56px -16px rgba(22,26,29,.22);
-  --sh-sheet:0 1px 2px rgba(22,26,29,.06),0 18px 40px -18px rgba(22,26,29,.2),0 60px 120px -48px rgba(22,26,29,.22);
-  --edge:inset 0 0 0 1px rgba(22,26,29,0); --thumb:#FFFFFF;
-  --scrim:rgba(14,17,19,.42);
+  /* depth: offset, soft, neutral; the glass gets a long low shadow, vellum a short lift */
+  --sh-1:0 1px 2px rgba(23,25,26,.06),0 1px 1px rgba(23,25,26,.03);
+  --sh-2:0 1px 2px rgba(23,25,26,.05),0 10px 24px -10px rgba(23,25,26,.16);
+  --sh-3:0 2px 6px rgba(23,25,26,.06),0 28px 60px -20px rgba(23,25,26,.26);
+  --sh-glass:0 0 0 1px var(--line),inset 0 0 0 1px rgba(255,255,255,.9),0 50px 90px -50px rgba(23,25,26,.28);
+  --sh-vellum:0 0 0 1px rgba(23,25,26,.09),0 22px 44px -22px rgba(23,25,26,.32);
+  --sh-sheet:0 1px 2px rgba(23,25,26,.06),0 18px 40px -20px rgba(23,25,26,.22);
+  --edge:inset 0 0 0 1px rgba(23,25,26,0); --thumb:#FFFFFF; --glow:#FFFFFF;
+  --scrim:rgba(18,19,20,.4);
 
-  /* type: Hanken Grotesk is Patent Yard speaking, Source Serif 4 is the patent's own words, mono is numbers that identify */
-  --sans:"Hanken Grotesk",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  /* type: Archivo in three widths is Patent Yard speaking (expanded for display, normal for the interface,
+     narrow for dense data); Source Serif 4 is the patent's own words; mono only for raw identifiers in code */
+  --sans:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
   --serif:"Source Serif 4","Iowan Old Style",Charter,Georgia,serif;
   --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  --wide:118%; --semiwide:108%; --narrow:90%;
   --fs-xs:12px; --fs-sm:13px; --fs-ui:14px; --fs-body:16px; --fs-read:17px; --fs-lead:19px;
-  --fs-h4:16px; --fs-h3:19px; --fs-h2:28px; --fs-h1:40px; --fs-display:clamp(34px,5.6vw,76px);
-  --track-display:-.038em; --track-h1:-.03em; --track-h2:-.022em; --track-h3:-.012em;
+  --fs-h4:16px; --fs-h3:20px; --fs-h2:32px; --fs-h1:46px; --fs-display:clamp(46px,6.3vw,94px);
+  --track-display:-.04em; --track-h1:-.035em; --track-h2:-.03em; --track-h3:-.015em;
 
   /* space (4px steps), widths, shapes */
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s7:32px; --s8:40px; --s9:48px; --s10:64px; --s11:80px; --s12:112px;
-  --gap:20px; --gutter:clamp(16px,4vw,40px); --page:1200px; --page-wide:1320px; --measure:68ch; --header-h:52px;
-  --r-xs:4px; --r-sm:6px; --r:8px; --r-md:12px; --r-lg:16px; --r-xl:22px;
-  --control-h:36px; --control-h-sm:30px; --control-h-lg:46px;
+  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s7:32px; --s8:40px; --s9:48px; --s10:64px; --s11:88px; --s12:128px;
+  --gap:20px; --gutter:clamp(16px,4vw,48px); --page:1240px; --page-wide:1400px; --measure:68ch; --header-h:56px;
+  --r-xs:4px; --r-sm:6px; --r:10px; --r-md:14px; --r-lg:20px; --r-xl:28px; --pill:999px;
+  --control-h:38px; --control-h-sm:32px; --control-h-lg:50px;
 
   /* motion: one ease-out curve, a spring for things pressed or arriving small, four durations */
   --ease:cubic-bezier(.16,1,.3,1); --ease-in-out:cubic-bezier(.65,0,.35,1);
   --spring:linear(0,.063 2.1%,.233 4.6%,.488 7.6%,.746 11%,.904 14.2%,1.006 17.9%,1.045 21.3%,1.053 24.6%,1.04 29.2%,1.012 36.6%,.998 45%,.997 55%,1);
-  --t1:.12s; --t2:.2s; --t3:.36s; --t4:.52s;
+  --t1:.12s; --t2:.2s; --t3:.36s; --t4:.6s;
   color-scheme:light;
 }
 :root[data-theme="dark"]{
-  --bg:#111416; --surface:#181B1D; --surface-2:#1C2022; --sunken:#151819; --band:#15181A; --plate:#141719;
-  --line:#2A2F31; --line-strong:#3B4144; --hair:rgba(255,255,255,.06);
-  --ink:#EEF0F2; --ink-2:#BABEC1; --ink-3:#969B9F;
-  --accent:#64B5E4; --accent-hover:#83C7F0; --accent-ink:#0C1012; --accent-soft:#12303F; --link:#75C2EF; --focus:#64B5E4;
-  --expired:#6BC987; --expired-soft:#142D1B; --free:#6BC987; --free-soft:#142D1B;
-  --lapsed:#EBB25F; --lapsed-soft:#33240F;
-  --aband:#9CA6AD; --aband-soft:#202527;
-  --reserved:#BD9FF2; --reserved-soft:#2D233E;
-  --warn:#EBB25F; --danger:#F47C70;
+  --bg:#121314; --glass:#1A1B1D; --surface:#1C1D1F; --surface-2:#222326; --sunken:#0D0E0F; --band:#161718; --plate:#151617;
+  --vellum:rgba(38,39,42,.74); --vellum-solid:#232427;
+  --line:#2C2E31; --line-strong:#404347; --hair:rgba(255,255,255,.06);
+  --ink:#EDEDEB; --ink-2:#BBBDBF; --ink-3:#979A9D;
+  --act:#EDEDEB; --act-hover:#FFFFFF; --act-ink:#121314;
+  --mark:#FF7D66; --mark-soft:#3A1F1A; --focus:#FF7D66;
+  --link:#EDEDEB; --accent-soft:#2A2B2E;
+  --expired:#74C893; --expired-soft:#15291C; --free:#74C893; --free-soft:#15291C;
+  --lapsed:#EAB566; --lapsed-soft:#31240F;
+  --aband:#A4A9AD; --aband-soft:#222426;
+  --reserved:#BFA3F1; --reserved-soft:#2B2340;
+  --warn:#EAB566; --danger:#FF8A7A;
   --fig-blend:screen; --fig-filter:invert(1);
-  --sh-1:0 1px 2px rgba(0,0,0,.4);
-  --sh-2:0 1px 2px rgba(0,0,0,.4),0 10px 24px -8px rgba(0,0,0,.6);
-  --sh-3:0 2px 8px rgba(0,0,0,.45),0 28px 64px -16px rgba(0,0,0,.75);
+  --sh-1:0 1px 2px rgba(0,0,0,.45);
+  --sh-2:0 1px 2px rgba(0,0,0,.4),0 12px 28px -10px rgba(0,0,0,.65);
+  --sh-3:0 2px 8px rgba(0,0,0,.45),0 30px 70px -20px rgba(0,0,0,.8);
+  --sh-glass:0 0 0 1px var(--line),inset 0 1px 0 rgba(255,255,255,.05),0 50px 90px -50px rgba(0,0,0,.9);
+  --sh-vellum:0 0 0 1px rgba(255,255,255,.08),0 22px 44px -22px rgba(0,0,0,.8);
   --sh-sheet:0 2px 6px rgba(0,0,0,.4),0 30px 80px -30px rgba(0,0,0,.8);
-  --edge:inset 0 1px 0 rgba(255,255,255,.05); --thumb:#3A4044;
-  --scrim:rgba(0,0,0,.6);
+  --edge:inset 0 1px 0 rgba(255,255,255,.05); --thumb:#3A3C40; --glow:#232427;
+  --scrim:rgba(0,0,0,.62);
   color-scheme:dark;
 }
-/* the home page's studio band is dark in both themes: it takes the dark theme's values wherever it appears */
-.studioband{--ink:#EEF0F2;--ink-2:#BABEC1;--ink-3:#969B9F;--link:#75C2EF;--accent:#64B5E4;--accent-hover:#83C7F0;--accent-ink:#0C1012;--accent-soft:#12303F;--line:#2A2F31;--line-strong:#3B4144;--surface:#181B1D;--surface-2:#1C2022;--plate:#141719;--sh-1:0 1px 2px rgba(0,0,0,.4);--band-bg:#0E1113}
-:root[data-theme="dark"] .studioband{--band-bg:#1A1E21}
 /* visitor settings (settings page): original drawings in dark mode, larger text, less motion */
 :root[data-drawings="original"]{--fig-blend:normal;--fig-filter:none;--plate:#FFFFFF}
 :root[data-text="large"] body{zoom:1.12}

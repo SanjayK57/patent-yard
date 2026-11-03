@@ -58,7 +58,7 @@ $("#aPw").addEventListener("input", () => {
   if (mode !== "up") return;
   const s = strength($("#aPw").value), bar = $("#pwMeter i");
   bar.style.width = [8, 35, 60, 80, 100][s] + "%";
-  bar.style.background = s <= 1 ? "var(--lapsed)" : s === 2 ? "var(--aband)" : "var(--accent)";
+  bar.style.background = s <= 1 ? "var(--lapsed)" : s === 2 ? "var(--aband)" : "var(--free)";
 });
 $("#pwShow").addEventListener("click", e => {
   const on = $("#aPw").type === "password";

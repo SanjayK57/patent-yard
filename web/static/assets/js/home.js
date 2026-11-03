@@ -55,7 +55,7 @@ async function plot() {
   const o = off.getContext("2d"); o.drawImage(img, 0, 0, dw, dh);
   const css = getComputedStyle(document.documentElement);
   // ink: the page's ink on an inverted (dark) sheet, near-black on a white one
-  const hex = css.getPropertyValue("--fig-filter").trim() === "none" ? "#161A1D" : css.getPropertyValue("--ink").trim();
+  const hex = css.getPropertyValue("--fig-filter").trim() === "none" ? "#17191A" : css.getPropertyValue("--ink").trim();
   const [r, g, b] = hex.replace("#", "").match(/../g).map(h => parseInt(h, 16));
   const d = o.getImageData(0, 0, dw, dh);
   for (let i = 0; i < d.data.length; i += 4) { const a = 255 - d.data[i]; d.data[i] = r; d.data[i + 1] = g; d.data[i + 2] = b; d.data[i + 3] = a; }
@@ -70,7 +70,7 @@ async function plot() {
   const cell = k => { const x = (k % cols) * C, y = Math.floor(k / cols) * C; return [x, y, Math.min(C, dw - x), Math.min(C, dh - y)]; };
   const stamp = (c, k) => { const [x, y, w, h] = cell(k); c.drawImage(off, x, y, w, h, ox + x, oy + y, w, h); };
   // paced by the clock, not by frames: about 3 seconds, easing in and out, whatever the frame rate
-  const DUR = 3000, FADE = 220, dot = css.getPropertyValue("--accent").trim(), t0 = performance.now(), wet = [];
+  const DUR = 3000, FADE = 220, dot = css.getPropertyValue("--mark").trim(), t0 = performance.now(), wet = [];
   const ease = t => (t < .5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
   let i = 0;
   while (i < order.length || wet.length) {

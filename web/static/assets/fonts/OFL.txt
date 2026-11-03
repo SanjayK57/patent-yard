@@ -1,6 +1,6 @@
 Fonts served from this folder, all under the SIL Open Font License 1.1 (text below):
 
-hanken-*.woff2       Hanken Grotesk. Copyright 2021 The Hanken Grotesk Project Authors (https://github.com/marcologous/hanken-grotesk)
+archivo-*.woff2      Archivo. Copyright 2020 The Archivo Project Authors (https://github.com/Omnibus-Type/Archivo)
 sourceserif-*.woff2  Source Serif 4. Copyright 2014 - 2023 Adobe (http://www.adobe.com/), with Reserved Font Name 'Source'.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.

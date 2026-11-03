@@ -1,35 +1,39 @@
 /* Reset, page defaults, typography and small utilities. */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 24px);accent-color:var(--accent);
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--header-h) + 24px);accent-color:var(--ink);
   scrollbar-color:var(--line-strong) transparent;-webkit-tap-highlight-color:transparent}
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;overflow-x:clip;padding-inline:var(--gutter);
-  background:var(--bg);color:var(--ink);font:400 var(--fs-body)/1.55 var(--sans);font-optical-sizing:auto;
-  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-feature-settings:"ss01" 0}
+  background:var(--bg);color:var(--ink);font:400 var(--fs-body)/1.55 var(--sans);font-stretch:100%;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-kerning:normal}
 main{flex:1}
 img,svg,canvas{max-width:100%}
 img{height:auto}
-button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button,input,select,textarea{font:inherit;font-stretch:inherit;color:inherit;letter-spacing:inherit}
 button{-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-::selection{background:color-mix(in srgb,var(--accent) 24%,transparent);color:var(--ink)}
+::selection{background:color-mix(in srgb,var(--mark) 20%,transparent);color:var(--ink)}
 ::placeholder{color:var(--ink-3);opacity:1}
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:var(--r-xs)}
-input,textarea{caret-color:var(--accent)}
+input,textarea{caret-color:var(--mark)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-thumb{background:var(--line-strong);border:3px solid transparent;border-radius:10px;background-clip:padding-box}
+::-webkit-scrollbar-track{background:transparent}
 
-a{color:var(--link);text-decoration:none;transition:color var(--t1) var(--ease)}
-a:hover{color:var(--accent-hover)}
+a{color:var(--link);text-decoration:none;transition:color var(--t1) var(--ease),text-decoration-color var(--t1) var(--ease)}
+a:hover{color:var(--ink)}
 /* links inside running text are underlined, never told apart by color alone */
 :where(p,dd,.prose li,.note,.checks li,.olist li) a:not(.btn):not(.chip):not(.lcard){text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;
-  text-decoration-color:color-mix(in srgb,currentColor 40%,transparent)}
+  text-decoration-color:color-mix(in srgb,currentColor 38%,transparent)}
 :where(p,dd,.prose li,.note,.checks li,.olist li) a:not(.btn):not(.chip):not(.lcard):hover{text-decoration-color:currentColor}
 
-h1,h2,h3,h4{margin:0;font-family:var(--sans);font-weight:600;line-height:1.18;letter-spacing:var(--track-h3);text-wrap:balance;color:var(--ink)}
-h1{font-size:var(--fs-h1);line-height:1.08;letter-spacing:var(--track-h1)}
-h2{font-size:var(--fs-h2);line-height:1.14;letter-spacing:var(--track-h2)}
+/* headings: Archivo, a little wider as they grow, tight tracking, balanced lines */
+h1,h2,h3,h4{margin:0;font-family:var(--sans);font-weight:620;line-height:1.16;letter-spacing:var(--track-h3);text-wrap:balance;color:var(--ink)}
+h1{font-size:var(--fs-h1);line-height:1.02;letter-spacing:var(--track-h1);font-stretch:var(--semiwide)}
+h2{font-size:var(--fs-h2);line-height:1.08;letter-spacing:var(--track-h2);font-stretch:var(--semiwide)}
 h3{font-size:var(--fs-h3)}
 h4{font-size:var(--fs-h4)}
 p{margin:0;text-wrap:pretty}
-b,strong{font-weight:600}
+b,strong{font-weight:620}
 small{font-size:var(--fs-sm)}
 kbd{font:500 11px/1 var(--sans)}
 
@@ -54,20 +58,34 @@ textarea.short{min-height:80px}
 textarea.tall{min-height:160px}
 input.narrow-input{max-width:320px;margin-top:var(--s2)}
 .num{font-variant-numeric:tabular-nums}
-.mono,.num-id{font-family:var(--mono);font-size:.92em;letter-spacing:-.01em}
+/* identifiers: the narrow cut with tabular figures, so numbers line up without a costume font */
+.mono,.num-id{font-stretch:var(--narrow);font-variant-numeric:tabular-nums;letter-spacing:.005em}
+.mono{font-family:var(--mono);font-stretch:100%;font-size:.92em}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
 .trap{position:absolute;left:-9999px;width:0;height:0;padding:0;border:0;overflow:hidden;opacity:0;pointer-events:none}
-.skip{position:absolute;left:16px;top:-60px;z-index:80;padding:10px 16px;border-radius:var(--r);background:var(--ink);color:var(--bg);font-weight:600}
-.skip:focus{top:10px;color:var(--bg)}
+.skip{position:absolute;left:16px;top:-60px;z-index:80;padding:10px 16px;border-radius:var(--pill);background:var(--act);color:var(--act-ink);font-weight:600}
+.skip:focus{top:10px;color:var(--act-ink)}
 svg.i{width:16px;height:16px;flex:none;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 .st-lapsed{color:var(--lapsed)}.st-expired{color:var(--expired)}.st-abandoned{color:var(--aband)}
 
 /* reading text: Patent Yard's own pages, and the patent's own words (.source, claims, description) in the serif */
-.prose{font-size:var(--fs-body);line-height:1.65;color:var(--ink-2);overflow-wrap:anywhere}
+.prose{font-size:var(--fs-body);line-height:1.68;color:var(--ink-2);overflow-wrap:anywhere}
 .prose p+p{margin-top:var(--s3)}
-.prose h2{font-size:22px;margin:var(--s8) 0 var(--s3)}
-.prose h3{font-size:var(--fs-read);margin:var(--s6) 0 var(--s2)}
+.prose h2{font-size:24px;margin:var(--s9) 0 var(--s3)}
+.prose h3{font-size:var(--fs-read);margin:var(--s7) 0 var(--s2)}
 .prose ul,.prose ol{padding-left:22px;display:grid;gap:var(--s2);margin:var(--s3) 0}
-.lead{font-size:var(--fs-lead);line-height:1.5;color:var(--ink);letter-spacing:-.008em}
+.lead{font-size:var(--fs-lead);line-height:1.5;color:var(--ink);letter-spacing:-.01em}
 .source,.claimlist li,.desc p{font-family:var(--serif);font-optical-sizing:auto}
-.source{font-size:var(--fs-read);line-height:1.65;color:var(--ink)}
+.source{font-size:var(--fs-read);line-height:1.68;color:var(--ink)}
+
+/* vellum: the material for Patent Yard's own notes laid over an original */
+.vellum{background:var(--vellum);-webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);box-shadow:var(--sh-vellum);border-radius:var(--r-lg)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.vellum{background:var(--vellum-solid)}}
+/* registration ticks: four corner marks that frame a sheet on the glass instead of a box */
+.ticks{position:absolute;inset:-18px;pointer-events:none;
+  background:
+    linear-gradient(var(--ink),var(--ink)) 0 0/14px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 0/1px 14px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) 100% 0/14px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 0/1px 14px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) 0 100%/14px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 0 100%/1px 14px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) 100% 100%/14px 1px no-repeat,linear-gradient(var(--ink),var(--ink)) 100% 100%/1px 14px no-repeat;
+  opacity:.5}
