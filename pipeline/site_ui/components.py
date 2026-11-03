@@ -108,6 +108,6 @@ class Components:
     def listing(self, rows):
         """The first page of a list as plain HTML, for visitors without JavaScript and for search engines.
         browse.js replaces it with the live catalog."""
-        return (f'<h2 class="sr">Patents</h2><div class="grid" id="grid">{"".join(self.card(r, i) for i, r in enumerate(rows[:48]))}</div>'
+        return (f'<h2 class="sr">Patents</h2><div class="grid as-list" id="grid">{"".join(self.card(r, i) for i, r in enumerate(rows[:48]))}</div>'
                 '<div class="empty" id="empty" hidden><b>Nothing matches.</b><p>Loosen a filter or try a different word.</p></div>'
                 '<div class="more"><button class="btn secondary" id="more" hidden>Show more</button></div>')

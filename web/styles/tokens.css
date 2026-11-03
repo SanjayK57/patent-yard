@@ -81,7 +81,7 @@
 }
 /* in dark mode the table goes dark but the glass stays lit: a panel that holds an original sheet keeps light-theme
    ink, so what is written on it stays readable */
-:root[data-theme="dark"]:not([data-drawings="inverted"]) :is(.lit,.ltglass,.bigfig,.card .fig,.ofig,.gfront,.sistage .glass,.gallery figure>button){--ink:#17191A;--ink-2:#45494C;--ink-3:#5E6367;--line:#C3C2BD;--hair:rgba(23,25,26,.1);
+:root[data-theme="dark"]:not([data-drawings="inverted"]) :is(.lit,.ltglass,.bigfig,.card .fig,.ofig,.gfront,.sistage .glass,.gallery figure>button,.docframe,.pthumb,.tile .th,.rowi .th){--ink:#17191A;--ink-2:#45494C;--ink-3:#53575B;--line:#C3C2BD;--hair:rgba(23,25,26,.1);
   --vellum:rgba(250,250,248,.8);--glass:var(--glass-lit);--glow:#E2E1DC;color:var(--ink)}
 /* visitor settings (settings page): inverted drawings in dark mode, larger text, less motion */
 :root[data-theme="dark"][data-drawings="inverted"]{--plate:#151617;--glass-lit:var(--glass);--fig-blend:screen;--fig-filter:invert(1)}

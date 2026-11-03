@@ -7,7 +7,7 @@ The version is in each file name; files are cached for a year, so a new version 
 |---|---|---|
 | `supabase-js-2.117.3.min.js` | `@supabase/supabase-js@2.117.3` from npm, bundled with esbuild (`export { createClient } from "@supabase/supabase-js"`, ESM, minified) | MIT |
 | `jspdf-4.2.1.umd.min.js` | `jspdf@4.2.1` from npm, `dist/jspdf.umd.min.js` unchanged | MIT (`jspdf-LICENSE.txt`) |
-| `../fonts/archivo-*.woff2` | Archivo (variable: width 62 to 125%, weight 100 to 900), Latin and Latin Extended subsets, from Google Fonts | SIL OFL 1.1 |
+| `../fonts/archivo-*.woff2` | Archivo (variable), Latin and Latin Extended subsets, from Google Fonts, trimmed with fonttools to width 88 to 120% and weight 400 to 700 and the layout features the site uses (`varLib.instancer`, `pyftsubset`) | SIL OFL 1.1 |
 | `../fonts/sourceserif-*.woff2` | Source Serif 4 (variable, 400 to 600, and italic), Latin and Latin Extended subsets, from Google Fonts | SIL OFL 1.1 |
 
 `npm audit` on these exact versions: 0 vulnerabilities (2026-10-31).

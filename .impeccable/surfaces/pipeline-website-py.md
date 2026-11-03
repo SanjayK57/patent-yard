@@ -7,18 +7,18 @@ related_targets: ["web/styles/site.css","pipeline/site_ui/pages/home.py"]
 
 ## Mode
 
-Persuade on the home page; Operate on browse, All patents, Studio, saved, settings and account; Read on patent pages, Opportunities, Insights, how it works and legal. One visual world across all of them.
+Persuade on the home page; Operate on browse, All patents, Studio, saved, settings and account; Read on patent pages, Opportunities, Insights, how it works and legal. One visual world across all of them: expressive and composed on home, dense and operational in the research app.
 
 ## Direction contract
 
-THESIS: Patent Yard 2.0, pinned by Sanjay's brief (2026-11-02): desktop-class software with Apple-level care for type, spacing, controls and motion, but its own identity. The patent drawing is the product shot; the interface recedes around it. Refuses the AI-site defaults the old look had: tracked mono eyebrow labels, boxes around everything, cream paper with an orange accent, equal card grids as page structure.
+THESIS: Patent Yard v3, "the light table" (Sanjay's v3 brief, 2026-11-02; prototype A of three, chosen over a catalogue plate and a reference-numeral callout layout). An old invention lies on lit glass as the original sheet; everything Patent Yard adds is drawn on vellum laid over it. Refuses v2's centered headline over a search over a boxed drawing, equal card grids, and blue-accented cool surfaces.
 
-OWN-WORLD: Cool near-white #F5F7F8 page and white surfaces in light, near-black charcoal #111416 and #181B1D in dark; hairlines drawn as 1px box-shadow rings; Prussian (cyanotype) blue accent #116289 / #64B5E4 used for primary buttons, links, focus, selection only; Hanken Grotesk for everything Patent Yard says, Source Serif 4 for the patent's own words, system mono only for identifiers; 8px controls, 12–22px containers; segmented controls with a raised thumb; drawings always on their sheet, inverted in dark mode.
+OWN-WORLD: Neutral near-white table #F3F3F1, lit glass #FDFDFC panels that bleed off one edge, graphite ink #17191A, frosted vellum overlays for Patent Yard's own notes, registration ticks at sheet corners instead of boxes, sheet margin labels set vertically. One vermilion mark #C23B27 / #FF7D66, only for the one live thing in view (the pen, the current selection, the active step). Archivo across three widths: expanded for display, normal for UI, semi-condensed for dense data; Source Serif 4 for the patent's own words. Graphite pill actions.
 
-STORY: A visitor reads one sentence, searches from the largest control on the page, watches a real drawing get plotted stroke by stroke, sees what the yard holds and where each count comes from, then opens a patent whose page reads like a well-set technical document with the drawing first.
+STORY: The visitor reads two lines, searches from a pill field beside the glass, sees a real drawing plotted on the table with its record on vellum, then one invention up close, the yard's scale in three counted numbers, today's sheets, the field index, the Discover, Investigate, Develop path, and the studio's brief traced over a patent.
 
-FIRST VIEWPORT: Centered two-line headline (76px max), one-paragraph lede, a 640px search with a filled Search button and suggestion words beneath, the link to all patents worldwide, and the top edge of a 1080px-wide white drawing sheet with a long soft shadow.
+FIRST VIEWPORT: Split. Left: "Old inventions. New possibilities." two-tone, expanded, about 88px, a one-paragraph lede, the search pill with its Search button, try-words, the worldwide link, a one-line rights qualification. Right: lit glass bleeding off the right edge, the plotted drawing with corner ticks and a vertical sheet label, a vellum record card (status, title, dates, record link) overlapping the sheet's lower left.
 
-FORM: Brief-pinned direction (the standing canon at full fidelity, bar: Apple product pages and macOS apps), executed in the site's own Python/HTML/CSS stack. seed: none (unavailable). Signature interaction: the pen plotter tracing the drawing's strokes with ink settling behind it; a card's drawing flies into the patent page; the theme switch cross-fades.
+FORM: Brief-pinned split hero, built code-led in the site's Python/HTML/CSS stack. seed:9dba14ec348c0722. Raises from the declined hand: color only on what matters now (glazier wall); record and reinvention as one object, the studio brief on vellum over the patent (HyperCard); focus isolates and dims the rest, in the drawing viewer (event display); the chosen sheet face-out, the rest as spines, in the featured picks (pulp rack). Signature interaction: the pen plotting the drawing onto the glass, the loupe, the card drawing flying into the patent page.
 
-FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, a rewritten DESIGN.md and its sidecar, and every shipping raster carrying its provenance

@@ -42,7 +42,7 @@ A free register of patents whose protection has ended, each one traced to the of
 ## Brand Commitments
 
 - The name **Patent Yard** stays. The logo and wordmark may change.
-- Visual reference (Sanjay, 2026-11-02, "Patent Yard 2.0" brief): premium desktop-class software with Apple-level care for typography, spacing, controls and motion, without copying Apple; a distinct Patent Yard identity built around the original drawings. Replaces the earlier drafting-room and dark technical-instrument directions. Details in DESIGN.md.
+- Visual reference (Sanjay, 2026-11-02, "Patent Yard v3" brief): Apple-level presentation, typography, controls and motion without copying Apple, with an identity of its own built around the original drawings; a public face with the impact of a product launch, a research application with the usability of a desktop app. v3 is "the light table": originals on lit glass, Patent Yard's notes on vellum, graphite actions, one vermilion mark. Replaces v2 (cool surfaces, blue accent) and the earlier drafting-room and dark technical-instrument directions. Details in DESIGN.md.
 - **Reinvent with Claude** (the kit) and the **Invention studio** stay as features.
 - The home page's **plotted drawing**: a real patent drawing redrawn by a pen that follows its strokes. It stays as the signature animation.
 - A **light and dark** switch stays, alongside the existing reduced-motion, large-text and original-drawings settings.

@@ -55,7 +55,7 @@ class AllPatents:
   <div class="fdone"><button class="btn primary" type="button" id="wDone">Show results</button></div></div>
 </form>
 <div class="results"><div class="countbar"><p class="count" id="wcount" aria-live="polite">{n:,} records worldwide, newest publication first.</p><div class="tools">{VIEWTOG.format(grid="wgrid")}</div></div>
-<h2 class="sr">Patents</h2><div class="grid" id="wgrid">{self.world_first_cards()}</div>
+<h2 class="sr">Patents</h2><div class="grid as-list" id="wgrid">{self.world_first_cards()}</div>
 <div class="rowbtns results-foot"><button class="btn secondary" type="button" id="wmore" hidden>Show more</button></div></div></div>
 <p class="muted fine-print">Records come from Google Patents Public Data, used under CC BY 4.0, and are refreshed from time to time. Results are listed newest first by first publication date; a search matches words in titles and owner names, or a publication number. A common word or a big filter keeps only its newest 250,000 records, and the count says so when that happens. "Past its term" means filed more than 20 years ago (26 for medicines), except US patents granted within the past 20 years, which could carry a term adjustment. Every other status is as published, so confirm it with the official register before relying on it.</p>
 </div>"""

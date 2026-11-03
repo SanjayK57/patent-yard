@@ -66,7 +66,7 @@
 .claimlist{display:grid;gap:var(--s2);max-width:76ch;margin:0;padding:0;list-style:none}
 .claimlist li{display:grid;grid-template-columns:34px minmax(0,1fr);gap:var(--s3);padding:var(--s3) var(--s4);border-radius:var(--r);font-size:var(--fs-read);line-height:1.7;color:var(--ink-2);
   overflow-wrap:anywhere;scroll-margin-top:110px;transition:background-color var(--t3) var(--ease)}
-.claimlist li.ind{margin-top:var(--s4);padding:var(--s5) var(--s6);border-radius:var(--r-md);background:var(--plate);box-shadow:0 0 0 1px var(--line),var(--sh-1);color:var(--ink)}
+.claimlist li.ind{margin-top:var(--s4);padding:var(--s5) var(--s6);border-radius:var(--r-md);background:var(--surface);box-shadow:0 0 0 1px var(--line),var(--sh-1);color:var(--ink)}
 .claimlist li.ind:first-child{margin-top:0}
 .claimlist li.dep{box-shadow:inset 2px 0 0 var(--line)}
 .claimlist li.d1{margin-left:22px}.claimlist li.d2{margin-left:44px}.claimlist li.d3{margin-left:66px}

@@ -62,7 +62,7 @@ textarea.prompt{min-height:340px;padding:var(--s6) var(--s7);border:0;border-rad
 textarea.prompt:focus{box-shadow:none;outline:none}
 .docframe:focus-within{box-shadow:0 0 0 1.5px var(--ink),var(--sh-2)}
 /* the kit dialog's prompt has no frame of its own */
-#kit textarea.prompt,dialog textarea.prompt{border-radius:var(--r-md);background:var(--plate);box-shadow:inset 0 0 0 1px var(--line)}
+#kit textarea.prompt,dialog textarea.prompt{border-radius:var(--r-md);background:var(--surface);box-shadow:inset 0 0 0 1px var(--line)}
 .sacts .btn.primary{flex:1 1 auto}
 .think{display:inline-flex;align-items:center;gap:var(--s2);font-size:var(--fs-ui);color:var(--ink-3)}
 .think::before{content:"";width:13px;height:13px;border:2px solid var(--line-strong);border-top-color:var(--mark);border-radius:50%;animation:spin .8s linear infinite}

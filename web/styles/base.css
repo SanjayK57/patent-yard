@@ -5,7 +5,7 @@ html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth;
 body{margin:0;min-height:100vh;display:flex;flex-direction:column;overflow-x:clip;padding-inline:var(--gutter);
   background:var(--bg);color:var(--ink);font:400 var(--fs-body)/1.55 var(--sans);font-stretch:100%;
   -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;font-kerning:normal}
-main{flex:1}
+main{flex:1;min-height:calc(100svh - var(--header-h))}  /* the footer starts below the first screen, so late content never pushes it */
 img,svg,canvas{max-width:100%}
 img{height:auto}
 button,input,select,textarea{font:inherit;font-stretch:inherit;color:inherit;letter-spacing:inherit}

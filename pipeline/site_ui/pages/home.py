@@ -98,8 +98,8 @@ class Home:
 <section class="section" id="recentSec" hidden><div class="sechead"><div><h2>Recently viewed</h2><p>Pick up where you left off. Kept in this browser only.</p></div><button class="btn quiet" type="button" id="recentClear">Clear</button></div><div class="rail" id="recentGrid"></div></section>
 <section class="section reveal" id="today">
   <div class="sechead"><div><h2>More from today's yard</h2><p>Picked each day from US patents that have expired or lapsed. A patent ending frees its own claims, not every right in a product, so check before you build.</p></div><a class="btn secondary sm" href="/browse/">Browse all</a></div>
-  <div class="bento">{"".join(self.card(r, i) for i, r in enumerate(picks[2:5], 2))}</div>
-  <ol class="pickrows" aria-label="More picks">{"".join(self.pickrow(r) for r in picks[5:11])}</ol>
+  <div class="bento">{"".join(self.card(r, i) for i, r in enumerate(picks[2:6], 2))}</div>
+  <ol class="pickrows" aria-label="More picks">{"".join(self.pickrow(r) for r in picks[6:12])}</ol>
 </section>
 
 <section class="section fieldsec reveal" aria-labelledby="fieldTitle">

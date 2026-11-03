@@ -23,7 +23,7 @@
     linear-gradient(var(--ink-3),var(--ink-3)) 100% 0/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 100% 0/1px 12px no-repeat,
     linear-gradient(var(--ink-3),var(--ink-3)) 0 100%/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 0 100%/1px 12px no-repeat,
     linear-gradient(var(--ink-3),var(--ink-3)) 100% 100%/12px 1px no-repeat,linear-gradient(var(--ink-3),var(--ink-3)) 100% 100%/1px 12px no-repeat}
-.card .fig.plate .numart,.gfig.failed .numart{font-size:17px;font-weight:560;font-stretch:var(--semiwide);letter-spacing:-.01em;color:var(--ink-2)}
+.card .fig.plate .numart,.gfig.failed .numart{max-width:64%;font-size:13px;font-weight:560;font-stretch:var(--narrow);line-height:1.35;text-align:center;white-space:normal;color:var(--ink-2)}
 .card:hover .fglyph{transform:scale(1.08);stroke:var(--ink-2)}
 .card .numart{font-size:13px;font-stretch:var(--narrow);font-variant-numeric:tabular-nums;color:var(--ink-3);white-space:nowrap}
 .card.acard .fig.plate{aspect-ratio:16/9}
@@ -31,7 +31,7 @@
 .cbody{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:7px 10px;padding:var(--s4) 2px 0;align-content:start;flex:1}
 .cbody>*{grid-column:1/-1}
 .cbody .tstat{display:block;grid-column:1;grid-row:1}
-.cbody .fieldname{grid-column:2;grid-row:1;font-size:12.5px;color:var(--ink-3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cbody .fieldname{grid-column:2;grid-row:1;font-size:12.5px;line-height:1.4;color:var(--ink-3);min-width:0}
 .tstat .badge{height:auto;padding:0;background:none;font-size:12.5px}
 .cbody h3{font-size:17px;font-weight:620;line-height:1.26;letter-spacing:-.016em}
 .cbody h3 a{color:var(--ink);transition:color var(--t1) var(--ease)}

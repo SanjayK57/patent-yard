@@ -82,6 +82,7 @@ function numberPath(s) {
 async function page(my) {
   const [lo, hi] = span || [0, meta.n], end = docs ? docs.length : hi - lo;
   const batch = docs ? docs.slice(pos, pos + 24) : Array.from({ length: Math.max(0, Math.min(24, end - pos)) }, (_, k) => lo + pos + k);
+  const first = pos === 0;
   pos += batch.length;
   // a free Worker gets 10 ms of CPU, so each call opens at most 4 packs (about 5 ms); the calls run side by side
   const calls = [];
@@ -91,7 +92,9 @@ async function page(my) {
   }
   const rows = (await Promise.all(calls.map(c => fetch(`/api/cards?d=${c.docs.join(",")}`).then(r => r.json()).catch(() => [])))).flat();
   if (my !== seq) return;
-  grid.insertAdjacentHTML("beforeend", rows.map(([, line]) => cardHTML(line)).join(""));
+  // a new search replaces the results only once they arrive, so the page doesn't collapse and jump in between
+  const html = rows.map(([, line]) => cardHTML(line)).join("");
+  if (first) { grid.innerHTML = html; grid.classList.remove("busy"); } else grid.insertAdjacentHTML("beforeend", html);
   more.hidden = pos >= end;
 }
 
@@ -114,26 +117,27 @@ function describe() {
 
 async function run() {
   const my = ++seq;
-  pos = 0; grid.innerHTML = ""; more.hidden = true;
+  pos = 0; grid.classList.add("busy"); more.hidden = true;
+  const none = msg => { grid.innerHTML = ""; grid.classList.remove("busy"); count.textContent = msg; };
   const p = new URLSearchParams();
   for (const [k, v] of [["q", S.q], ["cc", S.cc], ["free", S.free && "1"], ["type", S.type], ["field", S.fld], ["from", S.y1], ["to", S.y2]]) if (v) p.set(k, v);
   history.replaceState(null, "", location.pathname + (p.size ? "?" + p : ""));
   const ws = [...new Set(words(S.q))].filter(w => !stop.has(w));
-  if (S.q.trim() && !ws.length) { count.textContent = `“${S.q.trim()}” is too common to search by. Add a more specific word.`; return; }
+  if (S.q.trim() && !ws.length) return none(`“${S.q.trim()}” is too common to search by. Add a more specific word.`);
   count.textContent = "Searching…";
   let main = mainKey();
   const fk = fieldKey();
   if (fk && main === "all-free") main = null;  // the field's list already holds only patents past their term
   const keys = [main, fk].filter(Boolean), what = describe(), q_ = S.q.trim();
   span = yearSpan();
-  if (keys.some(k => !kidx[k]) || (span && span[0] === span[1])) { docs = []; count.textContent = `No ${noun(2)} ${what} in the data.`; return; }
+  if (keys.some(k => !kidx[k]) || (span && span[0] === span[1])) { docs = []; return none(`No ${noun(2)} ${what} in the data.`); }
   // "past their term" searches the f/ index. A country of mostly old patents needs it too, since the s/ index keeps only the
   // newest docs of a common word; without the filter its few in-force patents come from s/, so each word gets both, merged
   const old = S.cc && (kidx[`${S.cc}-free`]?.[0] || 0) / (kidx[S.cc]?.[0] || 1) > 0.9;
   const word = w => (S.free ? postings(w, "f") : old ? Promise.all([postings(w, "s"), postings(w, "f")]).then(([a, b]) => Object.assign(union(a, b), { cut: a.cut && b.cut })) : postings(w, "s"));
   const lists = await Promise.all([...ws.map(word), ...keys.map(filterList)]).catch(() => null);
   if (my !== seq) return;
-  if (!lists) { docs = []; count.textContent = "The search index didn't load. Try again."; return; }
+  if (!lists) { docs = []; return none("The search index didn't load. Try again."); }
   docs = lists.length ? intersect(lists) : null;
   if (docs && span) docs = docs.filter(d => d >= span[0] && d < span[1]);
   // a cut list holds only the docs newer than its last one; matches older than the newest such edge can be missing
@@ -147,7 +151,10 @@ async function run() {
   else count.textContent = `${missing ? "At least " : ""}${fmt(n)} ${noun(n)}${q_ ? ` ${n === 1 ? "matches" : "match"} “${q_}”` : ""}${what ? ` ${what}` : !q_ ? " worldwide" : ""}, newest first.`
     + (missing ? ` A common word or a big filter keeps only its ${newest} records, so older matches can be missing.` : "");
   if (!n && !missing) count.textContent += " Try fewer words or filters.";
+  const said = count.textContent;  // the count changes with the cards it describes, not before them
+  count.textContent = "Searching…";
   await page(my);
+  if (my === seq) count.textContent = said;
 }
 
 const pressType = () => $$("[data-type]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.type === S.type)));

@@ -55,7 +55,7 @@
 .why li b{font-size:12.5px;font-weight:560;font-variant-numeric:tabular-nums;color:var(--ink-3)}
 
 /* researched picks after the first three: one line each, their notes opening in place */
-.onotes{margin:var(--s10) 0 0;padding:0;list-style:none;border-top:1.5px solid var(--ink)}
+.onotes{display:block;margin:var(--s10) 0 0;padding:0;list-style:none;border-top:1.5px solid var(--ink)}
 .onote{border-bottom:1px solid var(--line)}
 .onote[hidden]{display:none}
 .onote summary{display:grid;grid-template-columns:44px auto minmax(0,1fr) auto;align-items:center;gap:var(--s4);padding:var(--s3) 0;list-style:none;cursor:pointer}
