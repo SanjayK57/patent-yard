@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype A · Light table · Patent Yard</title>
+<!-- Design exploration for v3 (docs/REDESIGN-V3.md). Real data from the 2026-11-02 preview; served from a preview
+     folder so /img/p/ resolves. Not part of the site. -->
+<style>
+@font-face { font-family: "Archivo"; src: url(fonts/archivo-latin.woff2) format("woff2"); font-weight: 100 900; font-stretch: 62% 125%; }
+@font-face { font-family: "Source Serif 4"; src: url(fonts/sourceserif-latin.woff2) format("woff2"); font-weight: 200 900; }
+:root {
+  --bg: #F3F3F1; --glass: #FDFDFC; --surface: #FFFFFF; --frame: #E6E6E3;
+  --ink: #17191A; --ink-2: #4B4F52; --ink-3: #6D7276; --line: rgba(23,25,26,.12); --line-2: rgba(23,25,26,.2);
+  --mark: #C23B27; --vellum: rgba(255,255,255,.72);
+  --ok: #1E6B3D; --lapse: #8F5400;
+  --sans: "Archivo", ui-sans-serif, system-ui, sans-serif; --serif: "Source Serif 4", Georgia, serif;
+  --ease: cubic-bezier(.16,1,.3,1);
+}
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 400 17px/1.5 var(--sans); font-stretch: 100%; -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+.num { font-variant-numeric: tabular-nums; }
+
+/* header: the table's aluminium rail */
+.top { position: sticky; top: 0; z-index: 5; height: 56px; display: flex; align-items: center; gap: 28px; padding: 0 40px; background: rgba(243,243,241,.82); backdrop-filter: saturate(1.4) blur(14px); box-shadow: 0 1px 0 var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; font-weight: 650; font-stretch: 112%; letter-spacing: -.01em; font-size: 16px; }
+.reg { width: 20px; height: 20px; }
+.top nav { display: flex; gap: 24px; font-size: 14px; color: var(--ink-2); }
+.top nav a[aria-current] { color: var(--ink); }
+.top .end { margin-left: auto; display: flex; gap: 10px; align-items: center; font-size: 14px; }
+.pill { display: inline-flex; align-items: center; gap: 8px; height: 34px; padding: 0 16px; border-radius: 999px; background: var(--ink); color: #fff; font-weight: 550; font-size: 14px; }
+.pill.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--line-2); }
+
+/* hero: copy on the table, the drawing on the lit glass */
+.hero { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); min-height: calc(100vh - 56px); max-height: 940px; position: relative; }
+.copy { padding: 96px 32px 64px 72px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+h1 { font-size: clamp(48px, 6.4vw, 104px); line-height: .94; font-weight: 640; font-stretch: 116%; letter-spacing: -.045em; }
+h1 span { display: block; color: var(--ink-3); }
+.lede { margin-top: 28px; max-width: 30em; font-size: 19px; line-height: 1.5; color: var(--ink-2); }
+form { margin-top: 36px; display: flex; align-items: center; gap: 10px; height: 60px; padding: 0 8px 0 22px; border-radius: 999px; background: var(--surface); box-shadow: 0 0 0 1px var(--line), 0 12px 32px -12px rgba(23,25,26,.18); max-width: 560px; }
+form svg { width: 20px; height: 20px; flex: none; color: var(--ink-3); }
+form input { flex: 1; border: 0; outline: 0; font: 400 17px var(--sans); background: none; color: var(--ink); min-width: 0; }
+form kbd { font: 500 12px var(--sans); color: var(--ink-3); box-shadow: inset 0 0 0 1px var(--line-2); border-radius: 6px; padding: 3px 7px; }
+form button { height: 44px; padding: 0 22px; border: 0; border-radius: 999px; background: var(--ink); color: #fff; font: 600 15px var(--sans); }
+.tries { margin-top: 16px; font-size: 14px; color: var(--ink-3); display: flex; gap: 6px 14px; flex-wrap: wrap; }
+.tries a { color: var(--ink-2); box-shadow: 0 1px 0 var(--line-2); }
+.world { margin-top: 40px; display: inline-flex; align-items: baseline; gap: 10px; font-size: 15px; color: var(--ink-2); }
+.world b { font-weight: 600; color: var(--ink); }
+.world i { font-style: normal; color: var(--mark); }
+.fine { margin-top: auto; padding-top: 40px; font-size: 13px; color: var(--ink-3); max-width: 34em; }
+
+.table { position: relative; margin: 28px 0 28px 0; border-radius: 28px 0 0 28px; background: var(--glass); box-shadow: inset 0 0 0 1px rgba(255,255,255,.9), 0 0 0 1px var(--line), 0 40px 80px -40px rgba(23,25,26,.25); overflow: hidden; }
+.table::before { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 55% 45%, #FFFFFF 0%, rgba(255,255,255,0) 70%); }
+.sheet { position: absolute; left: 50%; top: 50%; translate: -46% -52%; width: min(46%, 470px); aspect-ratio: 435/672; }
+.sheet img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; animation: lay 1.1s var(--ease) both; }
+@keyframes lay { from { opacity: 0; transform: translateY(18px) scale(.985); filter: blur(2px); } }
+.tick { position: absolute; width: 18px; height: 18px; border-color: var(--ink); opacity: .55; }
+.tick.tl { left: -26px; top: -26px; border-left: 1px solid; border-top: 1px solid; }
+.tick.tr { right: -26px; top: -26px; border-right: 1px solid; border-top: 1px solid; }
+.tick.bl { left: -26px; bottom: -26px; border-left: 1px solid; border-bottom: 1px solid; }
+.tick.br { right: -26px; bottom: -26px; border-right: 1px solid; border-bottom: 1px solid; }
+.margin { position: absolute; right: -54px; top: 0; writing-mode: vertical-rl; font-size: 12px; letter-spacing: .02em; color: var(--ink-3); }
+.vellum { position: absolute; left: -96px; bottom: 9%; width: 330px; padding: 20px 22px 18px; border-radius: 16px; background: var(--vellum); backdrop-filter: blur(16px) saturate(1.2); box-shadow: 0 0 0 1px var(--line), 0 24px 48px -24px rgba(23,25,26,.3); z-index: 3; animation: lay 1.1s .35s var(--ease) both; }
+.status { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; color: var(--ok); }
+.status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.vellum h2 { margin-top: 10px; font-size: 22px; line-height: 1.15; font-weight: 620; font-stretch: 108%; letter-spacing: -.02em; }
+.vellum dl { margin-top: 14px; display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; }
+.vellum dt { color: var(--ink-3); } .vellum dd { color: var(--ink); }
+.vellum .go { margin-top: 16px; display: flex; justify-content: space-between; font-size: 14px; font-weight: 600; padding-top: 14px; box-shadow: 0 -1px 0 var(--line); }
+.leader { position: absolute; z-index: 2; pointer-events: none; }
+
+/* one invention, up close */
+.close { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 0; margin: 120px 0 0; }
+.close .table { border-radius: 0 28px 28px 0; min-height: 640px; margin: 0; }
+.close .sheet { width: min(52%, 470px); aspect-ratio: 470/601; translate: -50% -50%; }
+.close .text { padding: 56px 72px; align-self: center; }
+.close h2 { font-size: clamp(32px, 3.4vw, 52px); line-height: 1.02; font-weight: 640; font-stretch: 112%; letter-spacing: -.035em; }
+.close .src { margin-top: 22px; font: 400 19px/1.55 var(--serif); color: var(--ink-2); max-width: 30em; }
+.note { margin-top: 26px; padding: 18px 20px; border-radius: 14px; background: var(--vellum); box-shadow: 0 0 0 1px var(--line); font-size: 15px; color: var(--ink-2); max-width: 30em; }
+.note b { display: block; font-size: 12px; font-weight: 600; color: var(--ink); margin-bottom: 4px; }
+.facts { margin-top: 30px; display: grid; grid-template-columns: repeat(3, auto); gap: 6px 36px; justify-content: start; font-size: 14px; }
+.facts small { display: block; color: var(--ink-3); font-size: 12px; }
+
+/* the yard in numbers */
+.scale { margin: 140px 72px 120px; display: grid; grid-template-columns: repeat(3, 1fr); box-shadow: 0 -1px 0 var(--line-2); }
+.scale div { padding: 28px 32px 0 0; }
+.scale b { display: block; font-size: clamp(44px, 5.6vw, 88px); line-height: 1; font-weight: 560; font-stretch: 112%; letter-spacing: -.05em; }
+.scale p { margin-top: 14px; font-size: 15px; color: var(--ink-2); max-width: 22em; }
+.scale small { display: block; margin-top: 6px; font-size: 13px; color: var(--ink-3); }
+
+@media (max-width: 900px) {
+  .top { padding: 0 18px; } .top nav, .top .end .ghost { display: none; }
+  .hero { grid-template-columns: 1fr; max-height: none; }
+  .copy { padding: 40px 20px 8px; } .fine { display: none; }
+  h1 { font-size: 48px; }
+  .lede { font-size: 17px; margin-top: 18px; }
+  form { margin-top: 24px; height: 54px; } form kbd { display: none; }
+  .world { margin-top: 22px; }
+  .table { margin: 24px 0 0 20px; height: 520px; }
+  .sheet { width: 62%; translate: -40% -54%; }
+  .margin { display: none; }
+  .vellum { left: auto; right: 16px; bottom: 16px; width: auto; max-width: 260px; padding: 14px 16px; }
+  .vellum dl { display: none; }
+  .close { grid-template-columns: 1fr; margin-top: 72px; } .close .table { margin-right: 20px; min-height: 440px; }
+  .close .text { padding: 32px 20px; }
+  .scale { grid-template-columns: 1fr; margin: 72px 20px; } .scale div { padding: 24px 0; box-shadow: 0 1px 0 var(--line); }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="#"><svg class="reg" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="10" cy="10" r="5.2"/><path d="M10 1v18M1 10h18"/></svg>Patent Yard</a>
+  <nav><a href="#" aria-current="page">Free to use</a><a href="#">All patents</a><a href="#">Opportunities</a><a href="#">Studio</a><a href="#">Insights</a></nav>
+  <div class="end"><a class="pill ghost" href="#">Sign in</a></div>
+</header>
+<section class="hero">
+  <div class="copy">
+    <h1>Old inventions.<span>New possibilities.</span></h1>
+    <p class="lede">Search patents whose protection has expired, lapsed or been abandoned, each with its original drawings, claims and the official record that shows why. Then develop your own version with Claude.</p>
+    <form><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="9" cy="9" r="6"/><path d="m13.5 13.5 4 4"/></svg><input placeholder="Search ideas, titles or patent numbers"><kbd>⌘K</kbd><button>Search</button></form>
+    <div class="tries">Try <a href="#">drone</a><a href="#">solar charger</a><a href="#">robot arm</a><a href="#">kitchen</a><a href="#">hearing aid</a></div>
+    <a class="world" href="#">Check all <b class="num">122.8 million</b> patent records worldwide <i>→</i></a>
+    <p class="fine">A patent ending frees its own claims, not every right in a product. Every listing shows the rule that freed it, its dates and its source.</p>
+  </div>
+  <div class="table">
+    <div class="sheet">
+      <img src="/img/p/US-6547112-B2/1.png" alt="Drawing from US 6,547,112 B2">
+      <span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+      <span class="margin num">US 6,547,112 B2 · Sheet 1 of 4</span>
+      <div class="vellum">
+        <span class="status">Expired, full term</span>
+        <h2>Scooter crutch and cane holder</h2>
+        <dl><dt>Term ended</dt><dd class="num">March 22, 2021</dd><dt>Field</dt><dd>Vehicles &amp; Drones</dd><dt>Record</dt><dd class="num">USPTO · US 6,547,112 B2</dd></dl>
+        <a class="go" href="#">Open the record <span>→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="table"><div class="sheet"><img src="/img/p/US-11154768-B2/1.png" alt="Drawing from US 11,154,768 B2"><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span></div></div>
+  <div class="text">
+    <span class="status" style="color:var(--lapse)">Lapsed, fee not paid</span>
+    <h2 style="margin-top:14px">Rolling-ball decision game</h2>
+    <p class="src">A game board where a ball rolls along guided paths and players set movable switches that send it to one of several goals.</p>
+    <div class="note"><b>Patent Yard's note</b>Laser cutters and 3D printers make small runs of mechanical games easy to sell.</div>
+    <div class="facts num"><div><small>Lapsed</small>October 2025</div><div><small>Field</small>Sports &amp; Fitness</div><div><small>Drawings</small>12 sheets</div></div>
+  </div>
+</section>
+
+<section class="scale">
+  <div><b class="num">11.8M</b><p>patents past their term, lapsed or abandoned, from the US, Europe, Canada and Australia.</p><small>USPTO, EPO, CIPO and IP Australia records</small></div>
+  <div><b class="num">7,784</b><p>US patents added this week, each rechecked for reinstatement every day.</p><small>USPTO Official Gazette</small></div>
+  <div><b class="num">122.8M</b><p>patent records worldwide, in force or not, for checking what already exists.</p><small>Google Patents Public Data, 106 offices</small></div>
+</section>
+</body>
+</html>

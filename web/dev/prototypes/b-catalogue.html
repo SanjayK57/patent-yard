@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype B · Catalogue · Patent Yard</title>
+<!-- Design exploration for v3 (docs/REDESIGN-V3.md): the patent as a catalogue object on a studio sweep. Not part of the site. -->
+<style>
+@font-face { font-family: "Schibsted Grotesk"; src: url(fonts/Schibsted-Grotesk.woff2) format("woff2"); font-weight: 400 900; }
+:root { --sweep: #E7E7E4; --plinth: #FFFFFF; --ink: #1A1A19; --ink-2: #51514E; --ink-3: #74746F; --rule: rgba(26,26,25,.16); --dot: #D9481C;
+  --sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--sweep); color: var(--ink); font: 400 16px/1.5 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+.num { font-variant-numeric: tabular-nums; }
+.top { height: 60px; display: flex; align-items: center; gap: 32px; padding: 0 48px; font-size: 14px; }
+.brand { font-weight: 700; font-size: 17px; letter-spacing: -.02em; display: flex; gap: 8px; align-items: center; }
+.brand i { width: 9px; height: 9px; border-radius: 50%; background: var(--dot); }
+.top nav { display: flex; gap: 26px; color: var(--ink-2); }
+.top .end { margin-left: auto; }
+.page { display: grid; grid-template-columns: 1fr minmax(0, 620px) 1fr; gap: 48px; padding: 40px 48px 0; min-height: calc(100vh - 60px); align-items: end;
+  background: linear-gradient(#EFEFED, var(--sweep) 70%); }
+.left { align-self: start; padding-top: 48px; }
+.idx { font-size: 13px; color: var(--ink-3); display: flex; gap: 12px; }
+h1 { margin-top: 18px; font-size: clamp(44px, 5vw, 76px); line-height: .98; font-weight: 700; letter-spacing: -.045em; }
+.lede { margin-top: 22px; font-size: 17px; color: var(--ink-2); max-width: 26em; }
+form { margin-top: 30px; display: flex; height: 52px; background: var(--plinth); border-radius: 4px; box-shadow: 0 0 0 1px var(--rule); }
+form input { flex: 1; border: 0; padding: 0 16px; font: 16px var(--sans); background: none; outline: 0; min-width: 0; }
+form button { border: 0; padding: 0 22px; background: var(--ink); color: #fff; font: 600 15px var(--sans); border-radius: 0 4px 4px 0; }
+.alt { margin-top: 18px; display: block; font-size: 14px; color: var(--ink-2); }
+.alt b { color: var(--ink); }
+.object { position: relative; align-self: stretch; display: flex; flex-direction: column; justify-content: flex-end; }
+.plinth { background: var(--plinth); aspect-ratio: 1; display: grid; place-items: center; box-shadow: 0 1px 0 rgba(0,0,0,.04), 0 60px 50px -40px rgba(0,0,0,.25); }
+.plinth img { height: 86%; mix-blend-mode: multiply; }
+.floor { height: 64px; }
+.modelno { position: absolute; top: 0; left: 0; font-size: 13px; color: var(--ink-3); }
+.modelno b { display: block; font-size: 40px; font-weight: 500; letter-spacing: -.03em; color: var(--ink); }
+.spec { align-self: end; padding-bottom: 64px; }
+.spec h2 { font-size: 22px; font-weight: 650; letter-spacing: -.02em; line-height: 1.2; }
+.spec table { margin-top: 18px; width: 100%; border-collapse: collapse; font-size: 14px; }
+.spec td { padding: 9px 0; border-top: 1px solid var(--rule); vertical-align: top; }
+.spec td:first-child { color: var(--ink-3); width: 42%; }
+.spec .ok::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #2B7A46; margin-right: 8px; }
+.spec a.go { margin-top: 20px; display: inline-flex; gap: 10px; align-items: center; font-weight: 600; font-size: 15px; }
+.spec a.go::after { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--dot); }
+.range { padding: 96px 48px; background: #F4F4F2; }
+.range h3 { font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.range .row { margin-top: 20px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; }
+.range .item { background: #fff; padding: 20px; aspect-ratio: 4/5; display: flex; flex-direction: column; }
+.range .item img { flex: 1; min-height: 0; object-fit: contain; mix-blend-mode: multiply; }
+.range .item p { margin-top: 12px; font-size: 14px; font-weight: 600; }
+.range .item small { font-size: 12px; color: var(--ink-3); }
+@media (max-width: 900px) {
+  .top { padding: 0 18px; } .top nav { display: none; }
+  .page { grid-template-columns: 1fr; padding: 24px 18px 0; gap: 32px; }
+  .left { padding-top: 0; } h1 { font-size: 44px; }
+  .spec { padding-bottom: 40px; }
+  .range { padding: 56px 18px; } .range .row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="#"><i></i>Patent Yard</a><nav><a href="#">Free to use</a><a href="#">All patents</a><a href="#">Opportunities</a><a href="#">Studio</a><a href="#">Insights</a></nav><a class="end" href="#">Sign in</a></header>
+<section class="page">
+  <div class="left">
+    <div class="idx"><span>Catalogue of free inventions</span><span class="num">No. 01 of 11.8 million</span></div>
+    <h1>Old inventions. New possibilities.</h1>
+    <p class="lede">Patents whose protection has ended, each with its original drawings, claims and the official record that shows why. Develop your own version with Claude.</p>
+    <form><input placeholder="Search ideas, titles or patent numbers"><button>Search</button></form>
+    <a class="alt" href="#">Or check all <b class="num">122.8 million</b> records worldwide →</a>
+  </div>
+  <div class="object">
+    <div class="modelno num">Today's object<b>6 547 112</b></div>
+    <div class="plinth"><img src="/img/p/US-6547112-B2/1.png" alt="Drawing from US 6,547,112 B2"></div>
+    <div class="floor"></div>
+  </div>
+  <div class="spec">
+    <h2>Scooter crutch and cane holder</h2>
+    <table class="num">
+      <tr><td>Status</td><td class="ok">Expired, full term</td></tr>
+      <tr><td>Term ended</td><td>March 22, 2021</td></tr>
+      <tr><td>Field</td><td>Vehicles &amp; Drones</td></tr>
+      <tr><td>Drawings</td><td>4 sheets</td></tr>
+      <tr><td>Record</td><td>USPTO, US 6,547,112 B2</td></tr>
+    </table>
+    <a class="go" href="#">Open the record</a>
+  </div>
+</section>
+<section class="range">
+  <h3>Also in today's catalogue</h3>
+  <div class="row">
+    <div class="item"><img src="/img/p/US-11154768-B2/1.png" alt=""><p>Rolling-ball decision game</p><small class="num">US 11,154,768 B2 · Lapsed</small></div>
+    <div class="item"><img src="/img/p/US-10040189-B2/1.png" alt=""><p>Magnetic tool holder board</p><small class="num">US 10,040,189 B2 · Lapsed</small></div>
+    <div class="item"><img src="/img/p/US-6500043-B1/1.png" alt=""><p>Motorized jointed toy figure</p><small class="num">US 6,500,043 B1 · Expired</small></div>
+    <div class="item"><img src="/img/p/US-6323615-B1/1.png" alt=""><p>Snap-together robot modules</p><small class="num">US 6,323,615 B1 · Expired</small></div>
+  </div>
+</section>
+</body>
+</html>

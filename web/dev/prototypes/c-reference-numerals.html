@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prototype C · Reference numerals · Patent Yard</title>
+<!-- Design exploration for v3 (docs/REDESIGN-V3.md): the drawing's own lead lines and reference numerals become the
+     page's grammar. Not part of the site. -->
+<style>
+@font-face { font-family: "Onest"; src: url(fonts/Onest.woff2) format("woff2"); font-weight: 100 900; }
+@font-face { font-family: "Source Serif 4"; src: url(fonts/sourceserif-italic-latin.woff2) format("woff2"); font-style: italic; font-weight: 200 900; }
+:root { --bg: #FFFFFF; --ink: #121314; --ink-2: #4A4D50; --ink-3: #72767A; --line: rgba(18,19,20,.14); --lead: #121314; --mark: #A8321E;
+  --sans: "Onest", ui-sans-serif, system-ui, sans-serif; --fig: "Source Serif 4", Georgia, serif; }
+* { box-sizing: border-box; margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 400 16px/1.55 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; text-decoration: none; }
+.num { font-variant-numeric: tabular-nums; }
+.top { height: 58px; display: flex; align-items: center; gap: 30px; padding: 0 44px; font-size: 14px; box-shadow: 0 1px 0 var(--line); }
+.brand { font-weight: 650; font-size: 16px; letter-spacing: -.01em; }
+.brand em { font: italic 500 17px var(--fig); color: var(--mark); margin-right: 6px; }
+.top nav { display: flex; gap: 24px; color: var(--ink-2); }
+.hero { position: relative; display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); min-height: calc(100vh - 58px); padding: 0 44px; }
+.copy { padding-top: 88px; }
+.fig { font: italic 500 18px var(--fig); color: var(--mark); }
+h1 { margin-top: 12px; font-size: clamp(44px, 5.2vw, 84px); line-height: .98; font-weight: 600; letter-spacing: -.05em; }
+.lede { margin-top: 24px; color: var(--ink-2); font-size: 18px; max-width: 26em; }
+form { margin-top: 32px; display: flex; gap: 8px; border-bottom: 2px solid var(--ink); padding-bottom: 10px; max-width: 480px; }
+form input { flex: 1; border: 0; outline: 0; font: 400 20px var(--sans); background: none; min-width: 0; }
+form button { border: 0; background: var(--ink); color: #fff; font: 600 15px var(--sans); padding: 10px 18px; border-radius: 8px; }
+.stage { position: relative; }
+.stage img { position: absolute; left: 30%; top: 50%; translate: 0 -50%; height: 78%; mix-blend-mode: multiply; }
+.stage svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.call { position: absolute; width: 230px; font-size: 14px; color: var(--ink-2); }
+.call em { font: italic 500 22px/1 var(--fig); color: var(--mark); display: block; margin-bottom: 6px; }
+.call b { display: block; color: var(--ink); font-weight: 600; font-size: 15px; }
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); padding: 96px 44px; gap: 44px; box-shadow: 0 -1px 0 var(--line); }
+.steps h3 { margin-top: 8px; font-size: 28px; font-weight: 600; letter-spacing: -.03em; }
+.steps p { margin-top: 10px; color: var(--ink-2); }
+@media (max-width: 900px) {
+  .top { padding: 0 18px; } .top nav { display: none; }
+  .hero { grid-template-columns: 1fr; padding: 0 18px; } .copy { padding-top: 36px; } h1 { font-size: 44px; }
+  .stage { height: 560px; } .stage img { left: 8%; height: 70%; top: 44%; }
+  .call { width: 150px; font-size: 12px; } .call b { font-size: 13px; }
+  .steps { grid-template-columns: 1fr; padding: 56px 18px; }
+}
+</style>
+</head>
+<body>
+<header class="top"><a class="brand" href="#"><em>10</em>Patent Yard</a><nav><a href="#">Free to use</a><a href="#">All patents</a><a href="#">Opportunities</a><a href="#">Studio</a><a href="#">Insights</a></nav></header>
+<section class="hero">
+  <div class="copy">
+    <span class="fig">Fig. 1</span>
+    <h1>Old inventions. New possibilities.</h1>
+    <p class="lede">Patents whose protection has expired, lapsed or been abandoned, with their original drawings, claims and the official record that shows why. Then develop your own version with Claude.</p>
+    <form><input placeholder="Search ideas or numbers"><button>Search</button></form>
+  </div>
+  <div class="stage">
+    <img src="/img/p/US-6547112-B2/1.png" alt="Drawing from US 6,547,112 B2">
+    <svg aria-hidden="true"><g stroke="#121314" stroke-width="1" fill="none">
+      <path d="M150 160 C 240 160, 300 190, 360 230"/><path d="M150 430 C 250 430, 300 400, 380 380"/>
+      <path d="M780 140 C 700 150, 660 190, 620 240"/><path d="M780 470 C 700 470, 660 440, 600 420"/></g></svg>
+    <div class="call" style="left:-80px;top:130px"><em>12</em><b>Expired, full term</b>Its term ended on March 22, 2021.</div>
+    <div class="call" style="left:-80px;top:400px"><em>14</em><b class="num">US 6,547,112 B2</b>Traced to its USPTO record.</div>
+    <div class="call" style="left:790px;top:110px"><em>16</em><b>Scooter crutch and cane holder</b>4 drawing sheets and its claims.</div>
+    <div class="call" style="left:790px;top:440px"><em>18</em><b>Develop it with Claude</b>A prompt and a brief for your own account.</div>
+  </div>
+</section>
+<section class="steps">
+  <div><span class="fig">Fig. 2</span><h3>Discover</h3><p>Search inventions whose protection has ended, by idea or by number.</p></div>
+  <div><span class="fig">Fig. 3</span><h3>Investigate</h3><p>Read the claims and drawings, and see the rule, the dates and the record.</p></div>
+  <div><span class="fig">Fig. 4</span><h3>Develop</h3><p>Turn it into a new idea with Claude, in your own account.</p></div>
+</section>
+</body>
+</html>
